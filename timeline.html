@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gipsy Hill Historical Timeline</title>
+    <script>
+        // Cache busting logic
+        (function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var cacheBust = urlParams.get('cache') === 'false' ? '?v=' + Date.now() : '';
+            
+            // Add CSS with cache busting
+            var cssLink = document.createElement('link');
+            cssLink.rel = 'stylesheet';
+            cssLink.href = 'timeline.css' + cacheBust;
+            document.head.appendChild(cssLink);
+            
+            // Store cache bust value for JS files
+            window.cacheBust = cacheBust;
+        })();
+    </script>
+    <style>
+        /* Minimal inline styles for initial render */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">Loading timeline...</div>
+    
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" style="display:none;">
+        <svg class="theme-toggle-icon sun" viewBox="0 0 24 24" fill="white"></svg>
+        <svg class="theme-toggle-icon moon" viewBox="0 0 24 24" fill="white"></svg>
+    </button>
+    
+    <button class="about-button" id="about-button" aria-label="About" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="white"></svg>
+    </button>
+
+    <div class="float-element"></div>
+    <div class="float-element"></div>
+    <div class="float-element"></div>
+
+    <div class="header" style="display:none;">
+        <div class="header-content">
+            <div class="fogh-logo-header">
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 96" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+            <h1>Historical Timeline</h1>
+            <p>Discover the fascinating history of our community from ancient settlements to modern day</p>
+            <div class="header-link">
+                <a href="https://gipsyhillfriends.org" target="_blank" rel="noopener">gipsyhillfriends.org</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
+        <div id="timeline-items"></div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal-overlay" id="about-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close" aria-label="Close">
+                <svg viewBox="0 0 24 24"></svg>
+            </button>
+            <div class="about-content">
+                <div class="about-header">
+                    <div class="about-logo">
+                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 96" preserveAspectRatio="xMidYMid meet"></svg>
+                    </div>
+                    <h2>Gipsy Hill Timeline</h2>
+                    <span class="version">v0.2</span>
+                </div>
+                
+                <p class="about-tagline">Discover the stories that shaped our community</p>
+                
+                <div class="about-actions">
+                    <a href="mailto:info@gipsyhillfriends.org" class="about-action-link">
+                        <svg viewBox="0 0 24 24" width="20" height="20">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                        <span>
+                            <strong>Contribute</strong>
+                            <small>Share memories & corrections</small>
+                        </span>
+                    </a>
+                    <a href="https://gipsyhillfriends.org" target="_blank" rel="noopener" class="about-action-link">
+                        <svg viewBox="0 0 24 24" width="20" height="20">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                        </svg>
+                        <span>
+                            <strong>Visit Website</strong>
+                            <small>gipsyhillfriends.org</small>
+                        </span>
+                    </a>
+                </div>
+                
+                <div class="about-footer">
+                    <button class="credits-toggle" onclick="this.parentElement.classList.toggle('show-credits')">
+                        Credits <svg viewBox="0 0 24 24" width="12" height="12"><path d="M7 10l5 5 5-5z"/></svg>
+                    </button>
+                    <div class="credits-panel">
+                        Icons: Train (P. Rapolu) • Car Explosion (Icons Cart) • Police Helmet (P. Carleton) • Bunker Door (A. Arshad) • Sudan (WEBTECHOPS) • River (rendicon) • Trees (asianson.design) • POI (M. Sturk) — <a href="https://thenounproject.com" target="_blank">Noun Project</a> CC BY 3.0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set theme immediately to prevent flash
+        (function() {
+            var savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    
+    <!-- Load external JavaScript files with cache busting -->
+    <script>
+        (function() {
+            var cacheBust = window.cacheBust || '';
+            
+            // Load scripts sequentially to ensure proper order
+            function loadScript(src, callback) {
+                var script = document.createElement('script');
+                script.src = src + cacheBust;
+                script.onload = function() {
+                    if (callback) callback();
+                };
+                script.onerror = function() {
+                    console.error('Failed to load script: ' + src);
+                    document.getElementById('loading').textContent = 'Error loading timeline scripts.';
+                };
+                document.body.appendChild(script);
+            }
+            
+            // Load scripts in sequence
+            loadScript('timeline-data.js', function() {
+                loadScript('timeline-main.js', function() {
+                    console.log('All scripts loaded');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

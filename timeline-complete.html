@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gipsy Hill Historical Timeline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f0eb;
+            color: #2c2c2c;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 183, 77, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 60%, rgba(255, 111, 97, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(255, 138, 101, 0.05) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 5rem 2rem 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #2c2c2c;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            animation: fadeInDown 0.8s ease forwards;
+        }
+
+        .header p {
+            font-size: 1.125rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+            opacity: 0;
+            animation: fadeInDown 0.8s ease forwards 0.2s;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timeline-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            padding: 2rem 1rem 4rem;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 60px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(255, 138, 101, 0.3) 10%,
+                rgba(255, 138, 101, 0.3) 90%,
+                transparent 100%
+            );
+            z-index: 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-left: 100px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 0.6s ease forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 52px;
+            top: 40px;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border: 3px solid #ff8a65;
+            border-radius: 50%;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.3);
+            border-color: #ff6f61;
+            box-shadow: 0 0 0 8px rgba(255, 138, 101, 0.1);
+        }
+
+        .timeline-date {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6f61 0%, #ffb74d 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(255, 111, 97, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-date {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 111, 97, 0.4);
+        }
+
+        .timeline-content {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6f61 0%, #ffb74d 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .timeline-content:hover::before {
+            opacity: 1;
+        }
+
+        .content-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .content-icon {
+            width: 52px;
+            height: 52px;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(255, 111, 97, 0.3);
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ff6f61 0%, #ffb74d 100%);
+        }
+
+        .timeline-content:hover .content-icon {
+            transform: rotate(-5deg) scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 111, 97, 0.4);
+        }
+
+        .content-icon.fogh {
+            background: linear-gradient(135deg, #4caf50 0%, #81c784 100%);
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+        }
+
+        .content-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        .content-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c2c2c;
+            line-height: 1.3;
+        }
+
+        .content-description {
+            font-size: 1rem;
+            line-height: 1.75;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .float-element {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(255, 183, 77, 0.1) 0%, rgba(255, 111, 97, 0.1) 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .float-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 25s;
+        }
+
+        .float-element:nth-child(2) {
+            top: 60%;
+            right: 10%;
+            animation-delay: 5s;
+            animation-duration: 30s;
+        }
+
+        .float-element:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 10s;
+            animation-duration: 20s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-30px) rotate(120deg);
+            }
+            66% {
+                transform: translateY(30px) rotate(240deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .timeline-line {
+                left: 20px;
+            }
+
+            .timeline-item {
+                padding-left: 50px;
+            }
+
+            .timeline-dot {
+                left: 12px;
+                top: 35px;
+            }
+
+            .timeline-date {
+                font-size: 0.875rem;
+                padding: 0.5rem 1.25rem;
+            }
+
+            .timeline-content {
+                padding: 1.5rem;
+            }
+
+            .content-icon {
+                width: 44px;
+                height: 44px;
+            }
+
+            .content-icon svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .content-title {
+                font-size: 1.25rem;
+            }
+
+            .content-description {
+                font-size: 0.875rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .float-element {
+                display: none;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .float-element {
+                display: none;
+            }
+
+            .timeline-content {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="float-element"></div>
+    <div class="float-element"></div>
+    <div class="float-element"></div>
+
+    <div class="header">
+        <h1>Gipsy Hill Historical Timeline</h1>
+        <p>Discover the fascinating history of our community from ancient settlements to modern day</p>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
+        <div id="timeline-items"></div>
+    </div>
+
+    <script>
+        // Wait for page to fully load
+        window.addEventListener('load', function() {
+            // Timeline data with full content
+            var timelineData = [
+                {
+                    date: "17th Century",
+                    title: "Norwood Gypsies Settle",
+                    description: "Roma Gypsies establish camps on Norwood Common, giving the area its name. The Great North Wood covers much of the area, with coppicing for charcoal burning as the main local industry. The area is bounded by two branches of the River Effra.",
+                    icon: "house"
+                },
+                {
+                    date: "c. 1640",
+                    title: "Margaret Finch Born",
+                    description: "Margaret Finch is born in Sutton, South London. She would spend her life \"Traveling ye Kingdom, as Queen of ye Gypsie Tribe,\" becoming the most famous and respected leader of the Norwood Gypsy community.",
+                    icon: "crown"
+                },
+                {
+                    date: "1668",
+                    title: "Pepys Visits the Gypsies",
+                    description: "Samuel Pepys records in his diary: \"This afternoon my wife and Mercer and Deb went with Pelling to see the gypsies at Lambeth and have their fortunes told.\" His wife likely consulted Margaret Finch, who had become a renowned fortune teller.",
+                    icon: "microphone"
+                },
+                {
+                    date: "1740",
+                    title: "Death of the Gypsy Queen",
+                    description: "Margaret Finch dies at 108-109 years old. Living in a hut built of branches at the base of a tree, she became famous for sitting in a crouching position with her chin on her knees, smoking two pipes and accompanied by her faithful dogs. Her body was so contracted that a special square coffin had to be made. She was buried at Beckenham Parish Church with much pomp, attended by large crowds and even two mourning coaches.",
+                    icon: "location"
+                },
+                {
+                    date: "1777",
+                    title: "The Norwood Gypsies Pantomime",
+                    description: "A pantomime titled \"The Norwood Gypsies\" is performed at Theatre Royal Covent Garden, one of the most successful dramatic productions of the time. This theatrical production celebrated the area's heritage and brought Gipsy Hill to London's cultural attention.",
+                    icon: "theater"
+                },
+                {
+                    date: "1810",
+                    title: "Norwood Common Enclosed",
+                    description: "Enclosure roads are driven through Norwood Common, including Gipsy Road, Gipsy Hill, and Salters Hill, opening up the area for development. This marks the end of the centuries-long Gypsy presence on the common and begins suburban transformation.",
+                    icon: "road"
+                },
+                {
+                    date: "1832",
+                    title: "Trotting Hill Created",
+                    description: "Part of Gipsy Hill, known as \"Beaulieu Hill,\" was so steep that the local community self-funded a team of 42 workers to reduce its height by nine feet. Creating a gentler slope of 1 foot in 12, they transformed it into a \"trotting hill\" where horses could maintain a trot rather than walking. Each worker was rewarded with three pints of beer and a shilling for their efforts, as reported in the Public Ledger and Daily Advertiser on April 12, 1832.",
+                    icon: "tools"
+                },
+                {
+                    date: "1847-1848",
+                    title: "River Effra Culverted",
+                    description: "The River Effra, which bounded Gipsy Hill on two sides, begins to be \"arched over\" (culverted) by Surrey and East Kent Sewer commissioners. By this time the river had become heavily polluted and was causing serious flooding. The process continues into the late 19th century as urban development expands.",
+                    icon: "edit"
+                },
+                {
+                    date: "1854",
+                    title: "Crystal Palace Opens",
+                    description: "The Crystal Palace opens at its new Sydenham location on June 10th, bringing thousands of visitors to the area. Crystal Palace Low Level Station opens, creating the first railway connection that would soon reach Gipsy Hill.",
+                    icon: "bookmark"
+                },
+                {
+                    date: "1856",
+                    title: "Railway Revolution",
+                    description: "Gipsy Hill railway station opens as part of the West End of London and Crystal Palace Railway, designed to transport crowds to the relocated Crystal Palace. This transforms Gipsy Hill from rural countryside to accessible suburb, spurring rapid residential development.",
+                    icon: "train"
+                },
+                {
+                    date: "1858",
+                    title: "The Great Stink",
+                    description: "The \"Great Stink\" of London prompts Sir Joseph Bazalgette to incorporate the River Effra into his revolutionary London sewerage system. One of the Upper Norwood tributaries of the Effra ran through Long Meadow, marking the boundary between Lambeth and Southwark on the west side of the road and defining the edge of the Dulwich Estate, according to Jon Newman's book \"River Effra: South London's Secret Spine.\"",
+                    icon: "building"
+                },
+                {
+                    date: "1862",
+                    title: "Iron Church Erected",
+                    description: "An \"Iron Church\" is set up on Gipsy Hill to serve the new district of Christ Church, part of the Parish of St Luke's, Lower Norwood. This temporary structure serves the growing community until a permanent church can be built.",
+                    icon: "cloud"
+                },
+                {
+                    date: "1867",
+                    title: "Christ Church Consecrated",
+                    description: "Christ Church, Gipsy Hill is consecrated on Highland Road, becoming one of the first permanent buildings on Gipsy Hill. The church serves as a central landmark and community gathering place for the rapidly growing population.",
+                    icon: "church"
+                },
+                {
+                    date: "1870s-1890s",
+                    title: "Victorian Suburban Boom",
+                    description: "Large Victorian houses are built along main roads by the United Land Company and other developers. Horse breeding becomes an important local industry, taking advantage of the area's rural character and railway connections to London. Thomas French of Croxted Road operates French's Farm and Dairy, keeping his cows on land halfway up Gipsy Hill between Woodland Road and Cawnpore Street - the building still stands today. The area sees the opening of several pubs celebrating local heritage: Ye Old Gipsy House (later Gipsy Tavern) on Gipsy Road, the Gipsy Hill Hotel (now The Great Southern), and the Gipsy Queen on Norwood High Street.",
+                    icon: "home"
+                },
+                {
+                    date: "1881-1882",
+                    title: "Gipsy Road Baptist Church",
+                    description: "Gipsy Road Baptist Church is built and dedicated, adding another significant religious building to serve the growing community's spiritual needs.",
+                    icon: "church"
+                },
+                {
+                    date: "1890",
+                    title: "Great Flood",
+                    description: "A major flood from the culverted River Effra devastates the area on July 17th. A white stone tablet still visible high up on a building in Elder Road marks the \"FLOOD LEVEL 17th July 1890.\" The convent school wall was swept away and had to be rebuilt.",
+                    icon: "water"
+                },
+                {
+                    date: "1940-1941",
+                    title: "WWII Blitz",
+                    description: "During World War II, 42 high explosive bombs are dropped on the Gipsy Hill ward between October 7, 1940, and June 6, 1941. Areas around Rommany Road are severely hit, with many homes damaged or destroyed. Despite the destruction, the community rebuilds and perseveres.",
+                    icon: "warning"
+                },
+                {
+                    date: "1963-1966",
+                    title: "Cold War Bunker",
+                    description: "An 18-room nuclear bunker is constructed as part of Pear Tree House on Lunham Road in the Central Hill Estate, reflecting the tensions of the Cold War era and Gipsy Hill's strategic importance.",
+                    icon: "target"
+                },
+                {
+                    date: "1960s-1970s",
+                    title: "Central Hill Estate",
+                    description: "The Central Hill Estate is built, designed by Rosemary Stjernstedt, Roger Westman and the Lambeth Council planning department. This modernist housing development represents a new chapter in community living and social housing.",
+                    icon: "apartment"
+                },
+                {
+                    date: "1974",
+                    title: "Conservation Area Designated",
+                    description: "The Gipsy Hill Conservation Area (CA14) is designated following work by the local community, ensuring the preservation of original Victorian frontages along Gipsy Hill. The area is characterized by its 19th-century suburban development rising up the hill and includes notable landmarks like Gipsy Hill Station, Christ Church's landmark tower, and the former police station. The conservation area would later be extended and joined by the Westow Hill (North Side) Conservation Area in 1998.",
+                    icon: "shield"
+                },
+                {
+                    date: "1984",
+                    title: "IRA Bomb Incident",
+                    description: "An IRA bomb explodes on Croxted Road, marking a dark moment in the area's history during the Northern Ireland conflict. The incident demonstrates how national political tensions affected local communities across London.",
+                    icon: "alert"
+                },
+                {
+                    date: "2011",
+                    title: "Fanny the Station Cat",
+                    description: "Fanny the cat is born on June 7th and becomes a beloved local celebrity. Often found lounging on the Oyster card reader at Gipsy Hill station or in the Friends of Gipsy Hill community garden, Fanny captures hearts and becomes an unofficial mascot for the area, representing the warm community spirit of modern Gipsy Hill.",
+                    icon: "heart"
+                },
+                {
+                    date: "2018-Present",
+                    title: "Friends of Gipsy Hill",
+                    description: "FoGH forms as a community group following a successful 2018 crowdfunding campaign supported by the Mayor of London. Major achievements include: launching the first Village Fete on Long Meadow (2019), establishing the first Community Christmas Tree on Gipsy Hill (2020), creating the History Wall and community murals, and maintaining station gardens. The community's successful petition to the Transport Minister brings the first Brown & Green café to Gipsy Hill station, transforming it into a vibrant community hub. Their mission continues: inspiring residents' involvement and sustainable use of local spaces for community wellbeing.",
+                    icon: "fogh"
+                }
+            ];
+
+            // Icon SVG paths
+            var icons = {
+                house: '<path d="M12 2L4 7V11.5C4 12 4.5 12.5 5 12.5H9V21H15V12.5H19C19.5 12.5 20 12 20 11.5V7L12 2Z"/>',
+                crown: '<path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5M19 19C19 19.6 18.6 20 18 20H6C5.4 20 5 19.6 5 19V18H19V19Z"/>',
+                microphone: '<path d="M12 2A3 3 0 0 0 9 5V11A3 3 0 0 0 12 14A3 3 0 0 0 15 11V5A3 3 0 0 0 12 2M19 11C19 14.53 16.39 17.44 13 17.93V21H11V17.93C7.61 17.44 5 14.53 5 11H7A5 5 0 0 0 12 16A5 5 0 0 0 17 11H19Z"/>',
+                location: '<path d="M12 2C9.31 2 7 4.66 7 7.95C7 12.41 12 19 12 19S17 12.41 17 7.95C17 4.66 14.69 2 12 2M12 6A2 2 0 0 1 14 8A2 2 0 0 1 12 10A2 2 0 0 1 10 8A2 2 0 0 1 12 6M20 19C20 21.21 16.42 23 12 23S4 21.21 4 19C4 17.71 5.22 16.56 7.11 15.83L7.75 16.74C6.67 17.19 6 17.81 6 18.5C6 19.88 8.69 21 12 21S18 19.88 18 18.5C18 17.81 17.33 17.19 16.25 16.74L16.89 15.83C18.78 16.56 20 17.71 20 19Z"/>',
+                theater: '<path d="M8 3A2 2 0 0 0 6 5V7A2 2 0 0 0 5 9V11A2 2 0 0 0 4 13V15A2 2 0 0 0 6 17H9.54A6 6 0 0 1 8 13A6 6 0 0 1 14 7A6 6 0 0 1 18 8.46V5A2 2 0 0 0 16 3H8M14 12A2 2 0 0 0 12 14A2 2 0 0 0 14 16A2 2 0 0 0 16 14A2 2 0 0 0 14 12M14 18A6 6 0 0 0 8 24H16A6 6 0 0 0 22 18A6 6 0 0 0 16 12A6 6 0 0 0 10 18H14Z"/>',
+                road: '<path d="M11 8.5V5.5L16.5 11L11 16.5V13.5C5.91 13.5 3.21 16.06 2.53 17.5C2.53 12.5 5.58 8.5 11 8.5M21.47 13.5C21.47 18.5 18.42 22.5 13 22.5V20.5C17.09 20.5 19.79 17.94 20.47 16.5C20.47 17.27 20.4 18.19 20.25 19H22.47C22.45 18 22.45 16.5 21.47 13.5Z"/>',
+                tools: '<path d="M21.47 4.35L20.13 3.01C19.52 2.4 18.55 2.4 17.94 3.01L16.37 4.58L8.44 12.51C8.31 12.64 8.22 12.8 8.16 12.98L6.52 18.71C6.43 19 6.52 19.31 6.73 19.52C6.87 19.66 7.06 19.74 7.26 19.74C7.35 19.74 7.43 19.72 7.52 19.69L13.25 18.05C13.43 17.99 13.59 17.9 13.72 17.77L21.65 9.84L23.22 8.27C23.83 7.66 23.83 6.69 23.22 6.08L21.47 4.35M12.42 17.42L8.31 18.58L9.47 14.47L12.42 17.42Z"/>',
+                edit: '<path d="M21.47 4.35L20.13 3.01C19.52 2.4 18.55 2.4 17.94 3.01L16.37 4.58L8.44 12.51C8.31 12.64 8.22 12.8 8.16 12.98L6.52 18.71C6.43 19 6.52 19.31 6.73 19.52C6.87 19.66 7.06 19.74 7.26 19.74C7.35 19.74 7.43 19.72 7.52 19.69L13.25 18.05C13.43 17.99 13.59 17.9 13.72 17.77L21.65 9.84L23.22 8.27C23.83 7.66 23.83 6.69 23.22 6.08L21.47 4.35M12.42 17.42L8.31 18.58L9.47 14.47L12.42 17.42Z"/>',
+                bookmark: '<path d="M8 2H16L20 6V10.17C19.5 10.06 19 10 18.5 10C18.33 10 18.17 10 18 10.03V8H6V20H11.81C11.42 20.57 11.17 21.27 11.06 22H6C4.89 22 4 21.1 4 20V4C4 2.89 4.89 2 6 2H8M12 12V19L15 16L18 19V12H12Z"/>',
+                train: '<path d="M18 1L12 5L6 1L1 6V20L6 15L12 19L18 15L23 20V6L18 1M17 18.5L12 15.67L7 18.5V5.5L12 8.33L17 5.5V18.5Z"/>',
+                building: '<path d="M7.5 2L3 7V21H21V7L16.5 2H7.5M7.5 4H8.7L6 6.7V18H18V6.7L15.3 4H16.5L19 6.5V19H5V6.5L7.5 4M14 8V14L17 11L14 8M10 8L7 11L10 14V8Z"/>',
+                cloud: '<path d="M11 2L6 7L7.41 8.41L10 5.83V12H12V5.83L14.59 8.41L16 7L11 2M16 13C16.04 13 16.08 13 16.13 13C18.28 13 20 14.72 20 16.87C20 19.04 18.28 20.76 16.13 20.76C16.08 20.76 16.04 20.76 16 20.75V22C19.87 22 23 18.87 23 15C23 11.13 19.87 8 16 8C14.59 8 13.27 8.47 12.21 9.27C11.15 8.47 9.84 8 8.43 8C4.56 8 1.43 11.13 1.43 15C1.43 18.87 4.56 22 8.43 22V20.75C6.28 20.75 4.56 19.03 4.56 16.87C4.56 14.72 6.28 13 8.43 13C8.48 13 8.52 13 8.57 13V16L11 13.5L8.57 11V13Z"/>',
+                church: '<path d="M12 2L4 7V11.5C4 12 4.5 12.5 5 12.5H8V22H11V18H13V22H16V12.5H19C19.5 12.5 20 12 20 11.5V7L12 2M12 5L16 7.5V10H8V7.5L12 5Z"/>',
+                home: '<path d="M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z"/>',
+                water: '<path d="M12 3.25C12 3.25 6 10 6 14C6 17.32 8.69 20 12 20S18 17.32 18 14C18 10 12 3.25 12 3.25M14.47 9.97L15.53 11.03L9.53 17.03L8.47 15.97M9.75 10A1.25 1.25 0 0 1 11 11.25A1.25 1.25 0 0 1 9.75 12.5A1.25 1.25 0 0 1 8.5 11.25A1.25 1.25 0 0 1 9.75 10M14.25 14.5A1.25 1.25 0 0 1 15.5 15.75A1.25 1.25 0 0 1 14.25 17A1.25 1.25 0 0 1 13 15.75A1.25 1.25 0 0 1 14.25 14.5Z"/>',
+                warning: '<path d="M14 19.88V22H17.24L12 13.44L6.76 22H10V19.88M21 16L13.36 2H10.64L3 16L5 16L10.5 7.5H13.5L19 16L21 16M7.24 2L12 10.56L16.76 2H14V0H10V2H7.24Z"/>',
+                target: '<path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 4C16.4 4 20 7.6 20 12S16.4 20 12 20 4 16.4 4 12 7.6 4 12 4M12 6C8.7 6 6 8.7 6 12S8.7 18 12 18 18 15.3 18 12 15.3 6 12 6M12 8C14.2 8 16 9.8 16 12S14.2 16 12 16 8 14.2 8 12 9.8 8 12 8M12 10C10.9 10 10 10.9 10 12S10.9 14 12 14 14 13.1 14 12 13.1 10 12 10Z"/>',
+                apartment: '<path d="M5 3V21H11V17H13V21H19V3H5M7 5H17V7H7V5M7 9H17V11H7V9M7 13H17V15H7V13M7 17H9V19H7V17M15 17H17V19H15V17Z"/>',
+                shield: '<path d="M12 2L4 7V11C4 18 7 21.5 12 23C17 21.5 20 18 20 11V7L12 2M12 4L18 7.5V11C18 16.8 15.6 19.7 12 21C8.4 19.7 6 16.8 6 11V7.5L12 4M11 7V13H13V7H11M11 15V17H13V15H11Z"/>',
+                alert: '<path d="M16 2V4H17.78C18.95 4 19.96 4.86 20 6.03L20.08 12.57C18.76 11.29 16.97 10.5 15 10.5C11.13 10.5 8 13.63 8 17.5S11.13 24 15 24C18.5 24 21.38 21.41 21.9 18H20.36C19.88 20.58 17.63 22.5 15 22.5C11.96 22.5 9.5 20.04 9.5 17S11.96 11.5 15 11.5C16.68 11.5 18.19 12.28 19.17 13.5H16V15H22V6.05C21.95 4.4 20.6 3 18.95 3H16V2M4 4V20H6V4H4Z"/>',
+                heart: '<path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 4C8.1 4 5.2 5.9 4.3 9L5.7 10C6.2 9.4 6.9 9 7.8 9C8.4 9 9 9.2 9.5 9.6L12 7.8L14.5 9.6C15 9.2 15.6 9 16.2 9C17.1 9 17.8 9.4 18.3 10L19.7 9C18.8 5.9 15.9 4 12 4M7.8 11C7.3 11 7 11.3 7 11.8S7.3 12.5 7.8 12.5 8.5 12.2 8.5 11.8 8.2 11 7.8 11M16.2 11C15.7 11 15.5 11.3 15.5 11.8S15.8 12.5 16.2 12.5C16.7 12.5 17 12.2 17 11.8S16.7 11 16.2 11M12 14C9.3 14 7 16 7 19H17C17 16 14.7 14 12 14Z"/>'
+            };
+
+            // Get container
+            var container = document.getElementById('timeline-items');
+
+            // Create timeline items using DOM methods
+            for (var i = 0; i < timelineData.length; i++) {
+                var item = timelineData[i];
+                
+                // Create timeline item container
+                var timelineItem = document.createElement('div');
+                timelineItem.className = 'timeline-item';
+                timelineItem.style.animationDelay = ((i + 1) * 0.1) + 's';
+
+                // Create timeline dot
+                var dot = document.createElement('div');
+                dot.className = 'timeline-dot';
+                timelineItem.appendChild(dot);
+
+                // Create date element
+                var dateEl = document.createElement('div');
+                dateEl.className = 'timeline-date';
+                dateEl.textContent = item.date;
+                timelineItem.appendChild(dateEl);
+
+                // Create content container
+                var content = document.createElement('div');
+                content.className = 'timeline-content';
+
+                // Create content header
+                var header = document.createElement('div');
+                header.className = 'content-header';
+
+                // Create icon
+                var iconDiv = document.createElement('div');
+                iconDiv.className = 'content-icon';
+                if (item.icon === 'fogh') {
+                    iconDiv.className += ' fogh';
+                    iconDiv.textContent = 'FoGH';
+                } else {
+                    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                    svg.setAttribute('viewBox', '0 0 24 24');
+                    svg.innerHTML = icons[item.icon] || icons.house;
+                    iconDiv.appendChild(svg);
+                }
+                header.appendChild(iconDiv);
+
+                // Create title
+                var title = document.createElement('div');
+                title.className = 'content-title';
+                title.textContent = item.title;
+                header.appendChild(title);
+
+                content.appendChild(header);
+
+                // Create description
+                var desc = document.createElement('div');
+                desc.className = 'content-description';
+                desc.textContent = item.description;
+                content.appendChild(desc);
+
+                timelineItem.appendChild(content);
+                container.appendChild(timelineItem);
+            }
+        });
+    </script>
+</body>
+</html>

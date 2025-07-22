@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify Timeline Images</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .image-test { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .image-test img { max-width: 300px; display: block; margin: 10px 0; }
+        .success { background-color: #e8f5e9; }
+        .error { background-color: #ffebee; }
+        .status { font-weight: bold; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Timeline Image URL Verification</h1>
+    <div id="results"></div>
+    
+    <script src="timeline-data.js"></script>
+    <script>
+        const resultsDiv = document.getElementById('results');
+        let imageCount = 0;
+        let loadedCount = 0;
+        let failedCount = 0;
+        
+        timelineData.forEach((item, index) => {
+            if (item.image) {
+                imageCount++;
+                const testDiv = document.createElement('div');
+                testDiv.className = 'image-test';
+                testDiv.innerHTML = `
+                    <h3>${item.title} (${item.date})</h3>
+                    <p><strong>URL:</strong> ${item.image}</p>
+                    <img src="${item.image}" alt="${item.title}">
+                    <div class="status">Loading...</div>
+                `;
+                resultsDiv.appendChild(testDiv);
+                
+                const img = testDiv.querySelector('img');
+                const statusDiv = testDiv.querySelector('.status');
+                
+                img.onload = function() {
+                    loadedCount++;
+                    testDiv.classList.add('success');
+                    statusDiv.textContent = '✓ Image loaded successfully';
+                    statusDiv.style.color = 'green';
+                    updateSummary();
+                };
+                
+                img.onerror = function() {
+                    failedCount++;
+                    testDiv.classList.add('error');
+                    statusDiv.textContent = '✗ Failed to load image';
+                    statusDiv.style.color = 'red';
+                    updateSummary();
+                };
+            }
+        });
+        
+        function updateSummary() {
+            const summaryDiv = document.getElementById('summary');
+            if (!summaryDiv) {
+                const div = document.createElement('div');
+                div.id = 'summary';
+                div.style.cssText = 'position: fixed; top: 20px; right: 20px; padding: 20px; background: white; border: 2px solid #333; border-radius: 5px;';
+                document.body.appendChild(div);
+            }
+            document.getElementById('summary').innerHTML = `
+                <h3>Summary</h3>
+                <p>Total images: ${imageCount}</p>
+                <p style="color: green;">Loaded: ${loadedCount}</p>
+                <p style="color: red;">Failed: ${failedCount}</p>
+                <p>Pending: ${imageCount - loadedCount - failedCount}</p>
+            `;
+        }
+        
+        updateSummary();
+    </script>
+</body>
+</html>

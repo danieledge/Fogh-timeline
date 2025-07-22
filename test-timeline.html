@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline Test</title>
+    <link rel="stylesheet" href="timeline.css">
+</head>
+<body>
+    <div id="test-output" style="padding: 20px; font-family: monospace;">
+        <h2>Timeline Debug Test</h2>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        var statusDiv = document.getElementById('status');
+        
+        function log(message) {
+            var p = document.createElement('p');
+            p.textContent = new Date().toISOString() + ' - ' + message;
+            statusDiv.appendChild(p);
+        }
+        
+        log('Starting test...');
+    </script>
+    
+    <script src="timeline-icons.js"></script>
+    <script>
+        if (typeof icons !== 'undefined') {
+            log('✓ timeline-icons.js loaded successfully');
+            log('  Found ' + Object.keys(icons).length + ' icons');
+        } else {
+            log('✗ timeline-icons.js failed to load');
+        }
+    </script>
+    
+    <script src="timeline-data.js"></script>
+    <script>
+        if (typeof timelineData !== 'undefined') {
+            log('✓ timeline-data.js loaded successfully');
+            log('  Found ' + timelineData.length + ' timeline entries');
+        } else {
+            log('✗ timeline-data.js failed to load');
+        }
+    </script>
+    
+    <script src="timeline-main.js"></script>
+    <script>
+        log('✓ timeline-main.js loaded');
+        
+        // Check if all required variables exist
+        if (typeof icons !== 'undefined' && typeof timelineData !== 'undefined') {
+            log('✓ All required data loaded successfully');
+        } else {
+            log('✗ Missing required data');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS Test</title>
+</head>
+<body>
+    <h1>JavaScript Test Page</h1>
+    <div id="output"></div>
+    <script>
+        try {
+            document.getElementById('output').innerHTML = '<p style="color: green;">✓ Basic JavaScript works</p>';
+            
+            // Test the module pattern
+            const TestModule = (() => {
+                return { 
+                    test: () => '<p style="color: green;">✓ Module pattern works</p>' 
+                };
+            })();
+            
+            document.getElementById('output').innerHTML += TestModule.test();
+            
+            // Test DOM ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    document.getElementById('output').innerHTML += '<p style="color: green;">✓ DOMContentLoaded works</p>';
+                });
+            } else {
+                document.getElementById('output').innerHTML += '<p style="color: green;">✓ DOM already loaded</p>';
+            }
+            
+        } catch (e) {
+            document.getElementById('output').innerHTML = '<p style="color: red;">✗ Error: ' + e.message + '</p>';
+        }
+    </script>
+</body>
+</html>

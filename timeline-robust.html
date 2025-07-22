@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gipsy Hill Historical Timeline</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f0eb;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            color: #2c2c2c;
+            margin-bottom: 10px;
+        }
+        .timeline-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .timeline-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .timeline-date {
+            display: inline-block;
+            background: #ff6f61;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .timeline-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c2c2c;
+            margin: 10px 0;
+        }
+        .timeline-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Gipsy Hill Historical Timeline</h1>
+        <p>Discover the fascinating history of our community from ancient settlements to modern day</p>
+    </div>
+
+    <div class="timeline-container" id="timeline-container">
+        <div class="loading">Loading timeline...</div>
+    </div>
+
+    <script>
+        // Wrap everything in a try-catch to handle any errors
+        try {
+            // Wait for page to fully load
+            window.addEventListener('load', function() {
+                // Timeline data
+                var events = [
+                    {
+                        date: "17th Century",
+                        title: "Norwood Gypsies Settle",
+                        description: "Roma Gypsies establish camps on Norwood Common, giving the area its name."
+                    },
+                    {
+                        date: "c. 1640",
+                        title: "Margaret Finch Born",
+                        description: "Margaret Finch is born in Sutton, South London."
+                    },
+                    {
+                        date: "1668",
+                        title: "Pepys Visits the Gypsies",
+                        description: "Samuel Pepys records his wife visiting the gypsies for fortune telling."
+                    },
+                    {
+                        date: "1740",
+                        title: "Death of the Gypsy Queen",
+                        description: "Margaret Finch dies at 108-109 years old."
+                    },
+                    {
+                        date: "1777",
+                        title: "The Norwood Gypsies Pantomime",
+                        description: "A pantomime performed at Theatre Royal Covent Garden."
+                    },
+                    {
+                        date: "1810",
+                        title: "Norwood Common Enclosed",
+                        description: "Enclosure roads including Gipsy Road and Gipsy Hill are created."
+                    },
+                    {
+                        date: "1832",
+                        title: "Trotting Hill Created",
+                        description: "Beaulieu Hill height reduced by nine feet for easier horse travel."
+                    },
+                    {
+                        date: "1856",
+                        title: "Railway Revolution",
+                        description: "Gipsy Hill railway station opens."
+                    },
+                    {
+                        date: "1867",
+                        title: "Christ Church Consecrated",
+                        description: "Christ Church becomes a central landmark."
+                    },
+                    {
+                        date: "1870s-1890s",
+                        title: "Victorian Suburban Boom",
+                        description: "Large Victorian houses built, pubs open including Gipsy Tavern."
+                    },
+                    {
+                        date: "1890",
+                        title: "Great Flood",
+                        description: "Major flood from River Effra devastates the area."
+                    },
+                    {
+                        date: "1940-1941",
+                        title: "WWII Blitz",
+                        description: "42 high explosive bombs dropped on Gipsy Hill ward."
+                    },
+                    {
+                        date: "1974",
+                        title: "Conservation Area Designated",
+                        description: "Gipsy Hill Conservation Area established."
+                    },
+                    {
+                        date: "2011",
+                        title: "Fanny the Station Cat",
+                        description: "Beloved station cat becomes local celebrity."
+                    },
+                    {
+                        date: "2018-Present",
+                        title: "Friends of Gipsy Hill",
+                        description: "Community group launches Village Fete and station improvements."
+                    }
+                ];
+
+                // Get container
+                var container = document.getElementById('timeline-container');
+                
+                // Clear loading message
+                container.innerHTML = '';
+                
+                // Create timeline items
+                for (var i = 0; i < events.length; i++) {
+                    var item = document.createElement('div');
+                    item.className = 'timeline-item';
+                    
+                    var date = document.createElement('div');
+                    date.className = 'timeline-date';
+                    date.textContent = events[i].date;
+                    
+                    var title = document.createElement('div');
+                    title.className = 'timeline-title';
+                    title.textContent = events[i].title;
+                    
+                    var desc = document.createElement('div');
+                    desc.className = 'timeline-description';
+                    desc.textContent = events[i].description;
+                    
+                    item.appendChild(date);
+                    item.appendChild(title);
+                    item.appendChild(desc);
+                    
+                    container.appendChild(item);
+                }
+            });
+        } catch (error) {
+            // If anything goes wrong, show an error message
+            document.body.innerHTML += '<p style="color: red; text-align: center;">Error loading timeline. Please try refreshing the page.</p>';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline Test</title>
+</head>
+<body>
+    <h1>Testing Timeline</h1>
+    <div id="timeline-items"></div>
+    
+    <script>
+        console.log('Script loaded');
+        
+        // Test if the timeline container exists
+        const container = document.getElementById('timeline-items');
+        console.log('Container found:', container);
+        
+        // Test basic DOM manipulation
+        if (container) {
+            container.innerHTML = '<p>JavaScript is working!</p>';
+        }
+        
+        // Test the actual timeline code
+        try {
+            const Timeline = (() => {
+                console.log('Timeline module initializing...');
+                
+                const timelineData = [
+                    {
+                        date: "Test Date",
+                        title: "Test Title",
+                        description: "Test Description",
+                        icon: "house"
+                    }
+                ];
+                
+                const generateTimeline = () => {
+                    console.log('generateTimeline called');
+                    const container = document.getElementById('timeline-items');
+                    if (!container) {
+                        console.error('Container not found!');
+                        return;
+                    }
+                    
+                    container.innerHTML = '<h2>Timeline Generated Successfully!</h2>';
+                    console.log('Timeline generated');
+                };
+                
+                const init = () => {
+                    console.log('init called, readyState:', document.readyState);
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', generateTimeline);
+                    } else {
+                        generateTimeline();
+                    }
+                };
+                
+                return { init };
+            })();
+            
+            Timeline.init();
+            console.log('Timeline initialized');
+        } catch (error) {
+            console.error('Error:', error);
+            document.body.innerHTML += '<p style="color: red;">Error: ' + error.message + '</p>';
+        }
+    </script>
+</body>
+</html>
