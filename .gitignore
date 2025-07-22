@@ -1,0 +1,23 @@
+# Sensitive files - only files containing passwords
+.env
+deploy.sh
+
+# Version tracking
+VERSION
+
+# Debug and temporary files
+debug/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Node
+node_modules/
+
+# Editor directories
+.vscode/
+.idea/

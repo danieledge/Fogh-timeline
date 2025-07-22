@@ -38,14 +38,27 @@
 <body>
     <div class="loading" id="loading">Loading timeline...</div>
     
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" style="display:none;">
-        <svg class="theme-toggle-icon sun" viewBox="0 0 24 24" fill="white"></svg>
-        <svg class="theme-toggle-icon moon" viewBox="0 0 24 24" fill="white"></svg>
-    </button>
-    
-    <button class="about-button" id="about-button" aria-label="About" style="display:none;">
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menu" style="display:none;">
         <svg viewBox="0 0 24 24" fill="white"></svg>
     </button>
+    
+    <div class="menu-panel" id="menu-panel">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+            <svg class="theme-toggle-icon sun" viewBox="0 0 24 24" fill="white"></svg>
+            <svg class="theme-toggle-icon moon" viewBox="0 0 24 24" fill="white"></svg>
+            <span class="theme-text">Dark Mode</span>
+        </button>
+        
+        <button class="minor-toggle" id="minor-toggle" aria-label="Toggle minor entries">
+            <svg viewBox="0 0 24 24" fill="white"></svg>
+            <span class="minor-text">Show Minor Entries</span>
+        </button>
+        
+        <button class="about-button" id="about-button" aria-label="About">
+            <svg viewBox="0 0 24 24" fill="white"></svg>
+            <span>About</span>
+        </button>
+    </div>
 
     <div class="float-element"></div>
     <div class="float-element"></div>
@@ -81,14 +94,20 @@
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 96" preserveAspectRatio="xMidYMid meet"></svg>
                     </div>
                     <h2>Gipsy Hill Timeline</h2>
-                    <span class="version">v0.2</span>
+                    <span class="version">v1.04 (00:27 23/07/25)</span>
                 </div>
                 
                 <p class="about-tagline">Discover the stories that shaped our community</p>
                 
+                <div class="about-disclaimer">
+                    <p>🚧 <strong>Work in Progress</strong></p>
+                    <p>This community timeline is continuously evolving. We've done our best to ensure accuracy and properly credit all reference sources, but some details may still need refinement.</p>
+                    <p style="margin-top: 0.5rem;">Your contributions, corrections, and memories are warmly welcomed – together we can build a richer picture of Gipsy Hill's past.</p>
+                </div>
+                
                 <div class="about-actions">
                     <a href="mailto:info@gipsyhillfriends.org" class="about-action-link">
-                        <svg viewBox="0 0 24 24" width="20" height="20">
+                        <svg viewBox="0 0 24 24">
                             <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                         </svg>
                         <span>
@@ -97,7 +116,7 @@
                         </span>
                     </a>
                     <a href="https://gipsyhillfriends.org" target="_blank" rel="noopener" class="about-action-link">
-                        <svg viewBox="0 0 24 24" width="20" height="20">
+                        <svg viewBox="0 0 24 24">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                         </svg>
                         <span>
@@ -109,7 +128,7 @@
                 
                 <div class="about-footer">
                     <button class="credits-toggle" onclick="this.parentElement.classList.toggle('show-credits')">
-                        Credits <svg viewBox="0 0 24 24" width="12" height="12"><path d="M7 10l5 5 5-5z"/></svg>
+                        Icon Credits <svg viewBox="0 0 24 24" width="12" height="12"><path d="M7 10l5 5 5-5z"/></svg>
                     </button>
                     <div class="credits-panel">
                         Icons: Train (P. Rapolu) • Car Explosion (Icons Cart) • Police Helmet (P. Carleton) • Bunker Door (A. Arshad) • Sudan (WEBTECHOPS) • River (rendicon) • Trees (asianson.design) • POI (M. Sturk) — <a href="https://thenounproject.com" target="_blank">Noun Project</a> CC BY 3.0

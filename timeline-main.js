@@ -45,9 +45,9 @@ function initializeTimeline() {
         showDebug('Timeline data loaded: ' + timelineData.length + ' entries');
         
         // Define UI icons inline
-        var sunIcon = '<path d="M12 17c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM12 3v2M12 19v2M21 12h-2M5 12H3M18.36 5.64l-1.41 1.41M7.05 16.95l-1.41 1.41M18.36 18.36l-1.41-1.41M7.05 7.05L5.64 5.64" fill="white" stroke="white" stroke-width="1.5"/>';
-        var moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="white"/>';
-        var infoIcon = '<path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2M13 17H11V11H13M13 9H11V7H13" fill="white"/>';
+        var infoIcon = '<path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2M13 17H11V11H13M13 9H11V7H13" fill="currentColor"/>';
+        var menuIcon = '<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="white"/>';
+        var closeMenuIcon = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="white"/>';
         var closeIcon = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>';
         showDebug('UI icons defined');
         
@@ -62,13 +62,31 @@ function initializeTimeline() {
         
         showDebug('Showing header');
         document.querySelector('.header').style.display = 'block';
-        document.getElementById('theme-toggle').style.display = 'flex';
-        document.getElementById('about-button').style.display = 'flex';
+        document.getElementById('menu-toggle').style.display = 'flex';
         
         // Populate icons in UI
         showDebug('Populating UI icons');
-        document.querySelector('.theme-toggle-icon.sun').innerHTML = sunIcon;
-        document.querySelector('.theme-toggle-icon.moon').innerHTML = moonIcon;
+        document.querySelector('#menu-toggle svg').innerHTML = menuIcon;
+        
+        // Load sun and moon icons from SVG files
+        fetch('icons/sun.svg' + window.cacheBust)
+            .then(response => response.text())
+            .then(svgContent => {
+                var parser = new DOMParser();
+                var svgDoc = parser.parseFromString(svgContent, 'image/svg+xml');
+                var svgInner = svgDoc.querySelector('svg').innerHTML;
+                document.querySelector('.theme-toggle-icon.sun').innerHTML = svgInner;
+            });
+            
+        fetch('icons/moon.svg' + window.cacheBust)
+            .then(response => response.text())
+            .then(svgContent => {
+                var parser = new DOMParser();
+                var svgDoc = parser.parseFromString(svgContent, 'image/svg+xml');
+                var svgInner = svgDoc.querySelector('svg').innerHTML;
+                document.querySelector('.theme-toggle-icon.moon').innerHTML = svgInner;
+            });
+        
         document.querySelector('#about-button svg').innerHTML = infoIcon;
         document.querySelector('#modal-close svg').innerHTML = closeIcon;
         
@@ -77,9 +95,48 @@ function initializeTimeline() {
         document.querySelector('.fogh-logo-header svg').innerHTML = foghLogoHeader;
         document.querySelector('.about-logo svg').innerHTML = foghLogoHeader;
         
+        // Menu toggle functionality
+        showDebug('Setting up menu toggle');
+        var menuToggle = document.getElementById('menu-toggle');
+        var menuPanel = document.getElementById('menu-panel');
+        
+        function toggleMenu(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            var isActive = menuPanel.classList.toggle('active');
+            menuToggle.querySelector('svg').innerHTML = isActive ? closeMenuIcon : menuIcon;
+        }
+        
+        // Close menu when clicking outside
+        function closeMenu() {
+            menuPanel.classList.remove('active');
+            menuToggle.querySelector('svg').innerHTML = menuIcon;
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!menuToggle.contains(e.target) && !menuPanel.contains(e.target)) {
+                closeMenu();
+            }
+        });
+        
+        menuToggle.addEventListener('click', toggleMenu);
+        menuToggle.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            toggleMenu(e);
+        });
+        
         // Theme toggle functionality
         showDebug('Setting up theme toggle');
         var themeToggle = document.getElementById('theme-toggle');
+        
+        function updateThemeText() {
+            var theme = document.documentElement.getAttribute('data-theme');
+            var themeText = document.querySelector('.theme-text');
+            if (themeText) {
+                themeText.textContent = theme === 'light' ? 'Dark Mode' : 'Light Mode';
+            }
+        }
         
         function toggleTheme(e) {
             e.preventDefault(); // Prevent any default behavior
@@ -90,11 +147,64 @@ function initializeTimeline() {
             
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
+            updateThemeText();
         }
         
         // Add both click and touch support for better iOS compatibility
         themeToggle.addEventListener('click', toggleTheme);
         themeToggle.addEventListener('touchend', toggleTheme);
+        
+        // Set initial theme text
+        updateThemeText();
+        
+        // Minor entries toggle functionality
+        showDebug('Setting up minor entries toggle');
+        var minorToggle = document.getElementById('minor-toggle');
+        
+        // Create eye icons for the toggle
+        var eyeIcon = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor"/>';
+        var eyeOffIcon = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z" fill="currentColor"/>';
+        
+        minorToggle.querySelector('svg').innerHTML = eyeIcon;
+        
+        function updateMinorToggleState() {
+            var isHidden = document.body.classList.contains('hide-minor');
+            var minorText = document.querySelector('.minor-text');
+            
+            if (isHidden) {
+                // When hidden, show eye icon (clicking will show entries)
+                minorToggle.querySelector('svg').innerHTML = eyeIcon;
+                if (minorText) {
+                    minorText.textContent = 'Show Minor Entries';
+                }
+            } else {
+                // When shown, show eye-off icon (clicking will hide entries)
+                minorToggle.querySelector('svg').innerHTML = eyeOffIcon;
+                if (minorText) {
+                    minorText.textContent = 'Hide Minor Entries';
+                }
+            }
+        }
+        
+        function toggleMinorEntries(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            var body = document.body;
+            body.classList.toggle('hide-minor');
+            
+            // Update button state
+            updateMinorToggleState();
+            
+            // Don't save minor entries preference - always show by default
+        }
+        
+        // Always show minor entries by default - no saved preference
+        // Set initial state (showing minor entries)
+        updateMinorToggleState();
+        
+        minorToggle.addEventListener('click', toggleMinorEntries);
+        minorToggle.addEventListener('touchend', toggleMinorEntries);
         
         // About modal functionality
         showDebug('Setting up about modal');
@@ -148,6 +258,10 @@ function initializeTimeline() {
         // Create timeline item container
         var timelineItem = document.createElement('div');
         timelineItem.className = 'timeline-item';
+        // Add minor class if importance is minor
+        if (item.importance === 'minor') {
+            timelineItem.className += ' minor';
+        }
         timelineItem.style.animationDelay = ((i + 1) * 0.1) + 's';
 
         // Create timeline dot
@@ -193,7 +307,7 @@ function initializeTimeline() {
             
             // Load the actual icon
             (function(svgElement, iconFile) {
-                fetch(iconFile)
+                fetch(iconFile + (window.cacheBust || ''))
                     .then(function(response) {
                         if (response.ok) {
                             return response.text();
@@ -262,6 +376,33 @@ function initializeTimeline() {
             container.appendChild(timelineItem);
         }
         showDebug('All ' + timelineData.length + ' timeline items created!');
+        
+        // Add click handlers for minor entries
+        showDebug('Adding expand/collapse handlers for minor entries');
+        var minorHeaders = document.querySelectorAll('.timeline-item.minor .content-header');
+        minorHeaders.forEach(function(header) {
+            header.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                var timelineItem = this.closest('.timeline-item');
+                if (timelineItem) {
+                    timelineItem.classList.toggle('expanded');
+                }
+            });
+            
+            // Add touch support for mobile
+            header.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                var timelineItem = this.closest('.timeline-item');
+                if (timelineItem) {
+                    timelineItem.classList.toggle('expanded');
+                }
+            });
+        });
+        showDebug('Expand/collapse handlers added');
         
         // Add citations section if citations exist
         if (typeof timelineCitations !== 'undefined' && timelineCitations.length > 0) {
