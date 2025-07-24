@@ -8,7 +8,36 @@
         // Cache busting logic
         (function() {
             var urlParams = new URLSearchParams(window.location.search);
-            var cacheBust = urlParams.get('cache') === 'false' ? '?v=' + Date.now() : '';
+            var noCache = urlParams.get('cache') === 'false';
+            var cacheBust = noCache ? '?v=' + Date.now() : '';
+            
+            // Add aggressive anti-caching meta tags if cache=false
+            if (noCache) {
+                // HTTP 1.1
+                var pragmaMeta = document.createElement('meta');
+                pragmaMeta.setAttribute('http-equiv', 'pragma');
+                pragmaMeta.setAttribute('content', 'no-cache');
+                document.head.appendChild(pragmaMeta);
+                
+                // HTTP 1.0
+                var expiresMeta = document.createElement('meta');
+                expiresMeta.setAttribute('http-equiv', 'expires');
+                expiresMeta.setAttribute('content', '0');
+                document.head.appendChild(expiresMeta);
+                
+                // Proxies
+                var cacheControlMeta = document.createElement('meta');
+                cacheControlMeta.setAttribute('http-equiv', 'cache-control');
+                cacheControlMeta.setAttribute('content', 'no-cache, no-store, must-revalidate, private, max-age=0');
+                document.head.appendChild(cacheControlMeta);
+                
+                // Force page reload if navigated back to
+                window.addEventListener('pageshow', function(event) {
+                    if (event.persisted) {
+                        window.location.reload();
+                    }
+                });
+            }
             
             // Add CSS with cache busting
             var cssLink = document.createElement('link');
@@ -18,6 +47,7 @@
             
             // Store cache bust value for JS files
             window.cacheBust = cacheBust;
+            window.noCache = noCache;
         })();
     </script>
     <style>
@@ -70,7 +100,10 @@
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 96" preserveAspectRatio="xMidYMid meet"></svg>
             </div>
             <h1>Historical Timeline</h1>
-            <p>Discover the fascinating history of our community from ancient settlements to modern day</p>
+            <p>Journey through 2,000 years of Gipsy Hill history – from ancient woodlands and Romani encampments to Victorian railways and modern community life</p>
+            <div class="header-contribute">
+                <a href="#" id="header-contribute-link">🚧 This timeline grows with your contributions – share a memory, add a photo, suggest a correction, or fill a gap in our local history</a>
+            </div>
             <div class="header-link">
                 <a href="https://gipsyhillfriends.org" target="_blank" rel="noopener">gipsyhillfriends.org</a>
             </div>
@@ -94,16 +127,15 @@
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 96" preserveAspectRatio="xMidYMid meet"></svg>
                     </div>
                     <h2>Gipsy Hill Timeline</h2>
-                    <span class="version">v1.07 (00:01 24/07/25)</span>
+                    <span class="version">v1.09 (00:06 25/07/25)</span>
                 </div>
                 
                 <p class="about-tagline">Discover the stories that shaped our community</p>
                 
                 <div class="about-disclaimer">
                     <p>🚧 <strong>Work in Progress</strong></p>
-                    <p>This community timeline is continuously evolving. We've done our best to ensure accuracy and properly credit all reference sources, but some details may still need refinement.</p>
-                    <p style="margin-top: 0.5rem;"><strong>Citation Note:</strong> We have done our best to credit all sources of information accurately. If you spot something inaccurate or we've missed something, just let us know.</p>
-                    <p style="margin-top: 0.5rem;">Your contributions, corrections, and memories are warmly welcomed – together we can build a richer picture of Gipsy Hill's past.</p>
+                    <p>This community timeline is continuously evolving. Have a story, photo, or correction? Email <a href="mailto:info@gipsyhillfriends.org">info@gipsyhillfriends.org</a> – we'd love your contributions!</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.8rem;"><em>Tip: Click citation numbers to see sources in the References section.</em></p>
                 </div>
                 
                 <div class="about-actions">
