@@ -95,6 +95,13 @@
             </svg>
             <span>Export Timeline</span>
         </button>
+        
+        <button class="add-entry-button" id="add-entry-button" aria-label="Add New Entry">
+            <svg viewBox="0 0 24 24" fill="white">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+            </svg>
+            <span>Suggest Entry</span>
+        </button>
     </div>
 
     <div class="float-element"></div>
@@ -156,7 +163,7 @@
             <div class="submission-content">
                 <h2 id="submission-title">Submit New Timeline Entry</h2>
                 <div class="submission-tabs">
-                    <button class="submission-tab active" data-type="new">New Entry</button>
+                    <button class="submission-tab active" data-type="new">Suggest Entry</button>
                     <button class="submission-tab" data-type="amendment">Suggest Amendment</button>
                 </div>
                 
@@ -192,16 +199,19 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="title">Title <span class="required">*</span></label>
-                        <input type="text" name="fields[title]" id="title" required>
-                        <small class="amendment-only" style="display:none;">Update the title if needed, or leave as is</small>
+                        <label for="title" class="new-only">Title <span class="required">*</span></label>
+                        <label for="title" class="amendment-only" style="display:none;">Suggested Title (leave blank to keep current)</label>
+                        <input type="text" name="fields[title]" id="title">
+                        <small class="new-only">Give your entry a clear, descriptive title</small>
+                        <small class="amendment-only" style="display:none;">Only fill this if you want to change the existing title</small>
                     </div>
                     
                     <div class="form-group">
-                        <label for="description">Description <span class="required">*</span></label>
-                        <textarea name="fields[description]" id="description" rows="5" required></textarea>
-                        <small class="new-only">Include as much detail as possible</small>
-                        <small class="amendment-only" style="display:none;">Update the description if needed, or leave as is</small>
+                        <label for="description" class="new-only">Description <span class="required">*</span></label>
+                        <label for="description" class="amendment-only" style="display:none;">Suggested Description (leave blank to keep current)</label>
+                        <textarea name="fields[description]" id="description" rows="5"></textarea>
+                        <small class="new-only">Include as much detail as possible about this historical event or place</small>
+                        <small class="amendment-only" style="display:none;">Only fill this if you want to replace the entire description</small>
                     </div>
                     
                     <div class="form-group amendment-only" style="display:none;">
@@ -210,37 +220,20 @@
                         <small>Describe specific changes needed and provide sources if possible</small>
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="icon">Icon</label>
-                            <select name="fields[icon]" id="icon">
-                                <option value="">Default</option>
-                                <option value="tree">Tree</option>
-                                <option value="house">House</option>
-                                <option value="train">Train</option>
-                                <option value="church">Church</option>
-                                <option value="school">School</option>
-                                <option value="bomb">Bomb</option>
-                                <option value="war">War</option>
-                                <option value="police">Police</option>
-                                <option value="cow">Agriculture</option>
-                                <option value="river">River</option>
-                                <option value="poi">Point of Interest</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="importance">Importance</label>
-                            <select name="fields[importance]" id="importance">
-                                <option value="minor">Minor</option>
-                                <option value="major" selected>Major</option>
-                            </select>
-                        </div>
+                    <!-- Hidden fields for icon and importance -->
+                    <input type="hidden" name="fields[icon]" value="">
+                    <input type="hidden" name="fields[importance]" value="major">
+                    
+                    <div class="form-group">
+                        <label for="citations">Sources & References</label>
+                        <textarea name="fields[citations]" id="citations" rows="3" placeholder="Please provide sources for your information (e.g., 'Lambeth Archives ref: IV/90/1', 'The Times, 15 March 1890, p.7', 'Personal recollection from 1985', 'Family photo album dated 1920s')"></textarea>
+                        <small>Help us verify historical accuracy by citing your sources - archives, newspapers, books, personal memories, or family records</small>
                     </div>
                     
                     <div class="form-group">
-                        <label for="citations">Citations/Sources</label>
-                        <textarea name="fields[citations]" id="citations" rows="3" placeholder="Add any sources, references, or citations"></textarea>
+                        <label for="image-suggestions">Images & Visual Materials (optional)</label>
+                        <textarea name="fields[imageSuggestions]" id="image-suggestions" rows="4" placeholder="Describe any images you have (e.g., 'Black and white photo of Crystal Palace High Level station, taken 1954, showing platforms and Victorian ironwork', 'Hand-drawn map of Gipsy Hill from 1890 showing field boundaries', 'Postcard of Christ Church circa 1910')"></textarea>
+                        <small>After submitting, attach your images to the email. Include detailed descriptions: what's shown, when taken/created, photographer if known, and any visible text or landmarks</small>
                     </div>
                     
                     <div class="form-group">
@@ -277,7 +270,7 @@
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 96" preserveAspectRatio="xMidYMid meet"></svg>
                     </div>
                     <h2>Gipsy Hill Timeline</h2>
-                    <span class="version">v1.36 (17:14 27/07/25)</span>
+                    <span class="version">v1.37 (17:51 27/07/25)</span>
                 </div>
                 
                 <p class="about-tagline">A community resource built by local residents</p>
