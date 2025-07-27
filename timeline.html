@@ -171,6 +171,17 @@
                         <select name="fields[originalEntryDate]" id="originalEntryDate">
                             <option value="">Select an entry...</option>
                         </select>
+                        
+                        <!-- Current values display -->
+                        <div id="current-values-display" class="current-values-section" style="display:none;">
+                            <div class="current-values-header">Current Values:</div>
+                            <div class="current-value-item">
+                                <strong>Title:</strong> <span id="current-title"></span>
+                            </div>
+                            <div class="current-value-item">
+                                <strong>Description:</strong> <span id="current-description" class="current-description"></span>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Common fields -->
@@ -183,18 +194,20 @@
                     <div class="form-group">
                         <label for="title">Title <span class="required">*</span></label>
                         <input type="text" name="fields[title]" id="title" required>
+                        <small class="amendment-only" style="display:none;">Update the title if needed, or leave as is</small>
                     </div>
                     
                     <div class="form-group">
                         <label for="description">Description <span class="required">*</span></label>
                         <textarea name="fields[description]" id="description" rows="5" required></textarea>
-                        <small>Include as much detail as possible</small>
+                        <small class="new-only">Include as much detail as possible</small>
+                        <small class="amendment-only" style="display:none;">Update the description if needed, or leave as is</small>
                     </div>
                     
                     <div class="form-group amendment-only" style="display:none;">
-                        <label for="amendments">Suggested Changes <span class="required">*</span></label>
-                        <textarea name="fields[amendments]" id="amendments" rows="5"></textarea>
-                        <small>Describe what should be changed and why</small>
+                        <label for="amendments">What needs to be changed? <span class="required">*</span></label>
+                        <textarea name="fields[amendments]" id="amendments" rows="5" placeholder="Explain what should be changed and why. For example: 'The date should be 1855 not 1854 based on...' or 'Please add the following information...'"></textarea>
+                        <small>Describe specific changes needed and provide sources if possible</small>
                     </div>
                     
                     <div class="form-row">
@@ -264,7 +277,7 @@
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 96" preserveAspectRatio="xMidYMid meet"></svg>
                     </div>
                     <h2>Gipsy Hill Timeline</h2>
-                    <span class="version">v1.35 (17:06 27/07/25)</span>
+                    <span class="version">v1.36 (17:14 27/07/25)</span>
                 </div>
                 
                 <p class="about-tagline">A community resource built by local residents</p>
