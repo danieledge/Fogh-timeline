@@ -145,6 +145,113 @@
         </div>
     </div>
 
+    <!-- Submission Modal -->
+    <div class="modal-overlay" id="submission-modal">
+        <div class="modal-content submission-modal-content">
+            <button class="modal-close" id="submission-modal-close" aria-label="Close">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
+            <div class="submission-content">
+                <h2 id="submission-title">Submit New Timeline Entry</h2>
+                <div class="submission-tabs">
+                    <button class="submission-tab active" data-type="new">New Entry</button>
+                    <button class="submission-tab" data-type="amendment">Suggest Amendment</button>
+                </div>
+                
+                <form id="submission-form" class="staticman-form">
+                    <input type="hidden" name="options[redirect]" value="https://gipsyhillfriends.org/timeline.html?submitted=true">
+                    <input type="hidden" name="options[slug]" value="timeline-submissions">
+                    <input type="hidden" name="fields[submissionType]" id="submissionType" value="new">
+                    
+                    <!-- Amendment specific field -->
+                    <div class="form-group amendment-only" style="display:none;">
+                        <label for="originalEntryDate">Entry to Amend</label>
+                        <select name="fields[originalEntryDate]" id="originalEntryDate">
+                            <option value="">Select an entry...</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Common fields -->
+                    <div class="form-group new-only">
+                        <label for="date">Date/Period <span class="required">*</span></label>
+                        <input type="text" name="fields[date]" id="date" placeholder="e.g., 1854 or 1800-1850" required>
+                        <small>Enter a year, date range, or period</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="title">Title <span class="required">*</span></label>
+                        <input type="text" name="fields[title]" id="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Description <span class="required">*</span></label>
+                        <textarea name="fields[description]" id="description" rows="5" required></textarea>
+                        <small>Include as much detail as possible</small>
+                    </div>
+                    
+                    <div class="form-group amendment-only" style="display:none;">
+                        <label for="amendments">Suggested Changes <span class="required">*</span></label>
+                        <textarea name="fields[amendments]" id="amendments" rows="5"></textarea>
+                        <small>Describe what should be changed and why</small>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="icon">Icon</label>
+                            <select name="fields[icon]" id="icon">
+                                <option value="">Default</option>
+                                <option value="tree">Tree</option>
+                                <option value="house">House</option>
+                                <option value="train">Train</option>
+                                <option value="church">Church</option>
+                                <option value="school">School</option>
+                                <option value="bomb">Bomb</option>
+                                <option value="war">War</option>
+                                <option value="police">Police</option>
+                                <option value="cow">Agriculture</option>
+                                <option value="river">River</option>
+                                <option value="poi">Point of Interest</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="importance">Importance</label>
+                            <select name="fields[importance]" id="importance">
+                                <option value="minor">Minor</option>
+                                <option value="major" selected>Major</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="citations">Citations/Sources</label>
+                        <textarea name="fields[citations]" id="citations" rows="3" placeholder="Add any sources, references, or citations"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="name">Your Name <span class="required">*</span></label>
+                        <input type="text" name="fields[name]" id="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Your Email <span class="required">*</span></label>
+                        <input type="email" name="fields[email]" id="email" required>
+                        <small>Will be kept private</small>
+                    </div>
+                    
+                    <div class="form-error" id="submission-error"></div>
+                    <div class="form-success" id="submission-success" style="display:none;">
+                        <p>Thank you! Your submission has been received and will be reviewed by our moderators.</p>
+                    </div>
+                    
+                    <button type="submit" class="submit-button" id="submit-button">Submit for Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- About Modal -->
     <div class="modal-overlay" id="about-modal">
         <div class="modal-content">
@@ -157,7 +264,7 @@
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 96" preserveAspectRatio="xMidYMid meet"></svg>
                     </div>
                     <h2>Gipsy Hill Timeline</h2>
-                    <span class="version">v1.34 (23:25 26/07/25)</span>
+                    <span class="version">v1.35 (17:06 27/07/25)</span>
                 </div>
                 
                 <p class="about-tagline">A community resource built by local residents</p>
