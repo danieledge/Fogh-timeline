@@ -966,6 +966,7 @@ function initializeSubmissionForm() {
                 // Clear amendment fields when switching to amendment tab
                 var amendmentDropdown = document.getElementById('originalEntryDate');
                 if (amendmentDropdown && !amendmentDropdown.value) {
+                    document.getElementById('date').value = '';
                     document.getElementById('title').value = '';
                     document.getElementById('description').value = '';
                     document.getElementById('citations').value = '';
@@ -1102,6 +1103,7 @@ function initializeSubmissionForm() {
             if (!selectedDate) {
                 // Clear fields and hide current values if no entry selected
                 document.getElementById('current-values-display').style.display = 'none';
+                document.getElementById('date').value = '';
                 document.getElementById('title').value = '';
                 document.getElementById('description').value = '';
                 return;
@@ -1117,6 +1119,7 @@ function initializeSubmissionForm() {
                 var currentValuesDiv = document.getElementById('current-values-display');
                 if (currentValuesDiv) {
                     currentValuesDiv.style.display = 'block';
+                    document.getElementById('current-date').textContent = selectedEntry.date;
                     document.getElementById('current-title').textContent = selectedEntry.title;
                     document.getElementById('current-description').textContent = selectedEntry.description;
                 }
@@ -1127,6 +1130,7 @@ function initializeSubmissionForm() {
                 var titlePrefix = isDebugMode ? '[TEST] ' : '';
                 
                 // Populate the fields with current values
+                document.getElementById('date').value = selectedEntry.date;
                 document.getElementById('title').value = titlePrefix + selectedEntry.title;
                 document.getElementById('description').value = selectedEntry.description;
                 

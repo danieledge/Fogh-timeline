@@ -119,10 +119,7 @@
             <h1>Historical Timeline</h1>
             <p>2,000 years of Gipsy Hill history – from ancient woodlands to modern community life</p>
             <div class="wip-notice" style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: 14px; color: #856404;">
-                <strong>🚧 Work in Progress:</strong> We've done our best to capture accurate information, but we need your help! If you spot any errors or have additional details, photos, or memories to share, please <a href="#" onclick="document.getElementById('about-button').click(); return false;" style="color: #533f03; text-decoration: underline;">get in touch</a>. Together we can build a comprehensive history of our community.
-            </div>
-            <div class="header-contribute">
-                <a href="#" id="header-contribute-link">✨ Suggest an Entry</a>
+                <strong>🚧 Work in Progress:</strong> We've done our best to capture accurate information, but we need your help! If you spot any errors or have additional details, photos, or memories to share, please <a href="#" onclick="document.getElementById('add-entry-button').click(); return false;" style="color: #533f03; text-decoration: underline;">suggest an entry</a>. Together we can build a comprehensive history of our community.
             </div>
         </div>
     </div>
@@ -183,6 +180,9 @@
                         <div id="current-values-display" class="current-values-section" style="display:none;">
                             <div class="current-values-header">Current Values:</div>
                             <div class="current-value-item">
+                                <strong>Date:</strong> <span id="current-date"></span>
+                            </div>
+                            <div class="current-value-item">
                                 <strong>Title:</strong> <span id="current-title"></span>
                             </div>
                             <div class="current-value-item">
@@ -192,10 +192,12 @@
                     </div>
                     
                     <!-- Common fields -->
-                    <div class="form-group new-only">
-                        <label for="date">Date/Period <span class="required">*</span></label>
-                        <input type="text" name="fields[date]" id="date" placeholder="e.g., 1854 or 1800-1850" required>
-                        <small>Enter a year, date range, or period</small>
+                    <div class="form-group">
+                        <label for="date" class="new-only">Date/Period <span class="required">*</span></label>
+                        <label for="date" class="amendment-only" style="display:none;">Suggested Date (leave blank to keep current)</label>
+                        <input type="text" name="fields[date]" id="date" placeholder="e.g., 1854 or 1800-1850">
+                        <small class="new-only">Enter a year, date range, or period</small>
+                        <small class="amendment-only" style="display:none;">Only fill this if you want to change the existing date</small>
                     </div>
                     
                     <div class="form-group">
