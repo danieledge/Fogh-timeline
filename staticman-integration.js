@@ -145,14 +145,14 @@ function submitToStaticman(url, formData, type) {
                         ${prUrl ? `<a href="${prUrl}" 
                            target="_blank" 
                            style="color: var(--link-color, #1976d2); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.95rem;">
-                            View Pull Request
+                            View your submission on GitHub
                             <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;">
                                 <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
                             </svg>
                         </a>` : `<a href="https://github.com/${window.STATICMAN_CONFIG.username}/${window.STATICMAN_CONFIG.repository}/pulls" 
                            target="_blank" 
                            style="color: var(--link-color, #1976d2); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.95rem;">
-                            View on GitHub
+                            View your submission on GitHub
                             <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;">
                                 <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
                             </svg>
