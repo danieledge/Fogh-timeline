@@ -95,72 +95,78 @@ function submitToStaticman(url, formData, type) {
     .then(function(data) {
         console.log('Submission successful:', data);
         
-        // Debug logging
-        console.log('Looking for success message element...');
-        console.log('Current DOM state:', {
-            modalVisible: submissionModal.classList.contains('active'),
-            formVisible: submissionForm.style.display,
-            modalHTML: submissionModal.innerHTML.substring(0, 200) + '...'
-        });
-        
-        var successMsg = document.getElementById('submission-success');
-        console.log('Success message element:', successMsg);
-        console.log('Success message current display:', successMsg ? successMsg.style.display : 'element not found');
-        
-        // Hide form, tabs, and title
-        submissionForm.style.display = 'none';
-        var tabsContainer = document.querySelector('.submission-tabs');
-        if (tabsContainer) {
-            tabsContainer.style.display = 'none';
-        }
-        var modalTitle = document.getElementById('submission-title');
-        if (modalTitle) {
-            modalTitle.style.display = 'none';
+        // New approach: Replace entire modal content with success message
+        var modalContent = document.querySelector('.submission-modal-content');
+        if (!modalContent) {
+            console.error('Modal content container not found');
+            return;
         }
         
-        // Update and show success message
-        if (successMsg) {
-            console.log('Setting success message display to block...');
-            // Clear any existing content first
-            successMsg.innerHTML = '';
-            // Force display block with !important to override any other styles
-            successMsg.setAttribute('style', 'display: block !important;');
-            successMsg.innerHTML = '<div style="text-align: center; padding: 2rem;">' +
-                '<h2 style="color: #4CAF50; font-size: 2rem; margin-bottom: 1rem;">✓ Thank You!</h2>' +
-                '<p style="font-size: 1.2rem; margin-bottom: 1.5rem;">Your suggested edit has been successfully submitted.</p>' +
-                '<p style="margin-bottom: 1rem;">Our moderators will review your submission and it will appear on the timeline once approved.</p>' +
-                '<p style="margin-bottom: 2rem;"><a href="https://github.com/' + 
-                window.STATICMAN_CONFIG.username + '/' + 
-                window.STATICMAN_CONFIG.repository + '/pulls" target="_blank" style="color: #1f6c49; text-decoration: underline;">Track your submission on GitHub</a></p>' +
-                '<p style="font-style: italic; color: #666; font-size: 0.9rem;">This window will close automatically in 5 seconds...</p>' +
-                '</div>';
-            console.log('Success message HTML updated and display forced to block');
-            console.log('Success message final display:', successMsg.style.display);
-            console.log('Success message offsetHeight (should be > 0 if visible):', successMsg.offsetHeight);
-        } else {
-            console.error('Success message element not found!');
-            // Try to find any element with submission in the id
-            var allElements = document.querySelectorAll('[id*="submission"]');
-            console.log('Found elements with "submission" in ID:', allElements);
-            
-            // As a fallback, create the success message if it doesn't exist
-            var formContainer = submissionForm.parentElement;
-            var newSuccessMsg = document.createElement('div');
-            newSuccessMsg.id = 'submission-success';
-            newSuccessMsg.className = 'form-success dynamically-created';
-            newSuccessMsg.style.display = 'block';
-            newSuccessMsg.innerHTML = '<div style="text-align: center; padding: 2rem;">' +
-                '<h2 style="color: #4CAF50; font-size: 2rem; margin-bottom: 1rem;">✓ Thank You!</h2>' +
-                '<p style="font-size: 1.2rem; margin-bottom: 1.5rem;">Your suggested edit has been successfully submitted.</p>' +
-                '<p style="margin-bottom: 1rem;">Our moderators will review your submission and it will appear on the timeline once approved.</p>' +
-                '<p style="margin-bottom: 2rem;"><a href="https://github.com/' + 
-                window.STATICMAN_CONFIG.username + '/' + 
-                window.STATICMAN_CONFIG.repository + '/pulls" target="_blank" style="color: #1f6c49; text-decoration: underline;">Track your submission on GitHub</a></p>' +
-                '<p style="font-style: italic; color: #666; font-size: 0.9rem;">This window will close automatically in 5 seconds...</p>' +
-                '</div>';
-            formContainer.appendChild(newSuccessMsg);
-            console.log('Created new success message element as fallback');
-        }
+        // Store original content for restoration
+        var originalContent = modalContent.innerHTML;
+        
+        // Create success screen HTML
+        var successHTML = `
+            <div style="text-align: center; padding: 3rem 2rem; min-height: 400px; display: flex; flex-direction: column; justify-content: center;">
+                <div style="margin-bottom: 2rem;">
+                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: white;">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                        </svg>
+                    </div>
+                    <h2 style="color: #2e7d32; font-size: 2.5rem; margin: 0 0 1rem; font-weight: 600;">Success!</h2>
+                </div>
+                
+                <div style="max-width: 500px; margin: 0 auto;">
+                    <p style="font-size: 1.25rem; color: #333; margin-bottom: 1.5rem; line-height: 1.6;">
+                        Your timeline entry has been successfully submitted for review.
+                    </p>
+                    
+                    <div style="background: #f5f5f5; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; text-align: left;">
+                        <p style="margin: 0 0 0.75rem; color: #666; font-size: 0.95rem;">
+                            <strong>What happens next?</strong>
+                        </p>
+                        <ul style="margin: 0; padding-left: 1.5rem; color: #666; font-size: 0.9rem; line-height: 1.6;">
+                            <li>Our moderators will review your submission</li>
+                            <li>Once approved, it will appear on the timeline</li>
+                            <li>You'll receive updates via GitHub</li>
+                        </ul>
+                    </div>
+                    
+                    <p style="margin-bottom: 2rem;">
+                        <a href="https://github.com/${window.STATICMAN_CONFIG.username}/${window.STATICMAN_CONFIG.repository}/pulls" 
+                           target="_blank" 
+                           style="color: #1976d2; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem;">
+                            Track your submission on GitHub
+                            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;">
+                                <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
+                            </svg>
+                        </a>
+                    </p>
+                    
+                    <p style="color: #999; font-size: 0.875rem; margin: 0;">
+                        This window will close in <span id="countdown">5</span> seconds...
+                    </p>
+                </div>
+            </div>
+        `;
+        
+        // Replace modal content with success screen
+        modalContent.innerHTML = successHTML;
+        console.log('Success screen displayed');
+        
+        // Countdown timer
+        var countdown = 5;
+        var countdownElement = document.getElementById('countdown');
+        var countdownInterval = setInterval(function() {
+            countdown--;
+            if (countdownElement) {
+                countdownElement.textContent = countdown;
+            }
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
         
         // Save to localStorage as backup
         var submission = {};
@@ -179,32 +185,29 @@ function submitToStaticman(url, formData, type) {
         // Reset form after delay
         setTimeout(function() {
             console.log('Resetting form and modal...');
+            
+            // Close the modal
             submissionModal.classList.remove('active');
-            submissionForm.style.display = 'block';
-            submissionForm.reset();
-            submitButton.disabled = false;
-            submitButton.textContent = 'Submit for Review';
             
-            // Hide success message - try multiple methods
-            var successMsg = document.getElementById('submission-success');
-            if (successMsg) {
-                successMsg.style.display = 'none';
-                successMsg.setAttribute('style', 'display: none;');
-                // If it was dynamically created, remove it
-                if (successMsg.classList.contains('dynamically-created')) {
-                    successMsg.remove();
-                }
+            // Restore original modal content
+            modalContent.innerHTML = originalContent;
+            
+            // Re-initialize the form handler since we replaced the DOM
+            updateSubmissionHandler();
+            
+            // Reset form data
+            var form = document.getElementById('submission-form');
+            if (form) {
+                form.reset();
             }
             
-            // Show tabs and title again
-            var tabsContainer = document.querySelector('.submission-tabs');
-            if (tabsContainer) {
-                tabsContainer.style.display = 'flex';
+            // Reset button state
+            var button = document.getElementById('submit-button');
+            if (button) {
+                button.disabled = false;
+                button.textContent = 'Submit for Review';
             }
-            var modalTitle = document.getElementById('submission-title');
-            if (modalTitle) {
-                modalTitle.style.display = 'block';
-            }
+            
             console.log('Form reset complete');
         }, 5000);
     })
@@ -244,11 +247,77 @@ function submitToStaticman(url, formData, type) {
     });
 }
 
+// Check if debug mode is enabled
+function isDebugMode() {
+    return window.location.search.includes('debug');
+}
+
+// Prepopulate form fields for testing
+function prepopulateDebugData() {
+    if (!isDebugMode()) return;
+    
+    console.log('Debug mode enabled - prepopulating form fields');
+    
+    // Wait a bit for form to be fully initialized
+    setTimeout(function() {
+        var form = document.getElementById('submission-form');
+        if (!form) return;
+        
+        // Add debug mode indicator to modal title
+        var modalTitle = document.getElementById('submission-title');
+        if (modalTitle && !modalTitle.textContent.includes('[DEBUG MODE]')) {
+            modalTitle.innerHTML = '<span style="color: #ff6b6b;">[DEBUG MODE]</span> ' + modalTitle.textContent;
+        }
+        
+        // Prepopulate fields for new entry
+        var dateField = document.getElementById('date');
+        var titleField = document.getElementById('title');
+        var descriptionField = document.getElementById('description');
+        var citationsField = document.getElementById('citations');
+        var nameField = document.getElementById('name');
+        var emailField = document.getElementById('email');
+        var imageUrlsField = document.getElementById('image-urls');
+        var imageCaptionsField = document.getElementById('image-captions');
+        var imageSourcesField = document.getElementById('image-sources');
+        
+        if (dateField) dateField.value = '2024-' + (new Date().getMonth() + 1).toString().padStart(2, '0');
+        if (titleField) titleField.value = '[TEST] Debug Test Entry - ' + new Date().toLocaleTimeString();
+        if (descriptionField) descriptionField.value = 'This is a test entry created in debug mode for testing the Staticman integration. ' +
+            'It contains sample content to verify that form submission and pull request creation are working correctly. ' +
+            'This entry should not be merged into the main timeline.';
+        if (citationsField) citationsField.value = 'Debug Mode Test\nCreated automatically for testing\nTimestamp: ' + new Date().toISOString();
+        if (nameField) nameField.value = 'Debug Tester';
+        if (emailField) emailField.value = 'debug@test.local';
+        if (imageUrlsField) imageUrlsField.value = 'https://via.placeholder.com/400x300/4CAF50/ffffff?text=Debug+Test+Image';
+        if (imageCaptionsField) imageCaptionsField.value = 'Debug mode test image placeholder';
+        if (imageSourcesField) imageSourcesField.value = 'Debug mode - auto generated';
+        
+        // Also add a debug notice at the top of the form
+        // Commented out per user request
+        /*
+        var debugNotice = document.getElementById('debug-notice');
+        if (!debugNotice) {
+            debugNotice = document.createElement('div');
+            debugNotice.id = 'debug-notice';
+            debugNotice.style.cssText = 'background: #ffe0e0; border: 2px solid #ff6b6b; padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align: center; font-weight: bold; color: #d32f2f;';
+            debugNotice.innerHTML = '⚠️ DEBUG MODE ACTIVE - Form pre-filled with test data';
+            form.insertBefore(debugNotice, form.firstChild);
+        }
+        */
+        
+        console.log('Debug form prepopulated');
+    }, 500);
+}
+
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updateSubmissionHandler);
+    document.addEventListener('DOMContentLoaded', function() {
+        updateSubmissionHandler();
+        prepopulateDebugData();
+    });
 } else {
     updateSubmissionHandler();
+    prepopulateDebugData();
 }
 
 // Also update any suggest-edit button handlers
@@ -256,6 +325,16 @@ document.addEventListener('click', function(e) {
     if (e.target.classList.contains('suggest-edit')) {
         // The existing modal opening code should work as-is
         // Just ensure the form uses Staticman submission
-        setTimeout(updateSubmissionHandler, 100);
+        setTimeout(function() {
+            updateSubmissionHandler();
+            prepopulateDebugData();
+        }, 100);
+    }
+});
+
+// Also handle the add-entry-button click for debug mode
+document.addEventListener('click', function(e) {
+    if (e.target.id === 'add-entry-button' || e.target.closest('#add-entry-button')) {
+        setTimeout(prepopulateDebugData, 100);
     }
 });

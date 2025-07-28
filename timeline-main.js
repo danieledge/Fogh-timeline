@@ -18,6 +18,8 @@ function showDebug(message) {
         return;
     }
     
+    // Debug display commented out per user request
+    /*
     var debugDiv = document.getElementById('debug-display');
     if (!debugDiv) {
         debugDiv = document.createElement('div');
@@ -26,6 +28,10 @@ function showDebug(message) {
         document.body.appendChild(debugDiv);
     }
     debugDiv.innerHTML += '<div>' + message + '</div>';
+    */
+    
+    // Still log to console for debugging
+    console.log('[DEBUG]', message);
 }
 
 // Function to initialize timeline
