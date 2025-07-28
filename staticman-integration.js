@@ -86,25 +86,38 @@ function addAmendmentDropdownHandler() {
                 if (selectedEntry.citations) {
                     var citationsField = document.getElementById('citations');
                     if (citationsField) {
-                        // Try to get citation references from global citations object
-                        if (typeof window.citations !== 'undefined' && window.citations) {
+                        // Try to get citation references from global timelineCitations array
+                        if (typeof timelineCitations !== 'undefined' && timelineCitations) {
                             // Build citation text with ID and full reference
                             var citationTexts = [];
                             var citationIds = selectedEntry.citations.split(',').map(function(id) { return id.trim(); });
                             
-                            citationIds.forEach(function(id) {
-                                if (window.citations[id]) {
-                                    citationTexts.push(id + ' - ' + window.citations[id]);
+                            citationIds.forEach(function(citationId) {
+                                // Find the citation in the timelineCitations array
+                                var citation = timelineCitations.find(function(cit) {
+                                    return cit.number === citationId;
+                                });
+                                
+                                if (citation) {
+                                    // Format: "ID - Source"
+                                    citationTexts.push(citationId + ' - ' + citation.source);
                                 } else {
-                                    citationTexts.push(id);
+                                    // Just show the ID if citation not found
+                                    citationTexts.push(citationId);
                                 }
                             });
                             
                             citationsField.value = citationTexts.join('\n');
                         } else {
-                            // Fallback to just the IDs
+                            // Fallback to just showing the citation IDs
                             citationsField.value = selectedEntry.citations;
                         }
+                    }
+                } else {
+                    // Clear citations field if no citations
+                    var citationsField = document.getElementById('citations');
+                    if (citationsField) {
+                        citationsField.value = '';
                     }
                 }
             }
