@@ -84,23 +84,18 @@
             <span class="minor-text">Show Minor Entries</span>
         </button>
         
-        <button class="about-button" id="about-button" aria-label="About">
-            <svg viewBox="0 0 24 24" fill="white"></svg>
-            <span>About</span>
-        </button>
-        
-        <button class="export-button" id="export-button" aria-label="Export Timeline">
-            <svg viewBox="0 0 24 24" fill="white">
-                <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/>
-            </svg>
-            <span>Export Timeline</span>
-        </button>
-        
         <button class="add-entry-button" id="add-entry-button" aria-label="Add New Entry">
             <svg viewBox="0 0 24 24" fill="white">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
             </svg>
-            <span>Suggest Entry</span>
+            <span>Suggest Entry/Amendment</span>
+        </button>
+        
+        <!-- Export button will be dynamically inserted here if export=true -->
+        
+        <button class="about-button" id="about-button" aria-label="About">
+            <svg viewBox="0 0 24 24" fill="white"></svg>
+            <span>About</span>
         </button>
     </div>
 
@@ -118,12 +113,16 @@
             </div>
             <h1>Historical Timeline</h1>
             <p>2,000 years of Gipsy Hill history – from ancient woodlands to modern community life</p>
-            <div class="wip-notice" style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: 14px; color: #856404;">
-                <strong>🚧 Work in Progress - We need your help!</strong> This timeline is a crowdsourced effort to document Gipsy Hill's rich heritage. Whether you have corrections to make, new entries to add, or photos and memories to share, please <a href="#" onclick="document.getElementById('add-entry-button').click(); return false;" style="color: #533f03; text-decoration: underline;">suggest an entry</a>. Together we can build a comprehensive picture of our local history.
+            <div class="wip-notice">
+                <strong>🚧 Work in progress - may contain errors!</strong> Help us document Gipsy Hill's heritage by <a href="#" onclick="document.getElementById('add-entry-button').click(); return false;">contributing your knowledge</a>, memories, and corrections.
             </div>
         </div>
     </div>
 
+    <!-- =================================================================== -->
+    <!-- TIMELINE CONTAINER                                                  -->
+    <!-- Main container where timeline events are dynamically inserted       -->
+    <!-- =================================================================== -->
     <div class="timeline-container">
         <div class="timeline-line"></div>
         <div id="timeline-items"></div>
@@ -171,8 +170,8 @@
                     
                     <!-- Amendment specific field -->
                     <div class="form-group amendment-only" style="display:none;">
-                        <label for="originalEntryDate">Entry to Amend</label>
-                        <select name="fields[originalEntryDate]" id="originalEntryDate">
+                        <label for="originalEntryDate">Entry to Amend <span class="required">*</span></label>
+                        <select name="fields[originalEntryDate]" id="originalEntryDate" required>
                             <option value="">Select an entry...</option>
                         </select>
                         
@@ -240,17 +239,19 @@
                     <div class="form-group">
                         <label for="name">Your Name <span class="required">*</span></label>
                         <input type="text" name="fields[name]" id="name" required>
+                        <small>Your name will appear on the submitted entry publicly available on GitHub (use first name or nickname if preferred)</small>
                     </div>
                     
                     <div class="form-group">
                         <label for="email">Your Email <span class="required">*</span></label>
                         <input type="email" name="fields[email]" id="email" required>
-                        <small>Will be kept private</small>
+                        <small>Will be kept private - converted to an irreversible hash (MD5) for security, only used to help us identify multiple submissions from the same person</small>
                     </div>
                     
                     <div class="form-error" id="submission-error" style="display:none;"></div>
                     <div class="form-success" id="submission-success" style="display:none;">
                         <p>Thank you! Your submission has been received and will be reviewed by our moderators.</p>
+                        <p><small>Note: All submitted information except your email (name, date, title, description, sources, amendments) will be publicly visible on GitHub.</small></p>
                     </div>
                     
                     <button type="submit" class="submit-button" id="submit-button">Submit for Review</button>
@@ -259,7 +260,82 @@
         </div>
     </div>
 
-    <!-- About Modal -->
+    <!-- Submission Confirmation Modal -->
+    <div class="modal-overlay" id="confirmation-modal">
+        <div class="modal-content confirmation-modal">
+            <h3>Confirm Your Submission</h3>
+            
+            <div class="privacy-notice" style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; padding: 12px; margin-bottom: 20px;">
+                <p style="margin: 0; color: #856404;"><strong>📢 Open Source Project:</strong> This project is open source and we use GitHub for tracking suggested amendments and new entries. All fields below (except email) will be publicly visible on GitHub. <a href="https://github.com/danieledge/Fogh-timeline/pulls" target="_blank" style="color: #856404; text-decoration: underline;">View all submissions</a></p>
+            </div>
+            
+            <div class="confirmation-info">
+                <p><strong>The following information will be PUBLIC on GitHub:</strong></p>
+                <div class="public-fields">
+                    <div class="field-preview">
+                        <span class="field-label">Your name:</span>
+                        <span id="confirm-name" class="field-value"></span>
+                    </div>
+                    <div class="field-preview">
+                        <span class="field-label">Date:</span>
+                        <span id="confirm-date" class="field-value"></span>
+                    </div>
+                    <div class="field-preview">
+                        <span class="field-label">Title:</span>
+                        <span id="confirm-title" class="field-value"></span>
+                    </div>
+                    <div class="field-preview">
+                        <span class="field-label">Description:</span>
+                        <span id="confirm-description" class="field-value"></span>
+                    </div>
+                    <div class="field-preview amendment-field" style="display:none;">
+                        <span class="field-label">Amendment details:</span>
+                        <span id="confirm-amendments" class="field-value"></span>
+                    </div>
+                    <div class="field-preview">
+                        <span class="field-label">Sources/Citations:</span>
+                        <span id="confirm-citations" class="field-value">(if provided)</span>
+                    </div>
+                    <div class="field-preview" id="confirm-images-container" style="display:none;">
+                        <span class="field-label">Image URLs:</span>
+                        <span id="confirm-images" class="field-value"></span>
+                    </div>
+                    <div class="field-preview" id="confirm-captions-container" style="display:none;">
+                        <span class="field-label">Image Captions:</span>
+                        <span id="confirm-captions" class="field-value"></span>
+                    </div>
+                    <div class="field-preview" id="confirm-sources-container" style="display:none;">
+                        <span class="field-label">Image Sources:</span>
+                        <span id="confirm-sources" class="field-value"></span>
+                    </div>
+                </div>
+                
+                <p class="privacy-note">
+                    <svg class="icon-lock" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M12 2C9.243 2 7 4.243 7 7v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7zm4 10.723V20h-2v-2.277a2 2 0 1 1 2 0z"/>
+                    </svg>
+                    Your email will be kept private (irreversibly hashed)
+                </p>
+            </div>
+            
+            <div class="confirmation-checkbox">
+                <label>
+                    <input type="checkbox" id="dont-show-again">
+                    Don't show this confirmation again
+                </label>
+            </div>
+            
+            <div class="confirmation-buttons">
+                <button class="button-secondary" id="cancel-submission">Cancel</button>
+                <button class="button-primary" id="proceed-submission">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ABOUT MODAL                                                         -->
+    <!-- Information about the project, licenses, and credits                -->
+    <!-- =================================================================== -->
     <div class="modal-overlay" id="about-modal">
         <div class="modal-content">
             <button class="modal-close" id="modal-close" aria-label="Close">
@@ -271,56 +347,75 @@
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 96" preserveAspectRatio="xMidYMid meet"></svg>
                     </div>
                     <h2>Gipsy Hill Timeline</h2>
-                    <span class="version">v1.39 (18:01 27/07/25)</span>
+                    <p class="about-tagline">A community-driven historical resource</p>
                 </div>
                 
-                <p class="about-tagline">A community resource built by local residents</p>
-                
-                <div class="about-disclaimer">
-                    <p>📚 <strong>Help us build a picture of our local history</strong></p>
-                    <p>This timeline is a crowdsourced effort to document Gipsy Hill's rich heritage. Use the <strong>Suggest Entry</strong> button to submit new timeline entries, corrections, photos and memories to help build our local story.</p>
+                <div class="about-main">
+                    <p class="about-description">
+                        📚 <strong>Crowdsourced local history</strong><br>
+                        Help us document Gipsy Hill's heritage by contributing your knowledge, memories, and corrections.
+                    </p>
+                    
+                    <div class="about-license">
+                        <p><strong>Open Source Project</strong></p>
+                        <p>Licensed under CC BY-NC-SA 4.0</p>
+                        <p class="about-links">
+                            <a href="https://github.com/danieledge/Fogh-timeline" target="_blank">View on GitHub</a> • 
+                            <a href="https://github.com/danieledge/Fogh-timeline/blob/main/LICENSE" target="_blank">Full License</a>
+                        </p>
+                    </div>
+                    
+                    <div class="about-warning">
+                        ⚠️ <strong>Important:</strong> Individual images and content may have their own licenses. Always check before re-use.
+                    </div>
                 </div>
                 
                 <div class="about-actions">
-                    <a href="mailto:info@gipsyhillfriends.org" class="about-action-link">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                        </svg>
-                        <span>
-                            <strong>Email Us</strong>
-                        </span>
-                    </a>
                     <a href="https://gipsyhillfriends.org" target="_blank" rel="noopener" class="about-action-link">
                         <svg viewBox="0 0 24 24">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                         </svg>
-                        <span>
-                            <strong>Visit Website</strong>
-                            <small>gipsyhillfriends.org</small>
-                        </span>
+                        <span>Visit FoGH Website</span>
+                    </a>
+                    <a href="mailto:info@gipsyhillfriends.org" class="about-action-link">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                        <span>Contact Us</span>
                     </a>
                 </div>
                 
                 <div class="about-footer">
+                    <span class="version">v1.41 (22:14 28/07/25)</span>
                     <button class="credits-toggle" onclick="this.parentElement.classList.toggle('show-credits')">
                         Icon Credits <svg viewBox="0 0 24 24" width="12" height="12"><path d="M7 10l5 5 5-5z"/></svg>
                     </button>
                     <div class="credits-panel">
-                        Icons: Train (P. Rapolu) • Car Explosion (Icons Cart) • Police Helmet (P. Carleton) • Bunker (Saepul Nahwan) • Sudan (WEBTECHOPS) • River (rendicon) • Trees (asianson.design) • POI (M. Sturk) • Bomb (SyarifahFunny) • Cow Head (ain) • Roman (tulpahn) • Helmet (Robert Bjurshagen) — <a href="https://thenounproject.com" target="_blank">Noun Project</a> CC BY 3.0
+                        <strong>Icon attributions:</strong><br>
+                        Train (P. Rapolu) • Car Explosion (Icons Cart) • Police Helmet (P. Carleton) • Bunker (Saepul Nahwan) • Sudan (WEBTECHOPS) • River (rendicon) • Trees (asianson.design) • POI (M. Sturk) • Bomb (SyarifahFunny) • Cow Head (ain) • Roman (tulpahn) • Helmet (Robert Bjurshagen)<br>
+                        <em>All icons from <a href="https://thenounproject.com" target="_blank">Noun Project</a> under CC BY 3.0</em>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- =================================================================== -->
+    <!-- THEME INITIALIZATION SCRIPT                                         -->
+    <!-- Sets theme before page renders to prevent flash                     -->
+    <!-- =================================================================== -->
     <script>
         // Set theme immediately to prevent flash
         (function() {
-            var savedTheme = localStorage.getItem('theme') || 'light';
+            var savedTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
         })();
     </script>
     
+    <!-- =================================================================== -->
+    <!-- JAVASCRIPT LOADING                                                  -->
+    <!-- Loads timeline data and functionality scripts in sequence           -->
+    <!-- =================================================================== -->
     <!-- Load external JavaScript files with cache busting -->
     <script>
         (function() {
