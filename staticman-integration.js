@@ -95,6 +95,14 @@ function submitToStaticman(url, formData, type) {
     .then(function(data) {
         console.log('Submission successful:', data);
         
+        // Extract PR URL from redirect or response
+        var prUrl = '';
+        if (data && data.redirect) {
+            prUrl = data.redirect;
+        } else if (data && data.url) {
+            prUrl = data.url;
+        }
+        
         // New approach: Replace entire modal content with success message
         var modalContent = document.querySelector('.submission-modal-content');
         if (!modalContent) {
@@ -102,8 +110,8 @@ function submitToStaticman(url, formData, type) {
             return;
         }
         
-        // Store original content for restoration
-        var originalContent = modalContent.innerHTML;
+        // Store original content for restoration globally
+        window.originalModalContent = modalContent.innerHTML;
         
         // Create success screen HTML
         var successHTML = `
@@ -134,15 +142,22 @@ function submitToStaticman(url, formData, type) {
                     </div>
                     
                     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                        <a href="https://github.com/${window.STATICMAN_CONFIG.username}/${window.STATICMAN_CONFIG.repository}/pulls" 
+                        ${prUrl ? `<a href="${prUrl}" 
+                           target="_blank" 
+                           style="color: var(--link-color, #1976d2); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.95rem;">
+                            View Pull Request
+                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;">
+                                <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
+                            </svg>
+                        </a>` : `<a href="https://github.com/${window.STATICMAN_CONFIG.username}/${window.STATICMAN_CONFIG.repository}/pulls" 
                            target="_blank" 
                            style="color: var(--link-color, #1976d2); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.95rem;">
                             View on GitHub
                             <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;">
                                 <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
                             </svg>
-                        </a>
-                        <button onclick="location.reload()" 
+                        </a>`}
+                        <button onclick="var mc = document.querySelector('.submission-modal-content'); if(mc && window.originalModalContent) { mc.innerHTML = window.originalModalContent; window.updateSubmissionHandler(); }" 
                                 style="background: var(--button-bg, #1f6c49); color: white; border: none; padding: 0.5rem 1.25rem; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 0.95rem;">
                             Submit Another
                         </button>

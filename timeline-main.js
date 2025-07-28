@@ -901,10 +901,21 @@ function initializeSubmissionForm() {
     var submitButton = document.getElementById('submit-button');
     var submissionTabs = document.querySelectorAll('.submission-tab');
     var submissionType = document.getElementById('submissionType');
-    var originalEntrySelect = document.getElementById('originalEntryDate');
     
     // Populate the amendment dropdown with existing entries
     function populateAmendmentDropdown() {
+        // Get the element fresh each time
+        var originalEntrySelect = document.getElementById('originalEntryDate');
+        
+        console.log('Populating amendment dropdown...');
+        console.log('originalEntrySelect:', originalEntrySelect);
+        console.log('timelineData available:', typeof timelineData !== 'undefined', timelineData ? timelineData.length : 0);
+        
+        if (!originalEntrySelect) {
+            console.error('originalEntrySelect element not found!');
+            return;
+        }
+        
         originalEntrySelect.innerHTML = '<option value="">Select an entry...</option>';
         if (typeof timelineData !== 'undefined' && timelineData) {
             timelineData.forEach(function(entry) {
@@ -915,6 +926,9 @@ function initializeSubmissionForm() {
                     originalEntrySelect.appendChild(option);
                 }
             });
+            console.log('Added', originalEntrySelect.options.length - 1, 'entries to dropdown');
+        } else {
+            console.warn('timelineData not available');
         }
     }
     
@@ -1030,6 +1044,7 @@ function initializeSubmissionForm() {
             
             // Pre-populate the form with existing values
             setTimeout(function() {
+                var originalEntrySelect = document.getElementById('originalEntryDate');
                 if (originalEntrySelect) {
                     originalEntrySelect.value = entryDate;
                 }
