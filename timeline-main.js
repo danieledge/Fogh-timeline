@@ -1098,11 +1098,15 @@ function initializeSubmissionForm() {
     // Add change handler for amendment dropdown
     var amendmentDropdown = document.getElementById('originalEntryDate');
     if (amendmentDropdown) {
+        console.log('Amendment dropdown found, adding change handler');
         amendmentDropdown.addEventListener('change', function() {
+            console.log('Amendment dropdown changed, value:', this.value);
             var selectedDate = this.value;
             if (!selectedDate) {
                 // Clear fields and hide current values if no entry selected
-                document.getElementById('current-values-display').style.display = 'none';
+                console.log('No date selected, clearing fields');
+                var currentValuesDisplay = document.getElementById('current-values-display');
+                if (currentValuesDisplay) currentValuesDisplay.style.display = 'none';
                 document.getElementById('date').value = '';
                 document.getElementById('title').value = '';
                 document.getElementById('description').value = '';
@@ -1110,9 +1114,12 @@ function initializeSubmissionForm() {
             }
             
             // Find the selected entry in timelineData
+            console.log('Looking for entry with date:', selectedDate);
+            console.log('Available entries:', timelineData.length);
             var selectedEntry = timelineData.find(function(entry) {
                 return entry.date === selectedDate;
             });
+            console.log('Found entry:', selectedEntry);
             
             if (selectedEntry) {
                 // Show current values
@@ -1130,13 +1137,36 @@ function initializeSubmissionForm() {
                 var titlePrefix = isDebugMode ? '[TEST] ' : '';
                 
                 // Populate the fields with current values
-                document.getElementById('date').value = selectedEntry.date;
-                document.getElementById('title').value = titlePrefix + selectedEntry.title;
-                document.getElementById('description').value = selectedEntry.description;
+                console.log('Populating fields...');
+                var dateField = document.getElementById('date');
+                var titleField = document.getElementById('title');
+                var descField = document.getElementById('description');
+                
+                console.log('Fields found:', {
+                    date: !!dateField,
+                    title: !!titleField,
+                    description: !!descField
+                });
+                
+                if (dateField) {
+                    dateField.value = selectedEntry.date;
+                    console.log('Set date to:', selectedEntry.date);
+                }
+                if (titleField) {
+                    titleField.value = titlePrefix + selectedEntry.title;
+                    console.log('Set title to:', titlePrefix + selectedEntry.title);
+                }
+                if (descField) {
+                    descField.value = selectedEntry.description;
+                    console.log('Set description to:', selectedEntry.description);
+                }
                 
                 // Also populate citations if available
                 if (selectedEntry.citations) {
-                    document.getElementById('citations').value = selectedEntry.citations;
+                    var citationsField = document.getElementById('citations');
+                    if (citationsField) {
+                        citationsField.value = selectedEntry.citations;
+                    }
                 }
             }
         });

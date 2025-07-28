@@ -17,6 +17,91 @@ window.STATICMAN_CONFIG = {
     recaptchaSiteKey: ''
 };
 
+// Function to add amendment dropdown handler
+function addAmendmentDropdownHandler() {
+    var amendmentDropdown = document.getElementById('originalEntryDate');
+    if (amendmentDropdown) {
+        console.log('Adding/re-adding amendment dropdown handler');
+        amendmentDropdown.addEventListener('change', function() {
+            console.log('Amendment dropdown changed, value:', this.value);
+            var selectedDate = this.value;
+            if (!selectedDate) {
+                // Clear fields and hide current values if no entry selected
+                console.log('No date selected, clearing fields');
+                var currentValuesDisplay = document.getElementById('current-values-display');
+                if (currentValuesDisplay) currentValuesDisplay.style.display = 'none';
+                document.getElementById('date').value = '';
+                document.getElementById('title').value = '';
+                document.getElementById('description').value = '';
+                return;
+            }
+            
+            // Find the selected entry in timelineData
+            console.log('Looking for entry with date:', selectedDate);
+            console.log('Available entries:', typeof timelineData !== 'undefined' ? timelineData.length : 'timelineData not defined');
+            
+            if (typeof timelineData === 'undefined') {
+                console.error('timelineData is not defined!');
+                return;
+            }
+            
+            var selectedEntry = timelineData.find(function(entry) {
+                return entry.date === selectedDate;
+            });
+            console.log('Found entry:', selectedEntry);
+            
+            if (selectedEntry) {
+                // Show current values
+                var currentValuesDiv = document.getElementById('current-values-display');
+                if (currentValuesDiv) {
+                    currentValuesDiv.style.display = 'block';
+                    document.getElementById('current-date').textContent = selectedEntry.date;
+                    document.getElementById('current-title').textContent = selectedEntry.title;
+                    document.getElementById('current-description').textContent = selectedEntry.description;
+                }
+                
+                // In debug mode, prefix title with [TEST]
+                var urlParams = new URLSearchParams(window.location.search);
+                var isDebugMode = urlParams.has('debug');
+                var titlePrefix = isDebugMode ? '[TEST] ' : '';
+                
+                // Populate the fields with current values
+                console.log('Populating fields...');
+                var dateField = document.getElementById('date');
+                var titleField = document.getElementById('title');
+                var descField = document.getElementById('description');
+                
+                console.log('Fields found:', {
+                    date: !!dateField,
+                    title: !!titleField,
+                    description: !!descField
+                });
+                
+                if (dateField) {
+                    dateField.value = selectedEntry.date;
+                    console.log('Set date to:', selectedEntry.date);
+                }
+                if (titleField) {
+                    titleField.value = titlePrefix + selectedEntry.title;
+                    console.log('Set title to:', titlePrefix + selectedEntry.title);
+                }
+                if (descField) {
+                    descField.value = selectedEntry.description;
+                    console.log('Set description to:', selectedEntry.description);
+                }
+                
+                // Also populate citations if available
+                if (selectedEntry.citations) {
+                    var citationsField = document.getElementById('citations');
+                    if (citationsField) {
+                        citationsField.value = selectedEntry.citations;
+                    }
+                }
+            }
+        });
+    }
+}
+
 // Function to replace the email-based submission with Staticman API submission
 function updateSubmissionHandler() {
     var submissionForm = document.getElementById('submission-form');
@@ -30,6 +115,9 @@ function updateSubmissionHandler() {
     submissionForm.parentNode.replaceChild(newForm, submissionForm);
     submissionForm = newForm;
     submitButton = document.getElementById('submit-button');
+    
+    // Re-add the amendment dropdown handler after form clone
+    addAmendmentDropdownHandler();
     
     // Add new Staticman submission handler
     submissionForm.addEventListener('submit', function(e) {
