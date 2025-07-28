@@ -26,13 +26,12 @@ function addAmendmentDropdownHandler() {
             console.log('Amendment dropdown changed, value:', this.value);
             var selectedDate = this.value;
             if (!selectedDate) {
-                // Clear fields and hide current values if no entry selected
+                // Clear fields if no entry selected
                 console.log('No date selected, clearing fields');
-                var currentValuesDisplay = document.getElementById('current-values-display');
-                if (currentValuesDisplay) currentValuesDisplay.style.display = 'none';
                 document.getElementById('date').value = '';
                 document.getElementById('title').value = '';
                 document.getElementById('description').value = '';
+                document.getElementById('citations').value = '';
                 return;
             }
             
@@ -51,15 +50,6 @@ function addAmendmentDropdownHandler() {
             console.log('Found entry:', selectedEntry);
             
             if (selectedEntry) {
-                // Show current values
-                var currentValuesDiv = document.getElementById('current-values-display');
-                if (currentValuesDiv) {
-                    currentValuesDiv.style.display = 'block';
-                    document.getElementById('current-date').textContent = selectedEntry.date;
-                    document.getElementById('current-title').textContent = selectedEntry.title;
-                    document.getElementById('current-description').textContent = selectedEntry.description;
-                }
-                
                 // In debug mode, prefix title with [TEST]
                 var urlParams = new URLSearchParams(window.location.search);
                 var isDebugMode = urlParams.has('debug');
@@ -86,15 +76,35 @@ function addAmendmentDropdownHandler() {
                     console.log('Set title to:', titlePrefix + selectedEntry.title);
                 }
                 if (descField) {
-                    descField.value = selectedEntry.description;
-                    console.log('Set description to:', selectedEntry.description);
+                    // Remove <sup> tags from description
+                    var cleanDescription = selectedEntry.description.replace(/<sup>.*?<\/sup>/g, '');
+                    descField.value = cleanDescription;
+                    console.log('Set description to:', cleanDescription);
                 }
                 
-                // Also populate citations if available
+                // Populate citations with full text
                 if (selectedEntry.citations) {
                     var citationsField = document.getElementById('citations');
                     if (citationsField) {
-                        citationsField.value = selectedEntry.citations;
+                        // Try to get citation references from global citations object
+                        if (typeof window.citations !== 'undefined' && window.citations) {
+                            // Build citation text with ID and full reference
+                            var citationTexts = [];
+                            var citationIds = selectedEntry.citations.split(',').map(function(id) { return id.trim(); });
+                            
+                            citationIds.forEach(function(id) {
+                                if (window.citations[id]) {
+                                    citationTexts.push(id + ' - ' + window.citations[id]);
+                                } else {
+                                    citationTexts.push(id);
+                                }
+                            });
+                            
+                            citationsField.value = citationTexts.join('\n');
+                        } else {
+                            // Fallback to just the IDs
+                            citationsField.value = selectedEntry.citations;
+                        }
                     }
                 }
             }
