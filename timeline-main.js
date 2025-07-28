@@ -572,20 +572,6 @@ function initializeTimeline() {
         } else if (item.icon !== 'fogh') {
             // Only show contribution prompt if edit=true is in URL
             var urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('edit') === 'true') {
-                // Add contribution prompt for entries without images (excluding FoGH entries)
-                var contributionPrompt = document.createElement('div');
-                contributionPrompt.className = 'image-contribution-prompt';
-                contributionPrompt.innerHTML = '📷 <a href="#" class="contribute-link">Add photo</a>';
-                content.appendChild(contributionPrompt);
-                
-                // Add click handler for contribute link
-                var contributeLink = contributionPrompt.querySelector('.contribute-link');
-                contributeLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.getElementById('about-modal').classList.add('active');
-                });
-            }
         }
 
         // Suggest edit buttons removed - use menu instead
