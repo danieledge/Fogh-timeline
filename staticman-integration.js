@@ -248,41 +248,42 @@ function prepopulateDebugData() {
             modalTitle.innerHTML = '<span style="color: #ff6b6b;">[DEBUG MODE]</span> ' + modalTitle.textContent;
         }
         
-        // Prepopulate fields for new entry
-        var dateField = document.getElementById('date');
-        var titleField = document.getElementById('title');
-        var descriptionField = document.getElementById('description');
-        var citationsField = document.getElementById('citations');
+        // Check if we're in amendment mode
+        var submissionType = document.getElementById('submissionType');
+        var isAmendment = submissionType && submissionType.value === 'amendment';
+        
+        // Common fields for both new and amendment
         var nameField = document.getElementById('name');
         var emailField = document.getElementById('email');
-        var imageUrlsField = document.getElementById('image-urls');
-        var imageCaptionsField = document.getElementById('image-captions');
-        var imageSourcesField = document.getElementById('image-sources');
-        
-        if (dateField) dateField.value = '2024-' + (new Date().getMonth() + 1).toString().padStart(2, '0');
-        if (titleField) titleField.value = '[TEST] Debug Test Entry - ' + new Date().toLocaleTimeString();
-        if (descriptionField) descriptionField.value = 'This is a test entry created in debug mode for testing the Staticman integration. ' +
-            'It contains sample content to verify that form submission and pull request creation are working correctly. ' +
-            'This entry should not be merged into the main timeline.';
-        if (citationsField) citationsField.value = 'Debug Mode Test\nCreated automatically for testing\nTimestamp: ' + new Date().toISOString();
         if (nameField) nameField.value = 'Debug Tester';
         if (emailField) emailField.value = 'debug@test.local';
-        if (imageUrlsField) imageUrlsField.value = 'https://via.placeholder.com/400x300/4CAF50/ffffff?text=Debug+Test+Image';
-        if (imageCaptionsField) imageCaptionsField.value = 'Debug mode test image placeholder';
-        if (imageSourcesField) imageSourcesField.value = 'Debug mode - auto generated';
         
-        // Also add a debug notice at the top of the form
-        // Commented out per user request
-        /*
-        var debugNotice = document.getElementById('debug-notice');
-        if (!debugNotice) {
-            debugNotice = document.createElement('div');
-            debugNotice.id = 'debug-notice';
-            debugNotice.style.cssText = 'background: #ffe0e0; border: 2px solid #ff6b6b; padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align: center; font-weight: bold; color: #d32f2f;';
-            debugNotice.innerHTML = '⚠️ DEBUG MODE ACTIVE - Form pre-filled with test data';
-            form.insertBefore(debugNotice, form.firstChild);
+        if (!isAmendment) {
+            // Prepopulate fields for new entry only
+            var dateField = document.getElementById('date');
+            var titleField = document.getElementById('title');
+            var descriptionField = document.getElementById('description');
+            var citationsField = document.getElementById('citations');
+            var imageUrlsField = document.getElementById('image-urls');
+            var imageCaptionsField = document.getElementById('image-captions');
+            var imageSourcesField = document.getElementById('image-sources');
+            
+            if (dateField) dateField.value = '2024-' + (new Date().getMonth() + 1).toString().padStart(2, '0');
+            if (titleField) titleField.value = '[TEST] Debug Test Entry - ' + new Date().toLocaleTimeString();
+            if (descriptionField) descriptionField.value = 'This is a test entry created in debug mode for testing the Staticman integration. ' +
+                'It contains sample content to verify that form submission and pull request creation are working correctly. ' +
+                'This entry should not be merged into the main timeline.';
+            if (citationsField) citationsField.value = 'Debug Mode Test\nCreated automatically for testing\nTimestamp: ' + new Date().toISOString();
+            if (imageUrlsField) imageUrlsField.value = 'https://via.placeholder.com/400x300/4CAF50/ffffff?text=Debug+Test+Image';
+            if (imageCaptionsField) imageCaptionsField.value = 'Debug mode test image placeholder';
+            if (imageSourcesField) imageSourcesField.value = 'Debug mode - auto generated';
+        } else {
+            // For amendments, just prefix the title if filled
+            var titleField = document.getElementById('title');
+            if (titleField && titleField.value && !titleField.value.includes('[TEST]')) {
+                titleField.value = '[TEST] ' + titleField.value;
+            }
         }
-        */
         
         console.log('Debug form prepopulated');
     }, 500);

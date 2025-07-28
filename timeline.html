@@ -168,7 +168,7 @@
                 </div>
                 
                 <form id="submission-form" class="staticman-form">
-                    <input type="hidden" name="options[redirect]" value="https://gipsyhillfriends.org/timeline.html?submitted=true">
+                    <!-- Removed redirect to handle success in JavaScript instead -->
                     <input type="hidden" name="options[slug]" value="timeline-submissions">
                     <input type="hidden" name="fields[submissionType]" id="submissionType" value="new">
                     
@@ -231,9 +231,21 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="image-suggestions">Images & Visual Materials (optional)</label>
-                        <textarea name="fields[imageSuggestions]" id="image-suggestions" rows="4" placeholder="Describe any images you have (e.g., 'Black and white photo of Crystal Palace High Level station, taken 1954, showing platforms and Victorian ironwork', 'Hand-drawn map of Gipsy Hill from 1890 showing field boundaries', 'Postcard of Christ Church circa 1910')"></textarea>
-                        <small>After submitting, attach your images to the email. Include detailed descriptions: what's shown, when taken/created, photographer if known, and any visible text or landmarks</small>
+                        <label for="image-urls">Image URLs (optional)</label>
+                        <textarea name="fields[imageUrls]" id="image-urls" rows="3" placeholder="Paste image URLs here, one per line:&#10;https://i.postimg.cc/abc123/old-church-photo.jpg&#10;https://i.postimg.cc/xyz789/gipsy-hill-map-1890.png"></textarea>
+                        <small>To upload images: Visit <a href="https://postimg.cc" target="_blank" style="color: #1f6c49;">postimg.cc</a> → Upload → Copy direct link → Paste above</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="image-captions">Image Captions (optional)</label>
+                        <textarea name="fields[imageCaptions]" id="image-captions" rows="3" placeholder="Describe each image (one per line, matching order above):&#10;St. Luke's Church viewed from Gipsy Road, circa 1965&#10;Ordnance Survey map showing the area before development"></textarea>
+                        <small>Provide a caption for each image URL above, in the same order</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="image-sources">Image Sources/Credits (optional)</label>
+                        <textarea name="fields[imageSources]" id="image-sources" rows="2" placeholder="Credit for each image (one per line):&#10;Lambeth Archives, Ref: LP12/4&#10;National Library of Scotland, CC BY-NC-SA"></textarea>
+                        <small>Attribution, archive reference, photographer name, or "Personal collection"</small>
                     </div>
                     
                     <div class="form-group">
@@ -247,7 +259,7 @@
                         <small>Will be kept private</small>
                     </div>
                     
-                    <div class="form-error" id="submission-error"></div>
+                    <div class="form-error" id="submission-error" style="display:none;"></div>
                     <div class="form-success" id="submission-success" style="display:none;">
                         <p>Thank you! Your submission has been received and will be reviewed by our moderators.</p>
                     </div>
@@ -343,7 +355,9 @@
             // Load scripts in sequence
             loadScript('timeline-data.js', function() {
                 loadScript('timeline-main.js', function() {
-                    console.log('All scripts loaded');
+                    loadScript('staticman-integration.js', function() {
+                        console.log('All scripts loaded including Staticman integration');
+                    });
                 });
             });
         })();

@@ -974,6 +974,8 @@ function initializeSubmissionForm() {
     // Open submission modal handlers
     function openSubmissionModal(type) {
         submissionModal.classList.add('active');
+        // Populate the amendment dropdown when modal opens
+        populateAmendmentDropdown();
         // Trigger the appropriate tab
         var tabToClick = document.querySelector('.submission-tab[data-type="' + (type || 'new') + '"]');
         if (tabToClick) {
