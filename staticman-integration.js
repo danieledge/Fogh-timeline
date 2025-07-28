@@ -293,10 +293,13 @@ function prepopulateDebugData() {
             if (imageCaptionsField) imageCaptionsField.value = 'Debug mode test image placeholder';
             if (imageSourcesField) imageSourcesField.value = 'Debug mode - auto generated';
         } else {
-            // For amendments, just prefix the title if filled
-            var titleField = document.getElementById('title');
-            if (titleField && titleField.value && !titleField.value.includes('[TEST]')) {
-                titleField.value = '[TEST] ' + titleField.value;
+            // For amendments in debug mode
+            // Trigger the dropdown change event if an entry is already selected
+            var amendmentDropdown = document.getElementById('originalEntryDate');
+            if (amendmentDropdown && amendmentDropdown.value) {
+                // Trigger change event to populate fields
+                var event = new Event('change', { bubbles: true });
+                amendmentDropdown.dispatchEvent(event);
             }
         }
         

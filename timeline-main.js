@@ -958,10 +958,17 @@ function initializeSubmissionForm() {
                 document.getElementById('description').removeAttribute('required');
                 document.getElementById('amendments').setAttribute('required', 'required');
                 populateAmendmentDropdown();
-                // Clear current values display
+                // Clear current values display and trigger dropdown change
                 var currentValuesDiv = document.getElementById('current-values-display');
                 if (currentValuesDiv) {
                     currentValuesDiv.style.display = 'none';
+                }
+                // Clear amendment fields when switching to amendment tab
+                var amendmentDropdown = document.getElementById('originalEntryDate');
+                if (amendmentDropdown && !amendmentDropdown.value) {
+                    document.getElementById('title').value = '';
+                    document.getElementById('description').value = '';
+                    document.getElementById('citations').value = '';
                 }
             } else {
                 amendmentOnly.forEach(function(el) { el.style.display = 'none'; });
@@ -1086,6 +1093,50 @@ function initializeSubmissionForm() {
             submissionModal.classList.remove('active');
         }
     });
+    
+    // Add change handler for amendment dropdown
+    var amendmentDropdown = document.getElementById('originalEntryDate');
+    if (amendmentDropdown) {
+        amendmentDropdown.addEventListener('change', function() {
+            var selectedDate = this.value;
+            if (!selectedDate) {
+                // Clear fields and hide current values if no entry selected
+                document.getElementById('current-values-display').style.display = 'none';
+                document.getElementById('title').value = '';
+                document.getElementById('description').value = '';
+                return;
+            }
+            
+            // Find the selected entry in timelineData
+            var selectedEntry = timelineData.find(function(entry) {
+                return entry.date === selectedDate;
+            });
+            
+            if (selectedEntry) {
+                // Show current values
+                var currentValuesDiv = document.getElementById('current-values-display');
+                if (currentValuesDiv) {
+                    currentValuesDiv.style.display = 'block';
+                    document.getElementById('current-title').textContent = selectedEntry.title;
+                    document.getElementById('current-description').textContent = selectedEntry.description;
+                }
+                
+                // In debug mode, prefix title with [TEST]
+                var urlParams = new URLSearchParams(window.location.search);
+                var isDebugMode = urlParams.has('debug');
+                var titlePrefix = isDebugMode ? '[TEST] ' : '';
+                
+                // Populate the fields with current values
+                document.getElementById('title').value = titlePrefix + selectedEntry.title;
+                document.getElementById('description').value = selectedEntry.description;
+                
+                // Also populate citations if available
+                if (selectedEntry.citations) {
+                    document.getElementById('citations').value = selectedEntry.citations;
+                }
+            }
+        });
+    }
 }
 
 // Initialize submission form when DOM is ready
