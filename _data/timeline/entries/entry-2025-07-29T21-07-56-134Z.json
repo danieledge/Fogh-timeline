@@ -1,0 +1,12 @@
+{
+  "_id": "084c7586e98feb48088271c07d8c8563",
+  "date": "2025-07-29T21:07:56.134Z",
+  "title": "[TEST] Debug Test Entry - 10:07:48 PM",
+  "description": "This is a test entry created in debug mode for testing the Staticman integration. It contains sample content to verify that form submission and pull request creation are working correctly. This entry should not be merged into the main timeline.",
+  "citations": "Debug Mode Test",
+  "imageUrls": "https://via.placeholder.com/400x300/4CAF50/ffffff?text=Debug+Test+Image",
+  "imageCaptions": "Debug mode test image placeholder",
+  "imageSources": "Debug mode - auto generated",
+  "name": "Debug Tester",
+  "email": "39f13d5cdb88863aa159fbbdd6e555f4"
+}
