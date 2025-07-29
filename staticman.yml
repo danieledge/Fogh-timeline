@@ -1,0 +1,91 @@
+# Staticman configuration for FoGH Timeline submissions
+
+# General settings
+comments:
+  # Enable/disable comments
+  enabled: true
+  
+  # (*) REQUIRED - Where to store the comments
+  path: "_data/timeline"
+  
+  # (*) REQUIRED - Name of the branch to store comments
+  branch: "main"
+  
+  # (*) REQUIRED - Fields that are required
+  requiredFields: ["name", "email", "date", "title", "description"]
+  
+  # Fields the form is allowed to submit
+  allowedFields: ["name", "email", "date", "title", "description", "citations", "imageUrls", "imageCaptions", "imageSources", "submissionType", "originalEntryDate", "amendments", "icon", "importance"]
+  
+  # Transform fields before saving
+  transforms:
+    email: md5
+  
+  # Name of the site
+  name: "Gipsy Hill Friends Historical Timeline"
+  
+  # Notification settings
+  notifications:
+    enabled: true
+    # Email recipient for notifications
+    email: "fogh@dan-edge.com"
+  
+  # Moderation - set to true to require approval
+  moderation: true
+  
+  # Create issues instead of PRs
+  pullRequestBody: false
+  githubIssue:
+    enabled: true
+    labels: ["timeline-submission", "needs-review"]
+    assignees: ["danieledge"]
+  
+  # Format of the data files
+  format: "json"
+  
+  # Filename format for submissions
+  filename: "entry-{@timestamp}"
+  
+  # Date format
+  dateFormat: "iso8601"
+  
+  # Maximum file size allowed (in KB)
+  maxFileSize: 5000
+  
+  # reCAPTCHA settings (optional but recommended)
+  # reCaptcha:
+  #   enabled: true
+  #   siteKey: "YOUR_SITE_KEY"
+  #   secret: "YOUR_SECRET_KEY"
+  
+  # Akismet spam detection (optional)
+  # akismet:
+  #   enabled: true
+  #   key: "YOUR_AKISMET_KEY"
+  #   blog: "https://gipsyhillfriends.org"
+
+# Timeline entry submissions
+timelineEntries:
+  enabled: true
+  path: "_data/timeline/entries"
+  branch: "main"
+  requiredFields: ["name", "email", "date", "title", "description"]
+  allowedFields: ["name", "email", "date", "title", "description", "citations", "imageUrls", "imageCaptions", "imageSources", "icon", "importance"]
+  transforms:
+    email: md5
+  moderation: true
+  format: "json"
+  filename: "entry-{@timestamp}"
+  
+# Timeline amendment submissions  
+timelineAmendments:
+  enabled: true
+  path: "_data/timeline/amendments"
+  branch: "main"
+  requiredFields: ["name", "email", "originalEntryDate", "amendments"]
+  allowedFields: ["name", "email", "originalEntryDate", "amendments", "title", "description", "citations", "imageUrls", "imageCaptions", "imageSources"]
+  transforms:
+    email: md5
+  moderation: true
+  format: "json"
+  filename: "amendment-{@timestamp}"

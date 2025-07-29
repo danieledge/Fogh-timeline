@@ -1,0 +1,35 @@
+name: Process Timeline Submissions
+
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - '_data/timeline/entries/*.json'
+      - '_data/timeline/amendments/*.json'
+
+jobs:
+  process:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        
+    - name: Process submissions
+      run: node process-submissions.js
+      
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add timeline-data.js
+        git add _data/timeline/entries/processed/
+        git diff --staged --quiet || git commit -m "Update timeline with approved submissions"
+        git push

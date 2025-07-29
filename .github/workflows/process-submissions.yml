@@ -1,0 +1,111 @@
+name: Process Timeline Submissions
+
+on:
+  issues:
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to process'
+        required: false
+
+jobs:
+  process:
+    # Only run if issue is closed as completed (not as not planned)
+    if: |
+      (github.event.issue.state_reason == 'completed' || 
+       github.event.issue.state_reason == null) &&
+      contains(github.event.issue.labels.*.name, 'timeline-submission')
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        
+    - name: Extract submission data
+      id: extract
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const issueBody = context.payload.issue.body;
+          
+          // Parse the submission data from issue body
+          // Staticman creates issues with JSON data in code blocks
+          const jsonMatch = issueBody.match(/```json\n([\s\S]*?)\n```/);
+          
+          if (!jsonMatch) {
+            console.log('No JSON data found in issue body');
+            return;
+          }
+          
+          const submissionData = JSON.parse(jsonMatch[1]);
+          
+          // Determine submission type
+          const isAmendment = submissionData.submissionType === 'amendment';
+          const dir = isAmendment ? '_data/timeline/amendments' : '_data/timeline/entries';
+          
+          // Create directories if they don't exist
+          const fs = require('fs');
+          fs.mkdirSync(dir, { recursive: true });
+          
+          // Save submission to file
+          const filename = `${isAmendment ? 'amendment' : 'entry'}-${Date.now()}.json`;
+          const filepath = `${dir}/${filename}`;
+          
+          fs.writeFileSync(filepath, JSON.stringify(submissionData, null, 2));
+          
+          console.log(`Saved submission to ${filepath}`);
+          core.setOutput('filepath', filepath);
+          core.setOutput('isAmendment', isAmendment);
+          
+    - name: Process new entries
+      if: steps.extract.outputs.isAmendment == 'false'
+      run: |
+        node process-submissions.js
+        
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: |
+          Process timeline submission from issue #${{ github.event.issue.number }}
+          
+          Co-authored-by: ${{ github.event.issue.user.login }} <${{ github.event.issue.user.id }}+${{ github.event.issue.user.login }}@users.noreply.github.com>
+        branch: process-submission-${{ github.event.issue.number }}
+        delete-branch: true
+        title: 'Process timeline submission from issue #${{ github.event.issue.number }}'
+        body: |
+          This PR processes the approved timeline submission from issue #${{ github.event.issue.number }}.
+          
+          ### Submission Details
+          - **Submitted by:** @${{ github.event.issue.user.login }}
+          - **Original issue:** #${{ github.event.issue.number }}
+          - **Type:** ${{ steps.extract.outputs.isAmendment == 'true' && 'Amendment' || 'New Entry' }}
+          
+          ### Changes
+          - Updates timeline-data.js with the new entry
+          - Archives the processed submission file
+          
+          Please review the changes before merging.
+        labels: |
+          timeline-update
+          automated-pr
+          
+    - name: Comment on issue
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '✅ This submission has been processed. See PR #${{ steps.cpr.outputs.pull-request-number }} for the timeline update.'
+          })
