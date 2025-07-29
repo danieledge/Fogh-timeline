@@ -1,0 +1,14 @@
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <g fill="currentColor">
+    <!-- Plane body with streamlined nose -->
+    <path d="M3 11v2h11v1l3-2-3-2v1H3z"/>
+    <!-- Wings (vertical) -->
+    <path d="M7 6v12h2V6H7z"/>
+    <!-- Tail -->
+    <path d="M1 10v4h2v-4H1z"/>
+    <!-- Machine gun bursts -->
+    <rect x="17" y="11.5" width="4" height="1"/>
+    <rect x="18" y="9.5" width="2" height="1"/>
+    <rect x="18" y="13.5" width="2" height="1"/>
+  </g>
+</svg>
