@@ -15,7 +15,7 @@ comments:
   requiredFields: ["name", "email", "date", "title", "description"]
   
   # Fields the form is allowed to submit
-  allowedFields: ["name", "email", "date", "title", "description", "citations", "imageUrls", "imageCaptions", "imageSources", "submissionType", "originalEntryDate", "amendments", "icon", "importance"]
+  allowedFields: ["name", "email", "date", "title", "description", "citations", "imageUrls", "imageCaptions", "imageSources", "submissionType", "originalEntryDate", "amendments"]
   
   # Transform fields before saving
   transforms:
@@ -33,12 +33,10 @@ comments:
   # Moderation - set to true to require approval
   moderation: true
   
-  # Create issues instead of PRs
-  pullRequestBody: false
+  # Create pull requests instead of issues
+  pullRequestBody: "Type: {{options.slug}}\nSubmitted by: {{fields.name}}\nDate: {{date}}\n\n## Content\n\n**Date:** {{fields.date}}\n**Title:** {{fields.title}}\n**Description:** {{fields.description}}\n\n**Citations:** {{fields.citations}}\n\n**Image URLs:** {{fields.imageUrls}}\n**Image Captions:** {{fields.imageCaptions}}\n**Image Sources:** {{fields.imageSources}}\n\n"
   githubIssue:
-    enabled: true
-    labels: ["timeline-submission", "needs-review"]
-    assignees: ["danieledge"]
+    enabled: false
   
   # Format of the data files
   format: "json"
@@ -70,12 +68,20 @@ timelineEntries:
   path: "_data/timeline/entries"
   branch: "main"
   requiredFields: ["name", "email", "date", "title", "description"]
-  allowedFields: ["name", "email", "date", "title", "description", "citations", "imageUrls", "imageCaptions", "imageSources", "icon", "importance"]
+  allowedFields: ["name", "email", "date", "title", "description", "citations", "imageUrls", "imageCaptions", "imageSources"]
   transforms:
     email: md5
   moderation: true
   format: "json"
   filename: "entry-{@timestamp}"
+  # Choose either githubIssue OR pullRequestBody, not both
+  githubIssue:
+    enabled: true
+    labels: ["timeline-submission", "new-entry"]
+    assignees: ["danieledge"]
+    body: "Type: New Entry\nSubmitted by: {{fields.name}}\nDate: {{date}}\n\n## Content\n\n**Date:** {{fields.date}}\n**Title:** {{fields.title}}\n**Description:** {{fields.description}}\n\n**Citations:** {{fields.citations}}\n\n**Image URLs:** {{fields.imageUrls}}\n**Image Captions:** {{fields.imageCaptions}}\n**Image Sources:** {{fields.imageSources}}"
+  # Uncomment below to use pull requests instead of issues
+  # pullRequestBody: "Type: New Entry\nSubmitted by: {{fields.name}}\nDate: {{date}}\n\n## Content\n\n**Date:** {{fields.date}}\n**Title:** {{fields.title}}\n**Description:** {{fields.description}}\n\n**Citations:** {{fields.citations}}\n\n**Image URLs:** {{fields.imageUrls}}\n**Image Captions:** {{fields.imageCaptions}}\n**Image Sources:** {{fields.imageSources}}"
   
 # Timeline amendment submissions  
 timelineAmendments:
@@ -89,3 +95,11 @@ timelineAmendments:
   moderation: true
   format: "json"
   filename: "amendment-{@timestamp}"
+  # Choose either githubIssue OR pullRequestBody, not both
+  githubIssue:
+    enabled: true
+    labels: ["timeline-submission", "amendment"]
+    assignees: ["danieledge"]
+    body: "Type: Amendment\nSubmitted by: {{fields.name}}\nDate: {{date}}\n\n## Amendment Details\n\n**Original Entry Date:** {{fields.originalEntryDate}}\n**Amendments:** {{fields.amendments}}\n\n**Updated Title:** {{fields.title}}\n**Updated Description:** {{fields.description}}\n\n**Citations:** {{fields.citations}}\n\n**Image URLs:** {{fields.imageUrls}}\n**Image Captions:** {{fields.imageCaptions}}\n**Image Sources:** {{fields.imageSources}}"
+  # Uncomment below to use pull requests instead of issues
+  # pullRequestBody: "Type: Amendment\nSubmitted by: {{fields.name}}\nDate: {{date}}\n\n## Amendment Details\n\n**Original Entry Date:** {{fields.originalEntryDate}}\n**Amendments:** {{fields.amendments}}\n\n**Updated Title:** {{fields.title}}\n**Updated Description:** {{fields.description}}\n\n**Citations:** {{fields.citations}}\n\n**Image URLs:** {{fields.imageUrls}}\n**Image Captions:** {{fields.imageCaptions}}\n**Image Sources:** {{fields.imageSources}}"
