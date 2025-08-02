@@ -452,6 +452,9 @@ var timelineData = [
 "image": "images/south-london-theatre-1948.png",
 "imageCaption": "Bomb map showing locations of high explosive bombs dropped on Gipsy Hill during WWII<br>Source: <a href='http://bombsight.org' target='_blank' rel='noopener'>Bomb Sight</a>",
 "imageCaptionHTML": true,
+"image2": "images/air-raid-shelter-bloomhall-1942.jpg",
+"image2Caption": "Air raid shelter built by Fire Guards on a bombed site, Bloomhall Road, Upper Norwood, 1942<br>Published in The Evening Standard News, 25th August 1942<br>Source: <a href='https://boroughphotos.org/lambeth/air-raid-shelter-bloomhall-road-upper-norwood/' target='_blank' rel='noopener'>Lambeth Archives</a>",
+"image2CaptionHTML": true,
 "citations": ["64", "65"]
 },
 {
