@@ -283,7 +283,9 @@ function initializeTimeline() {
                 e.preventDefault();
                 e.stopPropagation();
             }
-            aboutModal.classList.add('active');
+            if (aboutModal) {
+                aboutModal.classList.add('active');
+            }
         }
         
         function closeModal(e) {
@@ -291,7 +293,9 @@ function initializeTimeline() {
                 e.preventDefault();
                 e.stopPropagation();
             }
-            aboutModal.classList.remove('active');
+            if (aboutModal) {
+                aboutModal.classList.remove('active');
+            }
         }
         
         // Add both click and touch support
@@ -475,14 +479,7 @@ function initializeTimeline() {
             });
         }
         
-        // Header contribute link functionality
-        var headerContributeLink = document.getElementById('header-contribute-link');
-        if (headerContributeLink) {
-            headerContributeLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                openModal();
-            });
-        }
+        // Header contribute link functionality (removed - element doesn't exist in HTML)
         
         // Get container
         showDebug('Looking for timeline container');
@@ -633,6 +630,9 @@ function initializeTimeline() {
                 var img = document.createElement('img');
                 img.src = imageSrc;
                 img.alt = item.title;
+                img.addEventListener('click', function() {
+                    openImageModal(imageSrc, captionText, captionHTML);
+                });
                 imageContainer.appendChild(img);
                 
                 if (captionText) {
@@ -814,10 +814,13 @@ function initializeTimeline() {
             
             // Add click handler for the about link
             var aboutLink = workInProgressNote.querySelector('.about-link');
-            aboutLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('about-modal').classList.add('active');
-            });
+            if (aboutLink) {
+                aboutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Open submission modal instead of about modal
+                    openSubmissionModal('new');
+                });
+            }
             
             // Add click handler for collapsible header
             citationsHeader.addEventListener('click', function() {
@@ -863,13 +866,70 @@ function initializeTimeline() {
             showDebug('Citations section added');
         }
         
-        // Add event delegation for contribute links
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('contribute-link')) {
+        // Removed global contribute-link handler to prevent accidental modal opening
+        
+        // Image Modal functionality
+        showDebug('Setting up image modal');
+        var imageModal = document.getElementById('image-modal');
+        var imageModalClose = document.getElementById('image-modal-close');
+        var modalImage = document.getElementById('modal-image');
+        var modalImageCaption = document.getElementById('modal-image-caption');
+        
+        function openImageModal(imageSrc, captionText, captionHTML) {
+            if (modalImage) {
+                modalImage.src = imageSrc;
+            }
+            if (modalImageCaption) {
+                if (captionHTML && captionText) {
+                    modalImageCaption.innerHTML = captionText;
+                } else if (captionText) {
+                    modalImageCaption.textContent = captionText;
+                } else {
+                    modalImageCaption.innerHTML = '';
+                }
+            }
+            if (imageModal) {
+                imageModal.classList.add('active');
+            }
+        }
+        
+        function closeImageModal(e) {
+            if (e) {
                 e.preventDefault();
-                openModal();
+                e.stopPropagation();
+            }
+            if (imageModal) {
+                imageModal.classList.remove('active');
+            }
+            if (modalImage) {
+                modalImage.src = '';
+            }
+        }
+        
+        // Add close button handler
+        if (imageModalClose) {
+            imageModalClose.addEventListener('click', closeImageModal);
+            imageModalClose.addEventListener('touchend', closeImageModal);
+        }
+        
+        // Close on overlay click
+        if (imageModal) {
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal || e.target === modalImage) {
+                    closeImageModal(e);
+                }
+            });
+        }
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && imageModal && imageModal.classList.contains('active')) {
+                closeImageModal();
             }
         });
+        
+        // Make openImageModal accessible globally for the onclick handlers
+        window.openImageModal = openImageModal;
         
         showDebug('Timeline initialization complete!');
         
@@ -1117,15 +1177,8 @@ function initializeSubmissionForm() {
         }
     }
     
-    // Handle header contribute link - always available
+    // Handle header contribute link (removed - element doesn't exist in HTML)
     var urlParams = new URLSearchParams(window.location.search);
-    var headerContributeLink = document.getElementById('header-contribute-link');
-    if (headerContributeLink) {
-        headerContributeLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            openSubmissionModal('new');
-        });
-    }
     
     // Add New Entry button handler - always available
     var addEntryButton = document.getElementById('add-entry-button');
