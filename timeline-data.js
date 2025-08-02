@@ -762,7 +762,10 @@ var timelineData = [
 "description": "Friends of Gipsy Hill continues to grow and evolve, maintaining their core mission of inspiring community involvement and sustainable use of local spaces. Current projects include expanding green initiatives, supporting local businesses, and fostering an inclusive community that celebrates Gipsy Hill's unique character and heritage.<sup>74,92</sup>",
 "icon": "fogh",
 "importance": "major",
-"citations": ["74", "92"]
+"citations": ["74", "92"],
+"image": "images/FoghWashing.jpg",
+"imageCaption": "Friends of Gipsy Hill volunteers maintaining community spaces. Credit: <a href='https://gipsyhillfriends.org' target='_blank'>Friends of Gipsy Hill</a>",
+"imageCaptionHTML": true
 }
 ];
 
