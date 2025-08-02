@@ -638,8 +638,8 @@ var timelineData = [
 "description": "Friends of Gipsy Hill (FoGH) forms as a community group following a successful crowdfunding campaign supported by the Mayor of London. The group holds its first meeting on May 4th and formally adopts its constitution on October 6th. FoGH establishes itself with a mission to inspire residents' involvement and sustainable use of local spaces for community wellbeing, marking the beginning of a new era of community activism in Gipsy Hill.<sup>74,83,84</sup>",
 "icon": "fogh",
 "importance": "major",
-"image": "images/fogh-logo.svg",
-"imageCaption": "Friends of Gipsy Hill logo<br><a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"image": "images/fogh_about.jpg",
+"imageCaption": "Friends of Gipsy Hill community group<br><a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["74", "83", "84"]
 },
