@@ -937,8 +937,8 @@ body::before {
 
 /* When there are two images, adjust their sizing */
 .dual-images .content-image {
-    flex: 1;
-    max-width: calc(50% - 0.5rem);
+    flex: 0 0 auto;
+    max-width: 200px;
 }
 
 /* Mobile adjustments for dual images */
@@ -948,7 +948,7 @@ body::before {
     }
     
     .dual-images .content-image {
-        max-width: 100%;
+        max-width: 200px;
         margin-bottom: 1rem;
     }
     
