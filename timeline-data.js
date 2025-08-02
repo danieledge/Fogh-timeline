@@ -61,7 +61,7 @@ var timelineData = [
 "description": "Margaret Finch is born in Sutton, Surrey (also recorded as Kent). She would spend her life 'Traveling ye Kingdom, as Queen of ye Gypsie Tribe,' becoming the most famous and respected leader of the Norwood Gypsy community. Her election as Queen granted her power to choose community leaders and preside over the Kris (Council of Elders). After travelling over various parts of the Kingdom during the greater part of the 17th century, she settled at Norwood in her \"Gipsy House\" (believed to be near Oaks Avenue/Gipsy Hill SE19), where she lived for about 11 years. With her fame as a fortune-teller, she attracted numerous visitors and notoriety from London. She became known for her habit of sitting on the ground with her chin resting on her knees, often smoking two pipes and accompanied by her faithful dogs.<sup>5,6,9</sup>",
 "icon": "crown",
 "importance": "major",
-"image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Margaret_Finch%2C_aged_108._Engraving_by_J._Sharp._Wellcome_V0007089.jpg/400px-Margaret_Finch%2C_aged_108._Engraving_by_J._Sharp._Wellcome_V0007089.jpg",
+"image": "images/margaret-finch-engraving.jpg",
 "imageCaption": "Margaret Finch, aged 108. Engraving by J. Sharp<br><a href='https://wellcomecollection.org/' target='_blank' rel='noopener'>Wellcome Collection</a>, <a href='https://creativecommons.org/licenses/by/4.0' target='_blank' rel='noopener'>CC BY 4.0</a>",
 "imageCaptionHTML": true,
 "citations": ["5", "6", "9"]
@@ -73,7 +73,7 @@ var timelineData = [
 "description": "Samuel Pepys records in his diary on August 11th: \"This afternoon my wife and Mercer and Deb went with Pelling to see the gypsies at Lambeth and have their fortunes told; but what they did, I did not enquire.\" His wife likely consulted Margaret Finch, who had become a renowned fortune teller. Later, Lord Byron, then at school with Dr. Glennie in Lordship Lane in Dulwich, whenever he felt inclined to play truant visited the Norwood Gypsies. These accounts illuminate how visiting gypsies for fortune-telling served as fashionable entertainment for London's social elite and captured the imagination of literary figures, providing some of the earliest documented references to the Romani presence in what would become Gipsy Hill.<sup>4,7,8</sup>",
 "icon": "microphone",
 "importance": "major",
-"image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Samuel_Pepys_by_Sir_Godfrey_Kneller_1689.jpg/400px-Samuel_Pepys_by_Sir_Godfrey_Kneller_1689.jpg",
+"image": "images/samuel-pepys-1689.jpg",
 "imageCaption": "Samuel Pepys by Sir Godfrey Kneller, 1689<br><a href='https://commons.wikimedia.org/wiki/File:Samuel_Pepys_by_Sir_Godfrey_Kneller_1689.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>",
 "imageCaptionHTML": true,
 "citations": ["4", "7", "8"]
@@ -97,7 +97,7 @@ var timelineData = [
 "description": "Following the death of Margaret Finch, her niece Bridget—known as 'Mother Bridget'—is chosen by the community as the new Queen of the Gypsies on Norwood Common. Revered for her wisdom, Bridget gained a reputation for fortune-telling, interpreting natural signs, and inventing her own writing system. Her succession marks the continuity of Romani leadership and tradition in the Norwood area.<sup>12,13,15</sup>",
 "icon": "crown",
 "importance": "major",
-"image": "https://gipsyhillfriends.org/wp-content/uploads/2020/02/mother-bridget-of-norwood-2031296520.jpg",
+"image": "images/mother-bridget-norwood.jpg",
 "imageCaption": "Mother Bridget of Norwood, artist unknown<br>Source: <em>The Universal Fortune Teller</em> (1790)",
 "imageCaptionHTML": true,
 "citations": ["12", "13", "15"]
@@ -118,7 +118,7 @@ var timelineData = [
 "description": "A pantomime titled \"The Norwood Gypsies\" is performed at Theatre Royal Covent Garden, one of the most successful dramatic productions of the time. This theatrical production celebrated the area's heritage and brought Gipsy Hill to London's cultural attention. The pantomime featured the traditional Harlequin and Columbine characters and was part of the popular 18th-century theatrical entertainment.<sup>14,15,16</sup>",
 "icon": "theater",
 "importance": "major",
-"image": "https://gipsyhillfriends.org/wp-content/uploads/2020/02/20200212_0547571933356785.png",
+"image": "images/gipsy-road-station-1850s.png",
 "imageCaption": "The Norwood Gypsies Pantomime<br>Donated to <a href='https://gipsyhillfriends.org/2020/01/06/gipsy-hill-heritage-meetup/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["14", "15", "16"]
@@ -172,7 +172,7 @@ var timelineData = [
 "description": "The River Effra, an important south London watercourse, begins to be culverted (arched over) for improved sanitation and flood prevention. A significant tributary rises at the top of Farquhar Road, runs along Jasper Passage and beside Long Meadow, before following the lower part of Gipsy Hill—marking the area's historic boundary between Lambeth and Camberwell (now Southwark) and shaping local land use. The section past Loughborough Road is culverted in 1847. During the 'Great Stink' of 1858, Sir Joseph Bazalgette incorporates the Effra into his revolutionary London sewerage system. The Metropolitan Board of Works undertakes this massive engineering project to address London's sewage crisis. The Effra's culverting and integration into the new sewer system were pivotal in the area's sanitation history, with boundary markers from this historic watercourse surviving today along footpaths and roads.<sup>22,23,24,36,37,38,97</sup>",
 "icon": "river",
 "importance": "major",
-"image": "https://gipsyhillfriends.org/wp-content/uploads/2020/02/20200212_0607241334301072.png",
+"image": "images/norwood-gypsies-fairs.png",
 "imageCaption": "River Effra, view from Harold Road looking towards convent<br>Source: <a href='https://www.lambeth.gov.uk/archives' target='_blank' rel='noopener'>Lambeth Archives</a>",
 "imageCaptionHTML": true,
 "citations": ["22", "23", "24", "36", "37", "38", "97"]
@@ -193,7 +193,7 @@ var timelineData = [
 "description": "The Crystal Palace opens at its new Sydenham location on June 10th, bringing thousands of visitors to the area. Crystal Palace Low Level Station opens simultaneously, creating the first railway connection that would soon reach Gipsy Hill. The relocated exhibition building from Hyde Park became a major attraction, generating demand for leisure travel that would justify the railway expansion.<sup>27,28,29</sup>",
 "icon": "bookmark",
 "importance": "major",
-"image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Crystal_Palace%2C_Sydenham.png/400px-Crystal_Palace%2C_Sydenham.png",
+"image": "images/crystal-palace-sydenham-1854.png",
 "imageCaption": "Crystal Palace at Sydenham, c. 1854<br><a href='https://commons.wikimedia.org/wiki/File:Crystal_Palace,_Sydenham.png' target='_blank' rel='noopener'>Wikimedia Commons</a>",
 "imageCaptionHTML": true,
 "citations": ["27", "28", "29"]
@@ -205,7 +205,7 @@ var timelineData = [
 "description": "Gipsy Hill Police Station is constructed at 10 Gipsy Hill at a cost of £2,461, designed by Charles Reeves (1815-1866), the Metropolitan Police Surveyor who created 44 police stations during his tenure. The station exemplifies Reeves' signature Italianate architectural style and features distinctive iron railings along the street frontage. Standing at precisely 360.6 feet (109.9 metres) above Ordnance Datum, it holds confirmed status as London's highest police station, providing essential law enforcement for the growing community.<sup>30,31,32</sup>",
 "icon": "police",
 "importance": "major",
-"image": "https://upload.wikimedia.org/wikipedia/commons/0/0b/Former_police_station%2C_Gipsy_Hill_-_geograph.org.uk_-_1774912.jpg",
+"image": "images/gipsy-hill-police-station.jpg",
 "imageCaption": "Former police station, Gipsy Hill by Stephen Richards<br><a href='https://commons.wikimedia.org/wiki/File:Former_police_station,_Gipsy_Hill_-_geograph.org.uk_-_1774912.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, <a href='https://creativecommons.org/licenses/by-sa/2.0/' target='_blank' rel='noopener'>CC BY-SA 2.0</a>",
 "imageCaptionHTML": true,
 "citations": ["30", "31", "32"]
@@ -217,7 +217,7 @@ var timelineData = [
 "description": "Gipsy Hill railway station opens on December 1st as part of the West End of London and Crystal Palace Railway, designed to transport crowds to the relocated Crystal Palace. The line opened from Crystal Palace to Wandsworth Common, with stations including Crystal Palace Low Level, Gipsy Hill, West Norwood, Streatham Hill, Balham, and Wandsworth Common. This transforms Gipsy Hill from rural countryside to accessible suburb, spurring rapid residential development. Construction had begun in 1853 following Parliamentary authorization.<sup>33,34,35</sup>",
 "icon": "train",
 "importance": "major",
-"image": "https://gipsyhillfriends.org/wp-content/uploads/2020/02/img_20200209_202723-1912332702.jpg",
+"image": "images/gipsy-hill-station-1860s.jpg",
 "imageCaption": "Historic photograph of Gipsy Hill Station<br>Image donated to <a href='https://gipsyhillfriends.org/2020/01/06/gipsy-hill-heritage-meetup/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["33", "34", "35"]
@@ -248,7 +248,7 @@ var timelineData = [
 "description": "The stone-built Christ Church was consecrated on Highland Road, replacing the temporary iron structure. The Foundation Stone had been laid by the Ven. Archdeacon Utterton, M.A., Canon of Winchester and Vicar of Farnham on 12th July 1866. Christ Church becomes one of the first permanent buildings on Gipsy Hill, serving as a central landmark and community gathering place for the rapidly growing population.<sup>39,40,41</sup>",
 "icon": "church",
 "importance": "major",
-"image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Christ_Church_Gipsy_Hill_-_Victorian_tower.JPG/400px-Christ_Church_Gipsy_Hill_-_Victorian_tower.JPG",
+"image": "images/christ-church-victorian-tower.jpg",
 "imageCaption": "Christ Church Victorian Tower<br><a href='https://commons.wikimedia.org/wiki/File:Christ_Church_Gipsy_Hill_-_Victorian_tower.JPG' target='_blank' rel='noopener'>Wikimedia Commons</a>",
 "imageCaptionHTML": true,
 "citations": ["39", "40", "41"]
@@ -299,7 +299,7 @@ var timelineData = [
 "description": "Social reformer and birth control advocate Annie Besant moves to 39 Colby Road in January following her separation from her clergyman husband. During her ten-month residence, she gives her first public lecture 'The Political Status of Women' in August and meets Charles Bradlaugh, President of the National Secular Society. From this South London base, she would launch her remarkable career spanning workers' rights, birth control advocacy, and socialism. The house was recently built and she chose the area for its proximity to supportive friends in Dulwich. A blue plaque was erected in 1963 to commemorate her time here.<sup>46,47,48</sup>",
 "icon": "poi",
 "importance": "major",
-"image": "https://upload.wikimedia.org/wikipedia/commons/2/29/Annie_Besant_plaque.JPG",
+"image": "images/annie-besant-plaque.jpg",
 "imageCaption": "Annie Besant blue plaque at 39 Colby Road, Gipsy Hill, London.<br><a href='https://commons.wikimedia.org/wiki/File:Annie_Besant_plaque.JPG' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
 "imageCaptionHTML": true,
 "citations": ["46", "47", "48"]
@@ -407,7 +407,7 @@ var timelineData = [
 "description": "Future film star Margaret Lockwood lives at various addresses on Highland Road from age 3 to early adulthood, including 14 Highland Road (1922-1923), 18a Highland Road (1923-1934), and 30 Highland Road (1934-1938). The family chose Gipsy Hill for its 'high ground and very good air.' Lockwood would go on to become British cinema's biggest female star during the 1940s, starring in classics like 'The Lady Vanishes' and 'The Wicked Lady,' the latter attracting 18.4 million British viewers. Her love of cinema began at the nearby Crystal Palace cinema, where she watched silent films. Unlike contemporaries who sought Hollywood fame, she built her career entirely within the British studio system. A blue plaque was erected at 14 Highland Road in 2018.<sup>59,61,113</sup>",
 "icon": "poi",
 "importance": "minor",
-"image": "https://upload.wikimedia.org/wikipedia/commons/3/31/MARGARET_LOCKWOOD_-_14_Highland_Road_Upper_Norwood_London_SE19_1DP2.jpg",
+"image": "images/margaret-lockwood-plaque.jpg",
 "imageCaption": "Margaret Lockwood blue plaque at 14 Highland Road, SE19<br><a href='https://commons.wikimedia.org/wiki/File:MARGARET_LOCKWOOD_-_14_Highland_Road_Upper_Norwood_London_SE19_1DP2.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Spudgun67, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
 "imageCaptionHTML": true,
 "citations": ["59", "61", "113"]
@@ -446,7 +446,7 @@ var timelineData = [
 "description": "During World War II, 42 high explosive bombs are dropped on the Gipsy Hill ward between October 7, 1940, and June 6, 1941. Areas around Rommany Road are severely hit, with many homes damaged or destroyed. Margaret Lockwood's family homes at 18a and 30 Highland Road are both destroyed by V1 strikes in 1944, which killed five people. Despite the destruction, the community rebuilds and perseveres.<sup>64,65</sup>",
 "icon": "bomb",
 "importance": "major",
-"image": "https://gipsyhillfriends.org/wp-content/uploads/2020/02/20200212_061512-2133469249.png",
+"image": "images/south-london-theatre-1948.png",
 "imageCaption": "Bomb map showing locations of high explosive bombs dropped on Gipsy Hill during WWII<br>Source: <a href='http://bombsight.org' target='_blank' rel='noopener'>Bomb Sight</a>",
 "imageCaptionHTML": true,
 "citations": ["64", "65"]
@@ -520,7 +520,7 @@ var timelineData = [
 "description": "The Central Hill Estate is built in two phases by Lambeth Council in 1967-1974, designed by Rosemary Stjernstedt, Roger Westman and the Lambeth Council planning department under the directorship of Ted Hollamby. Stjernstedt was brought in by Hollamby from the LCC and Ted Happold from Arup & Partners advised on structural engineering. This modernist housing development comprises 162 flats and 212 houses laid out in terraces of pale grey brick, representing a new chapter in community living and social housing.<sup>64,65,69</sup>",
 "icon": "apartment",
 "importance": "major",
-"image": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Central_Hill_Estate%2C_SE19_-_geograph.org.uk_-_4918582.jpg",
+"image": "images/central-hill-estate.jpg",
 "imageCaption": "Central Hill Estate, SE19 (1960s–70s) by Christopher Hilton<br><a href='https://commons.wikimedia.org/wiki/File:Central_Hill_Estate,_SE19_-_geograph.org.uk_-_4918582.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, <a href='https://creativecommons.org/licenses/by-sa/2.0/' target='_blank' rel='noopener'>CC BY-SA 2.0</a>",
 "imageCaptionHTML": true,
 "citations": ["64", "65", "69"]
@@ -586,7 +586,7 @@ var timelineData = [
 "description": "The London Borough of Lambeth (Electoral Changes) Order 2000 was made on February 10, 2000, establishing new Gipsy Hill ward boundaries. These boundaries came into force for local elections held on May 2, 2002.<sup>79,88</sup>",
 "icon": "official",
 "importance": "minor",
-"image": "https://gipsyhillfriends.org/wp-content/uploads/2020/02/20200212_0454521738500841.png?w=748",
+"image": "images/gipsy-hill-postcards.png",
 "imageCaption": "Historic boundary map<br>Source: <a href='https://www.lambeth.gov.uk/archives' target='_blank' rel='noopener'>Lambeth Archives</a>",
 "imageCaptionHTML": true,
 "citations": ["79", "88"]
@@ -626,7 +626,7 @@ var timelineData = [
 "description": "Fanny the cat is born on June 7th and becomes a beloved local celebrity with her trailblazing Twitter social media account and fame with her Secret London video. Often found lounging on the Oyster card reader at Gipsy Hill station or in the Friends of Gipsy Hill community garden, Fanny captures hearts and becomes an unofficial mascot for the area, representing the warm community spirit of modern Gipsy Hill.<sup>74,82</sup>",
 "icon": "heart",
 "importance": "major",
-"image": "https://gipsyhillfriends.org/wp-content/uploads/2020/07/fanny-1.png",
+"image": "images/fanny-wallis-print.png",
 "imageCaption": "Fanny the Gipsy Hill station cat<br>Image source: <a href='https://gipsyhillfriends.org/who-is-fanny-the-gipsy-hill-cat/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["74", "82"]
@@ -650,7 +650,7 @@ var timelineData = [
 "description": "Friends of Gipsy Hill launches the first Village Fete on Long Meadow, bringing the community together for a day of celebration. This inaugural event features local vendors, live music, children's activities, and food stalls, establishing a biennial tradition that strengthens neighborhood bonds.<sup>74,85</sup>",
 "icon": "fogh",
 "importance": "minor",
-"image": "https://gipsyhillfriends.org/wp-content/uploads/2019/07/20190714_130813.jpg",
+"image": "images/gipsy-hill-village-fete-2019.jpg",
 "imageCaption": "First Gipsy Hill Village Fete on Long Meadow<br><a href='https://gipsyhillfriends.org/village-fete/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["74", "85"]
@@ -674,7 +674,7 @@ var timelineData = [
 "description": "Despite the challenges of the COVID-19 pandemic, FoGH establishes the first Community Christmas Tree on Gipsy Hill on November 21st. This festive landmark becomes a symbol of hope and unity during difficult times, bringing light and joy to residents during the winter season.<sup>74</sup>",
 "icon": "fogh",
 "importance": "minor",
-"image": "https://gipsyhillfriends.org/wp-content/uploads/2021/11/20201209_185407.jpg",
+"image": "images/gipsy-hill-christmas-tree-2020.jpg",
 "imageCaption": "Gipsy Hill Community Christmas Tree 2020<br><a href='https://gipsyhillfriends.org/christmas-tree/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["74"]
