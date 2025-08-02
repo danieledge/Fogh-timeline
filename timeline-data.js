@@ -28,6 +28,9 @@ var timelineData = [
 "image": "images/great-north-wood-map.png",
 "imageCaption": "The approximate historical area of the Great North Wood<br><a href='https://commons.wikimedia.org/wiki/File:Great_North_Wood_map.png' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Gapfall, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
 "imageCaptionHTML": true,
+"image2": "images/dulwich_wood.jpg",
+"imageCaption2": "Modern day view from Dulwich Wood showing Battersea Power Station in the distance<br><a href='https://en.wikipedia.org/wiki/File:Battersea_Power_Station_seen_from_Dulwich_Wood_in_the_early_spring.jpg' target='_blank' rel='noopener'>Wikipedia</a>, Public Domain",
+"imageCaption2HTML": true,
 "citations": ["93", "94", "114"]
 },
 
