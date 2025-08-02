@@ -148,6 +148,21 @@
         </div>
     </div>
 
+    <!-- Image Modal -->
+    <div class="modal-overlay" id="image-modal">
+        <div class="modal-content image-modal-content">
+            <button class="modal-close" id="image-modal-close" aria-label="Close">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
+            <div class="image-modal-wrapper">
+                <img id="modal-image" src="" alt="">
+                <div id="modal-image-caption" class="modal-image-caption"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Submission Modal -->
     <div class="modal-overlay" id="submission-modal">
         <div class="modal-content submission-modal-content">
@@ -383,7 +398,7 @@
                 </div>
                 
                 <div class="about-footer">
-                    <span class="version">v1.53 (22:40 29/07/25)</span>
+                    <span class="version">v1.57 (08:10 02/08/25)</span>
                     <button class="credits-toggle" onclick="this.parentElement.classList.toggle('show-credits')">
                         Icon Credits <svg viewBox="0 0 24 24" width="12" height="12"><path d="M7 10l5 5 5-5z"/></svg>
                     </button>
