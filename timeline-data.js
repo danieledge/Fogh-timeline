@@ -380,6 +380,9 @@ var timelineData = [
 "description": "Norwood Park officially opens on June 14th, providing 33½ acres of public green space for recreation and leisure. This significant addition to local amenities enhances the quality of life for Gipsy Hill residents and establishes an important community gathering place.<sup>60,109</sup>",
 "icon": "tree",
 "importance": "major",
+"image": "images/norwoodpark_leaflet.jpg",
+"imageCaption": "An urgent appeal brochure for funds to create Norwood Park, c.1905<br>Image source: Lambeth Archives",
+"imageCaptionHTML": true,
 "citations": ["60", "109"]
 },
 
