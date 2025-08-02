@@ -404,6 +404,9 @@ var timelineData = [
 "description": "Shipping magnate Sir William Vestey purchases Kingswood House, making it his family's principal residence. In 1922 he is elevated to the peerage as Baron Vestey of Kingswood.",
 "icon": "castle",
 "importance": "minor",
+"image": "images/baron-vestey.jpg",
+"imageCaption": "William Vestey, 1st Baron Vestey (1859-1940)<br>Public domain photograph<br>Source: <a href='https://en.wikipedia.org/wiki/File:Baron_Vestey_LCCN2014718289.jpg' target='_blank' rel='noopener'>Wikipedia</a>",
+"imageCaptionHTML": true,
 "citations": ["25"]
 },
 
