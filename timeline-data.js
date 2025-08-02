@@ -248,8 +248,8 @@ var timelineData = [
 "description": "The stone-built Christ Church was consecrated on Highland Road, replacing the temporary iron structure. The Foundation Stone had been laid by the Ven. Archdeacon Utterton, M.A., Canon of Winchester and Vicar of Farnham on 12th July 1866. Christ Church becomes one of the first permanent buildings on Gipsy Hill, serving as a central landmark and community gathering place for the rapidly growing population.<sup>39,40,41</sup>",
 "icon": "church",
 "importance": "major",
-"image": "images/christ-church-victorian-tower.jpg",
-"imageCaption": "Christ Church Victorian Tower<br><a href='https://commons.wikimedia.org/wiki/File:Christ_Church_Gipsy_Hill_-_Victorian_tower.JPG' target='_blank' rel='noopener'>Wikimedia Commons</a>",
+"image": "images/christ-church-1890.jpg",
+"imageCaption": "Christ Church, Gipsy Hill, Upper Norwood, c.1890<br>Glass lantern slide photograph showing the church before the 1982 fire<br>Image source: Lambeth Archives (Ref: 12306, ID: 2008/20/101)",
 "imageCaptionHTML": true,
 "citations": ["39", "40", "41"]
 },
