@@ -249,7 +249,7 @@ var timelineData = [
 "icon": "church",
 "importance": "major",
 "image": "images/christ-church-1890.jpg",
-"imageCaption": "Christ Church, Gipsy Hill, Upper Norwood, c.1890<br>Glass lantern slide photograph showing the church before the 1982 fire<br>Image source: Lambeth Archives",
+"imageCaption": "Christ Church, Gipsy Hill, Upper Norwood, c.1890<br>Glass lantern slide photograph showing the church before the 1982 fire<br>Source: <a href='https://www.lambeth.gov.uk/archives' target='_blank' rel='noopener'>Lambeth Archives</a>",
 "imageCaptionHTML": true,
 "citations": ["39", "40", "41"]
 },
