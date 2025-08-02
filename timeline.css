@@ -2741,3 +2741,118 @@ textarea#image-sources {
         -webkit-tap-highlight-color: rgba(255, 111, 97, 0.2);
     }
 }
+
+/* Image Modal Styles */
+.image-modal-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    padding: 0;
+    background: var(--bg-primary);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.image-modal-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-height: calc(90vh - 60px); /* Account for close button */
+    padding: 20px;
+}
+
+#modal-image {
+    max-width: 100%;
+    max-height: calc(80vh - 100px); /* Leave room for caption */
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-image-caption {
+    margin-top: 1rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    max-width: 600px;
+    padding: 0 1rem;
+}
+
+.modal-image-caption a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.modal-image-caption a:hover {
+    color: var(--accent-secondary);
+    text-decoration: underline;
+}
+
+/* Ensure close button is visible */
+.image-modal-content .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.image-modal-content .modal-close:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* Dark theme adjustments for image modal */
+[data-theme="dark"] .image-modal-content {
+    background: var(--bg-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .image-modal-content .modal-close {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .image-modal-content .modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile optimization for image modal */
+@media (max-width: 768px) {
+    .image-modal-content {
+        max-width: 95vw;
+        max-height: 95vh;
+        margin: 0;
+    }
+    
+    .image-modal-wrapper {
+        padding: 10px;
+        max-height: calc(95vh - 50px);
+    }
+    
+    #modal-image {
+        max-height: calc(85vh - 80px);
+        border-radius: 4px;
+    }
+    
+    .modal-image-caption {
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        padding: 0 0.5rem;
+    }
+    
+    .image-modal-content .modal-close {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 40px;
+        height: 40px;
+    }
+}
