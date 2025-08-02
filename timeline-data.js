@@ -469,6 +469,9 @@ var timelineData = [
 "description": "London County Council acquires the 37-acre Kingswood House site in 1946 to address post-war housing needs. The Kingswood Estate is built around the preserved mansion, providing 789 homes and opening a community centre and library in 1956.",
 "icon": "apartment",
 "importance": "major",
+"image": "images/kingswoodestate.jpg",
+"imageCaption": "Kingswood Estate shopping parade, 1959<br>Image source: London Metropolitan Archives",
+"imageCaptionHTML": true,
 "citations": ["103"]
 },
 
