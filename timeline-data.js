@@ -633,29 +633,50 @@ var timelineData = [
 },
 
 {
-"date": "2018",
+"date": "2018 (May-October)",
 "title": "Friends of Gipsy Hill Forms",
-"description": "FoGH forms as a community group following a successful crowdfunding campaign supported by the Mayor of London. The group establishes itself with a mission to inspire residents' involvement and sustainable use of local spaces for community wellbeing, marking the beginning of a new era of community activism in Gipsy Hill.<sup>74,83,84</sup>",
+"description": "Friends of Gipsy Hill (FoGH) forms as a community group following a successful crowdfunding campaign supported by the Mayor of London. The group holds its first meeting on May 4th and formally adopts its constitution on October 6th. FoGH establishes itself with a mission to inspire residents' involvement and sustainable use of local spaces for community wellbeing, marking the beginning of a new era of community activism in Gipsy Hill.<sup>74,83,84</sup>",
 "icon": "fogh",
 "importance": "major",
+"image": "images/fogh-logo.svg",
+"imageCaption": "Friends of Gipsy Hill logo<br><a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"imageCaptionHTML": true,
 "citations": ["74", "83", "84"]
 },
 
 {
-"date": "2019",
+"date": "2019 (July 14)",
 "title": "First Gipsy Hill Village Fete",
 "description": "Friends of Gipsy Hill launches the first Village Fete on Long Meadow, bringing the community together for a day of celebration. This inaugural event features local vendors, live music, children's activities, and food stalls, establishing a biennial tradition that strengthens neighborhood bonds.<sup>74,85</sup>",
 "icon": "fogh",
 "importance": "minor",
+"image": "https://gipsyhillfriends.org/wp-content/uploads/2019/07/20190714_130813.jpg",
+"imageCaption": "First Gipsy Hill Village Fete on Long Meadow<br><a href='https://gipsyhillfriends.org/village-fete/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"imageCaptionHTML": true,
 "citations": ["74", "85"]
 },
 
 {
-"date": "2020",
-"title": "First Community Gipsy Hill Christmas Tree",
-"description": "Despite the challenges of the COVID-19 pandemic, FoGH establishes the first Community Christmas Tree on Gipsy Hill. This festive landmark becomes a symbol of hope and unity during difficult times, bringing light and joy to residents during the winter season.<sup>74</sup>",
+"date": "2020 (August 8)",
+"title": "British Railways Sign Returns Home",
+"description": "After being contacted by its owner in Devon, Friends of Gipsy Hill crowdfunds to bring an original 1950s 'British Railways Gipsy Hill' station sign back to SE19 on August 8th. The 3-metre-long, 66cm-tall sign was installed after railway nationalisation and retired in 1982 when Network South East formed. Having journeyed from South Yorkshire (2009) to Devon before returning home, this remarkably well-preserved 70-year-old piece of heritage now resides securely in the station garden for the community to enjoy.<sup>74</sup>",
 "icon": "fogh",
 "importance": "minor",
+"image": "images/british-railways-sign.jpg",
+"imageCaption": "Railway Sign returned to Gipsy Hill<br><a href='https://gipsyhillfriends.org/british-railways-gipsy-hill-station-sign/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"imageCaptionHTML": true,
+"citations": ["74"]
+},
+
+{
+"date": "2020 (November 21)",
+"title": "First Community Gipsy Hill Christmas Tree",
+"description": "Despite the challenges of the COVID-19 pandemic, FoGH establishes the first Community Christmas Tree on Gipsy Hill on November 21st. This festive landmark becomes a symbol of hope and unity during difficult times, bringing light and joy to residents during the winter season.<sup>74</sup>",
+"icon": "fogh",
+"importance": "minor",
+"image": "https://gipsyhillfriends.org/wp-content/uploads/2021/11/20201209_185407.jpg",
+"imageCaption": "Gipsy Hill Community Christmas Tree 2020<br><a href='https://gipsyhillfriends.org/christmas-tree/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"imageCaptionHTML": true,
 "citations": ["74"]
 },
 
@@ -696,6 +717,15 @@ var timelineData = [
 "imageCaption": "Gipsy Hill ward boundaries since 2022<br><a href='https://foundation.m.wikimedia.org/wiki/Policy:Terms_of_Use_for_Wikimedia_Maps' target='_blank' rel='noopener'>Wikimedia Maps</a>, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
 "imageCaptionHTML": true,
 "citations": ["87"]
+},
+
+{
+"date": "2022 (October 1)",
+"title": "First Gipsy Hill Oktoberfest",
+"description": "Friends of Gipsy Hill organizes the first Oktoberfest celebration on October 1st, bringing German-inspired festivities to the community. The event features traditional beer, food, and music, adding a new cultural dimension to the neighborhood's calendar of events and further strengthening community bonds.<sup>74</sup>",
+"icon": "fogh",
+"importance": "minor",
+"citations": ["74"]
 },
 
 
