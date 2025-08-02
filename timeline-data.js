@@ -350,6 +350,9 @@ var timelineData = [
 "description": "A major flood from the culverted River Effra devastates the area on July 17th. A white stone tablet still visible high up on a building in Elder Road marks the \"FLOOD LEVEL 17th July 1890.\" The convent school wall was swept away and had to be rebuilt. The flood demonstrates the challenges of urban development over culverted waterways and the power of the hidden Effra during heavy rainfall.<sup>53,54,55</sup>",
 "icon": "river",
 "importance": "major",
+"image": "images/river-effra-flood-1890.jpg",
+"imageCaption": "Repairs to damage caused by the River Effra flooding at Crown Hill (Crown Dale) and Central Hill junction, 1890<br>The adjacent convent wall was also badly damaged<br>Source: <a href='https://boroughphotos.org/lambeth/crown-hill-upper-norwood/' target='_blank' rel='noopener'>Lambeth Archives</a>",
+"imageCaptionHTML": true,
 "citations": ["53", "54", "55"]
 },
 
