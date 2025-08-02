@@ -704,6 +704,9 @@ var timelineData = [
 "description": "The Friends of Gipsy Hill station gardens flourish under community care, transforming previously neglected spaces into beautiful green areas. Volunteers maintain flower beds, plant seasonal displays, and create a welcoming environment for commuters and visitors alike.<sup>74</sup>",
 "icon": "fogh",
 "importance": "minor",
+"image": "images/station_garden.jpg",
+"imageCaption": "Gipsy Hill Station Garden maintained by FoGH volunteers<br><a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"imageCaptionHTML": true,
 "citations": ["74"]
 },
 
