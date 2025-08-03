@@ -322,8 +322,8 @@ body::before {
 .fogh-logo-header svg,
 .fogh-logo-header img {
     display: inline-block;
-    width: 280px;
-    max-width: 70%;
+    width: 400px;
+    max-width: 85%;
     height: auto;
 }
 
@@ -375,13 +375,13 @@ body::before {
 
 /* Work in Progress notice */
 .wip-notice {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    background: transparent;
+    border: 1.5px solid var(--accent-primary);
     border-radius: 8px;
-    padding: 12px 16px;
+    padding: 10px 14px;
     margin: 16px auto 0;
-    font-size: 14px;
-    color: var(--text-primary);
+    font-size: 13px;
+    color: var(--text-secondary);
     max-width: 600px;
     text-align: center;
     opacity: 0;
@@ -390,6 +390,7 @@ body::before {
 
 .wip-notice strong {
     color: var(--accent-primary);
+    font-weight: 600;
 }
 
 .wip-notice a {
@@ -405,14 +406,16 @@ body::before {
 
 /* Light theme adjustments */
 [data-theme="light"] .wip-notice {
-    background: rgba(76, 175, 80, 0.08);
-    border-color: rgba(76, 175, 80, 0.2);
+    background: transparent;
+    border-color: var(--accent-primary);
+    opacity: 0.85;
 }
 
 /* Dark theme adjustments */
 [data-theme="dark"] .wip-notice {
-    background: rgba(76, 175, 80, 0.12);
-    border-color: rgba(76, 175, 80, 0.3);
+    background: transparent;
+    border-color: var(--accent-primary);
+    opacity: 0.75;
 }
 
 .header-link a::after {
@@ -1125,7 +1128,7 @@ body::before {
 @media (max-width: 768px) {
     .fogh-logo-header svg,
 .fogh-logo-header img {
-        max-width: 245px;
+        max-width: 350px;
         width: auto;
         height: auto;
     }
@@ -1192,7 +1195,7 @@ body::before {
     
     .fogh-logo-header svg,
 .fogh-logo-header img {
-        width: 200px;
+        width: 280px;
     }
     
     .header h1 {
@@ -1944,7 +1947,7 @@ body::before {
 @media (min-width: 768px) and (max-width: 1024px) {
     .fogh-logo-header svg,
 .fogh-logo-header img {
-        max-width: 315px;
+        max-width: 450px;
         width: auto;
         height: auto;
     }
@@ -1954,7 +1957,7 @@ body::before {
     
     .fogh-logo-header svg,
 .fogh-logo-header img {
-        width: 315px;
+        width: 450px;
     }
     
     .header h1 {
