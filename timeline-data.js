@@ -371,9 +371,12 @@ var timelineData = [
 "description": "John Lawson Johnston, inventor of Bovril, acquires Kingswood House and transforms it into a Jacobethan mansion with architect Henry Vaughan Lanchester, adding the grand entrance, battlements and north wing that earn it the nickname 'Bovril Castle.'<sup>99,100</sup>",
 "icon": "castle",
 "importance": "major",
-"image": "images/kingswood-house.jpg",
-"imageCaption": "Kingswood House<br><a href='https://commons.wikimedia.org/wiki/File:Kingswood,_Dulwich.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
+"image": "images/john_lawson_johnston.jpg",
+"imageCaption": "John Lawson Johnston, inventor of Bovril, Vanity Fair caricature 1897<br><a href='https://commons.wikimedia.org/wiki/File:John_Lawson_Johnston_Vanity_Fair_18_February_1897.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
 "imageCaptionHTML": true,
+"image2": "images/kingswood-house.jpg",
+"image2Caption": "Kingswood House<br><a href='https://commons.wikimedia.org/wiki/File:Kingswood,_Dulwich.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
+"image2CaptionHTML": true,
 "citations": ["99", "100"]
 },
 
@@ -499,6 +502,12 @@ var timelineData = [
 "description": "Following Basil Aldous's death, the Cheshire Foundation acquires Athol House for £12,500 in 1953. The building undergoes pioneering accessibility retrofitting including lift shaft installation, ramps, and widened doorways—predating statutory barrier-free standards by decades while preserving Scott's original exterior. In October 1955, Group-Captain Leonard Cheshire VC and the Duchess of Gloucester formally open London's first Cheshire Home for the Sick, offering 28 beds for people with severe physical disabilities.<sup>105</sup>",
 "icon": "home",
 "importance": "major",
+"image": "images/cheshiresmile_page1.jpg",
+"imageCaption": "THE CHESHIRE SMILE Vol. 6, No. I SPRING, 1960<br>Source: <a href='https://rewind.leonardcheshire.org/the-archive/cheshire-smiles/' target='_blank' rel='noopener'>Leonard Cheshire Archive</a>, Public Domain",
+"imageCaptionHTML": true,
+"image2": "images/cheshiresmile_page2.jpg",
+"image2Caption": "THE CHESHIRE SMILE Vol. 6, No. I SPRING, 1960<br>Source: <a href='https://rewind.leonardcheshire.org/the-archive/cheshire-smiles/' target='_blank' rel='noopener'>Leonard Cheshire Archive</a>, Public Domain",
+"image2CaptionHTML": true,
 "citations": ["105"]
 },
 
