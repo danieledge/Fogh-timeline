@@ -286,6 +286,9 @@ body::before {
     display: none !important;
 }
 
+
+
+
 /* Remove old theme toggle icon styles that were causing issues */
 
 .header {
@@ -316,10 +319,11 @@ body::before {
     animation: fadeInDown 0.8s ease forwards;
 }
 
-.fogh-logo-header svg {
+.fogh-logo-header svg,
+.fogh-logo-header img {
     display: inline-block;
-    width: 400px;
-    max-width: 80%;
+    width: 280px;
+    max-width: 70%;
     height: auto;
 }
 
@@ -1119,8 +1123,9 @@ body::before {
 }
 
 @media (max-width: 768px) {
-    .fogh-logo-header svg {
-        max-width: 350px;
+    .fogh-logo-header svg,
+.fogh-logo-header img {
+        max-width: 245px;
         width: auto;
         height: auto;
     }
@@ -1185,8 +1190,9 @@ body::before {
         padding: 1.5rem 1rem 2rem;
     }
     
-    .fogh-logo-header svg {
-        width: 280px;
+    .fogh-logo-header svg,
+.fogh-logo-header img {
+        width: 200px;
     }
     
     .header h1 {
@@ -1936,8 +1942,9 @@ body::before {
     }
 }/* iPad and tablet specific styles */
 @media (min-width: 768px) and (max-width: 1024px) {
-    .fogh-logo-header svg {
-        max-width: 450px;
+    .fogh-logo-header svg,
+.fogh-logo-header img {
+        max-width: 315px;
         width: auto;
         height: auto;
     }
@@ -1945,8 +1952,9 @@ body::before {
         padding: 3rem 2rem;
     }
     
-    .fogh-logo-header svg {
-        width: 450px;
+    .fogh-logo-header svg,
+.fogh-logo-header img {
+        width: 315px;
     }
     
     .header h1 {
