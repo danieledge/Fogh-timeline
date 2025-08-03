@@ -121,9 +121,12 @@ var timelineData = [
 "description": "A pantomime titled \"The Norwood Gypsies\" is performed at Theatre Royal Covent Garden, one of the most successful dramatic productions of the time. This theatrical production celebrated the area's heritage and brought Gipsy Hill to London's cultural attention. The pantomime featured the traditional Harlequin and Columbine characters and was part of the popular 18th-century theatrical entertainment.<sup>14,15,16</sup>",
 "icon": "theater",
 "importance": "major",
-"image": "images/gipsy-road-station-1850s.png",
-"imageCaption": "The Norwood Gypsies Pantomime<br>Donated to <a href='https://gipsyhillfriends.org/2020/01/06/gipsy-hill-heritage-meetup/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"image": "images/ NorwoodGypsiesPage1.jpg",
+"imageCaption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br><a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
 "imageCaptionHTML": true,
+"image2": "images/ NorwoodGypsiesPage2.jpg",
+"imageCaption2": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br><a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
+"imageCaption2HTML": true,
 "citations": ["14", "15", "16"]
 },
 
@@ -286,13 +289,16 @@ var timelineData = [
 
 {
 "date": "1870s-1890s",
-"title": "Long Meadow and Victorian Suburbia",
+"title": "Long Meadow and Norwood Central Dairy",
 "description": "Thomas French of Croxted Road operates French's Farm and Dairy, keeping his cows on land halfway up Gipsy Hill (now Long Meadow) between Woodland Road and Cawnpore Street - the building still stands today. Horse breeding becomes an important local industry, taking advantage of the area's rural character and railway connections to London. Large Victorian houses are built along main roads by the United Land Company and other developers. The area sees the opening of several pubs celebrating local heritage: Ye Old Gipsy House (later Gipsy Tavern) on Gipsy Road, the Gipsy Hill Hotel (now The Great Southern), and the Gipsy Queen on Norwood High Street.<sup>44,45</sup>",
 "icon": "cow",
 "importance": "major",
 "image": "images/frenchs-field-gipsy-hill-1890.jpg",
 "imageCaption": "French's Field, Gipsy Hill, Upper Norwood c1890<br>Source: <a href='https://boroughphotos.org/lambeth/frenchs-field-gipsy-hill-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
+"image2": "images/Dairy_Leaflet Medium.png",
+"imageCaption2": "Norwood Central Dairy article (image digitally enhanced for clarity), Public Domain",
+"imageCaption2HTML": true,
 "citations": ["44", "45"]
 },
 
