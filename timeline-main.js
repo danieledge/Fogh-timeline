@@ -167,6 +167,10 @@ function initializeTimeline() {
         }
         
         document.addEventListener('click', function(e) {
+            // Don't close menu if clicking on images
+            if (e.target.tagName === 'IMG' && e.target.closest('.content-image')) {
+                return;
+            }
             if (!menuToggle.contains(e.target) && !menuPanel.contains(e.target)) {
                 closeMenu();
             }
@@ -628,11 +632,42 @@ function initializeTimeline() {
                 if (isSecond) imageContainer.className += ' second-image';
                 
                 var img = document.createElement('img');
-                img.src = imageSrc;
+                
+                // Generate thumbnail path
+                var thumbSrc = imageSrc;
+                var lastDot = imageSrc.lastIndexOf('.');
+                if (lastDot > -1) {
+                    var basePath = imageSrc.substring(0, lastDot);
+                    var ext = imageSrc.substring(lastDot);
+                    thumbSrc = basePath + '-thumb' + ext;
+                }
+                
+                // Use thumbnail for display, full image for modal
+                img.src = thumbSrc;
                 img.alt = item.title;
-                img.addEventListener('click', function() {
+                img.loading = 'lazy'; // Add lazy loading
+                
+                // Handle both click and touch events properly
+                function handleImageClick(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     openImageModal(imageSrc, captionText, captionHTML);
+                }
+                
+                img.addEventListener('click', handleImageClick);
+                img.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleImageClick(e);
                 });
+                
+                // Add error handler to fallback to original image if thumbnail doesn't exist
+                img.addEventListener('error', function() {
+                    if (img.src !== imageSrc) {
+                        img.src = imageSrc;
+                    }
+                });
+                
                 imageContainer.appendChild(img);
                 
                 if (captionText) {
