@@ -2,7 +2,7 @@
 
 var timelineData = [
 {
-"date": "43-410",
+"date": "AD 43-410",
 "title": "Roman Settlements and Trackways",
 "description": "Archaeological studies have revealed minor Roman-era pottery finds and trackways in the Norwood/Central Hill area, suggesting movement through the forested landscape, though no major settlement.<sup>98</sup>",
 "icon": "roman",
@@ -11,7 +11,7 @@ var timelineData = [
 },
 
 {
-"date": "410-1066",
+"date": "AD 410-1066",
 "title": "Anglo-Saxon Boundaries",
 "description": "Early land grants and charters reference the wider Norwood as woodland and hunting ground in Anglo-Saxon times, which frames later developments and parish boundaries.<sup>89,108</sup>",
 "icon": "saxon-helmet",
@@ -20,15 +20,15 @@ var timelineData = [
 },
 
 {
-"date": "11th–19th Century",
+"date": "11th-19th c.",
 "title": "The Great North Wood",
 "description": "The Great North Wood gave Norwood its name and was a vast oak woodland from the 11th to 19th century covering the sides of what is now Crystal Palace ridge, including Gipsy Hill. Coppiced for charcoal burning—a major local industry with figures like 'Grimme the Collier of Croydon' becoming part of 16th-century popular culture—the wood provided essential resources for pre-industrial Surrey and Kent. Its oaks formed the timbers of Royal Navy vessels including Sir Francis Drake's Golden Hind, while oak bark supplied the leather tanning trade. The Archbishop of Canterbury and other Lords of the Manor held hunting rights and controlled timber felling, while commoners grazed animals on acorns and roots. The Domesday Book (1085) records the Archbishop's rights for 'hunting, fuel and pannage for 200 swine.' The dense woodland also sheltered outlaws and smugglers, creating a landscape both productive and mysterious that would define the area until 19th-century clearances.<sup>93,94,114</sup>",
 "icon": "tree",
 "importance": "major",
 "image": "images/great-north-wood-map.png",
-"imageCaption": "The approximate historical area of the Great North Wood<br><a href='https://commons.wikimedia.org/wiki/File:Great_North_Wood_map.png' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Gapfall, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
+"imageCaption": "The approximate historical area of the Great North Wood<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Great_North_Wood_map.png' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Gapfall, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
 "imageCaptionHTML": true,
-"image2": "images/dulwich_wood.jpg",
+"image2": "images/dulwich-wood-battersea-view-modern.jpg",
 "image2Caption": "Modern day view from Dulwich Wood showing Battersea Power Station in the distance<br>Source: <a href='https://en.wikipedia.org/wiki/File:Battersea_Power_Station_seen_from_Dulwich_Wood_in_the_early_spring.jpg' target='_blank' rel='noopener'>Wikipedia</a>, Public Domain",
 "image2CaptionHTML": true,
 "citations": ["93", "94", "114"]
@@ -41,7 +41,7 @@ var timelineData = [
 "icon": "tree",
 "importance": "major",
 "image": "images/camille-pissarro-fox-hill-upper-norwood.JPG",
-"imageCaption": "Fox Hill, Upper Norwood by Camille Pissarro (1870)<br><a href='https://www.nationalgallery.org.uk/paintings/camille-pissarro-fox-hill-upper-norwood' target='_blank' rel='noopener'>The National Gallery</a>, <a href='https://creativecommons.org/licenses/by-nc-nd/4.0/' target='_blank' rel='noopener'>CC BY-NC-ND 4.0</a>",
+"imageCaption": "Fox Hill, Upper Norwood by Camille Pissarro (1870)<br>Source: <a href='https://www.nationalgallery.org.uk/paintings/camille-pissarro-fox-hill-upper-norwood' target='_blank' rel='noopener'>The National Gallery</a>, <a href='https://creativecommons.org/licenses/by-nc-nd/4.0/' target='_blank' rel='noopener'>CC BY-NC-ND 4.0</a>",
 "imageCaptionHTML": true,
 "citations": ["95"]
 },
@@ -65,9 +65,9 @@ var timelineData = [
 "icon": "crown",
 "importance": "major",
 "image": "images/margaret-finch-engraving.jpg",
-"imageCaption": "Margaret Finch, aged 108. Engraving by J. Sharp<br><a href='https://wellcomecollection.org/' target='_blank' rel='noopener'>Wellcome Collection</a>, <a href='https://creativecommons.org/licenses/by/4.0' target='_blank' rel='noopener'>CC BY 4.0</a>",
+"imageCaption": "Margaret Finch, aged 108. Engraving by J. Sharp<br>Source: <a href='https://wellcomecollection.org/' target='_blank' rel='noopener'>Wellcome Collection</a>, <a href='https://creativecommons.org/licenses/by/4.0' target='_blank' rel='noopener'>CC BY 4.0</a>",
 "imageCaptionHTML": true,
-"image2": "images/MFinch_Painting.jpg",
+"image2": "images/margaret-finch-mccallum-painting-1851.jpg",
 "image2Caption": "1851 painting by John McCallum in which Margaret Finch is believed to be depicted<br>Source: Public Domain",
 "image2CaptionHTML": true,
 "citations": ["5", "6", "9"]
@@ -80,7 +80,7 @@ var timelineData = [
 "icon": "microphone",
 "importance": "major",
 "image": "images/samuel-pepys-1689.jpg",
-"imageCaption": "Samuel Pepys by Sir Godfrey Kneller, 1689<br><a href='https://commons.wikimedia.org/wiki/File:Samuel_Pepys_by_Sir_Godfrey_Kneller_1689.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>",
+"imageCaption": "Samuel Pepys by Sir Godfrey Kneller, 1689<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Samuel_Pepys_by_Sir_Godfrey_Kneller_1689.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>",
 "imageCaptionHTML": true,
 "citations": ["4", "7", "8"]
 },
@@ -92,7 +92,7 @@ var timelineData = [
 "icon": "death",
 "importance": "major",
 "image": "images/margaret-finch-plaque.jpg",
-"imageCaption": "Margaret Finch, Queen of the Norwood Gypsies plaque<br><a href='https://commons.wikimedia.org/wiki/File:Margaret_Finch,_Queen_of_the_Norwood_Gypsies_plaque.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Matt Brown, <a href='https://creativecommons.org/licenses/by/2.0/' target='_blank' rel='noopener'>CC BY 2.0</a>",
+"imageCaption": "Margaret Finch, Queen of the Norwood Gypsies plaque<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Margaret_Finch,_Queen_of_the_Norwood_Gypsies_plaque.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Matt Brown, <a href='https://creativecommons.org/licenses/by/2.0/' target='_blank' rel='noopener'>CC BY 2.0</a>",
 "imageCaptionHTML": true,
 "citations": ["5", "6", "9", "10", "11"]
 },
@@ -124,10 +124,10 @@ var timelineData = [
 "description": "A pantomime titled \"The Norwood Gypsies\" is performed at Theatre Royal Covent Garden, one of the most successful dramatic productions of the time. This theatrical production celebrated the area's heritage and brought Gipsy Hill to London's cultural attention. The pantomime featured the traditional Harlequin and Columbine characters and was part of the popular 18th-century theatrical entertainment.<sup>14,15,16</sup>",
 "icon": "theater",
 "importance": "major",
-"image": "images/ NorwoodGypsiesPage1.jpg",
-"imageCaption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br><a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
+"image": "images/norwood-gypsies-pantomime-page1.jpg",
+"imageCaption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br>Source: <a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
 "imageCaptionHTML": true,
-"image2": "images/ NorwoodGypsiesPage2.jpg",
+"image2": "images/norwood-gypsies-pantomime-page2.jpg",
 "image2Caption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br>Source: <a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
 "image2CaptionHTML": true,
 "citations": ["14", "15", "16"]
@@ -159,7 +159,7 @@ var timelineData = [
 "icon": "home",
 "importance": "minor",
 "image": "images/william-vizard.jpg",
-"imageCaption": "William Vizard (1774–1859), English lawyer. Engraving by Thomas Wright, c. 1820<br><a href='https://commons.wikimedia.org/wiki/File:William_Vizard_Wright.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
+"imageCaption": "William Vizard (1774–1859), English lawyer. Engraving by Thomas Wright, c. 1820<br>Source: <a href='https://commons.wikimedia.org/wiki/File:William_Vizard_Wright.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
 "imageCaptionHTML": true,
 "citations": ["99"]
 },
@@ -170,7 +170,7 @@ var timelineData = [
 "description": "Part of Gipsy Hill, known as \"Beaulieu Hill,\" was so steep that the local community self-funded a team of 42 workers to reduce its height by nine feet. Creating a gentler slope of 1 foot in 12, they transformed it into a \"trotting hill\" where horses could maintain a trot rather than walking. Each worker was rewarded with three pints of beer and a shilling for their efforts, as reported in the Public Ledger and Daily Advertiser on April 12, 1832.<sup>20,21</sup>",
 "icon": "hill",
 "importance": "major",
-"image": "images/Trottinghill.JPG",
+"image": "images/beaulieu-hill-newspaper-1832.jpg",
 "imageCaption": "Public Ledger and Daily Advertiser - Thursday 12 April 1832<br>Source: Historical newspaper archives",
 "citations": ["20", "21"]
 },
@@ -203,7 +203,7 @@ var timelineData = [
 "icon": "bookmark",
 "importance": "major",
 "image": "images/crystal-palace-sydenham-1854.png",
-"imageCaption": "Crystal Palace at Sydenham, c. 1854<br><a href='https://commons.wikimedia.org/wiki/File:Crystal_Palace,_Sydenham.png' target='_blank' rel='noopener'>Wikimedia Commons</a>",
+"imageCaption": "Crystal Palace at Sydenham, c. 1854<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Crystal_Palace,_Sydenham.png' target='_blank' rel='noopener'>Wikimedia Commons</a>",
 "imageCaptionHTML": true,
 "citations": ["27", "28", "29"]
 },
@@ -215,7 +215,7 @@ var timelineData = [
 "icon": "police",
 "importance": "major",
 "image": "images/gipsy-hill-police-station.jpg",
-"imageCaption": "Former police station, Gipsy Hill by Stephen Richards<br><a href='https://commons.wikimedia.org/wiki/File:Former_police_station,_Gipsy_Hill_-_geograph.org.uk_-_1774912.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, <a href='https://creativecommons.org/licenses/by-sa/2.0/' target='_blank' rel='noopener'>CC BY-SA 2.0</a>",
+"imageCaption": "Former police station, Gipsy Hill by Stephen Richards<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Former_police_station,_Gipsy_Hill_-_geograph.org.uk_-_1774912.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, <a href='https://creativecommons.org/licenses/by-sa/2.0/' target='_blank' rel='noopener'>CC BY-SA 2.0</a>",
 "imageCaptionHTML": true,
 "citations": ["30", "31", "32"]
 },
@@ -227,7 +227,7 @@ var timelineData = [
 "icon": "train",
 "importance": "major",
 "image": "images/gipsy-hill-station-1860s.jpg",
-"imageCaption": "Historic photograph of Gipsy Hill Station<br>Image donated to <a href='https://gipsyhillfriends.org/2020/01/06/gipsy-hill-heritage-meetup/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"imageCaption": "Historic photograph of Gipsy Hill Station<br>Source: Image donated to <a href='https://gipsyhillfriends.org/2020/01/06/gipsy-hill-heritage-meetup/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["33", "34", "35"]
 },
@@ -299,7 +299,7 @@ var timelineData = [
 "image": "images/frenchs-field-gipsy-hill-1890.jpg",
 "imageCaption": "French's Field, Gipsy Hill, Upper Norwood c1890<br>Source: <a href='https://boroughphotos.org/lambeth/frenchs-field-gipsy-hill-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
-"image2": "images/Dairy_Leaflet Medium.png",
+"image2": "images/norwood-central-dairy-article.png",
 "image2Caption": "Norwood Central Dairy article - image digitally enhanced for clarity<br>Source: Public Domain",
 "image2CaptionHTML": true,
 "citations": ["44", "45"]
@@ -312,7 +312,7 @@ var timelineData = [
 "icon": "poi",
 "importance": "major",
 "image": "images/annie-besant-plaque.jpg",
-"imageCaption": "Annie Besant blue plaque at 39 Colby Road, Gipsy Hill, London<br><a href='https://commons.wikimedia.org/wiki/File:Annie_Besant_plaque.JPG' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
+"imageCaption": "Annie Besant blue plaque at 39 Colby Road, Gipsy Hill, London<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Annie_Besant_plaque.JPG' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
 "imageCaptionHTML": true,
 "citations": ["46", "47", "48"]
 },
@@ -374,8 +374,8 @@ var timelineData = [
 "description": "John Lawson Johnston, inventor of Bovril, acquires Kingswood House and transforms it into a Jacobethan mansion with architect Henry Vaughan Lanchester, adding the grand entrance, battlements and north wing that earn it the nickname 'Bovril Castle.'<sup>99,100</sup>",
 "icon": "castle",
 "importance": "major",
-"image": "images/john_lawson_johnston.jpg",
-"imageCaption": "John Lawson Johnston, inventor of Bovril, Vanity Fair caricature 1897<br><a href='https://commons.wikimedia.org/wiki/File:John_Lawson_Johnston_Vanity_Fair_18_February_1897.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
+"image": "images/john-lawson-johnston-vanity-fair-1897.jpg",
+"imageCaption": "John Lawson Johnston, inventor of Bovril, Vanity Fair caricature 1897<br>Source: <a href='https://commons.wikimedia.org/wiki/File:John_Lawson_Johnston_Vanity_Fair_18_February_1897.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
 "imageCaptionHTML": true,
 "image2": "images/kingswood-house.jpg",
 "image2Caption": "Kingswood House<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Kingswood,_Dulwich.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
@@ -398,7 +398,7 @@ var timelineData = [
 "description": "Norwood Park officially opens on June 14th, providing 33½ acres of public green space for recreation and leisure. This significant addition to local amenities enhances the quality of life for Gipsy Hill residents and establishes an important community gathering place.<sup>60,109</sup>",
 "icon": "tree",
 "importance": "major",
-"image": "images/norwoodpark_leaflet.jpg",
+"image": "images/norwood-park-appeal-brochure-1905.jpg",
 "imageCaption": "An urgent appeal brochure for funds to create Norwood Park, c.1905<br>Source: <a href='https://www.lambeth.gov.uk/archives' target='_blank' rel='noopener'>Lambeth Archives</a>",
 "imageCaptionHTML": true,
 "citations": ["60", "109"]
@@ -419,7 +419,7 @@ var timelineData = [
 "description": "Shipping magnate Sir William Vestey purchases Kingswood House, making it his family's principal residence. In 1922 he is elevated to the peerage as Baron Vestey of Kingswood.",
 "icon": "castle",
 "importance": "minor",
-"image": "images/baron-vestey.jpg",
+"image": "images/william-vestey-baron-portrait.jpg",
 "imageCaption": "William Vestey, 1st Baron Vestey (1859-1940)<br>Public domain photograph<br>Source: <a href='https://en.wikipedia.org/wiki/File:Baron_Vestey_LCCN2014718289.jpg' target='_blank' rel='noopener'>Wikipedia</a>",
 "imageCaptionHTML": true,
 "citations": ["25"]
@@ -432,7 +432,7 @@ var timelineData = [
 "icon": "poi",
 "importance": "minor",
 "image": "images/margaret-lockwood-plaque.jpg",
-"imageCaption": "Margaret Lockwood blue plaque at 14 Highland Road, SE19<br><a href='https://commons.wikimedia.org/wiki/File:MARGARET_LOCKWOOD_-_14_Highland_Road_Upper_Norwood_London_SE19_1DP2.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Spudgun67, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
+"imageCaption": "Margaret Lockwood blue plaque at 14 Highland Road, SE19<br>Source: <a href='https://commons.wikimedia.org/wiki/File:MARGARET_LOCKWOOD_-_14_Highland_Road_Upper_Norwood_London_SE19_1DP2.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Spudgun67, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
 "imageCaptionHTML": true,
 "citations": ["59", "61", "113"]
 },
@@ -484,7 +484,7 @@ var timelineData = [
 "description": "London County Council acquires the 37-acre Kingswood House site in 1946 to address post-war housing needs. The Kingswood Estate is built around the preserved mansion, providing 789 homes and opening a community centre and library in 1956.",
 "icon": "apartment",
 "importance": "major",
-"image": "images/kingswoodestate.jpg",
+"image": "images/kingswood-estate-shopping-parade-1959.jpg",
 "imageCaption": "Kingswood Estate shopping parade, 1959<br>Source: London Metropolitan Archives",
 "imageCaptionHTML": true,
 "citations": ["103"]
@@ -505,10 +505,10 @@ var timelineData = [
 "description": "Following Basil Aldous's death, the Cheshire Foundation acquires Athol House for £12,500 in 1953. The building undergoes pioneering accessibility retrofitting including lift shaft installation, ramps, and widened doorways—predating statutory barrier-free standards by decades while preserving Scott's original exterior. In October 1955, Group-Captain Leonard Cheshire VC and the Duchess of Gloucester formally open London's first Cheshire Home for the Sick, offering 28 beds for people with severe physical disabilities.<sup>105</sup>",
 "icon": "home",
 "importance": "major",
-"image": "images/cheshiresmile_page1.jpg",
+"image": "images/cheshire-smile-magazine-1960-page1.jpg",
 "imageCaption": "THE CHESHIRE SMILE Vol. 6, No. I SPRING, 1960<br>Source: <a href='https://rewind.leonardcheshire.org/the-archive/cheshire-smiles/' target='_blank' rel='noopener'>Leonard Cheshire Archive</a>, Public Domain",
 "imageCaptionHTML": true,
-"image2": "images/cheshiresmile_page2.jpg",
+"image2": "images/cheshire-smile-magazine-1960-page2.jpg",
 "image2Caption": "THE CHESHIRE SMILE Vol. 6, No. I SPRING, 1960<br>Source: <a href='https://rewind.leonardcheshire.org/the-archive/cheshire-smiles/' target='_blank' rel='noopener'>Leonard Cheshire Archive</a>, Public Domain",
 "image2CaptionHTML": true,
 "citations": ["105"]
@@ -520,7 +520,7 @@ var timelineData = [
 "description": "This wooden bus shelter is an old tram stop relocated to this site in 1961 as part of wider negotiations between the Dulwich Estate and the London Borough of Camberwell about new Council Housing sites. In early 1960, Mrs Edwards, tenant at 110 Alleyn Road, agreed to give up land from her garden in return for a five-year lease extension. The Dulwich Estate gave the land to Camberwell at no cost, with the Council responsible for all paving charges, legal costs, surveyors' fees, and fence reconstruction. A deed dedicating land for use as a 'bus draw-in and shelter' was signed in November 1960. The site now belongs to Southwark, which incorporated Camberwell in 1965. Historic postcards show horse-drawn buses ran this route from around 1900, likely owned by Thomas Tilling bus company who had stables in Gipsy Road. In 1908, the route was allocated number 3, running between Brixton and South Croydon, later extended to Oxford Circus. The Dulwich Society secured funding in 2005 and 2015 to repair the shelter, and by popular demand it became Locally Listed in Southwark in 2023.<sup>115</sup>",
 "icon": "bus",
 "importance": "major",
-"image": "images/BusShelter.jpg",
+"image": "images/wooden-bus-shelter-south-croxted.jpg",
 "imageCaption": "The historic wooden bus shelter on South Croxted Road<br>Source: <a href='https://gipsyhillfriends.org/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["115"]
@@ -532,8 +532,8 @@ var timelineData = [
 "description": "An 18-room nuclear bunker is constructed beneath a block of eight flats as part of Pear Tree House on Lunham Road in the Central Hill Estate. Originally designated as a control centre for Civil Defence Region 53a, the bunker featured a blast door entrance leading to an Intake Room, along with specialized facilities including a Radio Room, Health & Welfare Rooms, Communications Centre, and Control Room. In 1979 it was converted to the London SE Group War HQ administered by the GLC. During the late 1980s, 'nuclear-free' Lambeth threatened to evict the Civil Defence Authority, and the facility was ultimately vacated in 1993, marking the end of Gipsy Hill's Cold War role in London's civil defence network.<sup>70</sup>",
 "icon": "bunker",
 "importance": "major",
-"image": "images/peartree2.jpg",
-"imageCaption": "The rear of Pear Tree House, Lambeth's former Civil Defence building<br><a href='https://boroughphotos.org/lambeth/pear-tree-house-civil-defence-lunham-road-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
+"image": "images/pear-tree-house-civil-defence.jpg",
+"imageCaption": "The rear of Pear Tree House, Lambeth's former Civil Defence building<br>Source: <a href='https://boroughphotos.org/lambeth/pear-tree-house-civil-defence-lunham-road-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
 "citations": ["70"]
 },
@@ -544,7 +544,7 @@ var timelineData = [
 "description": "What is now the Paxton roundabout at the bottom of Gipsy Hill was for many years a triangle junction. The small piece of open space at the end of Gipsy Road, at the junction with Alleyn Road and several other roads, was converted into a large roundabout in the 1960s.<sup>116</sup>",
 "icon": "road",
 "importance": "minor",
-"image": "images/Norwood_Triangle.jpg",
+"image": "images/norwood-triangle-junction-historic.jpg",
 "imageCaption": "The Norwood Triangle junction before conversion to roundabout<br>Source: <a href='https://boroughphotos.org/lambeth/the-triangle-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
 "citations": ["116"]
@@ -557,7 +557,7 @@ var timelineData = [
 "icon": "apartment",
 "importance": "major",
 "image": "images/central-hill-estate.jpg",
-"imageCaption": "Central Hill Estate, SE19 (1960s–70s) by Christopher Hilton<br><a href='https://commons.wikimedia.org/wiki/File:Central_Hill_Estate,_SE19_-_geograph.org.uk_-_4918582.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, <a href='https://creativecommons.org/licenses/by-sa/2.0/' target='_blank' rel='noopener'>CC BY-SA 2.0</a>",
+"imageCaption": "Central Hill Estate, SE19 (1960s–70s) by Christopher Hilton<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Central_Hill_Estate,_SE19_-_geograph.org.uk_-_4918582.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, <a href='https://creativecommons.org/licenses/by-sa/2.0/' target='_blank' rel='noopener'>CC BY-SA 2.0</a>",
 "imageCaptionHTML": true,
 "citations": ["64", "65", "69"]
 },
@@ -674,8 +674,8 @@ var timelineData = [
 "description": "Friends of Gipsy Hill (FoGH) forms as a community group following a successful crowdfunding campaign supported by the Mayor of London. The group holds its first meeting on May 4th and formally adopts its constitution on October 6th. FoGH establishes itself with a mission to inspire residents' involvement and sustainable use of local spaces for community wellbeing, marking the beginning of a new era of community activism in Gipsy Hill.<sup>74,83,84</sup>",
 "icon": "fogh",
 "importance": "major",
-"image": "images/fogh_about.jpg",
-"imageCaption": "Friends of Gipsy Hill community group<br><a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"image": "images/friends-of-gipsy-hill-community-group.jpg",
+"imageCaption": "Friends of Gipsy Hill community group<br>Source: <a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["74", "83", "84"]
 },
@@ -687,7 +687,7 @@ var timelineData = [
 "icon": "fogh",
 "importance": "minor",
 "image": "images/gipsy-hill-village-fete-2019.jpg",
-"imageCaption": "First Gipsy Hill Village Fete on Long Meadow<br><a href='https://gipsyhillfriends.org/village-fete/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"imageCaption": "First Gipsy Hill Village Fete on Long Meadow<br>Source: <a href='https://gipsyhillfriends.org/village-fete/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["74", "85"]
 },
@@ -698,8 +698,8 @@ var timelineData = [
 "description": "After being contacted by its owner in Devon, Friends of Gipsy Hill crowdfunds to bring an original 1950s 'British Railways Gipsy Hill' station sign back to SE19 on August 8th. The 3-metre-long, 66cm-tall sign was installed after railway nationalisation and retired in 1982 when Network South East formed. Having journeyed from South Yorkshire (2009) to Devon before returning home, this remarkably well-preserved 70-year-old piece of heritage now resides securely in the station garden for the community to enjoy.<sup>74</sup>",
 "icon": "fogh",
 "importance": "minor",
-"image": "images/british-railways-sign.jpg",
-"imageCaption": "Railway Sign returned to Gipsy Hill<br><a href='https://gipsyhillfriends.org/british-railways-gipsy-hill-station-sign/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"image": "images/gipsy-hill-railway-sign-returned.jpg",
+"imageCaption": "Railway Sign returned to Gipsy Hill<br>Source: <a href='https://gipsyhillfriends.org/british-railways-gipsy-hill-station-sign/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["74"]
 },
@@ -711,7 +711,7 @@ var timelineData = [
 "icon": "fogh",
 "importance": "minor",
 "image": "images/gipsy-hill-christmas-tree-2020.jpg",
-"imageCaption": "Gipsy Hill Community Christmas Tree 2020<br><a href='https://gipsyhillfriends.org/christmas-tree/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"imageCaption": "Gipsy Hill Community Christmas Tree 2020<br>Source: <a href='https://gipsyhillfriends.org/christmas-tree/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["74"]
 },
@@ -740,8 +740,8 @@ var timelineData = [
 "description": "The Friends of Gipsy Hill station gardens flourish under community care, transforming previously neglected spaces into beautiful green areas. Volunteers maintain flower beds, plant seasonal displays, and create a welcoming environment for commuters and visitors alike.<sup>74</sup>",
 "icon": "fogh",
 "importance": "minor",
-"image": "images/station_garden.jpg",
-"imageCaption": "Gipsy Hill Station Garden maintained by FoGH volunteers<br><a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"image": "images/gipsy-hill-station-garden-fogh.jpg",
+"imageCaption": "Gipsy Hill Station Garden maintained by FoGH volunteers<br>Source: <a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["74"]
 },
@@ -752,8 +752,8 @@ var timelineData = [
 "description": "Following a review by the Local Government Boundary Commission for England, Gipsy Hill ward was reduced from three to two councillors. This change came into effect for the local elections held on May 5, 2022.<sup>87</sup>",
 "icon": "official",
 "importance": "minor",
-"image": "images/2022GipsyHillWard.png",
-"imageCaption": "Gipsy Hill ward boundaries since 2022<br><a href='https://foundation.m.wikimedia.org/wiki/Policy:Terms_of_Use_for_Wikimedia_Maps' target='_blank' rel='noopener'>Wikimedia Maps</a>, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
+"image": "images/gipsy-hill-ward-boundaries-2022.png",
+"imageCaption": "Gipsy Hill ward boundaries since 2022<br>Source: <a href='https://foundation.m.wikimedia.org/wiki/Policy:Terms_of_Use_for_Wikimedia_Maps' target='_blank' rel='noopener'>Wikimedia Maps</a>, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
 "imageCaptionHTML": true,
 "citations": ["87"]
 },
@@ -784,7 +784,7 @@ var timelineData = [
 "icon": "fogh",
 "importance": "major",
 "citations": ["74", "92"],
-"image": "images/FoghWashing.jpg",
+"image": "images/fogh-volunteers-community-work.jpg",
 "imageCaption": "Friends of Gipsy Hill volunteers maintaining community spaces<br>Source: <a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true
 }
