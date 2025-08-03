@@ -137,7 +137,8 @@ function initializeTimeline() {
         
         // Populate FoGH logos
         showDebug('Populating FoGH logos');
-        document.querySelector('.fogh-logo-header svg').innerHTML = foghLogoHeader;
+        // Commented out - now using image instead of SVG for header logo
+        // document.querySelector('.fogh-logo-header svg').innerHTML = foghLogoHeader;
         document.querySelector('.about-logo svg').innerHTML = foghLogoHeader;
         
         // =============================================================================
