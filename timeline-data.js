@@ -67,6 +67,9 @@ var timelineData = [
 "image": "images/margaret-finch-engraving.jpg",
 "imageCaption": "Margaret Finch, aged 108. Engraving by J. Sharp<br><a href='https://wellcomecollection.org/' target='_blank' rel='noopener'>Wellcome Collection</a>, <a href='https://creativecommons.org/licenses/by/4.0' target='_blank' rel='noopener'>CC BY 4.0</a>",
 "imageCaptionHTML": true,
+"image2": "images/MFinch_Painting.jpg",
+"image2Caption": "1851 painting by John McCallum in which Margaret Finch is believed to be depicted, Public Domain",
+"image2CaptionHTML": true,
 "citations": ["5", "6", "9"]
 },
 
