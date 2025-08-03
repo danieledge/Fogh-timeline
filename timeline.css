@@ -120,6 +120,7 @@ body::before {
     transition: all 0.3s ease;
     z-index: 100;
     min-width: 200px;
+    visibility: hidden;
 }
 
 [data-theme="dark"] .menu-panel {
@@ -140,6 +141,7 @@ body::before {
     opacity: 1;
     transform: translateY(0);
     pointer-events: all;
+    visibility: visible;
 }
 
 /* Menu items */
@@ -155,6 +157,12 @@ body::before {
     gap: 12px;
     transition: all 0.2s ease;
     margin-bottom: 0.25rem;
+}
+
+/* Ensure menu buttons are non-interactive when menu is closed */
+.menu-panel:not(.active) button {
+    pointer-events: none !important;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .menu-panel button:last-child {
@@ -2936,5 +2944,23 @@ textarea#image-sources {
     .image-modal-content .modal-close svg {
         width: 22px;
         height: 22px;
+    }
+}
+
+/* Mobile touch area protection for menu */
+@media (hover: none) and (pointer: coarse) {
+    /* Ensure menu panel is fully hidden and non-interactive when closed */
+    .menu-panel:not(.active) {
+        visibility: hidden !important;
+        pointer-events: none !important;
+        touch-action: none !important;
+        -webkit-touch-callout: none !important;
+        -webkit-user-select: none !important;
+    }
+    
+    /* Make menu toggle button more responsive on touch */
+    .menu-toggle {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
     }
 }
