@@ -410,6 +410,9 @@ var timelineData = [
 "description": "During World War I, Kingswood House serves as a convalescent hospital for wounded Canadian soldiers, funded by the Massey-Harris company, before closing in 1919.",
 "icon": "bomb",
 "importance": "major",
+"image": "images/Kingswood-patients-sisters.JPG",
+"imageCaption": "Patients and Sisters outside Kingswood c. 1917",
+"imageSource": "Unknown (<a href=\"#\" onclick=\"document.getElementById('add-entry-button').click(); return false;\">if known please submit</a>)",
 "citations": ["101"]
 },
 
