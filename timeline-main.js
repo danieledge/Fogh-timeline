@@ -159,6 +159,16 @@ function initializeTimeline() {
             
             var isActive = menuPanel.classList.toggle('active');
             menuToggle.querySelector('svg').innerHTML = isActive ? closeMenuIcon : menuIcon;
+            
+            // On mobile, add a small delay before making menu interactive
+            if (isActive && 'ontouchstart' in window) {
+                menuPanel.style.pointerEvents = 'none';
+                setTimeout(function() {
+                    if (menuPanel.classList.contains('active')) {
+                        menuPanel.style.pointerEvents = '';
+                    }
+                }, 100);
+            }
         }
         
         // Close menu when clicking outside
