@@ -29,7 +29,7 @@ var timelineData = [
 "imageCaption": "The approximate historical area of the Great North Wood<br><a href='https://commons.wikimedia.org/wiki/File:Great_North_Wood_map.png' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Gapfall, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
 "imageCaptionHTML": true,
 "image2": "images/dulwich_wood.jpg",
-"image2Caption": "Modern day view from Dulwich Wood showing Battersea Power Station in the distance<br><a href='https://en.wikipedia.org/wiki/File:Battersea_Power_Station_seen_from_Dulwich_Wood_in_the_early_spring.jpg' target='_blank' rel='noopener'>Wikipedia</a>, Public Domain",
+"image2Caption": "Modern day view from Dulwich Wood showing Battersea Power Station in the distance<br>Source: <a href='https://en.wikipedia.org/wiki/File:Battersea_Power_Station_seen_from_Dulwich_Wood_in_the_early_spring.jpg' target='_blank' rel='noopener'>Wikipedia</a>, Public Domain",
 "image2CaptionHTML": true,
 "citations": ["93", "94", "114"]
 },
@@ -68,7 +68,7 @@ var timelineData = [
 "imageCaption": "Margaret Finch, aged 108. Engraving by J. Sharp<br><a href='https://wellcomecollection.org/' target='_blank' rel='noopener'>Wellcome Collection</a>, <a href='https://creativecommons.org/licenses/by/4.0' target='_blank' rel='noopener'>CC BY 4.0</a>",
 "imageCaptionHTML": true,
 "image2": "images/MFinch_Painting.jpg",
-"image2Caption": "1851 painting by John McCallum in which Margaret Finch is believed to be depicted, Public Domain",
+"image2Caption": "1851 painting by John McCallum in which Margaret Finch is believed to be depicted<br>Source: Public Domain",
 "image2CaptionHTML": true,
 "citations": ["5", "6", "9"]
 },
@@ -128,7 +128,7 @@ var timelineData = [
 "imageCaption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br><a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
 "imageCaptionHTML": true,
 "image2": "images/ NorwoodGypsiesPage2.jpg",
-"image2Caption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br><a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
+"image2Caption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br>Source: <a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
 "image2CaptionHTML": true,
 "citations": ["14", "15", "16"]
 },
@@ -171,7 +171,7 @@ var timelineData = [
 "icon": "hill",
 "importance": "major",
 "image": "images/Trottinghill.JPG",
-"imageCaption": "Public Ledger and Daily Advertiser - Thursday 12 April 1832",
+"imageCaption": "Public Ledger and Daily Advertiser - Thursday 12 April 1832<br>Source: Historical newspaper archives",
 "citations": ["20", "21"]
 },
 
@@ -300,7 +300,7 @@ var timelineData = [
 "imageCaption": "French's Field, Gipsy Hill, Upper Norwood c1890<br>Source: <a href='https://boroughphotos.org/lambeth/frenchs-field-gipsy-hill-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
 "image2": "images/Dairy_Leaflet Medium.png",
-"image2Caption": "Norwood Central Dairy article - image digitally enhanced for clarity, Public Domain",
+"image2Caption": "Norwood Central Dairy article - image digitally enhanced for clarity<br>Source: Public Domain",
 "image2CaptionHTML": true,
 "citations": ["44", "45"]
 },
@@ -312,7 +312,7 @@ var timelineData = [
 "icon": "poi",
 "importance": "major",
 "image": "images/annie-besant-plaque.jpg",
-"imageCaption": "Annie Besant blue plaque at 39 Colby Road, Gipsy Hill, London.<br><a href='https://commons.wikimedia.org/wiki/File:Annie_Besant_plaque.JPG' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
+"imageCaption": "Annie Besant blue plaque at 39 Colby Road, Gipsy Hill, London<br><a href='https://commons.wikimedia.org/wiki/File:Annie_Besant_plaque.JPG' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
 "imageCaptionHTML": true,
 "citations": ["46", "47", "48"]
 },
@@ -324,7 +324,7 @@ var timelineData = [
 "icon": "school",
 "importance": "minor",
 "image": "images/gipsy-road-school-1875.jpg",
-"imageCaption": "Gipsy Road School, which was built in 1875. Later known as West Norwood School.<br>Source: <a href='https://boroughphotos.org/lambeth/gipsy-road-school-west-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
+"imageCaption": "Gipsy Road School, built in 1875, later known as West Norwood School<br>Source: <a href='https://boroughphotos.org/lambeth/gipsy-road-school-west-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
 "citations": ["49", "51"]
 },
@@ -378,7 +378,7 @@ var timelineData = [
 "imageCaption": "John Lawson Johnston, inventor of Bovril, Vanity Fair caricature 1897<br><a href='https://commons.wikimedia.org/wiki/File:John_Lawson_Johnston_Vanity_Fair_18_February_1897.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
 "imageCaptionHTML": true,
 "image2": "images/kingswood-house.jpg",
-"image2Caption": "Kingswood House<br><a href='https://commons.wikimedia.org/wiki/File:Kingswood,_Dulwich.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
+"image2Caption": "Kingswood House<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Kingswood,_Dulwich.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
 "image2CaptionHTML": true,
 "citations": ["99", "100"]
 },
@@ -399,7 +399,7 @@ var timelineData = [
 "icon": "tree",
 "importance": "major",
 "image": "images/norwoodpark_leaflet.jpg",
-"imageCaption": "An urgent appeal brochure for funds to create Norwood Park, c.1905<br>Image source: Lambeth Archives",
+"imageCaption": "An urgent appeal brochure for funds to create Norwood Park, c.1905<br>Source: <a href='https://www.lambeth.gov.uk/archives' target='_blank' rel='noopener'>Lambeth Archives</a>",
 "imageCaptionHTML": true,
 "citations": ["60", "109"]
 },
@@ -485,7 +485,7 @@ var timelineData = [
 "icon": "apartment",
 "importance": "major",
 "image": "images/kingswoodestate.jpg",
-"imageCaption": "Kingswood Estate shopping parade, 1959<br>Image source: London Metropolitan Archives",
+"imageCaption": "Kingswood Estate shopping parade, 1959<br>Source: London Metropolitan Archives",
 "imageCaptionHTML": true,
 "citations": ["103"]
 },
@@ -521,7 +521,7 @@ var timelineData = [
 "icon": "bus",
 "importance": "major",
 "image": "images/BusShelter.jpg",
-"imageCaption": "The historic wooden bus shelter on South Croxted Road<br>Image source: <a href='https://gipsyhillfriends.org/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"imageCaption": "The historic wooden bus shelter on South Croxted Road<br>Source: <a href='https://gipsyhillfriends.org/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["115"]
 },
@@ -663,7 +663,7 @@ var timelineData = [
 "icon": "heart",
 "importance": "major",
 "image": "images/fanny-wallis-print.png",
-"imageCaption": "Fanny the Gipsy Hill station cat<br>Image source: <a href='https://gipsyhillfriends.org/who-is-fanny-the-gipsy-hill-cat/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
+"imageCaption": "Fanny the Gipsy Hill station cat<br>Source: <a href='https://gipsyhillfriends.org/who-is-fanny-the-gipsy-hill-cat/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["74", "82"]
 },
@@ -785,7 +785,7 @@ var timelineData = [
 "importance": "major",
 "citations": ["74", "92"],
 "image": "images/FoghWashing.jpg",
-"imageCaption": "Friends of Gipsy Hill volunteers maintaining community spaces. Credit: <a href='https://gipsyhillfriends.org' target='_blank'>Friends of Gipsy Hill</a>",
+"imageCaption": "Friends of Gipsy Hill volunteers maintaining community spaces<br>Source: <a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true
 }
 ];
