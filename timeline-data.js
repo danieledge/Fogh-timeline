@@ -29,8 +29,8 @@ var timelineData = [
 "imageCaption": "The approximate historical area of the Great North Wood<br><a href='https://commons.wikimedia.org/wiki/File:Great_North_Wood_map.png' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Gapfall, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
 "imageCaptionHTML": true,
 "image2": "images/dulwich_wood.jpg",
-"imageCaption2": "Modern day view from Dulwich Wood showing Battersea Power Station in the distance<br><a href='https://en.wikipedia.org/wiki/File:Battersea_Power_Station_seen_from_Dulwich_Wood_in_the_early_spring.jpg' target='_blank' rel='noopener'>Wikipedia</a>, Public Domain",
-"imageCaption2HTML": true,
+"image2Caption": "Modern day view from Dulwich Wood showing Battersea Power Station in the distance<br><a href='https://en.wikipedia.org/wiki/File:Battersea_Power_Station_seen_from_Dulwich_Wood_in_the_early_spring.jpg' target='_blank' rel='noopener'>Wikipedia</a>, Public Domain",
+"image2CaptionHTML": true,
 "citations": ["93", "94", "114"]
 },
 
@@ -125,8 +125,8 @@ var timelineData = [
 "imageCaption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br><a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
 "imageCaptionHTML": true,
 "image2": "images/ NorwoodGypsiesPage2.jpg",
-"imageCaption2": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br><a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
-"imageCaption2HTML": true,
+"image2Caption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br><a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
+"image2CaptionHTML": true,
 "citations": ["14", "15", "16"]
 },
 
@@ -297,8 +297,8 @@ var timelineData = [
 "imageCaption": "French's Field, Gipsy Hill, Upper Norwood c1890<br>Source: <a href='https://boroughphotos.org/lambeth/frenchs-field-gipsy-hill-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
 "image2": "images/Dairy_Leaflet Medium.png",
-"imageCaption2": "Norwood Central Dairy article (image digitally enhanced for clarity), Public Domain",
-"imageCaption2HTML": true,
+"image2Caption": "Norwood Central Dairy article - image digitally enhanced for clarity, Public Domain",
+"image2CaptionHTML": true,
 "citations": ["44", "45"]
 },
 
