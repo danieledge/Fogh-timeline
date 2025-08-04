@@ -1588,9 +1588,9 @@ const timelineCitations = [
     "number": "77",
     "timeline_entry": "1990 – Railway Accident",
     "status": "Verified",
-    "source": "Gipsy Hill railway station page notes two Class 455 units derailed after hitting fallen tree on 14 Feb 1990.",
-    "quality": "Medium",
-    "url": "https://en.wikipedia.org/wiki/Gipsy_Hill_railway_station"
+    "source": "National South East Railway Society (Archived from original) notes two Class 455 units derailed after hitting fallen tree on 14 Feb 1990.",
+    "quality": "High",
+    "url": "https://web.archive.org/web/20180626222308/https://www.nsers.org/jan-dec-90.html"
   },
   {
     "number": "88",
