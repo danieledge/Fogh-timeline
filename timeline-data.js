@@ -341,7 +341,7 @@ var timelineData = [
 {
 "date": "1881-1882",
 "title": "Gipsy Road Baptist Church",
-"description": "Gipsy Road Baptist Church is built and dedicated, adding another significant religious building to serve the growing community's spiritual needs.",
+"description": "Gipsy Road Baptist Church is built, with its foundation stone laid on 27th September 1881. Constructed at a cost of £4,700, this substantial religious building was designed to serve the growing community's spiritual needs. The church was enhanced in 1887 with the addition of an organ, inaugurated with a recital by the renowned organist Alfred Hollins.",
 "icon": "church",
 "importance": "minor",
 "citations": ["71"],
