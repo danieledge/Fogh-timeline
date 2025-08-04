@@ -433,6 +433,7 @@
     <!-- JAVASCRIPT LOADING                                                  -->
     <!-- Loads timeline data and functionality scripts in sequence           -->
     <!-- =================================================================== -->
+    <!-- =================================================================== -->
     <!-- Load external JavaScript files with cache busting -->
     <script>
         (function() {
@@ -456,7 +457,9 @@
             loadScript('timeline-data.js', function() {
                 loadScript('timeline-main.js', function() {
                     loadScript('staticman-integration.js', function() {
-                        console.log('All scripts loaded including Staticman integration');
+                        loadScript('update_citation_display.js', function() {
+                            console.log('All scripts loaded including citation enhancements');
+                        });
                     });
                 });
             });
