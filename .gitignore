@@ -1,25 +1,120 @@
-# Sensitive files - only files containing passwords
+# Shell scripts
+*.sh
+
+# Backup files
+*.backup
+*.backup-*
+*.bak
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Log files
+*.log
+logs/
+*.log.*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.project
+.classpath
+.settings/
+*.iml
+
+# Environment variables
 .env
-deploy.sh
-deploy-secure.sh
-auto-commit.sh
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.npm/
+.yarn/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Sensitive data
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+secrets/
+private/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Cache
+.cache/
+.eslintcache
+.parcel-cache
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+
+# Package files
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# Temporary files
+tmp/
+temp/
+debug/
 
 # Version tracking
 VERSION
 
-# Debug and temporary files
-debug/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Node
-node_modules/
-
-# Editor directories
-.vscode/
-.idea/
+# Compiled files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
