@@ -1119,7 +1119,7 @@ const timelineCitations = [
     "timeline_entry": "2011 \u2013 Fanny the Station Cat",
     "status": "Verified",
     "source": "Local beloved cat mascot",
-    "quality": "Low",
+    "quality": "High",
     "url": "https://gipsyhillfriends.org/2017/11/05/the-gipsy-hill-cat/"
   },
   {
