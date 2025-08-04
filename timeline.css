@@ -1050,6 +1050,39 @@ body::before {
     display: flex !important;
 }
 
+/* Triple images layout */
+.content-images-wrapper.triple-images {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.triple-images .content-image {
+    flex: 0 0 auto;
+    max-width: 180px;
+}
+
+/* Mobile adjustments for triple images */
+@media (max-width: 768px) {
+    .content-images-wrapper.triple-images {
+        flex-direction: column;
+    }
+    
+    .triple-images .content-image {
+        max-width: 200px;
+        margin-bottom: 1rem;
+    }
+    
+    .triple-images .content-image:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* Keep flex display for triple images in major entries */
+.timeline-item.major:not(.expanded) .content-images-wrapper.triple-images {
+    display: flex !important;
+}
+
 .content-image {
     position: relative;
     z-index: 5; /* Ensure images are above other elements */
