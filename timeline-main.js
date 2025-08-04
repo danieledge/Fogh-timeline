@@ -700,7 +700,7 @@ function initializeTimeline() {
         }
 
         // Add image(s) if present, or show contribution prompt
-        if (item.image || item.image2) {
+        if (item.image || item.image2 || item.image3) {
             // Create container for images
             var imagesWrapper = document.createElement('div');
             imagesWrapper.className = 'content-images-wrapper';
@@ -784,9 +784,26 @@ function initializeTimeline() {
                 ));
             }
             
-            // Add class for dual images layout
-            if (item.image && item.image2) {
+            // Add third image if present
+            if (item.image3) {
+                imagesWrapper.appendChild(createImageWithCaption(
+                    item.image3, 
+                    item.image3Caption, 
+                    item.image3CaptionHTML,
+                    true
+                ));
+            }
+            
+            // Add class for multiple images layout
+            var imageCount = 0;
+            if (item.image) imageCount++;
+            if (item.image2) imageCount++;
+            if (item.image3) imageCount++;
+            
+            if (imageCount === 2) {
                 imagesWrapper.className += ' dual-images';
+            } else if (imageCount === 3) {
+                imagesWrapper.className += ' triple-images';
             }
             
             content.appendChild(imagesWrapper);
@@ -1547,6 +1564,20 @@ function generateTimelineExport() {
                     .replace(/&#39;/g, "'")
                     .replace(/&amp;/g, '&');
                 text += 'CAPTION 2: ' + caption2 + '\n';
+            }
+        }
+        
+        // Add third image information if available
+        if (entry.image3) {
+            text += '\nIMAGE 3: ' + entry.image3 + '\n';
+            if (entry.image3Caption) {
+                var caption3 = entry.image3Caption
+                    .replace(/<br>/g, ' ')
+                    .replace(/<[^>]*>/g, '')
+                    .replace(/&quot;/g, '"')
+                    .replace(/&#39;/g, "'")
+                    .replace(/&amp;/g, '&');
+                text += 'CAPTION 3: ' + caption3 + '\n';
             }
         }
         
