@@ -1,5 +1,7 @@
 # FoGH Timeline (Friends of Gipsy Hill Timeline)
 
+> ⚠️ **BETA SOFTWARE**: This application is currently in beta. While functional, it may contain bugs or incomplete features. The code is provided as-is without warranty of any kind.
+
 An interactive, community-driven timeline application documenting the rich history of Gipsy Hill and surrounding areas in South London. This open-source project enables communities to create, maintain, and share their local history through an engaging visual timeline interface.
 
 ---
@@ -256,7 +258,7 @@ See [LICENSE](LICENSE) for full details.
 
 ## 📊 Version Information
 
-**Current Version**: v2.07 (See 'about' for latest version information)
+**Current Version**: v2.08 (See 'about' for latest version information)
 
 **Recent Updates**:
 - Enhanced citation display system
