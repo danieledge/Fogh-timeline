@@ -1358,11 +1358,17 @@ const timelineCitations = [
     "number": "55",
     "timeline_entry": "2024–Present – FoGH Mission Continues",
     "status": "Verified",
-    "source": "Friends of Gipsy Hill remain actively engaged in community gardening, events, and local wellbeing projects through 2025.",
+    "source": "Friends of Gipsy Hill remain actively engaged in community gardening, events, and local wellbeing projects.",
     "quality": "High",
     "url": "https://gipsyhillfriends.org/",
+    "url_name": "Friends of Gipsy Hill",
     "additional_urls": [
-      "https://gipsyhillfriends.org/about-us/"
+      "https://gipsyhillfriends.org/about-us/",
+      "https://gipsyhillfriends.org/lookback-over-2024/"
+    ],
+    "additional_url_names": [
+      "Friends of Gipsy Hill (About Us)",
+      "Friends of Gipsy Hill (Lookback over 2024)"
     ]
   },
   {
