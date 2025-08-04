@@ -1,29 +1,99 @@
 # FoGH Timeline (Friends of Gipsy Hill Timeline)
 
-An interactive, community-driven timeline documenting the rich history of Gipsy Hill and surrounding areas in South London. This project enables local residents to contribute historical events, memories, and amendments to create a comprehensive historical record.
+An interactive, community-driven timeline application documenting the rich history of Gipsy Hill and surrounding areas in South London. This open-source project enables communities to create, maintain, and share their local history through an engaging visual timeline interface.
 
-## 🌟 Overview
+---
 
-The FoGH Timeline is an open-source web application that presents historical events in an engaging, visual format while allowing community contributions. Built with vanilla JavaScript for maximum compatibility and performance, it features a modern, responsive design that works seamlessly across all devices.
+## 🌟 Application Overview
 
-### Key Features
+The FoGH Timeline is a powerful, flexible timeline application built with vanilla JavaScript for maximum compatibility and performance. While originally created for Gipsy Hill's history, the application can be adapted for any community or historical documentation project.
 
-- **📅 Interactive Timeline**: Explore historical events from the 1800s to present day
-- **👥 Community Contributions**: Submit new events or suggest amendments via GitHub
-- **🎨 Theme Support**: Toggle between light and dark themes for comfortable viewing
-- **📱 Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **🔍 Smart Filtering**: Toggle between major and minor events
-- **📚 Rich Citations**: Every event includes proper sources and references
-- **🖼️ Image Support**: Events can include historical images with proper attribution
-- **✏️ Amendment System**: Suggest corrections or additions to existing entries
+### Core Application Features
+
+- **📅 Interactive Visual Timeline**: 
+  - Smooth scrolling through historical events
+  - Visual importance indicators (major/minor events)
+  - Chronological organization with date markers
+  - Responsive design for all devices
+
+- **🎨 Advanced UI/UX**:
+  - Dark/light theme toggle with system preference detection
+  - Smooth animations and transitions
+  - Touch-friendly mobile interface
+  - Keyboard navigation support
+
+- **🔍 Smart Filtering & Navigation**:
+  - Toggle between major and minor historical events
+  - Quick navigation to specific time periods
+  - Visual density indicators for event-rich periods
+
+- **📚 Comprehensive Citation System**:
+  - Every event includes verifiable sources
+  - Quality indicators (High/Medium/Low)
+  - Verification status tracking
+  - Multiple source support per event
+
+- **🖼️ Rich Media Support**:
+  - Historical images with captions
+  - Lazy loading for performance
+  - Attribution management
+  - Thumbnail generation support
+
+- **👥 Community Contribution System**:
+  - Submit new historical events
+  - Suggest amendments to existing entries
+  - GitHub-based moderation workflow
+  - Privacy-preserving submission process
+
+### Technical Capabilities
+
+- **No Database Required**: Fully static site architecture
+- **Version Control Integration**: Git-based content management
+- **Staticman Integration**: Automated pull request generation
+- **SEO Optimized**: Semantic HTML and metadata
+- **Performance Focused**: Minimal dependencies, optimized assets
+- **Extensible**: Modular JavaScript architecture
+
+---
+
+## 📖 About the Gipsy Hill Timeline
+
+This instance of the timeline application documents the fascinating history of Gipsy Hill in South London, from Roman times to the present day. It serves as a digital archive for the community, preserving local memories and historical records.
+
+### Historical Coverage
+
+- **Ancient Period**: Roman settlements and Saxon boundaries
+- **Medieval Era**: Norman conquest impacts and early land use
+- **Victorian Development**: Railway arrival and suburban growth
+- **20th Century**: Wars, social changes, and community development
+- **Modern Era**: Contemporary community initiatives and cultural evolution
+
+### Notable Features in the Gipsy Hill Data
+
+- Over 100 documented historical events
+- Verified citations from archives, museums, and historical societies
+- Rare historical photographs and images
+- Personal memories from long-time residents
+- Connections to broader London and UK history
+
+### Data Sources Include
+
+- Local authority archives
+- British Library collections
+- Museum archives
+- Historical society records
+- Community contributions
+- Academic research papers
+
+---
 
 ## 🚀 Getting Started
 
 ### Viewing the Timeline
 
-Visit the live timeline at: [https://gipsyhillfriends.org/timeline.html](https://gipsyhillfriends.org/timeline.html)
+Visit the live Gipsy Hill timeline at: [https://gipsyhillfriends.org/timeline.html](https://gipsyhillfriends.org/timeline.html)
 
-### Local Development
+### Setting Up Your Own Timeline
 
 1. **Clone the repository**:
    ```bash
@@ -31,7 +101,12 @@ Visit the live timeline at: [https://gipsyhillfriends.org/timeline.html](https:/
    cd Fogh-timeline
    ```
 
-2. **Serve the files locally**:
+2. **Customize the data**:
+   - Edit `timeline-data.js` with your historical events
+   - Update branding in `timeline.html`
+   - Modify styles in `timeline.css`
+
+3. **Serve locally**:
    ```bash
    # Using Python 3
    python -m http.server 8000
@@ -43,223 +118,168 @@ Visit the live timeline at: [https://gipsyhillfriends.org/timeline.html](https:/
    php -S localhost:8000
    ```
 
-3. **Open in browser**:
-   Navigate to `http://localhost:8000/timeline.html`
+4. **Deploy**:
+   - Works with any static hosting (GitHub Pages, Netlify, etc.)
+   - No server-side requirements
 
-### Debug Mode
-
-For testing submissions without creating actual GitHub pull requests:
-- Add `?debug=true` to the URL
-- Forms will be pre-populated with test data
-- Submissions will be marked with [TEST] prefix
+---
 
 ## 📁 Project Structure
 
 ```
-├── timeline.html          # Main application file
-├── timeline.css          # Styles and theme definitions
-├── timeline-main.js      # Core JavaScript functionality
-├── timeline-data.js      # Historical event data
-├── staticman-integration.js # Handles form submissions
-├── icons/               # SVG icons for timeline events
-│   ├── building.svg    # Buildings and structures
-│   ├── transport.svg   # Transport related events
-│   ├── disaster.svg    # Natural disasters
-│   └── ...            # Various other event type icons
-├── images/             # Historical images and photos
-├── _data/              # Submission data (when using GitHub)
-└── staticman.yml       # Staticman configuration
-
-## Additional Files (Not in Repository)
-├── .env               # Environment variables (create locally)
-└── deploy.sh         # Deployment script (maintainers only)
+├── timeline.html              # Main application file
+├── timeline.css              # Styles and theme definitions
+├── timeline-main.js          # Core timeline functionality
+├── timeline-data.js          # Historical event data
+├── staticman-integration.js  # Form submission handler
+├── update_citation_display.js # Citation enhancement system
+├── icons/                    # SVG icons for event types
+├── images/                   # Historical images
+├── _data/                    # Submission data storage
+└── staticman.yml            # Submission configuration
 ```
 
-## 🤝 Contributing
+---
 
-We welcome contributions from the community! There are several ways to contribute:
+## 🤝 Contributing to Gipsy Hill Timeline
 
-### 1. Submit New Events
+### Submit New Events
 
-To add a new historical event:
-1. Visit the timeline
-2. Click "Suggest Entry/Amendment" or the "+" button
-3. Fill in the event details:
-   - **Date**: Year or year-month when the event occurred
-   - **Title**: Brief, descriptive title
-   - **Description**: Detailed information about the event
-   - **Sources**: Citations and references (required)
-   - **Images**: Optional historical images with proper attribution
+1. Click "Suggest Entry/Amendment" on the timeline
+2. Provide:
+   - Date (year or year-month)
+   - Descriptive title
+   - Detailed description
+   - Verified sources
+   - Historical images (optional)
 
-### 2. Suggest Amendments
+### Suggest Amendments
 
-To correct or expand existing entries:
-1. Click "Suggest Edit" on any timeline entry
-2. Select what needs to be amended
-3. Provide detailed explanation of changes needed
-4. Include sources to support your amendments
+1. Click "Suggest Edit" on any entry
+2. Explain needed changes
+3. Provide supporting sources
 
-### 3. Privacy and Public Information
+### Privacy Notice
 
-**Important**: When submitting:
-- Your name will be publicly visible on GitHub
-- You can use just your first name or a nickname
-- Your email is converted to an irreversible hash (MD5) for privacy
-- All submitted content except email addresses becomes public on GitHub
+- Your name appears publicly on GitHub
+- Email addresses are MD5 hashed
+- All content becomes public once approved
 
-### 4. Submission Process
+---
 
-1. All submissions create a pull request on GitHub
-2. Moderators review submissions for accuracy and appropriateness
-3. Approved entries are merged and appear on the timeline
-4. You'll be notified via GitHub if there are questions about your submission
+## 🛠️ Technical Documentation
 
-## 📤 How Submissions Work - Staticman Integration
+### Customization Guide
 
-This project uses **[Staticman](https://staticman.net/)** to handle form submissions. Staticman is an open-source application that acts as a bridge between static sites and user-generated content.
+To adapt this timeline for your community:
 
-### What is Staticman?
+1. **Data Structure** (`timeline-data.js`):
+   ```javascript
+   {
+     "date": "YYYY-MM-DD",
+     "title": "Event Title",
+     "description": "Detailed description",
+     "icon": "icon-name",
+     "importance": "major|minor",
+     "citations": ["1", "2"],
+     "image": "path/to/image.jpg",
+     "imageCaption": "Caption text"
+   }
+   ```
 
-Staticman is a Node.js application that:
-- Receives form submissions from static websites
-- Validates the data according to configured rules
-- Creates pull requests on GitHub with the submitted content
-- Allows moderation before content goes live
-- Maintains a fully static site (no database required)
+2. **Citation Format**:
+   ```javascript
+   {
+     "number": "1",
+     "timeline_entry": "Event reference",
+     "status": "Verified|Unverified",
+     "source": "Source description",
+     "quality": "High|Medium|Low",
+     "url": "https://source.url"
+   }
+   ```
 
-### How the Submission Flow Works
+3. **Theme Customization** (`timeline.css`):
+   - CSS custom properties for colors
+   - Responsive breakpoints
+   - Animation timings
 
-1. **User fills out form** → Timeline submission form (new entry or amendment)
-2. **Form validation** → Client-side checks for required fields
-3. **Confirmation modal** → Shows what will be public on GitHub
-4. **API request** → Sent to Staticman endpoint (Netlify-hosted)
-5. **Staticman processing**:
-   - Validates according to `staticman.yml` rules
-   - Transforms email to MD5 hash for privacy
-   - Creates formatted JSON file
-6. **GitHub pull request** → Created automatically with submission data
-7. **Moderation** → Maintainers review and merge if appropriate
-8. **Live on timeline** → Once merged, data appears on the timeline
+### API Integration
 
-### Technical Implementation
+The timeline uses Staticman for submissions:
+- Configure in `staticman.yml`
+- Update endpoint in `staticman-integration.js`
+- Requires GitHub App setup
 
-- **Configuration**: `staticman.yml` defines validation rules and file structure
-- **API Endpoint**: Hosted on Netlify (see `netlify.toml.example`)
-- **Form Handler**: `staticman-integration.js` manages submissions
-- **Data Storage**: JSON files in `_data/timeline/` directory
-- **Privacy**: Email addresses are MD5 hashed before storage
-
-### Setting Up Your Own Instance
-
-1. Fork this repository
-2. Deploy your own Staticman instance (Heroku/Netlify/self-hosted)
-3. Update `STATICMAN_CONFIG` in `staticman-integration.js`
-4. Configure GitHub App permissions
-5. Update `staticman.yml` with your details
-
-See [STATICMAN_SETUP.md](STATICMAN_SETUP.md) for detailed instructions.
-
-## 🛠️ Technical Details
-
-### Technologies Used
-
-- **Frontend**: Vanilla JavaScript, HTML5, CSS3
-- **Submission Handler**: Staticman v3
-- **Version Control**: Git & GitHub
-- **Hosting**: Static file hosting (GitHub Pages compatible)
-
-### Browser Support
-
-- Chrome/Edge (latest)
-- Firefox (latest)
-- Safari (latest)
-- Mobile browsers (iOS Safari, Chrome Android)
-
-### Performance Features
-
-- Lazy loading of images
-- CSS animations using GPU acceleration
-- Minimal JavaScript for fast initial load
-- No external dependencies (except Staticman for submissions)
+---
 
 ## 📸 Image Guidelines
 
-When submitting images:
-- Ensure you have rights to share the image
-- Provide proper attribution (photographer, archive, etc.)
-- Use descriptive captions
-- Historical photos are preferred over modern ones
-- Maximum 5 images per event
+- Ensure proper rights/permissions
+- Provide attribution
+- Prefer historical over modern photos
+- Optimize for web (max 1200px wide)
+- Use descriptive filenames
+
+---
 
 ## 🔒 Security & Privacy
 
-- Email addresses are hashed using MD5 before storage
-- No personal data is stored in cookies
-- All submissions are moderated before publication
-- HTTPS enforced for all connections
+- No cookies or tracking
+- Email hashing for privacy
+- HTTPS enforced
+- Moderated submissions
+- No user data storage
 
-## 🐛 Reporting Issues
-
-Found a bug or have a suggestion?
-- Open an issue on [GitHub Issues](https://github.com/danieledge/Fogh-timeline/issues)
-- Include browser version and device type
-- Provide steps to reproduce the issue
+---
 
 ## 📜 License
 
-This project is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License** (CC BY-NC-SA 4.0).
+**Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International** (CC BY-NC-SA 4.0)
 
-### What this means:
+✅ **You can**: Share, adapt, and build upon the work  
+❌ **You cannot**: Use commercially or remove attribution
 
-**You are free to:**
-- ✅ Share — copy and redistribute the material in any medium or format
-- ✅ Adapt — remix, transform, and build upon the material
+See [LICENSE](LICENSE) for full details.
 
-**Under the following terms:**
-- 📝 **Attribution** — You must give appropriate credit to FoGH Timeline
-- 🚫 **NonCommercial** — You may not use the material for commercial purposes
-- 🔄 **ShareAlike** — If you remix or adapt, you must distribute under the same license
-
-**You cannot:**
-- ❌ Sell this software or use it in commercial products
-- ❌ Remove attribution to the original project
-- ❌ Apply more restrictive terms to derivative works
-
-### Content & Image Licensing
-
-⚠️ **Important:** Historical content and images may have their own licenses and copyright restrictions:
-- Images from archives, museums, or libraries may require permission for re-use
-- Always check the sources and citations provided with each timeline entry
-- User-submitted historical facts remain in the public domain
-- When in doubt, contact the original source for permission
-
-For questions about commercial use or licensing, contact: fogh@dan-edge.com
-
-Full license text: [LICENSE](LICENSE)
+---
 
 ## 🙏 Acknowledgments
 
-- **Gipsy Hill Community**: For preserving and sharing local history
-- **Contributors**: All community members who have submitted events and amendments
-- **Icon Credits**: See Iconography Credits in the application's About section
-- **Archives**: Various local and national archives cited throughout
+### For the Application
+- Built with vanilla JavaScript for universal compatibility
+- Staticman for enabling static site contributions
+- Icon contributors via Noun Project
 
-## 📊 Version History
+### For Gipsy Hill Timeline Content
+- **Friends of Gipsy Hill**: Community organization and historical preservation
+- **Local Archives**: Lambeth Archives, British Library, Museum of London
+- **Community Contributors**: Residents sharing memories and research
+- **Special Thanks**: Local historians, long-time residents, and memory keepers
 
-- **v1.39**: Added confirmation modal for submissions, improved privacy notices
-- **v1.38**: Enhanced amendment system with better form validation
-- **v1.37**: Added image upload support for events
-- **v1.36**: Implemented Staticman integration for GitHub submissions
-- See timeline About section for current version
+---
 
-## 🚦 Status
+## 📊 Version Information
+
+**Current Version**: v2.06 (See timeline footer for latest)
+
+**Recent Updates**:
+- Enhanced citation display system
+- Improved mobile touch interactions
+- Advanced image handling with thumbnails
+- Community submission improvements
+
+---
+
+## 📞 Contact
+
+**Project Maintainer**: Friends of Gipsy Hill  
+**Technical Contact**: fogh@dan-edge.com  
+**Website**: [https://gipsyhillfriends.org](https://gipsyhillfriends.org)  
+**Repository**: [https://github.com/danieledge/Fogh-timeline](https://github.com/danieledge/Fogh-timeline)
+
+---
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen)
 ![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-blue)
-
----
-
-**Maintained by**: Friends of Gipsy Hill Library  
-**Contact**: fogh@dan-edge.com  
-**Website**: [https://gipsyhillfriends.org](https://gipsyhillfriends.org)
