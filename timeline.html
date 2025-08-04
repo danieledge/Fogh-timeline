@@ -403,7 +403,7 @@
                 </div>
                 
                 <div class="about-footer">
-                    <span class="version">v2.06 (21:27 04/08/25)</span>
+                    <span class="version">v2.07 (21:27 04/08/25)</span>
                     <button class="credits-toggle" onclick="this.parentElement.classList.toggle('show-credits')">
                         Icon Credits <svg viewBox="0 0 24 24" width="12" height="12"><path d="M7 10l5 5 5-5z"/></svg>
                     </button>
@@ -457,9 +457,7 @@
             loadScript('timeline-data.js', function() {
                 loadScript('timeline-main.js', function() {
                     loadScript('staticman-integration.js', function() {
-                        loadScript('update_citation_display.js', function() {
-                            console.log('All scripts loaded including citation enhancements');
-                        });
+                        console.log('All scripts loaded');
                     });
                 });
             });
