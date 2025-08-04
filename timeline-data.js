@@ -417,6 +417,18 @@ var timelineData = [
 },
 
 {
+"date": "1917 (January)",
+"title": "Gipsy Hill Montessori College Opens",
+"description": "Britain's first Montessori training college opens at Woolsthorpe, No. 10 Dulwich Wood Avenue, established by Elizabeth Southern 'Belle' Rennie and Australian educator Lillian de Lissa. Belle Rennie, step-daughter of a prominent Harrogate physician, transformed her passionate interest in nursery education into authoritative expertise after visiting the Montessori Institute in Italy in 1911. She was instrumental in organizing the British 'Conference of the New Ideals in Education' at East Runton, Norfolk (1912) and Stratford-upon-Avon (1915), where she and fellow progressive educators envisioned creating a teacher training college. The Dulwich Estate granted a licence to use the house 'as a college for the training of young children and students in the Montessori system of education.' The Gipsy Hill Training College, operating from Dulwich Wood Avenue and later Kingswood Drive, became the primary institution where most early English Montessori teachers received their training. This pioneering establishment introduced revolutionary child-centered educational methods to Britain, with its legacy evident today in at least five Montessori nurseries in Dulwich and two more within a mile.",
+"icon": "school",
+"importance": "major",
+"citations": ["89"],
+"image": "images/Queen-And-Ladys-Aug4-1917.jpg",
+"imageCaption": "The Queen and the Lady's Newspaper, Aug 4 1917<br>Announcement of Montessori teacher training opening at Gipsy Hill",
+"imageCaptionHTML": true,
+},
+
+{
 "date": "1919-1940",
 "title": "The Vestey Family Era",
 "description": "Shipping magnate Sir William Vestey purchases Kingswood House, making it his family's principal residence. In 1922 he is elevated to the peerage as Baron Vestey of Kingswood.",
@@ -542,6 +554,21 @@ var timelineData = [
 "image": "images/pear-tree-house-civil-defence.jpg",
 "imageCaption": "The rear of Pear Tree House, Lambeth's former Civil Defence building<br>Source: <a href='https://boroughphotos.org/lambeth/pear-tree-house-civil-defence-lunham-road-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
+},
+
+{
+"date": "1966 (March 27)",
+"title": "World Cup Trophy Found by Pickles the Dog",
+"description": "In the days leading up to the 1966 FIFA World Cup, the Jules Rimet trophy was stolen from an exhibition in Westminster, creating a national crisis. On 27 March 1966, the trophy was discovered by Pickles the dog under a bush in the garden of a house on Beulah Hill—adjacent to Gipsy Hill. The area became part of football folklore, with Pickles and his owner David Corbett hailed as heroes for returning the iconic trophy so close to the start of the tournament. The trophy's dramatic recovery is celebrated in both local and footballing history as a quintessentially British moment.",
+"icon": "crown",
+"importance": "major",
+"citations": ["90"],
+"image": "images/pickles-dog.jpg",
+"imageCaption": "Pickles (born 1962 or 1963; died 1967) was a black and white collie dog, known for his role in finding the stolen Jules Rimet Trophy in March 1966, four months before the 1966 FIFA World Cup was scheduled to begin in England.<br>Source: <a href='https://en.wikipedia.org/wiki/Pickles_(dog)' target='_blank' rel='noopener'>Wikipedia</a>",
+"imageCaptionHTML": true,
+"image2": "images/pickles-collar-medals.jpg",
+"image2Caption": "Pickles' collar with fobs presented by grateful fans and a medal awarded by the Italian Canine Defence League<br>Source: <a href='https://en.wikipedia.org/wiki/File:Pickles_--_collar_and_medals.jpg' target='_blank' rel='noopener'>Wikipedia</a>",
+"image2CaptionHTML": true,
 },
 
 {
@@ -1572,6 +1599,29 @@ const timelineCitations = [
     "source": "Lambeth Council conservation-area profile CA14 documents original 1974 designation and later extensions.",
     "quality": "High",
     "url": "https://www.lambeth.gov.uk/planning-and-building-control/conservation-and-listed-buildings/conservation-area-profiles/gipsy"
+  },
+  {
+    "number": "89",
+    "timeline_entry": "1917 – Gipsy Hill Montessori College Opens",
+    "status": "Verified",
+    "source": "Britain's first Montessori training college established at 10 Dulwich Wood Avenue by Belle Rennie and Lillian de Lissa. The Queen and the Lady's Newspaper, Aug 4 1917: 'TRAINING FOR TEACHERS ON MONTESSORI PRINCIPLES will be opened in September in one of the large houses in Gipsy Hill'",
+    "quality": "High",
+    "url": "https://www.dulwichsociety.com/the-journal/summer-2019/montessori-and-dulwich-by-ian-mcinnes",
+    "additional_urls": [
+      "images/Queen-And-Ladys-Aug4-1917.jpg"
+    ],
+    "notes": "Newspaper clipping and historical research by Dulwich Society. Woolsthorpe house licensed by Dulwich Estate for Montessori education. Legacy continues with multiple Montessori nurseries in the area."
+  },
+  {
+    "number": "90",
+    "timeline_entry": "1966 – World Cup Trophy Found by Pickles the Dog",
+    "status": "Verified",
+    "source": "Jules Rimet trophy discovered by Pickles the dog on Beulah Hill, 27 March 1966, after being stolen from Westminster exhibition.",
+    "quality": "High",
+    "url": "https://londonist.com/london/history/picklesworldcup",
+    "additional_urls": [
+      "https://en.wikipedia.org/wiki/Pickles_(dog)"
+    ]
   }
 ];
 // Make data globally accessible
