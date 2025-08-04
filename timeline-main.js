@@ -506,6 +506,16 @@ function initializeTimeline() {
         showDebug('Found timeline container');
 
         // Create timeline items using DOM methods
+        // Check if page is already scrolled (user reloaded while viewing references)
+        var skipAnimations = window.pageYOffset > 100 || window.location.hash.includes('ref-');
+        if (skipAnimations) {
+            document.body.classList.add('skip-animations');
+            // Add style to immediately show timeline items
+            var style = document.createElement('style');
+            style.textContent = '.timeline-item { opacity: 1 !important; transform: none !important; animation: none !important; }';
+            document.head.appendChild(style);
+        }
+        
         showDebug('Creating ' + timelineData.length + ' timeline items');
         for (var i = 0; i < timelineData.length; i++) {
         var item = timelineData[i];
@@ -528,7 +538,7 @@ function initializeTimeline() {
         if (item.icon) {
             timelineItem.setAttribute('data-icon', item.icon);
         }
-        timelineItem.style.animationDelay = ((i + 1) * 0.1) + 's';
+        // Animation removed to prevent rendering issues
 
         // Create timeline dot
         var dot = document.createElement('div');
@@ -612,7 +622,66 @@ function initializeTimeline() {
         // Create description (with HTML support for citations)
         var desc = document.createElement('div');
         desc.className = 'content-description timeline-description';
-        desc.innerHTML = item.description; // Use innerHTML to support <sup> tags
+        
+        // Add description text
+        var descriptionText = item.description;
+        
+        // Add citation pills if citations exist
+        if (item.citations && item.citations.length > 0) {
+            descriptionText += ' ';
+            var citationPills = item.citations.map(function(num) {
+                // Find the citation to get its quality
+                var citation = null;
+                if (typeof timelineCitations !== 'undefined') {
+                    citation = timelineCitations.find(function(c) {
+                        return c.number === num;
+                    });
+                }
+                
+                var qualityClass = 'medium'; // default
+                if (citation) {
+                    // Determine the worst indicator between status and quality
+                    var statusLevel = 'medium';
+                    var qualityLevel = citation.quality ? citation.quality.toLowerCase() : 'medium';
+                    
+                    // Map status to quality levels
+                    if (citation.status) {
+                        if (citation.status === 'Verified') {
+                            statusLevel = 'high';
+                        } else if (citation.status === 'Partial' || citation.status === 'Partially Verified') {
+                            statusLevel = 'medium';
+                        } else if (citation.status === 'Unverified') {
+                            statusLevel = 'low';
+                        }
+                    }
+                    
+                    // Use the worst/lowest indicator
+                    if (statusLevel === 'low' || qualityLevel === 'low') {
+                        qualityClass = 'low';
+                    } else if (statusLevel === 'medium' || qualityLevel === 'medium') {
+                        qualityClass = 'medium';
+                    } else {
+                        qualityClass = 'high';
+                    }
+                }
+                
+                // Add icon based on quality class
+                var iconText = '';
+                if (qualityClass === 'high') {
+                    // No icon for high quality
+                    return '<a href="#ref-' + num + '" class="citation-link citation-pill quality-' + qualityClass + '">' + num + '</a>';
+                } else if (qualityClass === 'medium') {
+                    iconText = '?';
+                } else {
+                    iconText = '!';
+                }
+                
+                return '<a href="#ref-' + num + '" class="citation-link citation-pill quality-' + qualityClass + '"><span class="citation-icon">' + iconText + '</span>' + num + '</a>';
+            }).join(' ');
+            descriptionText += citationPills;
+        }
+        
+        desc.innerHTML = descriptionText;
         content.appendChild(desc);
         
         // Add read more/less indicators for major entries
@@ -855,18 +924,65 @@ function initializeTimeline() {
             // Add work in progress note
             var workInProgressNote = document.createElement('p');
             workInProgressNote.className = 'work-in-progress-note';
-            workInProgressNote.innerHTML = '🚧 Work in Progress: We have done our best to credit all sources of information accurately. If you spot something inaccurate or we\'ve missed something, <a href="#" class="about-link">just let us know</a>.';
+            workInProgressNote.innerHTML = '🚧 <strong>We need your help!</strong> This timeline relies on community contributions, especially for citations marked as <span class="status-badge unverified">Unverified</span> or <span class="quality-badge low">Low</span> quality. If you have better sources, spot inaccuracies, or can verify information, please <a href="#" class="suggest-amendment-link">suggest an amendment</a>.';
             citationsContent.appendChild(workInProgressNote);
             
-            // Add click handler for the about link
-            var aboutLink = workInProgressNote.querySelector('.about-link');
-            if (aboutLink) {
-                aboutLink.addEventListener('click', function(e) {
+            // Add click handler for the suggest amendment link
+            var amendmentLink = workInProgressNote.querySelector('.suggest-amendment-link');
+            if (amendmentLink) {
+                amendmentLink.addEventListener('click', function(e) {
                     e.preventDefault();
                     // Open submission modal instead of about modal
                     openSubmissionModal('new');
                 });
             }
+            
+            // Add key/legend
+            var keySection = document.createElement('div');
+            keySection.className = 'references-key';
+            keySection.innerHTML = '<div class="key-title">Reference Key</div>' +
+                '<div class="key-grid">' +
+                    '<div class="key-section-title">Event Status (Did it happen?)</div>' +
+                    '<div class="key-item">' +
+                        '<span class="status-badge verified">Verified</span>' +
+                        '<span class="key-description">Event/fact confirmed to have occurred</span>' +
+                    '</div>' +
+                    '<div class="key-item">' +
+                        '<span class="status-badge partial">Partial</span>' +
+                        '<span class="key-description">Some aspects confirmed, others uncertain</span>' +
+                    '</div>' +
+                    '<div class="key-item">' +
+                        '<span class="status-badge unverified">Unverified</span>' +
+                        '<span class="key-description">Event/fact not yet confirmed</span>' +
+                    '</div>' +
+                    '<div class="key-section-title">Source Quality (How good is the evidence?)</div>' +
+                    '<div class="key-item">' +
+                        '<span class="quality-badge high">High</span>' +
+                        '<span class="key-description">Academic papers, official records, archives</span>' +
+                    '</div>' +
+                    '<div class="key-item">' +
+                        '<span class="quality-badge medium">Medium</span>' +
+                        '<span class="key-description">News articles, reputable websites, books</span>' +
+                    '</div>' +
+                    '<div class="key-item">' +
+                        '<span class="quality-badge low">Low</span>' +
+                        '<span class="key-description">Blogs, social media, anecdotal sources</span>' +
+                    '</div>' +
+                '</div>';
+            citationsContent.appendChild(keySection);
+            
+            // Add search box
+            var searchSection = document.createElement('div');
+            searchSection.className = 'references-search';
+            searchSection.innerHTML = '<input type="text" ' +
+                       'class="references-search-input" ' +
+                       'placeholder="Search references by any text..." ' +
+                       'aria-label="Search references">' +
+                '<div class="search-results-count"></div>';
+            citationsContent.appendChild(searchSection);
+            
+            var searchInput = searchSection.querySelector('.references-search-input');
+            var searchResultsCount = searchSection.querySelector('.search-results-count');
             
             // Add click handler for collapsible header
             citationsHeader.addEventListener('click', function() {
@@ -874,34 +990,293 @@ function initializeTimeline() {
                 citationsHeader.classList.toggle('expanded');
             });
             
+            // Create container for citation cards
+            var citationsGrid = document.createElement('div');
+            citationsGrid.className = 'citations-grid';
+            
             timelineCitations.forEach(function(citation) {
-                var citationItem = document.createElement('div');
-                citationItem.className = 'citation-item';
+                // Create citation card
+                var citationCard = document.createElement('div');
+                citationCard.className = 'citation-card';
+                citationCard.id = 'ref-' + citation.number;
+                
+                // Create card header (always visible)
+                var cardHeader = document.createElement('div');
+                cardHeader.className = 'citation-card-header';
+                
+                // Number and title in header
+                var headerLeft = document.createElement('div');
+                headerLeft.className = 'citation-header-left';
                 
                 var citationNumber = document.createElement('span');
                 citationNumber.className = 'citation-number';
-                citationNumber.textContent = citation.number + '.';
+                citationNumber.textContent = citation.number;
+                headerLeft.appendChild(citationNumber);
                 
-                var citationText = document.createElement('span');
+                var citationTitle = document.createElement('span');
+                citationTitle.className = 'citation-title';
+                citationTitle.textContent = citation.timeline_entry;
+                headerLeft.appendChild(citationTitle);
                 
-                // Create link if URL exists
-                if (citation.url) {
-                    var citationLink = document.createElement('a');
-                    citationLink.href = citation.url;
-                    citationLink.textContent = citation.source;
-                    citationLink.target = '_blank';
-                    citationLink.rel = 'noopener';
-                    citationLink.style.color = 'inherit';
-                    citationLink.style.textDecoration = 'underline';
-                    citationText.appendChild(citationLink);
-                } else {
-                    citationText.textContent = citation.source;
+                cardHeader.appendChild(headerLeft);
+                
+                // Status and quality badges in header
+                var headerRight = document.createElement('div');
+                headerRight.className = 'citation-header-right';
+                
+                var statusBadge = document.createElement('span');
+                statusBadge.className = 'status-badge ' + (citation.status === 'Verified' ? 'verified' : 
+                                                          (citation.status === 'Partial' || citation.status === 'Partially Verified') ? 'partial' : 'unverified');
+                statusBadge.textContent = citation.status;
+                headerRight.appendChild(statusBadge);
+                
+                var qualityBadge = document.createElement('span');
+                qualityBadge.className = 'quality-badge ' + (citation.quality === 'High' ? 'high' : 
+                                                           citation.quality === 'Medium' ? 'medium' : 'low');
+                qualityBadge.textContent = citation.quality;
+                headerRight.appendChild(qualityBadge);
+                
+                // Expand/collapse chevron
+                var chevron = document.createElement('span');
+                chevron.className = 'citation-chevron';
+                chevron.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M7 10l5 5 5-5z" fill="currentColor"/></svg>';
+                headerRight.appendChild(chevron);
+                
+                cardHeader.appendChild(headerRight);
+                citationCard.appendChild(cardHeader);
+                
+                // Create card body (collapsible)
+                var cardBody = document.createElement('div');
+                cardBody.className = 'citation-card-body collapsed';
+                
+                // Summary
+                var summaryDiv = document.createElement('div');
+                summaryDiv.className = 'citation-detail';
+                summaryDiv.innerHTML = '<strong>Summary:</strong> ' + citation.source;
+                cardBody.appendChild(summaryDiv);
+                
+                // Sources
+                if (citation.url || (citation.additional_urls && citation.additional_urls.length > 0)) {
+                    var sourcesDiv = document.createElement('div');
+                    sourcesDiv.className = 'citation-detail citation-sources';
+                    sourcesDiv.innerHTML = '<strong>Sources:</strong> ';
+                    
+                    // Helper function to extract source name from URL
+                    function getSourceName(url) {
+                        try {
+                            var urlObj = new URL(url);
+                            var hostname = urlObj.hostname.replace('www.', '');
+                            
+                            // Special cases for common sources
+                            var sourceNames = {
+                                'en.wikipedia.org': 'Wikipedia',
+                                'wikipedia.org': 'Wikipedia',
+                                'pepysdiary.com': 'Pepys Diary',
+                                'norwoodsociety.co.uk': 'Norwood Society',
+                                'lambeth.gov.uk': 'Lambeth Council',
+                                'croydon.gov.uk': 'Croydon Council',
+                                'british-history.ac.uk': 'British History Online',
+                                'norwoodstreethistories.org.uk': 'Norwood Street Histories',
+                                'gipsyhillfriends.org': 'Friends of Gipsy Hill',
+                                'leonardcheshire.org': 'Leonard Cheshire',
+                                'dulwichsociety.com': 'Dulwich Society',
+                                'historicengland.org.uk': 'Historic England',
+                                'legislation.gov.uk': 'UK Legislation',
+                                'boroughphotos.org': 'Borough Photos',
+                                'commons.wikimedia.org': 'Wikimedia Commons',
+                                'archive.org': 'Internet Archive',
+                                'britishmuseum.org': 'British Museum',
+                                'wellcomecollection.org': 'Wellcome Collection',
+                                'nationalgallery.org.uk': 'National Gallery',
+                                'rct.uk': 'Royal Collection Trust',
+                                'crystalpalacefoundation.org.uk': 'Crystal Palace Foundation',
+                                'newspaperarchive.com': 'Newspaper Archive',
+                                'wikiwand.com': 'Wikiwand',
+                                'hauntedpalaceblog.wordpress.com': 'Haunted Palace Blog',
+                                'richlyevocative.net': 'Richly Evocative',
+                                'dansteele.net': 'Dan Steele',
+                                'bombsight.org': 'Bomb Sight',
+                                'livinglondonhistory.com': 'Living London History',
+                                'rewind.leonardcheshire.org': 'Leonard Cheshire Archive',
+                                'subbrit.org.uk': 'Subterranea Britannica',
+                                'independent.co.uk': 'The Independent',
+                                'uktransport.fandom.com': 'UK Transport Wiki',
+                                'love.lambeth.gov.uk': 'Love Lambeth',
+                                'barclays.co.uk': 'Barclays',
+                                'diamondgeezer.blogspot.com': 'Diamond Geezer',
+                                'gipsyhill.org.uk': 'Christ Church Gipsy Hill',
+                                'simonphipps.co.uk': 'Simon Phipps'
+                            };
+                            
+                            // Check if we have a special name for this domain
+                            if (sourceNames[hostname]) {
+                                return sourceNames[hostname];
+                            }
+                            
+                            // For PDFs, try to extract a meaningful name
+                            if (url.toLowerCase().endsWith('.pdf')) {
+                                var pathname = urlObj.pathname;
+                                var filename = pathname.substring(pathname.lastIndexOf('/') + 1);
+                                return filename.replace('.pdf', '').replace(/_/g, ' ').replace(/-/g, ' ')
+                                    .split(' ').map(function(word) {
+                                        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                                    }).join(' ');
+                            }
+                            
+                            // Default: capitalize first letter of domain
+                            return hostname.charAt(0).toUpperCase() + hostname.slice(1);
+                        } catch (e) {
+                            return 'Source';
+                        }
+                    }
+                    
+                    if (citation.url) {
+                        var primaryLink = document.createElement('a');
+                        primaryLink.href = citation.url;
+                        primaryLink.textContent = getSourceName(citation.url);
+                        primaryLink.target = '_blank';
+                        primaryLink.rel = 'noopener';
+                        sourcesDiv.appendChild(primaryLink);
+                    }
+                    
+                    if (citation.additional_urls && citation.additional_urls.length > 0) {
+                        citation.additional_urls.forEach(function(url, i) {
+                            if (citation.url || i > 0) {
+                                var separator = document.createElement('span');
+                                separator.textContent = ' • ';
+                                separator.className = 'source-separator';
+                                sourcesDiv.appendChild(separator);
+                            }
+                            
+                            var additionalLink = document.createElement('a');
+                            additionalLink.href = url;
+                            additionalLink.textContent = getSourceName(url);
+                            additionalLink.target = '_blank';
+                            additionalLink.rel = 'noopener';
+                            sourcesDiv.appendChild(additionalLink);
+                        });
+                    }
+                    
+                    cardBody.appendChild(sourcesDiv);
                 }
                 
-                citationItem.appendChild(citationNumber);
-                citationItem.appendChild(citationText);
-                citationsContent.appendChild(citationItem);
+                // Notes
+                if (citation.notes) {
+                    var notesDiv = document.createElement('div');
+                    notesDiv.className = 'citation-detail citation-notes';
+                    notesDiv.innerHTML = '<strong>Notes:</strong> <em>' + citation.notes + '</em>';
+                    cardBody.appendChild(notesDiv);
+                }
+                
+                // Add linked timeline entries
+                var linkedEntries = [];
+                if (citation.citations) {
+                    // For backward compatibility if citations array exists
+                    linkedEntries = citation.citations;
+                } else {
+                    // Find which timeline entries reference this citation
+                    timelineData.forEach(function(entry) {
+                        if (entry.citations && entry.citations.includes(citation.number)) {
+                            linkedEntries.push({
+                                date: entry.date,
+                                title: entry.title
+                            });
+                        }
+                    });
+                }
+                
+                if (linkedEntries.length > 0) {
+                    var linkedDiv = document.createElement('div');
+                    linkedDiv.className = 'citation-detail citation-linked-entries';
+                    linkedDiv.innerHTML = '<strong>Timeline Entries:</strong> ';
+                    
+                    var linksList = document.createElement('div');
+                    linksList.className = 'linked-entries-list';
+                    
+                    linkedEntries.forEach(function(entry, index) {
+                        if (index > 0) {
+                            linksList.appendChild(document.createTextNode(' • '));
+                        }
+                        var entrySpan = document.createElement('span');
+                        entrySpan.className = 'linked-entry';
+                        entrySpan.textContent = entry.date + ' - ' + entry.title;
+                        linksList.appendChild(entrySpan);
+                    });
+                    
+                    linkedDiv.appendChild(linksList);
+                    cardBody.appendChild(linkedDiv);
+                }
+                
+                citationCard.appendChild(cardBody);
+                
+                // Add click handler for expansion
+                cardHeader.addEventListener('click', function() {
+                    cardBody.classList.toggle('collapsed');
+                    citationCard.classList.toggle('expanded');
+                });
+                
+                citationsGrid.appendChild(citationCard);
             });
+            
+            citationsContent.appendChild(citationsGrid);
+            
+            // Add search functionality
+            function performSearch() {
+                var searchTerm = searchInput.value.toLowerCase().trim();
+                var visibleCount = 0;
+                var totalCount = timelineCitations.length;
+                
+                var allCards = citationsGrid.querySelectorAll('.citation-card');
+                
+                allCards.forEach(function(card, index) {
+                    var citation = timelineCitations[index];
+                    var searchText = [
+                        citation.number,
+                        citation.timeline_entry,
+                        citation.status,
+                        citation.quality,
+                        citation.source,
+                        citation.notes || '',
+                        citation.url || ''
+                    ].concat(citation.additional_urls || []);
+                    
+                    // Also search in linked entries
+                    var cardLinkedEntries = card.querySelector('.linked-entries-list');
+                    if (cardLinkedEntries) {
+                        searchText.push(cardLinkedEntries.textContent);
+                    }
+                    
+                    var fullText = searchText.join(' ').toLowerCase();
+                    
+                    if (searchTerm === '' || fullText.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Update results count
+                if (searchTerm === '') {
+                    searchResultsCount.textContent = '';
+                } else {
+                    searchResultsCount.textContent = 'Showing ' + visibleCount + ' of ' + totalCount + ' references';
+                }
+            }
+            
+            // Add search event handlers
+            searchInput.addEventListener('input', performSearch);
+            searchInput.addEventListener('keyup', performSearch);
+            
+            // Clear search when citations section is collapsed
+            citationsHeader.addEventListener('click', function() {
+                if (!citationsContent.classList.contains('collapsed')) {
+                    searchInput.value = '';
+                    performSearch();
+                }
+            });
+            
+            citationsContent.appendChild(citationsGrid);
             
             // Append the content wrapper to the container
             citationsContainer.appendChild(citationsContent);
@@ -977,6 +1352,85 @@ function initializeTimeline() {
         // Make openImageModal accessible globally for the onclick handlers
         window.openImageModal = openImageModal;
         
+        // Add click handler for citation links
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('citation-link')) {
+                e.preventDefault();
+                
+                var citationNumber = e.target.getAttribute('href').replace('#ref-', '');
+                var citationCard = document.getElementById('ref-' + citationNumber);
+                
+                if (citationCard) {
+                    // First, ensure the references section is visible
+                    var referencesSection = document.querySelector('.citation-list');
+                    if (referencesSection) {
+                        // Expand the main references section if it's collapsed
+                        var citationsContent = referencesSection.querySelector('.citations-content');
+                        var citationsHeader = referencesSection.querySelector('.citations-header');
+                        
+                        if (citationsContent && citationsContent.classList.contains('collapsed')) {
+                            citationsContent.classList.remove('collapsed');
+                            if (citationsHeader) {
+                                citationsHeader.classList.add('expanded');
+                            }
+                        }
+                        
+                        // Clear any search filter
+                        var searchInput = referencesSection.querySelector('.references-search-input');
+                        if (searchInput && searchInput.value) {
+                            searchInput.value = '';
+                            // Trigger search to show all cards
+                            var event = new Event('input', { bubbles: true });
+                            searchInput.dispatchEvent(event);
+                        }
+                        
+                        // Ensure all citation cards are visible
+                        var allCitationCards = referencesSection.querySelectorAll('.citation-card');
+                        allCitationCards.forEach(function(card) {
+                            card.style.display = 'block';
+                        });
+                        
+                        // Hide any no results message
+                        var noResultsMsg = referencesSection.querySelector('.no-results');
+                        if (noResultsMsg) {
+                            noResultsMsg.style.display = 'none';
+                        }
+                    }
+                    
+                    // Expand the specific citation card
+                    var cardBody = citationCard.querySelector('.citation-card-body');
+                    if (cardBody && cardBody.classList.contains('collapsed')) {
+                        cardBody.classList.remove('collapsed');
+                        cardBody.classList.add('expanded');
+                        
+                        // Update chevron
+                        var chevron = citationCard.querySelector('.expand-icon');
+                        if (chevron) {
+                            chevron.textContent = '▼';
+                        }
+                    }
+                    
+                    // Add highlight effect
+                    citationCard.classList.add('highlight');
+                    setTimeout(function() {
+                        citationCard.classList.remove('highlight');
+                    }, 2000);
+                    
+                    // Scroll to the citation with some offset for the fixed header
+                    setTimeout(function() {
+                        var headerHeight = 70; // Adjust based on your header height
+                        var elementPosition = citationCard.getBoundingClientRect().top;
+                        var offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }, 100);
+                }
+            }
+        });
+        
         showDebug('Timeline initialization complete!');
         
     } catch (error) {
@@ -986,6 +1440,25 @@ function initializeTimeline() {
         document.getElementById('loading').textContent = 'Error loading timeline. Check error display.';
     }
 }
+
+// Immediately check if we need to skip animations (before DOM loads)
+(function() {
+    if (window.pageYOffset > 100 || window.location.hash.includes('ref-')) {
+        // Add style immediately to prevent flash of hidden content
+        var style = document.createElement('style');
+        style.textContent = '.timeline-item { opacity: 1 !important; transform: none !important; animation: none !important; }' +
+                          '.timeline-dot { opacity: 1 !important; }' +
+                          '.timeline-date { opacity: 1 !important; }' +
+                          '.timeline-content { opacity: 1 !important; }';
+        document.head.appendChild(style);
+        if (document.body) {
+            document.body.classList.add('skip-animations');
+        }
+        
+        // Also add to html element for higher specificity
+        document.documentElement.classList.add('skip-animations');
+    }
+})();
 
 // Check if DOM is already loaded
 if (document.readyState === 'loading') {
