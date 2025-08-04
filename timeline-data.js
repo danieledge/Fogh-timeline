@@ -95,6 +95,9 @@ var timelineData = [
 "image": "images/margaret-finch-plaque.jpg",
 "imageCaption": "Margaret Finch, Queen of the Norwood Gypsies plaque<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Margaret_Finch,_Queen_of_the_Norwood_Gypsies_plaque.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Matt Brown, <a href='https://creativecommons.org/licenses/by/2.0/' target='_blank' rel='noopener'>CC BY 2.0</a>",
 "imageCaptionHTML": true,
+"image2": "images/London-Annual-Register-1796-January1-combined.jpg",
+"image2Caption": "Account of Margaret Finch's death and funeral<br>Source: London Annual Register, January 1, 1796",
+"image2CaptionHTML": true,
 },
 
 {
@@ -125,12 +128,9 @@ var timelineData = [
 "icon": "theater",
 "importance": "major",
 "citations": ["58"],
-"image": "images/norwood-gypsies-pantomime-page1.jpg",
+"image": "images/norwood-gypsies-pantomime-combined.jpg",
 "imageCaption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br>Source: <a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
 "imageCaptionHTML": true,
-"image2": "images/norwood-gypsies-pantomime-page2.jpg",
-"image2Caption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br>Source: <a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
-"image2CaptionHTML": true,
 },
 
 {
