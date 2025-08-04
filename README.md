@@ -132,7 +132,6 @@ Visit the live Gipsy Hill timeline at: [https://gipsyhillfriends.org/timeline.ht
 ├── timeline-main.js          # Core timeline functionality
 ├── timeline-data.js          # Historical event data
 ├── staticman-integration.js  # Form submission handler
-├── update_citation_display.js # Citation enhancement system
 ├── icons/                    # SVG icons for event types
 ├── images/                   # Historical images
 ├── _data/                    # Submission data storage
@@ -261,7 +260,7 @@ See [LICENSE](LICENSE) for full details.
 
 ## 📊 Version Information
 
-**Current Version**: v2.06 (See timeline footer for latest)
+**Current Version**: v2.07 (See timeline footer for latest)
 
 **Recent Updates**:
 - Enhanced citation display system
