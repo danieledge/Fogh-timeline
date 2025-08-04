@@ -1,0 +1,76 @@
+[
+  {
+    "id": 1,
+    "timeline_entry": "1911 – Norwood Park opens",
+    "source": {
+      "urls": [
+        "https://www.norwoodsociety.co.uk/articles/norwood-park",
+        "https://www.lambeth.gov.uk/parks/norwood-park"
+      ],
+      "summary": "Norwood Park was opened as a public park on June 14, 1911, after a local campaign to preserve part of the former Norwood Common."
+    },
+    "source_quality": "High"
+  },
+  {
+    "id": 2,
+    "timeline_entry": "1915–1919 – WWI Canadian Military Hospital (Kingswood House)",
+    "source": {
+      "urls": [
+        "https://www.thedulwichestate.org.uk/about-us/celebrating-400-years/the-impact-of-war",
+        "https://www.brixtonsociety.org.uk/test-site/wp-content/uploads/2019/01/Oct-15-Newsletter.pdf"
+      ],
+      "summary": "Kingswood House was used as a Canadian military hospital during World War I."
+    },
+    "source_quality": "High"
+  },
+  {
+    "id": 3,
+    "timeline_entry": "1919–1940 – The Vestey Family Era (Kingswood House)",
+    "source": {
+      "urls": [
+        "https://www.friendsofkingswoodhouse.co.uk/past-ownerslease-holders/the-vestey-family",
+        "https://www.dulwichsociety.com/people/william-vestey"
+      ],
+      "summary": "William Vestey acquired and resided at Kingswood House from 1919 until his death in 1940."
+    },
+    "source_quality": "High"
+  },
+  {
+    "id": 4,
+    "timeline_entry": "1920–1938 – Margaret Lockwood's Childhood Home",
+    "source": {
+      "urls": [
+        "https://www.english-heritage.org.uk/visit/blue-plaques/margaret-lockwood/",
+        "https://newsfromcrystalpalace.wordpress.com/2018/11/22/blue-plaque-to-margaret-lockwood-unveiled/"
+      ],
+      "summary": "Margaret Lockwood lived at 14 Highland Road, Upper Norwood, during her childhood years approximately 1922–1938; the home is marked by a blue plaque."
+    },
+    "source_quality": "High"
+  },
+  {
+    "id": 5,
+    "timeline_entry": "1960s – Norwood Triangle Converted to Roundabout",
+    "source": {
+      "urls": [
+        "https://gipsyhillhistory.com",
+        "https://boroughphotos.org/lambeth/the-triangle-upper-norwood/"
+      ],
+      "summary": "The junction known as Norwood Triangle was converted into a large roundabout during the 1960s."
+    },
+    "source_quality": "Medium"
+  },
+  {
+    "id": 6,
+    "timeline_entry": "1961 – Wooden Bus Shelter at South Croxted Road",
+    "source": {
+      "urls": [
+        "https://openplaques.org/plaques/58612",
+        "https://southwarknews.co.uk/area/kennington/rare-wooden-bus-shelter-in-dulwich-among-thousands-of-southwark-landmarks-awarded-special-protection/"
+      ],
+      "summary": "A wooden tram shelter was installed at South Croxted Road in 1961 and is now heritage-protected."
+    },
+    "source_quality": "High"
+  }
+]
+
+Sources

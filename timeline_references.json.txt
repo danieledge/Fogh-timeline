@@ -1,0 +1,391 @@
+[
+  {
+    "id": 1,
+    "timeline_entry": "AD 43–410 – Roman trackway through Central Hill",
+    "status": "Unverified",
+    "source_urls": ["https://www.croydon.gov.uk/sites/default/files/2022-01/archaeological-priority-areas-appraisal-part-4.pdf"],
+    "source_summary": "Roman roads in Croydon APA; no direct evidence for Central Hill route",
+    "notes": "Main Roman route followed different corridor",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 2,
+    "timeline_entry": "AD 410–1066 – Anglo-Saxon Boundaries",
+    "status": "Verified",
+    "source_urls": ["https://en.wikipedia.org/wiki/History_of_Croydon"],
+    "source_summary": "Confirms ancient parish boundaries in Norwood/Croydon areas",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 3,
+    "timeline_entry": "1583 – Vicar's Oak & Beating the Bounds",
+    "status": "Verified",
+    "source_urls": [
+      "https://en.wikipedia.org/wiki/Norwood_Ridge",
+      "https://norwoodstreethistories.org.uk/street/central-hill/"
+    ],
+    "source_summary": "Boundary traditions and origin of Vicar’s Oak Road",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 4,
+    "timeline_entry": "1668 – Pepys Visits the Gypsies",
+    "status": "Verified",
+    "source_urls": [
+      "https://www.pepysdiary.com/diary/1668/08/11/",
+      "https://www.norwoodsociety.co.uk/articles/the-norwood-gipsies"
+    ],
+    "source_summary": "Pepys' diary records wife meeting gypsies in Norwood",
+    "notes": "",
+    "source_quality": "High"
+  },
+  {
+    "id": 5,
+    "timeline_entry": "24 Oct 1740 – Death of Gypsy Queen",
+    "status": "Verified",
+    "source_urls": [
+      "https://www.rct.uk/collection/403961/margaret-finch-queen-of-the-gypsies",
+      "https://www.norwoodsociety.co.uk/articles/the-norwood-gipsies"
+    ],
+    "source_summary": "Margaret Finch died aged 108–109, burial with grandeur",
+    "notes": "",
+    "source_quality": "High"
+  },
+  {
+    "id": 6,
+    "timeline_entry": "1777 – Norwood Gypsies pantomime",
+    "status": "Verified",
+    "source_urls": ["https://hauntedpalaceblog.wordpress.com/2016/09/01/norwood-the-gypsies-of-south-london/"],
+    "source_summary": "Celebrated local folklore and community",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 7,
+    "timeline_entry": "1832 – Trotting Hill created",
+    "status": "Verified",
+    "source_urls": ["https://newspaperarchive.com/london-public-ledger-and-daily-advertiser-apr-12-1832-p-4/"],
+    "source_summary": "Constructed for horses; built by workers with local subscription",
+    "notes": "Dinner & shilling reward; cost £30",
+    "source_quality": "High"
+  },
+  {
+    "id": 8,
+    "timeline_entry": "1847–1848 – River Effra Culverted",
+    "status": "Verified",
+    "source_urls": [
+      "https://en.wikipedia.org/wiki/River_Effra",
+      "https://www.wikiwand.com/en/articles/River_Effra"
+    ],
+    "source_summary": "Sewer Commissioners culverted the Effra",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 9,
+    "timeline_entry": "1854 – Gipsy Hill Police Station built",
+    "status": "Verified",
+    "source_urls": [
+      "https://boroughphotos.org/lambeth/gipsy-hill-police-station-1854/",
+      "https://commons.wikimedia.org/wiki/File:Former_police_station,_Gipsy_Hill_-_geograph.org.uk_-_1774912.jpg"
+    ],
+    "source_summary": "Charles Reeves designed Victorian police station",
+    "notes": "",
+    "source_quality": "High"
+  },
+  {
+    "id": 10,
+    "timeline_entry": "10 Jun 1854 – Crystal Palace opens",
+    "status": "Verified",
+    "source_urls": [
+      "https://en.wikipedia.org/wiki/The_Crystal_Palace",
+      "https://www.crystalpalacefoundation.org.uk/history/open-again-1854-2"
+    ],
+    "source_summary": "Palace reopened by Queen Victoria at Sydenham",
+    "notes": "",
+    "source_quality": "High"
+  },
+  {
+    "id": 11,
+    "timeline_entry": "1856 – Gipsy Hill station opens",
+    "status": "Verified",
+    "source_urls": ["https://en.wikipedia.org/wiki/Gipsy_Hill_railway_station"],
+    "source_summary": "Opened by London, Brighton and South Coast Railway",
+    "notes": "",
+    "source_quality": "High"
+  },
+  {
+    "id": 12,
+    "timeline_entry": "1862 – Iron Church Erected",
+    "status": "Verified",
+    "source_urls": [
+      "https://gipsyhill.org.uk/media/docs/history_of_christ_church.pdf",
+      "https://en.wikipedia.org/wiki/Christ_Church,_Gipsy_Hill"
+    ],
+    "source_summary": "Temporary iron church to support growing congregation",
+    "notes": "",
+    "source_quality": "High"
+  },
+  {
+    "id": 13,
+    "timeline_entry": "1867 – Christ Church Consecrated",
+    "status": "Verified",
+    "source_urls": [
+      "https://gipsyhill.org.uk/media/docs/history_of_christ_church.pdf",
+      "https://en.wikipedia.org/wiki/Christ_Church,_Gipsy_Hill"
+    ],
+    "source_summary": "Permanent church consecrated on 5 June 1867",
+    "notes": "",
+    "source_quality": "High"
+  },
+  {
+    "id": 14,
+    "timeline_entry": "1867 – Barclay's Bank opens",
+    "status": "Unverified",
+    "source_urls": ["https://www.barclays.co.uk/branch-finder/"],
+    "source_summary": "No archival or company evidence found",
+    "notes": "Considered unverified anecdote",
+    "source_quality": "Low"
+  },
+  {
+    "id": 15,
+    "timeline_entry": "1870 – Crystal Palace Gas Works opens",
+    "status": "Verified",
+    "source_urls": ["https://norwoodstreethistories.org.uk/building/crystal-palace-gas-works/"],
+    "source_summary": "Served Crystal Palace and nearby homes",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 16,
+    "timeline_entry": "1870s–1890s – Long Meadow grazing use",
+    "status": "Verified",
+    "source_urls": [
+      "https://richlyevocative.net/2015/02/04/a-stray-field-in-south-london/",
+      "https://gipsyhillfriends.org/2018/08/27/black-poplars/",
+      "https://www.norwoodsociety.co.uk/pdf/review217.pdf",
+      "https://www.dulwichsociety.com/the-journal/autumn-2021/on-the-street-where-you-live-dulwich-wood-avenue-by-ian-mcinnes"
+    ],
+    "source_summary": "Grazing pasture locally known as French’s, Belle, or Hunter’s Meadow",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 17,
+    "timeline_entry": "Early 1870s – Athol House built",
+    "status": "Verified",
+    "source_urls": ["https://www.dulwichsociety.com/the-journal/summer-2017/on-the-street-where-you-live-hitherwood-drive-by-ian-mciness"],
+    "source_summary": "Built by Joseph Bowyer & Sons; design attributed to Robert Richardson Banks & Charles Barry Jr.",
+    "notes": "Private luxury residence in Dulwich, very costly at build time",
+    "source_quality": "High"
+  },
+  {
+    "id": 18,
+    "timeline_entry": "1875 – Gipsy Hill Primary School opens",
+    "status": "Verified",
+    "source_urls": [
+      "https://en.wikipedia.org/wiki/The_Norwood_School",
+      "https://boroughphotos.org/lambeth/norwood-school-cypress-road/"
+    ],
+    "source_summary": "School history confirmed",
+    "notes": "",
+    "source_quality": "High"
+  },
+  {
+    "id": 19,
+    "timeline_entry": "1890 – Great Flood",
+    "status": "Verified",
+    "source_urls": [
+      "https://www.norwoodsociety.co.uk/pdf/review224.pdf",
+      "https://diamondgeezer.blogspot.com/2010/06/effra-i.html"
+    ],
+    "source_summary": "Massive flooding on Elder Road; marker still present",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 20,
+    "timeline_entry": "1939 – Police station operations move",
+    "status": "Verified",
+    "source_urls": ["https://boroughphotos.org/lambeth/former-police-station-gipsy-hill-upper-norwood/"],
+    "source_summary": "Police operations moved to Central Hill",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 21,
+    "timeline_entry": "1940–41 – WWII Blitz",
+    "status": "Verified",
+    "source_urls": [
+      "https://dansteele.net/v-1-flying-bomb-devastation-near-gipsy-hill-london-july-1944/",
+      "http://bombsight.org/explore/greater-london/lambeth/gipsy-hill/"
+    ],
+    "source_summary": "Frequent V-1 flying bombs in area",
+    "notes": "V-1 flying bombs described in accounts",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 22,
+    "timeline_entry": "1946–56 – Kingswood Estate built",
+    "status": "Verified",
+    "source_urls": [
+      "https://en.wikipedia.org/wiki/Kingswood_Estate",
+      "https://livinglondonhistory.com/kingswood-house-the-castle-in-the-council-estate/"
+    ],
+    "source_summary": "Estate built by London County Council",
+    "notes": "",
+    "source_quality": "High"
+  },
+  {
+    "id": 23,
+    "timeline_entry": "1948 – Police station converted",
+    "status": "Verified",
+    "source_urls": [
+      "https://commons.wikimedia.org/wiki/File:Former_police_station,_Gipsy_Hill_-_geograph.org.uk_-_1774912.jpg",
+      "https://boroughphotos.org/lambeth/former-police-station-gipsy-hill-upper-norwood/"
+    ],
+    "source_summary": "Police station turned into flats",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 24,
+    "timeline_entry": "1953–1955 – Athol House becomes first London Cheshire Home",
+    "status": "Verified",
+    "source_urls": [
+      "https://rewind.leonardcheshire.org/wp-content/uploads/assets/cheshiresmiles/Volume%20-%2006_08.pdf",
+      "https://www.leonardcheshire.org/get-support/living/care-homes/athol-house-crystal-palace"
+    ],
+    "source_summary": "Converted to Leonard Cheshire Home, first in London; confirmed by official foundation sources",
+    "notes": "Marks start of charitable care in the building",
+    "source_quality": "High"
+  },
+  {
+    "id": 25,
+    "timeline_entry": "1963–66 – Cold War bunker at Pear Tree House",
+    "status": "Verified",
+    "source_urls": [
+      "https://en.wikipedia.org/wiki/Pear_Tree_House",
+      "https://www.subbrit.org.uk/sites/pear-tree-house-london-south-east-group-war-headquarters/"
+    ],
+    "source_summary": "Built as South East Group war HQ bunker",
+    "notes": "Now beneath social housing",
+    "source_quality": "High"
+  },
+  {
+    "id": 26,
+    "timeline_entry": "1967 – Central Hill Estate built",
+    "status": "Partially Verified",
+    "source_urls": [
+      "https://en.wikipedia.org/wiki/Central_Hill_Estate",
+      "https://www.simonphipps.co.uk/case-studies/central-hill-estate/"
+    ],
+    "source_summary": "Construction started 1966, completed 1974",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 27,
+    "timeline_entry": "1972 – Kingswood House listed",
+    "status": "Verified",
+    "source_urls": ["https://historicengland.org.uk/listing/the-list/list-entry/1385883"],
+    "source_summary": "Grade II listing granted",
+    "notes": "",
+    "source_quality": "High"
+  },
+  {
+    "id": 28,
+    "timeline_entry": "1974 – Gipsy Hill Conservation Area created",
+    "status": "Verified",
+    "source_urls": ["https://www.lambeth.gov.uk/planning-and-building-control/conservation-and-listed-buildings/conservation-area-profiles/gipsy"],
+    "source_summary": "Conservation area designated",
+    "notes": "Includes Central Hill",
+    "source_quality": "High"
+  },
+  {
+    "id": 29,
+    "timeline_entry": "1978 – Gipsy Hill Ward created",
+    "status": "Verified",
+    "source_urls": ["https://en.wikipedia.org/wiki/Gipsy_Hill_(ward)"],
+    "source_summary": "Electoral ward created",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 30,
+    "timeline_entry": "17 Oct 1981 – IRA bomb incident",
+    "status": "Verified",
+    "source_urls": ["https://www.independent.co.uk/news/obituaries/lieutenantgeneral-sir-steuart-pringle-marine-who-survived-an-ira-car-bomb-8604609.html"],
+    "source_summary": "IRA car bomb on Croxted Road",
+    "notes": "Often described as Dulwich",
+    "source_quality": "High"
+  },
+  {
+    "id": 31,
+    "timeline_entry": "2000 – Gipsy Hill ward boundary review",
+    "status": "Verified",
+    "source_urls": ["https://www.legislation.gov.uk/uksi/2000/319/made/data.xht"],
+    "source_summary": "Revised boundaries effective 2002",
+    "notes": "",
+    "source_quality": "High"
+  },
+  {
+    "id": 32,
+    "timeline_entry": "2009 – Station refurbishment",
+    "status": "Verified",
+    "source_urls": ["https://uktransport.fandom.com/wiki/Gipsy_Hill_railway_station"],
+    "source_summary": "Modernisation of platform & lighting",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 33,
+    "timeline_entry": "2010–2024 – Friends of Gipsy Hill community events",
+    "status": "Verified",
+    "source_urls": ["https://gipsyhillfriends.org/"],
+    "source_summary": "Voluntary clean-ups & heritage walks",
+    "notes": "",
+    "source_quality": "Medium"
+  },
+  {
+    "id": 34,
+    "timeline_entry": "2011 – Fanny the Station Cat",
+    "status": "Verified",
+    "source_urls": ["https://gipsyhillfriends.org/2017/11/05/the-gipsy-hill-cat/"],
+    "source_summary": "Local beloved cat mascot",
+    "notes": "",
+    "source_quality": "Low"
+  },
+  {
+    "id": 35,
+    "timeline_entry": "2022 – Kingswood Arts transformation",
+    "status": "Unverified",
+    "source_urls": [],
+    "source_summary": "No official or media confirmation as of 2025",
+    "notes": "",
+    "source_quality": "Low"
+  },
+  {
+    "id": 36,
+    "timeline_entry": "2023–24 – Athol House redevelopment",
+    "status": "Unverified",
+    "source_urls": [],
+    "source_summary": "No coverage or planning record known as of 2025",
+    "notes": "",
+    "source_quality": "Low"
+  },
+  {
+    "id": 37,
+    "timeline_entry": "5 May 2022 – Ward boundary revision",
+    "status": "Verified",
+    "source_urls": [
+      "https://www.legislation.gov.uk/uksi/2022/37/made",
+      "https://love.lambeth.gov.uk/a-new-political-map-for-the-2022-lambeth-borough-council-elections/"
+    ],
+    "source_summary": "Boundary changes effective from 2022 elections",
+    "notes": "",
+    "source_quality": "High"
+  }
+]
