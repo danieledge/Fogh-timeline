@@ -28,15 +28,13 @@ The FoGH Timeline is a powerful, flexible timeline application built with vanill
   - Visual density indicators for event-rich periods
 
 - **📚 Comprehensive Citation System**:
-  - Every event includes verifiable sources
+  - Every event can include links to related sources/citations
   - Quality indicators (High/Medium/Low)
-  - Verification status tracking
   - Multiple source support per event
 
 - **🖼️ Rich Media Support**:
   - Historical images with captions
   - Lazy loading for performance
-  - Attribution management
   - Thumbnail generation support
 
 - **👥 Community Contribution System**:
@@ -72,8 +70,6 @@ This instance of the timeline application documents the fascinating history of G
 
 - Over 100 documented historical events
 - Verified citations from archives, museums, and historical societies
-- Rare historical photographs and images
-- Personal memories from long-time residents
 - Connections to broader London and UK history
 
 ### Data Sources Include
@@ -260,7 +256,7 @@ See [LICENSE](LICENSE) for full details.
 
 ## 📊 Version Information
 
-**Current Version**: v2.07 (See timeline footer for latest)
+**Current Version**: v2.07 (See 'about' for latest version information)
 
 **Recent Updates**:
 - Enhanced citation display system
@@ -272,8 +268,8 @@ See [LICENSE](LICENSE) for full details.
 
 ## 📞 Contact
 
-**Project Maintainer**: Friends of Gipsy Hill  
-**Technical Contact**: fogh@dan-edge.com  
+**Project Maintainer**: Daniel Edge  
+**Technical Contact**: Daniel Edge  
 **Website**: [https://gipsyhillfriends.org](https://gipsyhillfriends.org)  
 **Repository**: [https://github.com/danieledge/Fogh-timeline](https://github.com/danieledge/Fogh-timeline)
 
