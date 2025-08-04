@@ -42,14 +42,29 @@
     }
     
     // Enhanced image creation with thumbnail support
-    window.createOptimizedImage = function(item, isSecond) {
-        const imageSrc = isSecond ? item.image2 : item.image;
-        const captionText = isSecond ? item.image2Caption : item.imageCaption;
-        const captionHTML = isSecond ? item.image2CaptionHTML : item.imageCaptionHTML;
+    window.createOptimizedImage = function(item, imageNumber) {
+        // Support up to 3 images
+        let imageSrc, captionText, captionHTML;
+        
+        if (imageNumber === 1) {
+            imageSrc = item.image;
+            captionText = item.imageCaption;
+            captionHTML = item.imageCaptionHTML;
+        } else if (imageNumber === 2) {
+            imageSrc = item.image2;
+            captionText = item.image2Caption;
+            captionHTML = item.image2CaptionHTML;
+        } else if (imageNumber === 3) {
+            imageSrc = item.image3;
+            captionText = item.image3Caption;
+            captionHTML = item.image3CaptionHTML;
+        }
+        
+        if (!imageSrc) return null;
         
         const imageContainer = document.createElement('div');
         imageContainer.className = 'content-image';
-        if (isSecond) imageContainer.className += ' second-image';
+        if (imageNumber > 1) imageContainer.className += ' additional-image';
         
         const img = document.createElement('img');
         
