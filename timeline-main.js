@@ -2058,6 +2058,35 @@ setTimeout(function() {
     initializeVisualTimeline();
 }, 1000);
 
+// Make function globally accessible for debugging
+window.initializeVisualTimeline = initializeVisualTimeline;
+
+// Test function to manually create histogram bars
+window.testVisualTimeline = function() {
+    console.log('=== Testing Visual Timeline ===');
+    
+    var histogram = document.querySelector('.timeline-histogram');
+    if (!histogram) {
+        console.error('Histogram container not found!');
+        return;
+    }
+    
+    console.log('Clearing existing bars...');
+    histogram.innerHTML = '';
+    
+    console.log('Adding 10 test bars...');
+    for (var i = 0; i < 10; i++) {
+        var bar = document.createElement('div');
+        bar.className = 'histogram-bar';
+        bar.style.height = (Math.random() * 80 + 20) + '%';
+        bar.style.backgroundColor = '#257b46';
+        bar.title = 'Test bar ' + i;
+        histogram.appendChild(bar);
+    }
+    
+    console.log('Test complete. Bars added: ' + histogram.children.length);
+};
+
 // Visual Timeline Navigator
 function initializeVisualTimeline() {
     console.log('Initializing visual timeline navigator...');
@@ -2295,6 +2324,7 @@ function initializeVisualTimeline() {
     labelsContainer.innerHTML = '';
     
     // Add period labels
+    console.log('Adding period labels. Periods:', periods.length);
     periods.forEach(function(period) {
         var periodDiv = document.createElement('div');
         periodDiv.className = 'timeline-period';
