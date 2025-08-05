@@ -2109,6 +2109,7 @@ function initializeVisualTimeline() {
         // Open filter drawer
         filterButton.addEventListener('click', function() {
             filterDrawer.classList.add('active');
+            filterButton.classList.add('drawer-open');
             
             // Initialize visual timeline on first open
             if (!window.visualTimelineInitialized) {
@@ -2121,6 +2122,7 @@ function initializeVisualTimeline() {
         if (filterDrawerClose) {
             filterDrawerClose.addEventListener('click', function() {
                 filterDrawer.classList.remove('active');
+                filterButton.classList.remove('drawer-open');
             });
         }
         
@@ -2128,6 +2130,7 @@ function initializeVisualTimeline() {
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && filterDrawer.classList.contains('active')) {
                 filterDrawer.classList.remove('active');
+                filterButton.classList.remove('drawer-open');
             }
         });
     }
