@@ -3560,6 +3560,7 @@ textarea#image-sources {
     max-width: 1200px;
     margin: 0 auto 30px;
     padding: 0 20px;
+    display: block;
 }
 
 .visual-timeline {
@@ -3619,11 +3620,13 @@ textarea#image-sources {
 .histogram-bar {
     flex: 1;
     background: var(--accent-primary);
-    opacity: 0.3;
+    opacity: 0.6;
     transition: all 0.2s ease;
     cursor: pointer;
-    min-height: 3px;
+    min-height: 5px;
     position: relative;
+    border-radius: 2px 2px 0 0;
+    display: block;
 }
 
 /* Visual indicator for timeline gaps */

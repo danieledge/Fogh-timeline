@@ -2053,6 +2053,7 @@ function initializeTimelineSearch() {
 
 // Call timeline search initialization after a delay to ensure DOM is ready
 setTimeout(function() {
+    console.log('Initializing timeline features...');
     initializeTimelineSearch();
     initializeVisualTimeline();
 }, 1000);
@@ -2062,7 +2063,13 @@ function initializeVisualTimeline() {
     console.log('Initializing visual timeline navigator...');
     
     // Get timeline data and parse years
-    var timelineData = window.timelineData;
+    if (typeof timelineData === 'undefined') {
+        console.log('Timeline data not defined - visual timeline cannot be initialized');
+        return;
+    }
+    
+    console.log('Timeline data check:', timelineData.length + ' items');
+    
     if (!timelineData || timelineData.length === 0) {
         console.log('No timeline data available for visual timeline');
         return;
@@ -2277,6 +2284,8 @@ function initializeVisualTimeline() {
     
     if (!periodsContainer || !histogramContainer) {
         console.log('Visual timeline containers not found');
+        console.log('periodsContainer:', periodsContainer);
+        console.log('histogramContainer:', histogramContainer);
         return;
     }
     
@@ -2337,6 +2346,7 @@ function initializeVisualTimeline() {
     }
     
     // Create bars for each histogram entry
+    console.log('Creating bars for histogram. Bins:', histogramBins);
     for (var i = 0; i < histogramBins; i++) {
         var count = histogram[i] || 0;
         var bar = document.createElement('div');

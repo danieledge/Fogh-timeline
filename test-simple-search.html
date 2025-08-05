@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Timeline Search Test</title>
+    <style>
+        .test-results {
+            background: #f0f0f0;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+        }
+        .test-button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Timeline Search Test</h1>
+    <div class="test-results">
+        <h2>Test Controls</h2>
+        <button class="test-button" onclick="checkSearchElements()">1. Check if Search Elements Exist</button>
+        <button class="test-button" onclick="testSearchFunctionality()">2. Test Search for "church"</button>
+        <button class="test-button" onclick="clearSearch()">3. Clear Search</button>
+        <button class="test-button" onclick="checkVisibility()">4. Check Item Visibility</button>
+        
+        <h2>Results:</h2>
+        <pre id="results">Click a test button to see results...</pre>
+    </div>
+    
+    <h2>Timeline Below:</h2>
+    <iframe id="timeline-frame" src="timeline.html" style="width: 100%; height: 600px; border: 1px solid #ccc;"></iframe>
+    
+    <script>
+        function log(message) {
+            document.getElementById('results').textContent += message + '\n';
+        }
+        
+        function clearLog() {
+            document.getElementById('results').textContent = '';
+        }
+        
+        function getTimelineDocument() {
+            return document.getElementById('timeline-frame').contentDocument;
+        }
+        
+        function checkSearchElements() {
+            clearLog();
+            log('=== Checking Search Elements ===');
+            
+            try {
+                var doc = getTimelineDocument();
+                var searchInput = doc.querySelector('.timeline-search-input');
+                var searchResults = doc.querySelector('.timeline-search .search-results-count');
+                var timelineItems = doc.querySelectorAll('.timeline-item');
+                
+                log('Search input found: ' + (searchInput ? 'YES' : 'NO'));
+                log('Search results div found: ' + (searchResults ? 'YES' : 'NO'));
+                log('Timeline items found: ' + timelineItems.length);
+                
+                if (searchInput) {
+                    log('Search input value: "' + searchInput.value + '"');
+                    log('Search input type: ' + searchInput.type);
+                }
+            } catch (e) {
+                log('ERROR: ' + e.message);
+            }
+        }
+        
+        function testSearchFunctionality() {
+            clearLog();
+            log('=== Testing Search for "church" ===');
+            
+            try {
+                var doc = getTimelineDocument();
+                var searchInput = doc.querySelector('.timeline-search-input');
+                var searchResults = doc.querySelector('.timeline-search .search-results-count');
+                
+                if (!searchInput) {
+                    log('ERROR: Search input not found!');
+                    return;
+                }
+                
+                // Set search value
+                searchInput.value = 'church';
+                log('Set search value to: "church"');
+                
+                // Trigger input event
+                var event = new Event('input', { bubbles: true });
+                searchInput.dispatchEvent(event);
+                log('Triggered input event');
+                
+                // Wait a bit for the search to complete
+                setTimeout(function() {
+                    var hiddenItems = doc.querySelectorAll('.timeline-item.search-hidden');
+                    var visibleItems = doc.querySelectorAll('.timeline-item:not(.search-hidden)');
+                    
+                    log('\nResults after search:');
+                    log('Hidden items: ' + hiddenItems.length);
+                    log('Visible items: ' + visibleItems.length);
+                    log('Results text: "' + (searchResults ? searchResults.textContent : 'N/A') + '"');
+                    
+                    // Show first few visible items
+                    if (visibleItems.length > 0) {
+                        log('\nFirst 3 visible items:');
+                        for (var i = 0; i < Math.min(3, visibleItems.length); i++) {
+                            var title = visibleItems[i].querySelector('.content-title');
+                            log((i+1) + '. ' + (title ? title.textContent : 'No title'));
+                        }
+                    }
+                }, 500);
+            } catch (e) {
+                log('ERROR: ' + e.message);
+            }
+        }
+        
+        function clearSearch() {
+            clearLog();
+            log('=== Clearing Search ===');
+            
+            try {
+                var doc = getTimelineDocument();
+                var searchInput = doc.querySelector('.timeline-search-input');
+                
+                if (!searchInput) {
+                    log('ERROR: Search input not found!');
+                    return;
+                }
+                
+                searchInput.value = '';
+                var event = new Event('input', { bubbles: true });
+                searchInput.dispatchEvent(event);
+                log('Search cleared');
+                
+                setTimeout(function() {
+                    var hiddenItems = doc.querySelectorAll('.timeline-item.search-hidden');
+                    log('Hidden items after clear: ' + hiddenItems.length);
+                }, 500);
+            } catch (e) {
+                log('ERROR: ' + e.message);
+            }
+        }
+        
+        function checkVisibility() {
+            clearLog();
+            log('=== Checking Timeline Item Visibility ===');
+            
+            try {
+                var doc = getTimelineDocument();
+                var allItems = doc.querySelectorAll('.timeline-item');
+                var hiddenItems = doc.querySelectorAll('.timeline-item.search-hidden');
+                var searchInput = doc.querySelector('.timeline-search-input');
+                
+                log('Total timeline items: ' + allItems.length);
+                log('Hidden items: ' + hiddenItems.length);
+                log('Visible items: ' + (allItems.length - hiddenItems.length));
+                log('Current search value: "' + (searchInput ? searchInput.value : 'N/A') + '"');
+                
+                // Check CSS
+                var testItem = allItems[0];
+                if (testItem) {
+                    var styles = getComputedStyle(testItem);
+                    log('\nFirst item display style: ' + styles.display);
+                    log('First item classes: ' + testItem.className);
+                }
+            } catch (e) {
+                log('ERROR: ' + e.message);
+            }
+        }
+    </script>
+</body>
+</html>
