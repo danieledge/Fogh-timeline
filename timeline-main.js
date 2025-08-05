@@ -839,6 +839,13 @@ function initializeTimeline() {
                     showDebug('Total timeline items: ' + totalCount);
                 
                 timelineItems.forEach(function(item) {
+                    // Skip items that are filtered by time - search only within time window
+                    if (item.classList.contains('time-filtered')) {
+                        // Keep it hidden if outside time range
+                        item.classList.add('search-hidden');
+                        return;
+                    }
+                    
                     // Get all searchable text from the timeline item
                     var searchableText = '';
                     
@@ -880,13 +887,10 @@ function initializeTimeline() {
                         });
                     }
                     
-                    // Check if item matches search
+                    // Check if item matches search (within time window)
                     if (searchTerm === '' || searchableText.toLowerCase().includes(searchTerm)) {
                         item.classList.remove('search-hidden');
-                        // Only count as visible if not filtered by time either
-                        if (!item.classList.contains('time-filtered')) {
-                            visibleCount++;
-                        }
+                        visibleCount++;
                     } else {
                         item.classList.add('search-hidden');
                     }
@@ -896,12 +900,19 @@ function initializeTimeline() {
                 if (searchTerm === '') {
                     searchResultsCount.textContent = '';
                 } else {
-                    searchResultsCount.textContent = 'Showing ' + visibleCount + ' of ' + totalCount + ' entries';
+                    var timeFiltered = document.querySelectorAll('.timeline-item.time-filtered').length > 0;
+                    var inWindowCount = totalCount - document.querySelectorAll('.timeline-item.time-filtered').length;
+                    if (timeFiltered) {
+                        searchResultsCount.textContent = 'Found ' + visibleCount + ' of ' + inWindowCount + ' in current range';
+                    } else {
+                        searchResultsCount.textContent = 'Found ' + visibleCount + ' of ' + totalCount + ' entries';
+                    }
                 }
                 
                 // Update filter indicator
                 var filterIndicator = document.querySelector('.filter-indicator');
                 var filterButton = document.getElementById('filter-toggle-button');
+                var clearAllButton = document.getElementById('clear-all-filters');
                 var timeFiltered = document.querySelectorAll('.timeline-item.time-filtered').length > 0;
                 
                 if (searchTerm !== '' || timeFiltered) {
@@ -910,15 +921,13 @@ function initializeTimeline() {
                         filterButton.classList.add('has-active-filter');
                     }
                     if (filterIndicator) {
-                        // If search is active, show search count; if only time filter, recalculate
-                        if (searchTerm !== '') {
-                            filterIndicator.textContent = visibleCount;
-                        } else if (timeFiltered) {
-                            // Count items not filtered by time
-                            var timeVisibleCount = document.querySelectorAll('.timeline-item:not(.time-filtered)').length;
-                            filterIndicator.textContent = timeVisibleCount;
-                        }
+                        // Always show the count of currently visible items
+                        filterIndicator.textContent = visibleCount;
                         filterIndicator.style.display = 'inline-flex';
+                    }
+                    // Show clear all button
+                    if (clearAllButton) {
+                        clearAllButton.style.display = 'inline-block';
                     }
                 } else {
                     // No filters active
@@ -927,6 +936,10 @@ function initializeTimeline() {
                     }
                     if (filterIndicator) {
                         filterIndicator.style.display = 'none';
+                    }
+                    // Hide clear all button
+                    if (clearAllButton) {
+                        clearAllButton.style.display = 'none';
                     }
                 }
                 
@@ -2772,10 +2785,12 @@ function initializeVisualTimeline() {
         
         // Update filter info
         if (filterRangeText) {
-            filterRangeText.textContent = 'Showing ' + visibleCount + ' events from ' + startYear + ' to ' + endYear;
+            filterRangeText.textContent = 'Time range: ' + startYear + ' to ' + endYear;
         }
-        if (clearButton) {
-            clearButton.style.display = 'inline-block';
+        // Show clear all button in header
+        var clearAllButton = document.getElementById('clear-all-filters');
+        if (clearAllButton) {
+            clearAllButton.style.display = 'inline-block';
         }
         
         // Add active filter indicator to button
@@ -2809,73 +2824,84 @@ function initializeVisualTimeline() {
         });
     }
     
-    // Clear filter button
-    if (clearButton) {
-        clearButton.addEventListener('click', function() {
-            // Reset timeline items (both time and search filters)
-            var timelineItems = document.querySelectorAll('.timeline-item');
-            timelineItems.forEach(function(item) {
-                item.classList.remove('time-filtered');
-                item.classList.remove('search-hidden');
-            });
-            
-            // Reset histogram bars to default state
-            histogramContainer.querySelectorAll('.histogram-bar').forEach(function(bar) {
-                bar.classList.remove('active');
-            });
-            
-            // Reset range selector to full width
-            if (selectionRange) {
-                selectionRange.style.left = '0%';
-                selectionRange.style.width = '100%';
-            }
-            
-            // Reset handle positions to full range
-            if (leftHandle) {
-                positionHandle(leftHandle, 0, true);
-            }
-            if (rightHandle) {
-                positionHandle(rightHandle, 100, false);
-            }
-            
-            // Reset labels to full range
-            if (startLabel) {
-                startLabel.textContent = minYear + ' AD';
-            }
-            if (endLabel) {
-                endLabel.textContent = maxYear;
-            }
-            
-            // Clear search input
-            var searchInput = document.querySelector('.timeline-search-input');
-            if (searchInput) {
-                searchInput.value = '';
-            }
-            
-            // Clear search results count
-            var searchResultsCount = document.querySelector('.search-results-count');
-            if (searchResultsCount) {
-                searchResultsCount.textContent = '';
-            }
-            
-            // Clear filter text and hide button
-            if (filterRangeText) {
-                filterRangeText.textContent = '';
-            }
-            if (clearButton) {
-                clearButton.style.display = 'none';
-            }
-            
-            // Remove active filter indicator
-            var filterButton = document.getElementById('filter-toggle-button');
-            var filterIndicator = document.querySelector('.filter-indicator');
-            if (filterButton) {
-                filterButton.classList.remove('has-active-filter');
-            }
-            if (filterIndicator) {
-                filterIndicator.style.display = 'none';
-            }
+    // Get the new clear all button in header
+    var clearAllButton = document.getElementById('clear-all-filters');
+    
+    // Clear filter button handler
+    function handleClearAll() {
+        // Reset timeline items (both time and search filters)
+        var timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach(function(item) {
+            item.classList.remove('time-filtered');
+            item.classList.remove('search-hidden');
         });
+        
+        // Reset histogram bars to default state
+        histogramContainer.querySelectorAll('.histogram-bar').forEach(function(bar) {
+            bar.classList.remove('active');
+        });
+        
+        // Reset range selector to full width
+        if (selectionRange) {
+            selectionRange.style.left = '0%';
+            selectionRange.style.width = '100%';
+        }
+        
+        // Reset handle positions to full range
+        if (leftHandle) {
+            positionHandle(leftHandle, 0, true);
+        }
+        if (rightHandle) {
+            positionHandle(rightHandle, 100, false);
+        }
+        
+        // Reset labels to full range
+        if (startLabel) {
+            startLabel.textContent = minYear + ' AD';
+        }
+        if (endLabel) {
+            endLabel.textContent = maxYear;
+        }
+        
+        // Clear search input
+        var searchInput = document.querySelector('.timeline-search-input');
+        if (searchInput) {
+            searchInput.value = '';
+        }
+        
+        // Clear search results count
+        var searchResultsCount = document.querySelector('.search-results-count');
+        if (searchResultsCount) {
+            searchResultsCount.textContent = '';
+        }
+        
+        // Clear filter text
+        if (filterRangeText) {
+            filterRangeText.textContent = '';
+        }
+        
+        // Hide clear all button
+        if (clearAllButton) {
+            clearAllButton.style.display = 'none';
+        }
+        
+        // Remove active filter indicator
+        var filterButton = document.getElementById('filter-toggle-button');
+        var filterIndicator = document.querySelector('.filter-indicator');
+        if (filterButton) {
+            filterButton.classList.remove('has-active-filter');
+        }
+        if (filterIndicator) {
+            filterIndicator.style.display = 'none';
+        }
+    }
+    
+    // Add event listeners for both old and new clear buttons
+    if (clearButton) {
+        clearButton.addEventListener('click', handleClearAll);
+    }
+    if (clearAllButton) {
+        clearAllButton.addEventListener('click', handleClearAll);
     }
     
     // Make filterByYearRange globally accessible
