@@ -2565,11 +2565,201 @@ function initializeVisualTimeline() {
         });
     }
     
+    // Make filterByYearRange globally accessible
+    window.filterByYearRange = filterByYearRange;
+    
     console.log('Visual timeline initialized');
+    // Initialize range selector overlay
+    initializeRangeSelector();
+    
+    // Initialize zoom controls
+    initializeZoomControls();
+    
     } catch (e) {
         console.error('Error in initializeVisualTimeline:', e);
         console.error('Stack trace:', e.stack);
     }
+}
+
+// Range selector functionality
+function initializeRangeSelector() {
+    var selectionRange = document.querySelector('.selection-range');
+    var leftHandle = document.querySelector('.selection-handle.left');
+    var rightHandle = document.querySelector('.selection-handle.right');
+    var startLabel = document.querySelector('.range-label.start');
+    var endLabel = document.querySelector('.range-label.end');
+    var histogram = document.querySelector('.timeline-histogram');
+    
+    if (!selectionRange || !leftHandle || !rightHandle || !histogram) {
+        console.log('Range selector elements not found');
+        return;
+    }
+    
+    var isDragging = false;
+    var currentHandle = null;
+    var histogramRect = histogram.getBoundingClientRect();
+    var minYear = parseInt(document.querySelector('.timeline-label')?.textContent) || 43;
+    var maxYear = 2024;
+    
+    // Initialize position
+    selectionRange.style.left = '0%';
+    selectionRange.style.width = '100%';
+    leftHandle.style.left = '0%';
+    rightHandle.style.left = '100%';
+    
+    // Update labels
+    function updateLabels(leftPercent, rightPercent) {
+        var startYear = Math.round(minYear + (maxYear - minYear) * leftPercent / 100);
+        var endYear = Math.round(minYear + (maxYear - minYear) * rightPercent / 100);
+        
+        if (startLabel) startLabel.textContent = startYear + ' AD';
+        if (endLabel) endLabel.textContent = endYear;
+        
+        // Filter timeline
+        window.filterByYearRange?.(startYear, endYear);
+    }
+    
+    // Handle dragging
+    function startDrag(e, handle) {
+        e.preventDefault();
+        isDragging = true;
+        currentHandle = handle;
+        histogramRect = histogram.getBoundingClientRect();
+    }
+    
+    function drag(e) {
+        if (!isDragging || !currentHandle) return;
+        
+        var x = e.clientX || e.touches?.[0]?.clientX;
+        var percent = ((x - histogramRect.left) / histogramRect.width) * 100;
+        percent = Math.max(0, Math.min(100, percent));
+        
+        var leftPercent = parseFloat(leftHandle.style.left) || 0;
+        var rightPercent = parseFloat(rightHandle.style.left) || 100;
+        
+        if (currentHandle === 'left') {
+            leftPercent = Math.min(percent, rightPercent - 5);
+            leftHandle.style.left = leftPercent + '%';
+        } else {
+            rightPercent = Math.max(percent, leftPercent + 5);
+            rightHandle.style.left = rightPercent + '%';
+        }
+        
+        selectionRange.style.left = leftPercent + '%';
+        selectionRange.style.width = (rightPercent - leftPercent) + '%';
+        
+        updateLabels(leftPercent, rightPercent);
+    }
+    
+    function stopDrag() {
+        isDragging = false;
+        currentHandle = null;
+    }
+    
+    // Add event listeners
+    leftHandle.addEventListener('mousedown', function(e) { startDrag(e, 'left'); });
+    rightHandle.addEventListener('mousedown', function(e) { startDrag(e, 'right'); });
+    leftHandle.addEventListener('touchstart', function(e) { startDrag(e, 'left'); });
+    rightHandle.addEventListener('touchstart', function(e) { startDrag(e, 'right'); });
+    
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('touchmove', drag);
+    document.addEventListener('mouseup', stopDrag);
+    document.addEventListener('touchend', stopDrag);
+    
+    // Draggable range
+    var rangeDragging = false;
+    var rangeStartX = 0;
+    var rangeStartLeft = 0;
+    var rangeWidth = 0;
+    
+    selectionRange.addEventListener('mousedown', function(e) {
+        if (e.target === selectionRange) {
+            rangeDragging = true;
+            rangeStartX = e.clientX;
+            rangeStartLeft = parseFloat(selectionRange.style.left) || 0;
+            rangeWidth = parseFloat(selectionRange.style.width) || 100;
+            histogramRect = histogram.getBoundingClientRect();
+            e.preventDefault();
+        }
+    });
+    
+    document.addEventListener('mousemove', function(e) {
+        if (rangeDragging) {
+            var deltaX = e.clientX - rangeStartX;
+            var deltaPercent = (deltaX / histogramRect.width) * 100;
+            var newLeft = Math.max(0, Math.min(100 - rangeWidth, rangeStartLeft + deltaPercent));
+            
+            selectionRange.style.left = newLeft + '%';
+            leftHandle.style.left = newLeft + '%';
+            rightHandle.style.left = (newLeft + rangeWidth) + '%';
+            
+            updateLabels(newLeft, newLeft + rangeWidth);
+        }
+    });
+    
+    document.addEventListener('mouseup', function() {
+        rangeDragging = false;
+    });
+    
+    console.log('Range selector initialized');
+}
+
+// Zoom controls functionality
+function initializeZoomControls() {
+    var zoomIn = document.querySelector('.zoom-in');
+    var zoomOut = document.querySelector('.zoom-out');
+    var zoomReset = document.querySelector('.zoom-reset');
+    var zoomLevelDisplay = document.querySelector('.zoom-level');
+    var histogram = document.querySelector('.timeline-histogram');
+    
+    if (!zoomIn || !zoomOut || !zoomReset || !histogram) {
+        console.log('Zoom controls not found');
+        return;
+    }
+    
+    var zoomLevel = 1;
+    var minZoom = 1;
+    var maxZoom = 5;
+    
+    function updateZoom() {
+        histogram.style.transform = 'scaleX(' + zoomLevel + ')';
+        histogram.style.transformOrigin = 'left center';
+        
+        // Update bar widths to maintain visibility
+        var bars = histogram.querySelectorAll('.histogram-bar');
+        bars.forEach(function(bar) {
+            bar.style.minWidth = (3 * zoomLevel) + 'px';
+        });
+        
+        if (zoomLevelDisplay) {
+            zoomLevelDisplay.textContent = Math.round(zoomLevel * 100) + '%';
+        }
+        
+        // Adjust container width
+        var container = histogram.parentElement;
+        if (container) {
+            container.style.overflowX = zoomLevel > 1 ? 'auto' : 'hidden';
+        }
+    }
+    
+    zoomIn.addEventListener('click', function() {
+        zoomLevel = Math.min(zoomLevel * 1.5, maxZoom);
+        updateZoom();
+    });
+    
+    zoomOut.addEventListener('click', function() {
+        zoomLevel = Math.max(zoomLevel / 1.5, minZoom);
+        updateZoom();
+    });
+    
+    zoomReset.addEventListener('click', function() {
+        zoomLevel = 1;
+        updateZoom();
+    });
+    
+    updateZoom();
+    console.log('Zoom controls initialized');
 }
 
 // Add CSS class for time-filtered items

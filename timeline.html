@@ -151,9 +151,22 @@
                 <!-- Event density bars will be generated here -->
             </div>
             <div class="timeline-selection">
-                <div class="selection-handle left"></div>
-                <div class="selection-range"></div>
-                <div class="selection-handle right"></div>
+                <div class="selection-handle left" data-handle="left">
+                    <div class="handle-grip"></div>
+                </div>
+                <div class="selection-range">
+                    <div class="range-label start"></div>
+                    <div class="range-label end"></div>
+                </div>
+                <div class="selection-handle right" data-handle="right">
+                    <div class="handle-grip"></div>
+                </div>
+            </div>
+            <div class="timeline-zoom-controls">
+                <button class="zoom-in" title="Zoom In">+</button>
+                <button class="zoom-out" title="Zoom Out">−</button>
+                <button class="zoom-reset" title="Reset Zoom">⟲</button>
+                <span class="zoom-level">100%</span>
             </div>
             <div class="timeline-labels">
                 <!-- Year labels will be generated here -->
