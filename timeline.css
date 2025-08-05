@@ -3532,18 +3532,30 @@ textarea#image-sources {
 }
 .timeline-search-input {
     width: 100%;
-    padding: 12px 16px;
+    padding: 10px 14px;
     font-size: 0.95rem;
-    border: 2px solid var(--bg-tertiary);
+    border: 2px solid rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    background: var(--bg-primary);
+    background: white;
     color: var(--text-primary);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
+
+[data-theme="dark"] .timeline-search-input {
+    background: var(--bg-secondary);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.timeline-search-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
 .timeline-search-input:focus {
     outline: none;
     border-color: var(--accent-primary);
-    box-shadow: 0 0 0 3px rgba(78, 152, 237, 0.1);
+    box-shadow: 0 0 0 3px rgba(78, 152, 237, 0.15), inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 .timeline-search .search-results-count {
     margin-top: 8px;
@@ -3623,14 +3635,19 @@ textarea#image-sources {
     width: 100%;
     max-width: 100vw;  /* Prevent exceeding viewport width */
     height: 380px;  /* Increased to fit all content including clear button */
-    background: var(--bg-primary);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
     z-index: 999;  /* Above hamburger menu */
     transition: top 0.3s ease;
     display: flex;
     flex-direction: column;
     overflow: hidden;  /* Prevent content from spilling out */
     box-sizing: border-box;  /* Include padding in width calculation */
+}
+
+[data-theme="dark"] .filter-drawer {
+    background: rgba(30, 30, 30, 0.98);
 }
 
 .filter-drawer.active {
@@ -3644,21 +3661,28 @@ textarea#image-sources {
     transition: opacity 0.3s ease;
 }
 
-/* Prevent horizontal scroll when drawer is active */
+/* Prevent any overflow when drawer is active */
 body:has(.filter-drawer.active) {
-    overflow-x: hidden;
+    overflow: hidden;
     max-width: 100vw;
+    position: fixed;
+    width: 100%;
 }
 
 .filter-drawer-header {
     padding: 12px 16px;
-    border-bottom: 1px solid var(--bg-tertiary);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.08);
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: 12px;
-    background: var(--bg-primary);
+    background: rgba(0, 0, 0, 0.03);
     min-height: 60px;
+}
+
+[data-theme="dark"] .filter-drawer-header {
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 .filter-header-left {
@@ -3715,12 +3739,12 @@ body:has(.filter-drawer.active) {
 }
 
 .filter-drawer-close {
-    background: none;
-    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3730,6 +3754,12 @@ body:has(.filter-drawer.active) {
 
 .filter-drawer-close:hover {
     background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.filter-drawer-close svg {
+    width: 18px;
+    height: 18px;
 }
 
 .filter-drawer-content {
@@ -3738,7 +3768,7 @@ body:has(.filter-drawer.active) {
     overflow-x: hidden;  /* Prevent horizontal overflow */
     flex: 1;
     min-height: 0;  /* Allow flex item to shrink */
-    background: var(--bg-primary);
+    background: transparent;
     max-width: 100%;
     margin: 0 auto;
     width: 100%;
@@ -3787,15 +3817,20 @@ body:has(.filter-drawer.active) {
 }
 
 .visual-timeline {
-    background: var(--bg-secondary);
+    background: rgba(0, 0, 0, 0.04);
     border-radius: 8px;
     padding: 10px 15px 35px 15px;  /* More bottom padding for handles */
     position: relative;
     height: 130px;  /* Increased to show handles fully */
     overflow: hidden;  /* Prevent overflow issues */
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     box-sizing: border-box;
+}
+
+[data-theme="dark"] .visual-timeline {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 [data-theme="dark"] .visual-timeline {
