@@ -2089,7 +2089,16 @@ function initializeVisualTimeline() {
             var rangeMatch = dateStr.match(/(\d{1,4})-(\d{1,4})/);
             year = parseInt(rangeMatch[1]); // Use start year
         }
-        // Handle centuries like "19th century"
+        // Handle century ranges like "11th-19th c."
+        else if (dateStr.match(/(\d{1,2})(st|nd|rd|th)?[\s-]+(\d{1,2})(st|nd|rd|th)?\s*c/)) {
+            var centuryRangeMatch = dateStr.match(/(\d{1,2})(st|nd|rd|th)?[\s-]+(\d{1,2})(st|nd|rd|th)?\s*c/);
+            var startCentury = parseInt(centuryRangeMatch[1]);
+            var endCentury = parseInt(centuryRangeMatch[3]);
+            // For ranges, use the midpoint
+            var midCentury = Math.floor((startCentury + endCentury) / 2);
+            year = (midCentury - 1) * 100 + 50;
+        }
+        // Handle single centuries like "19th century"
         else if (dateStr.match(/(\d{1,2})(st|nd|rd|th)\s+century/)) {
             var centuryMatch = dateStr.match(/(\d{1,2})(st|nd|rd|th)\s+century/);
             var century = parseInt(centuryMatch[1]);
@@ -2225,7 +2234,8 @@ function initializeVisualTimeline() {
     console.log('Active centuries:', activeCenturies);
     
     // Create a more balanced distribution
-    if (activeCenturies.length > 10) {
+    // Lower threshold since you have sparse early centuries
+    if (activeCenturies.length > 5) {
         // Use century-based bins for better distribution
         var binsPerCentury = Math.floor(histogramBins / activeCenturies.length);
         var currentBin = 0;
@@ -2293,7 +2303,7 @@ function initializeVisualTimeline() {
     // Add histogram bars with proper year ranges
     var barYearRanges = [];
     
-    if (activeCenturies.length > 10) {
+    if (activeCenturies.length > 5) {
         // Calculate year range for each bar based on century distribution
         var binsPerCentury = Math.floor(histogramBins / activeCenturies.length);
         var currentBin = 0;
@@ -2383,6 +2393,13 @@ function initializeVisualTimeline() {
             if (dateStr.match(/(\d{1,4})-(\d{1,4})/)) {
                 var rangeMatch = dateStr.match(/(\d{1,4})-(\d{1,4})/);
                 year = parseInt(rangeMatch[1]);
+            }
+            else if (dateStr.match(/(\d{1,2})(st|nd|rd|th)?[\s-]+(\d{1,2})(st|nd|rd|th)?\s*c/)) {
+                var centuryRangeMatch = dateStr.match(/(\d{1,2})(st|nd|rd|th)?[\s-]+(\d{1,2})(st|nd|rd|th)?\s*c/);
+                var startCentury = parseInt(centuryRangeMatch[1]);
+                var endCentury = parseInt(centuryRangeMatch[3]);
+                var midCentury = Math.floor((startCentury + endCentury) / 2);
+                year = (midCentury - 1) * 100 + 50;
             }
             else if (dateStr.match(/(\d{1,2})(st|nd|rd|th)\s+century/)) {
                 var centuryMatch = dateStr.match(/(\d{1,2})(st|nd|rd|th)\s+century/);
