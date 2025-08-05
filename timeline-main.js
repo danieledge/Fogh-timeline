@@ -2153,12 +2153,18 @@ function initializeVisualTimeline() {
         var endCentury = Math.ceil(maxYear / 100) * 100;
         
         for (var c = startCentury; c < endCentury; c += 100) {
-            var centuryNum = Math.floor(c / 100) + 1;
+            var centuryNum;
             var label;
             
+            // Calculate century number correctly
             if (c === 0) {
-                label = '1st C';
-            } else if (centuryNum === 1) {
+                centuryNum = 1; // Years 1-100 are 1st century
+            } else {
+                centuryNum = Math.floor(c / 100) + 1;
+            }
+            
+            // Format label with proper ordinals
+            if (centuryNum === 1) {
                 label = '1st C';
             } else if (centuryNum === 2) {
                 label = '2nd C';
@@ -2166,6 +2172,16 @@ function initializeVisualTimeline() {
                 label = '3rd C';
             } else if (centuryNum === 21) {
                 label = '21st C';
+            } else if (centuryNum === 22) {
+                label = '22nd C';
+            } else if (centuryNum === 23) {
+                label = '23rd C';
+            } else if (centuryNum % 10 === 1 && centuryNum !== 11) {
+                label = centuryNum + 'st C';
+            } else if (centuryNum % 10 === 2 && centuryNum !== 12) {
+                label = centuryNum + 'nd C';
+            } else if (centuryNum % 10 === 3 && centuryNum !== 13) {
+                label = centuryNum + 'rd C';
             } else {
                 label = centuryNum + 'th C';
             }
