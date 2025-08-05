@@ -1558,6 +1558,18 @@ function initializeTimeline() {
         
         showDebug('Timeline initialization complete!');
         
+        // Initialize visual timeline and search features
+        showDebug('Initializing timeline features...');
+        setTimeout(function() {
+            try {
+                initializeTimelineSearch();
+                initializeVisualTimeline();
+            } catch (e) {
+                console.error('Error initializing timeline features:', e);
+                showError('Failed to initialize timeline features: ' + e.message);
+            }
+        }, 100);
+        
     } catch (error) {
         console.error('Timeline Error:', error);
         showError('Timeline Error: ' + error.message + ' at line ' + error.lineNumber);
@@ -2051,34 +2063,7 @@ function initializeTimelineSearch() {
     console.log('Timeline search initialized successfully');
 }
 
-// Initialize timeline features when timeline is ready
-function initializeTimelineFeatures() {
-    try {
-        console.log('Initializing timeline features...');
-        
-        // Check if timeline data is available
-        if (typeof timelineData === 'undefined') {
-            console.log('Timeline data not yet available, retrying in 500ms...');
-            setTimeout(initializeTimelineFeatures, 500);
-            return;
-        }
-        
-        initializeTimelineSearch();
-        initializeVisualTimeline();
-    } catch (e) {
-        console.error('Error initializing timeline features:', e);
-        console.error('Stack trace:', e.stack);
-    }
-}
-
-// Call initialization after main timeline is loaded
-if (document.readyState === 'complete') {
-    setTimeout(initializeTimelineFeatures, 500);
-} else {
-    window.addEventListener('load', function() {
-        setTimeout(initializeTimelineFeatures, 500);
-    });
-}
+// Timeline features are now initialized in the main initializeTimeline function
 
 // Make function globally accessible for debugging
 window.initializeVisualTimeline = initializeVisualTimeline;
