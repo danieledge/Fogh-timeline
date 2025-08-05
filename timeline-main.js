@@ -2080,14 +2080,14 @@ function initializeVisualTimeline() {
         if (yearMatch) {
             var year = parseInt(yearMatch[1]);
             
-            // Handle BC years
+            // Skip BC years - start from Roman era
             if (item.date.toLowerCase().includes('bc')) {
-                year = -year;
+                return;
             }
             
-            // Normalize ancient dates
-            if (year > 0 && year < 100) {
-                // Assume it's AD unless specified
+            // Skip dates before Roman Britain (43 AD)
+            if (year < 43) {
+                return;
             }
             
             years.push(year);
@@ -2119,10 +2119,23 @@ function initializeVisualTimeline() {
         var endCentury = Math.ceil(maxYear / 100) * 100;
         
         for (var c = startCentury; c < endCentury; c += 100) {
-            var label = c < 0 ? Math.abs(c) + ' BC' : 
-                       c === 0 ? '1st C' :
-                       c < 100 ? '1st C' :
-                       (Math.floor(c / 100) + 1) + 'th C';
+            var centuryNum = Math.floor(c / 100) + 1;
+            var label;
+            
+            if (c === 0) {
+                label = '1st C';
+            } else if (centuryNum === 1) {
+                label = '1st C';
+            } else if (centuryNum === 2) {
+                label = '2nd C';
+            } else if (centuryNum === 3) {
+                label = '3rd C';
+            } else if (centuryNum === 21) {
+                label = '21st C';
+            } else {
+                label = centuryNum + 'th C';
+            }
+            
             periods.push({
                 start: c,
                 end: c + 99,
@@ -2254,9 +2267,7 @@ function initializeVisualTimeline() {
         });
         
         // Update filter info
-        var startLabel = startYear < 0 ? Math.abs(startYear) + ' BC' : startYear;
-        var endLabel = endYear < 0 ? Math.abs(endYear) + ' BC' : endYear;
-        filterRangeText.textContent = 'Showing ' + visibleCount + ' events from ' + startLabel + ' to ' + endLabel;
+        filterRangeText.textContent = 'Showing ' + visibleCount + ' events from ' + startYear + ' to ' + endYear;
         clearButton.style.display = 'inline-block';
         
         // Scroll to first visible item
