@@ -3666,8 +3666,22 @@ textarea#image-sources {
     text-align: center;
 }
 
-.filter-drawer-header .spacer {
-    width: 32px; /* Same width as close button for balance */
+.clear-all-filters {
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.clear-all-filters:hover {
+    background: var(--bg-secondary);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
 }
 
 .filter-drawer-close {
