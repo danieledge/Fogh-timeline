@@ -3598,13 +3598,6 @@ textarea#image-sources {
     fill: white;
 }
 
-/* Add text label to button */
-.filter-toggle-button::after {
-    content: 'Filters';
-    display: inline;
-    margin-left: 4px;
-}
-
 /* Filter indicator dot */
 .filter-indicator {
     background: var(--accent-primary);
@@ -3662,7 +3655,19 @@ body:has(.filter-drawer.active) {
     border-bottom: 1px solid var(--bg-tertiary);
     display: flex;
     align-items: center;
+    justify-content: space-between;
     background: var(--bg-primary);
+}
+
+.filter-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.filter-header-right {
+    flex: 1;
 }
 
 .filter-header-center {
@@ -3728,6 +3733,7 @@ body:has(.filter-drawer.active) {
     overflow-y: auto;
     overflow-x: hidden;  /* Prevent horizontal overflow */
     flex: 1;
+    min-height: 0;  /* Allow flex item to shrink */
     background: var(--bg-secondary);
     max-width: 100%;
     margin: 0 auto;
