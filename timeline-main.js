@@ -829,13 +829,14 @@ function initializeTimeline() {
         if (searchInput && searchResultsCount) {
             showDebug('Setting up timeline search handlers');
             function performTimelineSearch() {
-                var searchTerm = searchInput.value.toLowerCase().trim();
-                var timelineItems = document.querySelectorAll('.timeline-item');
-                var visibleCount = 0;
-                var totalCount = timelineItems.length;
-                
-                showDebug('Performing search for: "' + searchTerm + '"');
-                showDebug('Total timeline items: ' + totalCount);
+                try {
+                    var searchTerm = searchInput.value.toLowerCase().trim();
+                    var timelineItems = document.querySelectorAll('.timeline-item');
+                    var visibleCount = 0;
+                    var totalCount = timelineItems.length;
+                    
+                    showDebug('Performing search for: "' + searchTerm + '"');
+                    showDebug('Total timeline items: ' + totalCount);
                 
                 timelineItems.forEach(function(item) {
                     // Get all searchable text from the timeline item
@@ -843,33 +844,41 @@ function initializeTimeline() {
                     
                     // Get date
                     var dateElement = item.querySelector('.timeline-date');
-                    if (dateElement) {
+                    if (dateElement && dateElement.textContent) {
                         searchableText += dateElement.textContent + ' ';
                     }
                     
                     // Get title
                     var titleElement = item.querySelector('.content-title');
-                    if (titleElement) {
+                    if (titleElement && titleElement.textContent) {
                         searchableText += titleElement.textContent + ' ';
                     }
                     
                     // Get description
                     var descElement = item.querySelector('.content-description');
-                    if (descElement) {
+                    if (descElement && descElement.textContent) {
                         searchableText += descElement.textContent + ' ';
                     }
                     
                     // Get image captions
                     var captionElements = item.querySelectorAll('.image-caption');
-                    captionElements.forEach(function(caption) {
-                        searchableText += caption.textContent + ' ';
-                    });
+                    if (captionElements && captionElements.length > 0) {
+                        captionElements.forEach(function(caption) {
+                            if (caption && caption.textContent) {
+                                searchableText += caption.textContent + ' ';
+                            }
+                        });
+                    }
                     
                     // Get citation numbers
                     var citationElements = item.querySelectorAll('.citation-link');
-                    citationElements.forEach(function(citation) {
-                        searchableText += 'citation ' + citation.textContent + ' ';
-                    });
+                    if (citationElements && citationElements.length > 0) {
+                        citationElements.forEach(function(citation) {
+                            if (citation && citation.textContent) {
+                                searchableText += 'citation ' + citation.textContent + ' ';
+                            }
+                        });
+                    }
                     
                     // Check if item matches search
                     if (searchTerm === '' || searchableText.toLowerCase().includes(searchTerm)) {
@@ -898,6 +907,10 @@ function initializeTimeline() {
                             firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
                     }
+                }
+                } catch (error) {
+                    console.error('Error in timeline search:', error);
+                    showDebug('Search error: ' + error.message);
                 }
             }
             
