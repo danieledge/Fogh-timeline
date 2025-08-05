@@ -146,7 +146,10 @@
                     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
                 </svg>
             </button>
-            <h3>Search & Filter</h3>
+            <div class="filter-header-center">
+                <h3>Search & Filter</h3>
+                <div class="filter-status" id="filter-status"></div>
+            </div>
             <button class="clear-all-filters" id="clear-all-filters" style="display: none;">Clear All</button>
         </div>
         <div class="filter-drawer-content">
@@ -159,7 +162,6 @@
                                class="timeline-search-input" 
                                placeholder="Search timeline entries..." 
                                aria-label="Search timeline">
-                        <div class="search-results-count"></div>
                     </div>
                 </div>
             </div>
@@ -190,9 +192,6 @@
                         <div class="timeline-labels">
                             <!-- Year labels will be generated here -->
                         </div>
-                    </div>
-                    <div class="timeline-filter-info">
-                        <span class="filter-range-text"></span>
                     </div>
                 </div>
             </div>
