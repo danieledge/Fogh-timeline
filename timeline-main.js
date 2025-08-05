@@ -821,12 +821,10 @@ function initializeTimeline() {
         // Initialize timeline search functionality
         showDebug('Initializing timeline search');
         var searchInput = document.querySelector('.timeline-search-input');
-        var searchResultsCount = document.querySelector('.timeline-search .search-results-count');
         
         showDebug('Search input element: ' + (searchInput ? 'found' : 'NOT FOUND'));
-        showDebug('Search results count element: ' + (searchResultsCount ? 'found' : 'NOT FOUND'));
         
-        if (searchInput && searchResultsCount) {
+        if (searchInput) {
             showDebug('Setting up timeline search handlers');
             function performTimelineSearch() {
                 try {
@@ -896,17 +894,9 @@ function initializeTimeline() {
                     }
                 });
                 
-                // Update results count
-                if (searchTerm === '') {
-                    searchResultsCount.textContent = '';
-                } else {
-                    var timeFiltered = document.querySelectorAll('.timeline-item.time-filtered').length > 0;
-                    var inWindowCount = totalCount - document.querySelectorAll('.timeline-item.time-filtered').length;
-                    if (timeFiltered) {
-                        searchResultsCount.textContent = 'Found ' + visibleCount + ' of ' + inWindowCount + ' in current range';
-                    } else {
-                        searchResultsCount.textContent = 'Found ' + visibleCount + ' of ' + totalCount + ' entries';
-                    }
+                // Update unified filter status
+                if (window.updateFilterStatus) {
+                    window.updateFilterStatus();
                 }
                 
                 // Update filter indicator
@@ -1985,10 +1975,9 @@ if (document.readyState === 'loading') {
 function initializeTimelineSearch() {
     console.log('Initializing timeline search...');
     var searchInput = document.querySelector('.timeline-search-input');
-    var searchResultsCount = document.querySelector('.timeline-search .search-results-count');
     
-    if (!searchInput || !searchResultsCount) {
-        console.log('Timeline search elements not found');
+    if (!searchInput) {
+        console.log('Timeline search input not found');
         return;
     }
     
@@ -2146,6 +2135,32 @@ function initializeVisualTimeline() {
     console.log('=== VISUAL TIMELINE START ===');
     console.log('Function called at:', new Date().toISOString());
     
+    // Unified filter status update function
+    function updateFilterStatus() {
+        var filterStatus = document.getElementById('filter-status');
+        if (!filterStatus) return;
+        
+        // Count visible items (not hidden by either filter)
+        var totalItems = document.querySelectorAll('.timeline-item').length;
+        var visibleItems = document.querySelectorAll('.timeline-item:not(.time-filtered):not(.search-hidden)').length;
+        
+        // Get active filters info
+        var searchInput = document.querySelector('.timeline-search-input');
+        var hasSearch = searchInput && searchInput.value.trim() !== '';
+        var hasTimeFilter = document.querySelectorAll('.timeline-item.time-filtered').length > 0;
+        
+        if (hasSearch || hasTimeFilter) {
+            filterStatus.textContent = 'Showing ' + visibleItems + ' of ' + totalItems + ' entries';
+            filterStatus.style.display = 'block';
+        } else {
+            filterStatus.textContent = 'Showing all ' + totalItems + ' entries';
+            filterStatus.style.display = 'block';
+        }
+    }
+    
+    // Make it globally accessible
+    window.updateFilterStatus = updateFilterStatus;
+    
     // Initialize filter drawer
     var filterButton = document.getElementById('filter-toggle-button');
     var filterDrawer = document.getElementById('filter-drawer');
@@ -2159,6 +2174,9 @@ function initializeVisualTimeline() {
             filterButton.classList.add('drawer-open');
             // Prevent horizontal scroll
             document.body.style.overflowX = 'hidden';
+            
+            // Update filter status when drawer opens
+            updateFilterStatus();
             
             // Initialize visual timeline on first open
             if (!window.visualTimelineInitialized) {
@@ -2789,9 +2807,9 @@ function initializeVisualTimeline() {
             }
         });
         
-        // Update filter info
-        if (filterRangeText) {
-            filterRangeText.textContent = 'Time range: ' + startYear + ' to ' + endYear;
+        // Update unified filter status
+        if (window.updateFilterStatus) {
+            window.updateFilterStatus();
         }
         // Show clear all button in header
         var clearAllButton = document.getElementById('clear-all-filters');
@@ -2875,12 +2893,6 @@ function initializeVisualTimeline() {
             searchInput.value = '';
         }
         
-        // Clear search results count
-        var searchResultsCount = document.querySelector('.search-results-count');
-        if (searchResultsCount) {
-            searchResultsCount.textContent = '';
-        }
-        
         // Clear filter text
         if (filterRangeText) {
             filterRangeText.textContent = '';
@@ -2899,6 +2911,11 @@ function initializeVisualTimeline() {
         }
         if (filterIndicator) {
             filterIndicator.style.display = 'none';
+        }
+        
+        // Update unified filter status
+        if (window.updateFilterStatus) {
+            window.updateFilterStatus();
         }
     }
     
