@@ -2199,6 +2199,20 @@ function initializeVisualTimeline() {
     
     console.log('Year range:', minYear, 'to', maxYear);
     
+    // Group events by century to handle large gaps better
+    var eventsByCentury = {};
+    years.forEach(function(year) {
+        var century = Math.floor(year / 100) * 100;
+        if (!eventsByCentury[century]) {
+            eventsByCentury[century] = [];
+        }
+        eventsByCentury[century].push(year);
+    });
+    
+    // Get list of centuries with events
+    var activeCenturies = Object.keys(eventsByCentury).map(Number).sort(function(a, b) { return a - b; });
+    console.log('Active centuries:', activeCenturies);
+    
     // Create periods only for centuries with data
     var periods = [];
     if (yearRange > 1000) {
@@ -2257,20 +2271,6 @@ function initializeVisualTimeline() {
             });
         }
     }
-    
-    // Group events by century to handle large gaps better
-    var eventsByCentury = {};
-    years.forEach(function(year) {
-        var century = Math.floor(year / 100) * 100;
-        if (!eventsByCentury[century]) {
-            eventsByCentury[century] = [];
-        }
-        eventsByCentury[century].push(year);
-    });
-    
-    // Get list of centuries with events
-    var activeCenturies = Object.keys(eventsByCentury).map(Number).sort(function(a, b) { return a - b; });
-    console.log('Active centuries:', activeCenturies);
     
     // Create histogram data with better handling of gaps
     var histogramBins = 50; // Number of bars in the histogram
