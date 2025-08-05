@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Timeline Search</title>
+    <script>
+        function testSearch() {
+            console.log('=== TESTING TIMELINE SEARCH ===');
+            
+            // Check if search elements exist
+            var searchInput = document.querySelector('.timeline-search-input');
+            console.log('Search input found:', searchInput);
+            
+            var searchResultsCount = document.querySelector('.timeline-search .search-results-count');
+            console.log('Search results count found:', searchResultsCount);
+            
+            var timelineItems = document.querySelectorAll('.timeline-item');
+            console.log('Timeline items found:', timelineItems.length);
+            
+            if (searchInput) {
+                // Test search functionality
+                console.log('Testing search for "1066"...');
+                searchInput.value = '1066';
+                searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                
+                setTimeout(function() {
+                    var hiddenItems = document.querySelectorAll('.timeline-item.search-hidden');
+                    var visibleItems = document.querySelectorAll('.timeline-item:not(.search-hidden)');
+                    console.log('Hidden items:', hiddenItems.length);
+                    console.log('Visible items:', visibleItems.length);
+                    console.log('Results count text:', searchResultsCount ? searchResultsCount.textContent : 'N/A');
+                    
+                    // Clear search
+                    searchInput.value = '';
+                    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    
+                    // Test search for "church"
+                    setTimeout(function() {
+                        console.log('\nTesting search for "church"...');
+                        searchInput.value = 'church';
+                        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                        
+                        setTimeout(function() {
+                            var hiddenItems2 = document.querySelectorAll('.timeline-item.search-hidden');
+                            var visibleItems2 = document.querySelectorAll('.timeline-item:not(.search-hidden)');
+                            console.log('Hidden items:', hiddenItems2.length);
+                            console.log('Visible items:', visibleItems2.length);
+                            console.log('Results count text:', searchResultsCount ? searchResultsCount.textContent : 'N/A');
+                        }, 500);
+                    }, 1000);
+                }, 500);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Timeline Search Test</h1>
+    <p>Open the browser console to see test results</p>
+    <button onclick="testSearch()">Run Search Test</button>
+    <iframe src="timeline.html" style="width: 100%; height: 600px; border: 1px solid #ccc;" onload="console.log('Timeline loaded')"></iframe>
+</body>
+</html>

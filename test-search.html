@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Timeline Search</title>
+</head>
+<body>
+    <h1>Timeline Search Debug</h1>
+    <script>
+        // Test if the search elements exist
+        setTimeout(function() {
+            console.log('=== SEARCH DEBUG ===');
+            var searchInput = document.querySelector('.timeline-search-input');
+            console.log('Search input found:', searchInput);
+            
+            var searchResultsCount = document.querySelector('.timeline-search .search-results-count');
+            console.log('Search results count found:', searchResultsCount);
+            
+            var timelineItems = document.querySelectorAll('.timeline-item');
+            console.log('Timeline items found:', timelineItems.length);
+            
+            if (timelineItems.length > 0) {
+                var firstItem = timelineItems[0];
+                console.log('First timeline item classes:', firstItem.className);
+                console.log('Date element:', firstItem.querySelector('.timeline-date'));
+                console.log('Title element:', firstItem.querySelector('.content-title'));
+                console.log('Description element:', firstItem.querySelector('.content-description'));
+            }
+            
+            // Try to trigger search manually
+            if (searchInput) {
+                console.log('Setting search value to "1066"');
+                searchInput.value = '1066';
+                searchInput.dispatchEvent(new Event('input'));
+                
+                setTimeout(function() {
+                    var hiddenItems = document.querySelectorAll('.timeline-item.search-hidden');
+                    console.log('Hidden items after search:', hiddenItems.length);
+                    console.log('Results count text:', searchResultsCount ? searchResultsCount.textContent : 'N/A');
+                }, 100);
+            }
+        }, 2000);
+    </script>
+    <iframe src="timeline.html" style="width: 100%; height: 600px; border: 1px solid #ccc;"></iframe>
+</body>
+</html>
