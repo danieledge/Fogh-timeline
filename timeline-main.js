@@ -896,6 +896,30 @@ function initializeTimeline() {
                     searchResultsCount.textContent = 'Showing ' + visibleCount + ' of ' + totalCount + ' entries';
                 }
                 
+                // Update filter indicator
+                var filterIndicator = document.querySelector('.filter-indicator');
+                var filterButton = document.getElementById('filter-toggle-button');
+                if (searchTerm !== '') {
+                    if (filterButton) {
+                        filterButton.classList.add('has-active-filter');
+                    }
+                    if (filterIndicator) {
+                        filterIndicator.textContent = visibleCount;
+                        filterIndicator.style.display = 'inline-flex';
+                    }
+                } else {
+                    // Only remove if no time filter is active
+                    var timeFiltered = document.querySelectorAll('.timeline-item.time-filtered').length > 0;
+                    if (!timeFiltered) {
+                        if (filterButton) {
+                            filterButton.classList.remove('has-active-filter');
+                        }
+                        if (filterIndicator) {
+                            filterIndicator.style.display = 'none';
+                        }
+                    }
+                }
+                
                 showDebug('Search complete. Visible: ' + visibleCount + ', Hidden: ' + (totalCount - visibleCount));
                 
                 // If searching and found results, ensure at least one is visible in viewport
@@ -2747,10 +2771,10 @@ function initializeVisualTimeline() {
         if (filterButton) {
             filterButton.classList.add('has-active-filter');
         }
-        // Update indicator with active filter indicator
+        // Update indicator with count of filtered items
         if (filterIndicator) {
-            filterIndicator.textContent = '●';
-            filterIndicator.style.display = 'flex';
+            filterIndicator.textContent = visibleCount;
+            filterIndicator.style.display = 'inline-flex';
         }
         
         // Removed auto-scroll to prevent page jumping
