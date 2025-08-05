@@ -2213,10 +2213,6 @@ function initializeVisualTimeline() {
         }
     }
     
-    // Create histogram data with better handling of gaps
-    var histogramBins = 50; // Number of bars in the histogram
-    var histogram = new Array(histogramBins).fill(0);
-    
     // Group events by century to handle large gaps better
     var eventsByCentury = {};
     years.forEach(function(year) {
@@ -2230,6 +2226,10 @@ function initializeVisualTimeline() {
     // Get list of centuries with events
     var activeCenturies = Object.keys(eventsByCentury).map(Number).sort(function(a, b) { return a - b; });
     console.log('Active centuries:', activeCenturies);
+    
+    // Create histogram data with better handling of gaps
+    var histogramBins = 50; // Number of bars in the histogram
+    var histogram = new Array(histogramBins).fill(0);
     
     // Create a more balanced distribution
     // Lower threshold since you have sparse early centuries
@@ -2301,6 +2301,11 @@ function initializeVisualTimeline() {
     // Add histogram bars with proper year ranges
     var barYearRanges = [];
     
+    // Debug logging
+    console.log('Creating histogram bars. Active centuries:', activeCenturies.length);
+    console.log('Histogram data:', histogram);
+    console.log('Max count:', maxCount);
+    
     if (activeCenturies.length > 5) {
         // Calculate year range for each bar based on century distribution
         var binsPerCentury = Math.floor(histogramBins / activeCenturies.length);
@@ -2331,22 +2336,33 @@ function initializeVisualTimeline() {
         }
     }
     
-    histogram.forEach(function(count, index) {
+    // Create bars for each histogram entry
+    for (var i = 0; i < histogramBins; i++) {
+        var count = histogram[i] || 0;
         var bar = document.createElement('div');
         bar.className = 'histogram-bar';
-        bar.style.height = count > 0 ? ((count / maxCount) * 100) + '%' : '3px';
+        
+        // Always show at least a minimal bar
+        if (maxCount > 0) {
+            bar.style.height = count > 0 ? ((count / maxCount) * 100) + '%' : '3px';
+        } else {
+            bar.style.height = '3px';
+        }
+        
         bar.title = count + ' events';
         
-        var yearRange = barYearRanges[index] || { start: 0, end: 0 };
+        var yearRange = barYearRanges[i] || { start: minYear, end: maxYear };
         bar.dataset.startYear = yearRange.start;
         bar.dataset.endYear = yearRange.end;
         
         bar.addEventListener('click', function() {
-            filterByYearRange(yearRange.start, yearRange.end);
+            var start = parseInt(this.dataset.startYear);
+            var end = parseInt(this.dataset.endYear);
+            filterByYearRange(start, end);
         });
         
         histogramContainer.appendChild(bar);
-    });
+    }
     
     // Add year labels based on active centuries
     if (activeCenturies.length > 5) {
