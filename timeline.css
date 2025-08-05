@@ -3624,18 +3624,18 @@ textarea#image-sources {
 /* Filter Drawer - slides from top as horizontal panel */
 .filter-drawer {
     position: fixed;
-    top: -320px;  /* Hidden off-screen - increased for handles */
+    top: -380px;  /* Hidden off-screen - sized to fit all content */
     left: 0;
     right: 0;
     width: 100%;
-    height: 320px;  /* Increased height to show handles properly */
+    height: 380px;  /* Increased to fit all content including clear button */
     background: var(--bg-secondary);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     z-index: 88;
     transition: top 0.3s ease;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;  /* Allow content to be fully visible */
 }
 
 .filter-drawer.active {
@@ -3688,13 +3688,16 @@ textarea#image-sources {
 }
 
 .filter-drawer-content {
-    padding: 12px 20px 20px 20px;
+    padding: 12px 20px 25px 20px;  /* More bottom padding for clear button */
     overflow-y: auto;
+    overflow-x: hidden;
     flex: 1;
     background: var(--bg-secondary);
     max-width: 100%;
     margin: 0 auto;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .filter-section {
@@ -3983,11 +3986,13 @@ textarea#image-sources {
 }
 
 .timeline-filter-info {
-    margin-top: 8px;
+    margin-top: 10px;
+    padding-top: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.85rem;
+    min-height: 30px;  /* Ensure space for button */
 }
 
 .filter-range-text {
