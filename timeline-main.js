@@ -823,12 +823,19 @@ function initializeTimeline() {
         var searchInput = document.querySelector('.timeline-search-input');
         var searchResultsCount = document.querySelector('.timeline-search .search-results-count');
         
+        showDebug('Search input element: ' + (searchInput ? 'found' : 'NOT FOUND'));
+        showDebug('Search results count element: ' + (searchResultsCount ? 'found' : 'NOT FOUND'));
+        
         if (searchInput && searchResultsCount) {
+            showDebug('Setting up timeline search handlers');
             function performTimelineSearch() {
                 var searchTerm = searchInput.value.toLowerCase().trim();
                 var timelineItems = document.querySelectorAll('.timeline-item');
                 var visibleCount = 0;
                 var totalCount = timelineItems.length;
+                
+                showDebug('Performing search for: "' + searchTerm + '"');
+                showDebug('Total timeline items: ' + totalCount);
                 
                 timelineItems.forEach(function(item) {
                     // Get all searchable text from the timeline item
@@ -880,6 +887,8 @@ function initializeTimeline() {
                     searchResultsCount.textContent = 'Showing ' + visibleCount + ' of ' + totalCount + ' entries';
                 }
                 
+                showDebug('Search complete. Visible: ' + visibleCount + ', Hidden: ' + (totalCount - visibleCount));
+                
                 // If searching and found results, ensure at least one is visible in viewport
                 if (searchTerm && visibleCount > 0) {
                     var firstVisible = document.querySelector('.timeline-item:not(.search-hidden)');
@@ -895,9 +904,11 @@ function initializeTimeline() {
             // Add search event handlers
             searchInput.addEventListener('input', performTimelineSearch);
             searchInput.addEventListener('keyup', performTimelineSearch);
+            showDebug('Timeline search event handlers attached');
             
             // Handle search on page load if there's a value
             if (searchInput.value) {
+                showDebug('Search input has initial value: ' + searchInput.value);
                 performTimelineSearch();
             }
         }
