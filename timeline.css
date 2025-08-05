@@ -3624,11 +3624,11 @@ textarea#image-sources {
 /* Filter Drawer - slides from top as horizontal panel */
 .filter-drawer {
     position: fixed;
-    top: -280px;  /* Hidden off-screen - compact height */
+    top: -320px;  /* Hidden off-screen - increased for handles */
     left: 0;
     right: 0;
     width: 100%;
-    height: 280px;  /* Reduced height - just enough for search + histogram */
+    height: 320px;  /* Increased height to show handles properly */
     background: var(--bg-secondary);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     z-index: 88;
@@ -3653,7 +3653,6 @@ textarea#image-sources {
     padding: 10px 20px;
     border-bottom: 1px solid var(--bg-tertiary);
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background: var(--bg-primary);
 }
@@ -3663,6 +3662,12 @@ textarea#image-sources {
     font-size: 1rem;
     color: var(--text-primary);
     font-weight: 600;
+    flex: 1;
+    text-align: center;
+}
+
+.filter-drawer-header .spacer {
+    width: 32px; /* Same width as close button for balance */
 }
 
 .filter-drawer-close {
@@ -3675,6 +3680,7 @@ textarea#image-sources {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 10px;
 }
 
 .filter-drawer-close:hover {
@@ -3682,7 +3688,7 @@ textarea#image-sources {
 }
 
 .filter-drawer-content {
-    padding: 12px 20px;
+    padding: 12px 20px 20px 20px;
     overflow-y: auto;
     flex: 1;
     background: var(--bg-secondary);
@@ -3733,10 +3739,10 @@ textarea#image-sources {
 .visual-timeline {
     background: var(--bg-primary);
     border-radius: 6px;
-    padding: 10px 15px 30px 15px;  /* Balanced padding */
+    padding: 10px 15px 35px 15px;  /* More bottom padding for handles */
     position: relative;
-    height: 110px;  /* Slightly taller for better visibility */
-    overflow: hidden;
+    height: 130px;  /* Increased to show handles fully */
+    overflow: visible;  /* Allow handles to show properly */
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
