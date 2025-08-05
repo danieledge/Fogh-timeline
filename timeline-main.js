@@ -2075,21 +2075,55 @@ function initializeVisualTimeline() {
     timelineData.forEach(function(item) {
         if (item.active === false) return;
         
-        // Extract year from date string
-        var yearMatch = item.date.match(/(\d{1,4})/);
-        if (yearMatch) {
-            var year = parseInt(yearMatch[1]);
+        // Extract year from date string - handle various formats
+        var dateStr = item.date.toLowerCase();
+        var year = null;
+        
+        // Skip BC years
+        if (dateStr.includes('bc')) {
+            return;
+        }
+        
+        // Handle date ranges like "43-410 AD"
+        if (dateStr.match(/(\d{1,4})-(\d{1,4})/)) {
+            var rangeMatch = dateStr.match(/(\d{1,4})-(\d{1,4})/);
+            year = parseInt(rangeMatch[1]); // Use start year
+        }
+        // Handle centuries like "19th century"
+        else if (dateStr.match(/(\d{1,2})(st|nd|rd|th)\s+century/)) {
+            var centuryMatch = dateStr.match(/(\d{1,2})(st|nd|rd|th)\s+century/);
+            var century = parseInt(centuryMatch[1]);
+            year = (century - 1) * 100 + 50; // Use middle of century
+        }
+        // Handle decades like "1960s"
+        else if (dateStr.match(/(\d{4})s/)) {
+            var decadeMatch = dateStr.match(/(\d{4})s/);
+            year = parseInt(decadeMatch[1]) + 5; // Use middle of decade
+        }
+        // Handle "early", "mid", "late" century
+        else if (dateStr.match(/(early|mid|late)\s+(\d{1,2})(st|nd|rd|th)\s+century/)) {
+            var periodMatch = dateStr.match(/(early|mid|late)\s+(\d{1,2})(st|nd|rd|th)\s+century/);
+            var period = periodMatch[1];
+            var century = parseInt(periodMatch[2]);
+            var baseYear = (century - 1) * 100;
             
-            // Skip BC years - start from Roman era
-            if (item.date.toLowerCase().includes('bc')) {
-                return;
-            }
-            
-            // Skip dates before Roman Britain (43 AD)
-            if (year < 43) {
-                return;
-            }
-            
+            if (period === 'early') year = baseYear + 20;
+            else if (period === 'mid') year = baseYear + 50;
+            else if (period === 'late') year = baseYear + 80;
+        }
+        // Handle year with parenthetical date like "1856 (October 1)"
+        else if (dateStr.match(/(\d{4})\s*\(/)) {
+            var parenMatch = dateStr.match(/(\d{4})\s*\(/);
+            year = parseInt(parenMatch[1]);
+        }
+        // Handle simple year or "c. 1066"
+        else if (dateStr.match(/(\d{3,4})/)) {
+            var simpleMatch = dateStr.match(/(\d{3,4})/);
+            year = parseInt(simpleMatch[1]);
+        }
+        
+        // Only include years from Roman era onwards
+        if (year && year >= 43) {
             years.push(year);
             if (!eventsByYear[year]) {
                 eventsByYear[year] = 0;
@@ -2250,19 +2284,53 @@ function initializeVisualTimeline() {
             var dateText = item.querySelector('.timeline-date');
             if (!dateText) return;
             
-            var yearMatch = dateText.textContent.match(/(\d{1,4})/);
-            if (yearMatch) {
-                var year = parseInt(yearMatch[1]);
-                if (dateText.textContent.toLowerCase().includes('bc')) {
-                    year = -year;
-                }
+            var dateStr = dateText.textContent.toLowerCase();
+            var year = null;
+            
+            // Skip BC years
+            if (dateStr.includes('bc')) {
+                item.classList.add('time-filtered');
+                return;
+            }
+            
+            // Use same parsing logic as above
+            if (dateStr.match(/(\d{1,4})-(\d{1,4})/)) {
+                var rangeMatch = dateStr.match(/(\d{1,4})-(\d{1,4})/);
+                year = parseInt(rangeMatch[1]);
+            }
+            else if (dateStr.match(/(\d{1,2})(st|nd|rd|th)\s+century/)) {
+                var centuryMatch = dateStr.match(/(\d{1,2})(st|nd|rd|th)\s+century/);
+                var century = parseInt(centuryMatch[1]);
+                year = (century - 1) * 100 + 50;
+            }
+            else if (dateStr.match(/(\d{4})s/)) {
+                var decadeMatch = dateStr.match(/(\d{4})s/);
+                year = parseInt(decadeMatch[1]) + 5;
+            }
+            else if (dateStr.match(/(early|mid|late)\s+(\d{1,2})(st|nd|rd|th)\s+century/)) {
+                var periodMatch = dateStr.match(/(early|mid|late)\s+(\d{1,2})(st|nd|rd|th)\s+century/);
+                var period = periodMatch[1];
+                var century = parseInt(periodMatch[2]);
+                var baseYear = (century - 1) * 100;
                 
-                if (year >= startYear && year <= endYear) {
-                    item.classList.remove('time-filtered');
-                    visibleCount++;
-                } else {
-                    item.classList.add('time-filtered');
-                }
+                if (period === 'early') year = baseYear + 20;
+                else if (period === 'mid') year = baseYear + 50;
+                else if (period === 'late') year = baseYear + 80;
+            }
+            else if (dateStr.match(/(\d{4})\s*\(/)) {
+                var parenMatch = dateStr.match(/(\d{4})\s*\(/);
+                year = parseInt(parenMatch[1]);
+            }
+            else if (dateStr.match(/(\d{3,4})/)) {
+                var simpleMatch = dateStr.match(/(\d{3,4})/);
+                year = parseInt(simpleMatch[1]);
+            }
+            
+            if (year && year >= startYear && year <= endYear) {
+                item.classList.remove('time-filtered');
+                visibleCount++;
+            } else {
+                item.classList.add('time-filtered');
             }
         });
         
