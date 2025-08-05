@@ -2051,12 +2051,34 @@ function initializeTimelineSearch() {
     console.log('Timeline search initialized successfully');
 }
 
-// Call timeline search initialization after a delay to ensure DOM is ready
-setTimeout(function() {
-    console.log('Initializing timeline features...');
-    initializeTimelineSearch();
-    initializeVisualTimeline();
-}, 1000);
+// Initialize timeline features when timeline is ready
+function initializeTimelineFeatures() {
+    try {
+        console.log('Initializing timeline features...');
+        
+        // Check if timeline data is available
+        if (typeof timelineData === 'undefined') {
+            console.log('Timeline data not yet available, retrying in 500ms...');
+            setTimeout(initializeTimelineFeatures, 500);
+            return;
+        }
+        
+        initializeTimelineSearch();
+        initializeVisualTimeline();
+    } catch (e) {
+        console.error('Error initializing timeline features:', e);
+        console.error('Stack trace:', e.stack);
+    }
+}
+
+// Call initialization after main timeline is loaded
+if (document.readyState === 'complete') {
+    setTimeout(initializeTimelineFeatures, 500);
+} else {
+    window.addEventListener('load', function() {
+        setTimeout(initializeTimelineFeatures, 500);
+    });
+}
 
 // Make function globally accessible for debugging
 window.initializeVisualTimeline = initializeVisualTimeline;
@@ -2089,13 +2111,15 @@ window.testVisualTimeline = function() {
 
 // Visual Timeline Navigator
 function initializeVisualTimeline() {
-    console.log('Initializing visual timeline navigator...');
+    console.log('=== VISUAL TIMELINE START ===');
+    console.log('Function called at:', new Date().toISOString());
     
-    // Get timeline data and parse years
-    if (typeof timelineData === 'undefined') {
-        console.log('Timeline data not defined - visual timeline cannot be initialized');
-        return;
-    }
+    try {
+        // Get timeline data and parse years
+        if (typeof timelineData === 'undefined') {
+            console.log('Timeline data not defined - visual timeline cannot be initialized');
+            return;
+        }
     
     console.log('Timeline data check:', timelineData.length + ' items');
     
@@ -2507,8 +2531,12 @@ function initializeVisualTimeline() {
         });
         
         // Update filter info
-        filterRangeText.textContent = 'Showing ' + visibleCount + ' events from ' + startYear + ' to ' + endYear;
-        clearButton.style.display = 'inline-block';
+        if (filterRangeText) {
+            filterRangeText.textContent = 'Showing ' + visibleCount + ' events from ' + startYear + ' to ' + endYear;
+        }
+        if (clearButton) {
+            clearButton.style.display = 'inline-block';
+        }
         
         // Scroll to first visible item
         var firstVisible = document.querySelector('.timeline-item:not(.time-filtered):not(.search-hidden)');
@@ -2532,21 +2560,31 @@ function initializeVisualTimeline() {
     }
     
     // Clear filter button
-    clearButton.addEventListener('click', function() {
-        var timelineItems = document.querySelectorAll('.timeline-item');
-        timelineItems.forEach(function(item) {
-            item.classList.remove('time-filtered');
+    if (clearButton) {
+        clearButton.addEventListener('click', function() {
+            var timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach(function(item) {
+                item.classList.remove('time-filtered');
+            });
+            
+            histogramContainer.querySelectorAll('.histogram-bar').forEach(function(bar) {
+                bar.classList.remove('active');
+            });
+            
+            if (filterRangeText) {
+                filterRangeText.textContent = '';
+            }
+            if (clearButton) {
+                clearButton.style.display = 'none';
+            }
         });
-        
-        histogramContainer.querySelectorAll('.histogram-bar').forEach(function(bar) {
-            bar.classList.remove('active');
-        });
-        
-        filterRangeText.textContent = '';
-        clearButton.style.display = 'none';
-    });
+    }
     
     console.log('Visual timeline initialized');
+    } catch (e) {
+        console.error('Error in initializeVisualTimeline:', e);
+        console.error('Stack trace:', e.stack);
+    }
 }
 
 // Add CSS class for time-filtered items
