@@ -3665,13 +3665,27 @@ body:has(.filter-drawer.active) {
     background: var(--bg-primary);
 }
 
+.filter-header-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .filter-drawer-header h3 {
     margin: 0;
     font-size: 1rem;
     color: var(--text-primary);
     font-weight: 600;
-    flex: 1;
     text-align: center;
+}
+
+.filter-status {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    font-weight: normal;
 }
 
 .clear-all-filters {
