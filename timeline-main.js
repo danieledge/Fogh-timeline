@@ -2049,14 +2049,17 @@ function initializeTimelineSearch() {
                 }
             });
             
+            // Update unified filter status
+            if (window.updateFilterStatus) {
+                window.updateFilterStatus();
+            }
+            
             // Hide/show timeline line based on results
             var timelineLine = document.querySelector('.timeline-line');
             var timelineContainer = document.querySelector('.timeline-container');
             
             if (searchTerm && visibleCount === 0) {
                 // No results found
-                searchResultsCount.textContent = 'No results found for "' + searchTerm + '"';
-                searchResultsCount.style.color = '#e74c3c';
                 if (timelineLine) timelineLine.style.display = 'none';
                 
                 // Show "no results" message in timeline area
@@ -2073,12 +2076,6 @@ function initializeTimelineSearch() {
                 }
             } else {
                 // Results found or search cleared
-                if (searchTerm === '') {
-                    searchResultsCount.textContent = '';
-                } else {
-                    searchResultsCount.textContent = 'Showing ' + visibleCount + ' of ' + totalCount + ' entries';
-                    searchResultsCount.style.color = '';
-                }
                 if (timelineLine) timelineLine.style.display = '';
                 
                 // Hide no results message
@@ -2688,6 +2685,17 @@ function initializeVisualTimeline() {
             }
         });
         uniqueLabels.sort(function(a, b) { return a.position - b.position; });
+        
+        // Remove labels that are too close together (less than 10% apart)
+        var filteredLabels = [];
+        var lastPosition = -100;
+        uniqueLabels.forEach(function(labelInfo, index) {
+            if (index === 0 || index === uniqueLabels.length - 1 || labelInfo.position - lastPosition >= 10) {
+                filteredLabels.push(labelInfo);
+                lastPosition = labelInfo.position;
+            }
+        });
+        uniqueLabels = filteredLabels;
         
         // Add labels to DOM
         uniqueLabels.forEach(function(labelInfo) {
