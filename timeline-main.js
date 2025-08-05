@@ -2099,6 +2099,39 @@ function initializeVisualTimeline() {
     console.log('=== VISUAL TIMELINE START ===');
     console.log('Function called at:', new Date().toISOString());
     
+    // Initialize filter drawer
+    var filterButton = document.getElementById('filter-toggle-button');
+    var filterDrawer = document.getElementById('filter-drawer');
+    var filterDrawerClose = document.getElementById('filter-drawer-close');
+    var filterIndicator = document.querySelector('.filter-indicator');
+    
+    if (filterButton && filterDrawer) {
+        // Open filter drawer
+        filterButton.addEventListener('click', function() {
+            filterDrawer.classList.add('active');
+            
+            // Initialize visual timeline on first open
+            if (!window.visualTimelineInitialized) {
+                window.visualTimelineInitialized = true;
+                // Continue with timeline initialization below
+            }
+        });
+        
+        // Close filter drawer
+        if (filterDrawerClose) {
+            filterDrawerClose.addEventListener('click', function() {
+                filterDrawer.classList.remove('active');
+            });
+        }
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && filterDrawer.classList.contains('active')) {
+                filterDrawer.classList.remove('active');
+            }
+        });
+    }
+    
     try {
         // Get timeline data and parse years
         if (typeof timelineData === 'undefined') {
@@ -2272,44 +2305,166 @@ function initializeVisualTimeline() {
         }
     }
     
-    // Create histogram data with better handling of gaps
+    // Create histogram data with gap collapsing
     var histogramBins = 50; // Number of bars in the histogram
     var histogram = new Array(histogramBins).fill(0);
     
-    // Create a more balanced distribution
-    // Lower threshold since you have sparse early centuries
-    if (activeCenturies.length > 5) {
-        // Use century-based bins for better distribution
-        var binsPerCentury = Math.floor(histogramBins / activeCenturies.length);
-        var currentBin = 0;
+    // Sort years and create smart segments
+    var sortedYears = years.slice().sort(function(a, b) { return a - b; });
+    var segments = [];
+    var currentSegment = { start: sortedYears[0], end: sortedYears[0], years: [sortedYears[0]] };
+    
+    // Dynamic gap threshold based on year range
+    for (var i = 1; i < sortedYears.length; i++) {
+        var gap = sortedYears[i] - sortedYears[i - 1];
+        var year = sortedYears[i];
         
-        activeCenturies.forEach(function(century, idx) {
-            var centuryYears = eventsByCentury[century];
-            var centuryBins = (idx === activeCenturies.length - 1) ? 
-                histogramBins - currentBin : binsPerCentury;
+        // Use different thresholds for different periods
+        var threshold;
+        if (year < 1000) {
+            threshold = 100;  // Large threshold for ancient times
+        } else if (year < 1500) {
+            threshold = 50;   // Medium threshold for medieval
+        } else if (year < 1800) {
+            threshold = 30;   // Smaller for early modern
+        } else {
+            threshold = 15;   // Small threshold for modern times
+        }
+        
+        if (gap > threshold) {
+            // End current segment and start a new one
+            segments.push(currentSegment);
+            currentSegment = { start: sortedYears[i], end: sortedYears[i], years: [sortedYears[i]] };
+        } else {
+            // Continue current segment
+            currentSegment.end = sortedYears[i];
+            currentSegment.years.push(sortedYears[i]);
+        }
+    }
+    segments.push(currentSegment);
+    
+    console.log('Timeline segments (with dynamic gap thresholds):', segments.length);
+    segments.forEach(function(seg, idx) {
+        console.log('Segment', idx + 1, ':', seg.start, '-', seg.end, '(', seg.years.length, 'events)');
+    });
+    
+    // Calculate total effective duration with logarithmic scaling
+    var totalDuration = segments.reduce(function(sum, seg) {
+        var duration = seg.end - seg.start + 1;
+        if (duration > 200) {
+            return sum + 20 + Math.log10(duration) * 10;
+        } else if (duration > 100) {
+            return sum + 20 + Math.sqrt(duration - 100);
+        } else {
+            return sum + Math.min(duration, 20);
+        }
+    }, 0);
+    
+    var currentBin = 0;
+    var segmentBinMap = [];
+    
+    segments.forEach(function(segment, idx) {
+        // Use logarithmic scaling for early periods with large ranges
+        var segmentDuration = segment.end - segment.start + 1;
+        var effectiveDuration;
+        
+        // Apply logarithmic compression for very large durations
+        if (segmentDuration > 200) {
+            effectiveDuration = 20 + Math.log10(segmentDuration) * 10;
+        } else if (segmentDuration > 100) {
+            effectiveDuration = 20 + Math.sqrt(segmentDuration - 100);
+        } else {
+            effectiveDuration = Math.min(segmentDuration, 20);
+        }
+        
+        // Weight heavily towards event density (80%) vs duration (20%) for sparse periods
+        var densityWeight = segment.years.length / years.length;
+        var durationWeight = effectiveDuration / totalDuration;
+        
+        // For segments with very few events, reduce their space further
+        if (segment.years.length <= 2) {
+            densityWeight *= 0.5;  // Halve the weight for sparse segments
+        }
+        
+        var segmentWeight = durationWeight * 0.2 + densityWeight * 0.8;
+        
+        // Calculate bins with min and max limits
+        var segmentBins = Math.round(histogramBins * segmentWeight);
+        segmentBins = Math.max(1, segmentBins);  // Minimum 1 bin
+        segmentBins = Math.min(segmentBins, Math.floor(histogramBins * 0.3));  // Max 30% of total bins
+        
+        // Adjust last segment to use remaining bins
+        if (idx === segments.length - 1) {
+            segmentBins = Math.max(1, histogramBins - currentBin);
+        }
+        
+        segmentBinMap.push({
+            segment: segment,
+            startBin: currentBin,
+            endBin: currentBin + segmentBins - 1,
+            bins: segmentBins
+        });
+        
+        // Distribute segment's events across its bins
+        segment.years.forEach(function(year) {
+            var positionInSegment = (segment.end === segment.start) ? 0.5 : 
+                (year - segment.start) / (segment.end - segment.start);
+            var binInSegment = Math.floor(positionInSegment * segmentBins);
+            var absoluteBin = currentBin + Math.min(binInSegment, segmentBins - 1);
             
-            // Distribute this century's events across its bins
-            centuryYears.forEach(function(year) {
-                var yearInCentury = year - century;
-                var binInCentury = Math.floor((yearInCentury / 100) * centuryBins);
-                var absoluteBin = currentBin + Math.min(binInCentury, centuryBins - 1);
+            if (absoluteBin >= 0 && absoluteBin < histogramBins) {
+                histogram[absoluteBin]++;
+            }
+        });
+        
+        currentBin += segmentBins;
+    });
+    
+    // Rebalance if we didn't use all bins
+    if (currentBin < histogramBins) {
+        var unusedBins = histogramBins - currentBin;
+        // Distribute unused bins to segments with most events
+        var sortedByEvents = segmentBinMap.slice().sort(function(a, b) {
+            return b.segment.years.length - a.segment.years.length;
+        });
+        
+        // Give extra bins to the top event-dense segments
+        var binsPerSegment = Math.floor(unusedBins / Math.min(3, sortedByEvents.length));
+        for (var i = 0; i < Math.min(3, sortedByEvents.length) && unusedBins > 0; i++) {
+            var extraBins = Math.min(binsPerSegment, unusedBins);
+            sortedByEvents[i].bins += extraBins;
+            sortedByEvents[i].endBin += extraBins;
+            unusedBins -= extraBins;
+        }
+        
+        // Recalculate bin positions
+        currentBin = 0;
+        segmentBinMap.forEach(function(mapping) {
+            mapping.startBin = currentBin;
+            mapping.endBin = currentBin + mapping.bins - 1;
+            currentBin += mapping.bins;
+        });
+        
+        // Redistribute events in updated bins
+        histogram = new Array(histogramBins).fill(0);
+        segmentBinMap.forEach(function(mapping) {
+            var segment = mapping.segment;
+            segment.years.forEach(function(year) {
+                var positionInSegment = (segment.end === segment.start) ? 0.5 : 
+                    (year - segment.start) / (segment.end - segment.start);
+                var binInSegment = Math.floor(positionInSegment * mapping.bins);
+                var absoluteBin = mapping.startBin + Math.min(binInSegment, mapping.bins - 1);
                 
                 if (absoluteBin >= 0 && absoluteBin < histogramBins) {
                     histogram[absoluteBin]++;
                 }
             });
-            
-            currentBin += centuryBins;
-        });
-    } else {
-        // For fewer centuries, use linear distribution
-        years.forEach(function(year) {
-            var binIndex = Math.floor(((year - minYear) / yearRange) * (histogramBins - 1));
-            if (binIndex >= 0 && binIndex < histogramBins) {
-                histogram[binIndex]++;
-            }
         });
     }
+    
+    // Store segment map and bins globally for debugging and access
+    window.histogramSegmentMap = segmentBinMap;
+    window.histogramBins = histogramBins;
     
     var maxCount = Math.max.apply(null, histogram);
     
@@ -2350,39 +2505,27 @@ function initializeVisualTimeline() {
     var barYearRanges = [];
     
     // Debug logging
-    console.log('Creating histogram bars. Active centuries:', activeCenturies.length);
+    console.log('Creating histogram bars based on segments');
     console.log('Histogram data:', histogram);
     console.log('Max count:', maxCount);
     
-    if (activeCenturies.length > 5) {
-        // Calculate year range for each bar based on century distribution
-        var binsPerCentury = Math.floor(histogramBins / activeCenturies.length);
-        var currentBin = 0;
+    // Create bar-to-year mappings based on segments
+    segmentBinMap.forEach(function(mapping) {
+        var segment = mapping.segment;
+        var bins = mapping.bins;
         
-        activeCenturies.forEach(function(century, idx) {
-            var nextCentury = century + 100;
-            var centuryBins = (idx === activeCenturies.length - 1) ? 
-                histogramBins - currentBin : binsPerCentury;
+        for (var b = 0; b < bins; b++) {
+            var positionInSegment = bins === 1 ? 0.5 : b / (bins - 1);
+            var startYear = segment.start + Math.floor(positionInSegment * (segment.end - segment.start));
+            var endYear = bins === 1 ? segment.end : 
+                segment.start + Math.floor((b + 1) / bins * (segment.end - segment.start));
             
-            for (var i = 0; i < centuryBins; i++) {
-                var startYear = century + (i * 100 / centuryBins);
-                var endYear = century + ((i + 1) * 100 / centuryBins);
-                barYearRanges[currentBin + i] = {
-                    start: Math.floor(startYear),
-                    end: Math.floor(endYear)
-                };
-            }
-            currentBin += centuryBins;
-        });
-    } else {
-        // Linear distribution for simple timelines
-        for (var i = 0; i < histogramBins; i++) {
-            barYearRanges[i] = {
-                start: Math.floor(minYear + (i * yearRange / histogramBins)),
-                end: Math.floor(minYear + ((i + 1) * yearRange / histogramBins))
+            barYearRanges[mapping.startBin + b] = {
+                start: Math.floor(startYear),
+                end: Math.floor(endYear)
             };
         }
-    }
+    });
     
     // Create bars for each histogram entry
     console.log('Creating bars for histogram. Bins:', histogramBins);
@@ -2413,22 +2556,94 @@ function initializeVisualTimeline() {
         histogramContainer.appendChild(bar);
     }
     
-    // Add year labels based on active centuries
-    if (activeCenturies.length > 5) {
-        // Show labels for key centuries
-        var labelPositions = [0, 0.25, 0.5, 0.75, 1];
-        labelPositions.forEach(function(position, index) {
-            var centuryIndex = Math.floor(position * (activeCenturies.length - 1));
-            var century = activeCenturies[centuryIndex];
+    // Add year labels - limit to prevent overcrowding
+    var maxLabels = 6;  // Maximum number of year labels to show
+    
+    if (segments.length > 1) {
+        // For multiple segments, show key points only
+        var labelsToShow = [];
+        
+        // Always add first year
+        labelsToShow.push({
+            year: segments[0].start,
+            position: 0
+        });
+        
+        // Add intermediate labels based on segments
+        if (segments.length <= maxLabels - 2) {
+            // If few segments, show each segment start
+            segmentBinMap.forEach(function(mapping, idx) {
+                if (idx > 0 && idx < segments.length) {
+                    labelsToShow.push({
+                        year: mapping.segment.start,
+                        position: (mapping.startBin / histogramBins) * 100
+                    });
+                }
+            });
+        } else {
+            // If many segments, show evenly spaced labels
+            var step = segments.length / (maxLabels - 2);
+            for (var i = 1; i < maxLabels - 1; i++) {
+                var segmentIdx = Math.round(i * step);
+                if (segmentIdx < segments.length && segmentIdx > 0) {
+                    var mapping = segmentBinMap[segmentIdx];
+                    if (mapping) {
+                        labelsToShow.push({
+                            year: mapping.segment.start,
+                            position: (mapping.startBin / histogramBins) * 100
+                        });
+                    }
+                }
+            }
+        }
+        
+        // Always add last year
+        var lastSegment = segments[segments.length - 1];
+        labelsToShow.push({
+            year: lastSegment.end,
+            position: 100
+        });
+        
+        // Remove duplicates and sort by position
+        var uniqueLabels = [];
+        var seenYears = {};
+        labelsToShow.forEach(function(labelInfo) {
+            if (!seenYears[labelInfo.year]) {
+                seenYears[labelInfo.year] = true;
+                uniqueLabels.push(labelInfo);
+            }
+        });
+        uniqueLabels.sort(function(a, b) { return a.position - b.position; });
+        
+        // Add labels to DOM
+        uniqueLabels.forEach(function(labelInfo) {
             var label = document.createElement('div');
             label.className = 'timeline-label';
-            label.textContent = century || minYear;
-            label.style.left = (position * 100) + '%';
+            label.textContent = labelInfo.year;
+            label.style.left = labelInfo.position + '%';
             labelsContainer.appendChild(label);
         });
+        
+        // Add gap indicators for large gaps (but don't count as labels)
+        segmentBinMap.forEach(function(mapping, idx) {
+            if (idx < segments.length - 1) {
+                var nextSegment = segmentBinMap[idx + 1];
+                var gap = nextSegment.segment.start - mapping.segment.end;
+                if (gap > 50) {  // Only show ... for very large gaps
+                    var gapLabel = document.createElement('div');
+                    gapLabel.className = 'timeline-label gap-label';
+                    gapLabel.textContent = '...';
+                    var gapPosition = ((mapping.endBin + nextSegment.startBin) / 2 / histogramBins) * 100;
+                    gapLabel.style.left = gapPosition + '%';
+                    gapLabel.style.opacity = '0.5';
+                    gapLabel.style.fontSize = '0.6rem';
+                    labelsContainer.appendChild(gapLabel);
+                }
+            }
+        });
     } else {
-        // Show all years for small ranges
-        var labelCount = 5;
+        // Single segment - show evenly spaced labels
+        var labelCount = Math.min(5, Math.floor(yearRange / 10) + 1);
         for (var i = 0; i <= labelCount; i++) {
             var year = minYear + (yearRange * i / labelCount);
             var label = document.createElement('div');
@@ -2523,11 +2738,19 @@ function initializeVisualTimeline() {
             clearButton.style.display = 'inline-block';
         }
         
-        // Scroll to first visible item
-        var firstVisible = document.querySelector('.timeline-item:not(.time-filtered):not(.search-hidden)');
-        if (firstVisible) {
-            firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Add active filter indicator to button
+        var filterButton = document.getElementById('filter-toggle-button');
+        var filterIndicator = document.querySelector('.filter-indicator');
+        if (filterButton) {
+            filterButton.classList.add('has-active-filter');
         }
+        // Update indicator with active filter indicator
+        if (filterIndicator) {
+            filterIndicator.textContent = '●';
+            filterIndicator.style.display = 'flex';
+        }
+        
+        // Removed auto-scroll to prevent page jumping
     }
     
     function updateHistogramHighlight(startYear, endYear) {
@@ -2536,7 +2759,9 @@ function initializeVisualTimeline() {
             var barStart = parseInt(bar.dataset.startYear);
             var barEnd = parseInt(bar.dataset.endYear);
             
-            if (barStart >= startYear && barEnd <= endYear) {
+            // Highlight bars that overlap with the selection range
+            // A bar overlaps if it starts before the range ends AND ends after the range starts
+            if (barStart <= endYear && barEnd >= startYear) {
                 bar.classList.add('active');
             } else {
                 bar.classList.remove('active');
@@ -2547,20 +2772,55 @@ function initializeVisualTimeline() {
     // Clear filter button
     if (clearButton) {
         clearButton.addEventListener('click', function() {
+            // Reset timeline items
             var timelineItems = document.querySelectorAll('.timeline-item');
             timelineItems.forEach(function(item) {
                 item.classList.remove('time-filtered');
             });
             
+            // Reset histogram bars
             histogramContainer.querySelectorAll('.histogram-bar').forEach(function(bar) {
                 bar.classList.remove('active');
             });
             
+            // Reset range selector to full width
+            if (selectionRange) {
+                selectionRange.style.left = '0%';
+                selectionRange.style.width = '100%';
+            }
+            
+            // Reset handle positions
+            if (leftHandle) {
+                positionHandle(leftHandle, 0, true);
+            }
+            if (rightHandle) {
+                positionHandle(rightHandle, 100, false);
+            }
+            
+            // Reset labels
+            if (startLabel) {
+                startLabel.textContent = minYear + ' AD';
+            }
+            if (endLabel) {
+                endLabel.textContent = maxYear;
+            }
+            
+            // Clear filter text and hide button
             if (filterRangeText) {
                 filterRangeText.textContent = '';
             }
             if (clearButton) {
                 clearButton.style.display = 'none';
+            }
+            
+            // Remove active filter indicator
+            var filterButton = document.getElementById('filter-toggle-button');
+            var filterIndicator = document.querySelector('.filter-indicator');
+            if (filterButton) {
+                filterButton.classList.remove('has-active-filter');
+            }
+            if (filterIndicator) {
+                filterIndicator.style.display = 'none';
             }
         });
     }
@@ -2572,8 +2832,7 @@ function initializeVisualTimeline() {
     // Initialize range selector overlay
     initializeRangeSelector();
     
-    // Initialize zoom controls
-    initializeZoomControls();
+    // Zoom controls removed
     
     } catch (e) {
         console.error('Error in initializeVisualTimeline:', e);
@@ -2601,16 +2860,81 @@ function initializeRangeSelector() {
     var minYear = parseInt(document.querySelector('.timeline-label')?.textContent) || 43;
     var maxYear = 2024;
     
-    // Initialize position
+    // Helper functions for preventing scroll and selection
+    function preventScroll(e) {
+        // Only prevent scroll on touch move during drag
+        if (isDragging || rangeDragging) {
+            e.preventDefault();
+            return false;
+        }
+    }
+    
+    function preventSelect(e) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Initialize position and display
+    selectionRange.style.display = 'block';
     selectionRange.style.left = '0%';
     selectionRange.style.width = '100%';
-    leftHandle.style.left = '0%';
-    rightHandle.style.left = '100%';
+    
+    // Helper function to position handles
+    function positionHandle(handle, percent, isLeft) {
+        if (isLeft) {
+            handle.style.left = 'calc(' + percent + '% - 30px)';
+            handle.style.right = 'auto';
+        } else {
+            handle.style.right = 'calc(' + (100 - percent) + '% - 30px)';
+            handle.style.left = 'auto';
+        }
+        handle.dataset.position = percent;
+    }
+    
+    // Initialize handles
+    leftHandle.style.display = 'flex';
+    positionHandle(leftHandle, 0, true);
+    
+    rightHandle.style.display = 'flex';
+    positionHandle(rightHandle, 100, false);
+    
+    // Add debugging
+    console.log('Range selector elements:', {
+        range: selectionRange,
+        left: leftHandle,
+        right: rightHandle,
+        histogram: histogram
+    });
     
     // Update labels
     function updateLabels(leftPercent, rightPercent) {
-        var startYear = Math.round(minYear + (maxYear - minYear) * leftPercent / 100);
-        var endYear = Math.round(minYear + (maxYear - minYear) * rightPercent / 100);
+        // Map percentage to actual years based on segments
+        var startYear, endYear;
+        
+        if (window.histogramSegmentMap && window.histogramSegmentMap.length > 0 && window.histogramBins) {
+            // Find which segment contains the left position
+            var leftBin = Math.floor((leftPercent / 100) * window.histogramBins);
+            var rightBin = Math.floor((rightPercent / 100) * window.histogramBins);
+            
+            startYear = minYear;
+            endYear = maxYear;
+            
+            // Find the year range for left position
+            window.histogramSegmentMap.forEach(function(mapping) {
+                if (leftBin >= mapping.startBin && leftBin <= mapping.endBin) {
+                    var binPosition = (leftBin - mapping.startBin) / mapping.bins;
+                    startYear = Math.round(mapping.segment.start + binPosition * (mapping.segment.end - mapping.segment.start));
+                }
+                if (rightBin >= mapping.startBin && rightBin <= mapping.endBin) {
+                    var binPosition = (rightBin - mapping.startBin) / mapping.bins;
+                    endYear = Math.round(mapping.segment.start + binPosition * (mapping.segment.end - mapping.segment.start));
+                }
+            });
+        } else {
+            // Fallback to linear mapping
+            startYear = Math.round(minYear + (maxYear - minYear) * leftPercent / 100);
+            endYear = Math.round(minYear + (maxYear - minYear) * rightPercent / 100);
+        }
         
         if (startLabel) startLabel.textContent = startYear + ' AD';
         if (endLabel) endLabel.textContent = endYear;
@@ -2622,50 +2946,99 @@ function initializeRangeSelector() {
     // Handle dragging
     function startDrag(e, handle) {
         e.preventDefault();
+        e.stopPropagation();
         isDragging = true;
         currentHandle = handle;
         histogramRect = histogram.getBoundingClientRect();
+        
+        // Add dragging class for visual feedback
+        if (handle === 'left') {
+            leftHandle.classList.add('dragging');
+        } else {
+            rightHandle.classList.add('dragging');
+        }
+        
+        // Prevent scrolling on touch during drag
+        if (e.type === 'touchstart') {
+            e.preventDefault();
+            document.addEventListener('touchmove', preventScroll, { passive: false });
+        }
     }
     
     function drag(e) {
         if (!isDragging || !currentHandle) return;
         
-        var x = e.clientX || e.touches?.[0]?.clientX;
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var x = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+        if (!x) return;
+        
         var percent = ((x - histogramRect.left) / histogramRect.width) * 100;
         percent = Math.max(0, Math.min(100, percent));
         
-        var leftPercent = parseFloat(leftHandle.style.left) || 0;
-        var rightPercent = parseFloat(rightHandle.style.left) || 100;
+        // Get current positions from data attributes
+        var leftPos = parseFloat(leftHandle.dataset.position) || 0;
+        var rightPos = parseFloat(rightHandle.dataset.position) || 100;
         
         if (currentHandle === 'left') {
-            leftPercent = Math.min(percent, rightPercent - 5);
-            leftHandle.style.left = leftPercent + '%';
+            leftPos = Math.min(percent, rightPos - 5);
+            positionHandle(leftHandle, leftPos, true);
         } else {
-            rightPercent = Math.max(percent, leftPercent + 5);
-            rightHandle.style.left = rightPercent + '%';
+            rightPos = Math.max(percent, leftPos + 5);
+            positionHandle(rightHandle, rightPos, false);
         }
         
-        selectionRange.style.left = leftPercent + '%';
-        selectionRange.style.width = (rightPercent - leftPercent) + '%';
+        // Always update selection range to match handle positions
+        selectionRange.style.left = leftPos + '%';
+        selectionRange.style.width = (rightPos - leftPos) + '%';
         
-        updateLabels(leftPercent, rightPercent);
+        updateLabels(leftPos, rightPos);
     }
     
     function stopDrag() {
-        isDragging = false;
-        currentHandle = null;
+        if (isDragging) {
+            isDragging = false;
+            currentHandle = null;
+            
+            // Remove dragging class
+            leftHandle.classList.remove('dragging');
+            rightHandle.classList.remove('dragging');
+            
+            // Re-enable scrolling
+            document.removeEventListener('touchmove', preventScroll);
+        }
     }
     
-    // Add event listeners
-    leftHandle.addEventListener('mousedown', function(e) { startDrag(e, 'left'); });
-    rightHandle.addEventListener('mousedown', function(e) { startDrag(e, 'right'); });
-    leftHandle.addEventListener('touchstart', function(e) { startDrag(e, 'left'); });
-    rightHandle.addEventListener('touchstart', function(e) { startDrag(e, 'right'); });
+    // Add event listeners with passive: false to allow preventDefault
+    leftHandle.addEventListener('mousedown', function(e) { startDrag(e, 'left'); }, { passive: false });
+    rightHandle.addEventListener('mousedown', function(e) { startDrag(e, 'right'); }, { passive: false });
+    leftHandle.addEventListener('touchstart', function(e) { startDrag(e, 'left'); }, { passive: false });
+    rightHandle.addEventListener('touchstart', function(e) { startDrag(e, 'right'); }, { passive: false });
     
-    document.addEventListener('mousemove', drag);
-    document.addEventListener('touchmove', drag);
-    document.addEventListener('mouseup', stopDrag);
-    document.addEventListener('touchend', stopDrag);
+    document.addEventListener('mousemove', drag, { passive: false });
+    document.addEventListener('touchmove', drag, { passive: false });
+    // Global listeners for ending drag
+    document.addEventListener('mouseup', function() {
+        stopDrag();
+        // Also check range dragging
+        if (rangeDragging) {
+            rangeDragging = false;
+            selectionRange.classList.remove('dragging');
+            document.removeEventListener('selectstart', preventSelect);
+            document.removeEventListener('touchmove', preventScroll);
+        }
+    });
+    
+    document.addEventListener('touchend', function() {
+        stopDrag();
+        // Also check range dragging
+        if (rangeDragging) {
+            rangeDragging = false;
+            selectionRange.classList.remove('dragging');
+            document.removeEventListener('touchmove', preventScroll);
+        }
+    });
     
     // Draggable range
     var rangeDragging = false;
@@ -2674,93 +3047,88 @@ function initializeRangeSelector() {
     var rangeWidth = 0;
     
     selectionRange.addEventListener('mousedown', function(e) {
-        if (e.target === selectionRange) {
+        if (e.target === selectionRange || e.target.classList.contains('range-label')) {
+            e.preventDefault();
+            e.stopPropagation();
             rangeDragging = true;
             rangeStartX = e.clientX;
             rangeStartLeft = parseFloat(selectionRange.style.left) || 0;
             rangeWidth = parseFloat(selectionRange.style.width) || 100;
             histogramRect = histogram.getBoundingClientRect();
+            
+            // Add visual feedback
+            selectionRange.classList.add('dragging');
+            
+            // Prevent text selection during drag
             e.preventDefault();
+            document.addEventListener('selectstart', preventSelect);
         }
-    });
+    }, { passive: false });
+    
+    // Add touch support for range dragging
+    selectionRange.addEventListener('touchstart', function(e) {
+        if (e.target === selectionRange || e.target.classList.contains('range-label')) {
+            e.preventDefault();
+            e.stopPropagation();
+            rangeDragging = true;
+            rangeStartX = e.touches[0].clientX;
+            rangeStartLeft = parseFloat(selectionRange.style.left) || 0;
+            rangeWidth = parseFloat(selectionRange.style.width) || 100;
+            histogramRect = histogram.getBoundingClientRect();
+            
+            // Prevent scrolling on touch
+            e.preventDefault();
+            document.addEventListener('touchmove', preventScroll, { passive: false });
+        }
+    }, { passive: false });
     
     document.addEventListener('mousemove', function(e) {
         if (rangeDragging) {
+            e.preventDefault();
             var deltaX = e.clientX - rangeStartX;
             var deltaPercent = (deltaX / histogramRect.width) * 100;
             var newLeft = Math.max(0, Math.min(100 - rangeWidth, rangeStartLeft + deltaPercent));
+            var newRight = newLeft + rangeWidth;
             
+            // Update selection range and handles together
             selectionRange.style.left = newLeft + '%';
-            leftHandle.style.left = newLeft + '%';
-            rightHandle.style.left = (newLeft + rangeWidth) + '%';
+            selectionRange.style.width = rangeWidth + '%';
             
-            updateLabels(newLeft, newLeft + rangeWidth);
+            // Update handle positions using the helper function
+            positionHandle(leftHandle, newLeft, true);
+            positionHandle(rightHandle, newRight, false);
+            
+            updateLabels(newLeft, newRight);
         }
-    });
+    }, { passive: false });
     
-    document.addEventListener('mouseup', function() {
-        rangeDragging = false;
-    });
+    // Add touch move support
+    document.addEventListener('touchmove', function(e) {
+        if (rangeDragging && e.touches[0]) {
+            e.preventDefault();
+            var deltaX = e.touches[0].clientX - rangeStartX;
+            var deltaPercent = (deltaX / histogramRect.width) * 100;
+            var newLeft = Math.max(0, Math.min(100 - rangeWidth, rangeStartLeft + deltaPercent));
+            var newRight = newLeft + rangeWidth;
+            
+            // Update selection range and handles together
+            selectionRange.style.left = newLeft + '%';
+            selectionRange.style.width = rangeWidth + '%';
+            
+            // Update handle positions using the helper function
+            positionHandle(leftHandle, newLeft, true);
+            positionHandle(rightHandle, newRight, false);
+            
+            updateLabels(newLeft, newRight);
+        }
+    }, { passive: false });
+    
+    // Mouseup and touchend are handled above in the global listeners
     
     console.log('Range selector initialized');
 }
 
-// Zoom controls functionality
-function initializeZoomControls() {
-    var zoomIn = document.querySelector('.zoom-in');
-    var zoomOut = document.querySelector('.zoom-out');
-    var zoomReset = document.querySelector('.zoom-reset');
-    var zoomLevelDisplay = document.querySelector('.zoom-level');
-    var histogram = document.querySelector('.timeline-histogram');
-    
-    if (!zoomIn || !zoomOut || !zoomReset || !histogram) {
-        console.log('Zoom controls not found');
-        return;
-    }
-    
-    var zoomLevel = 1;
-    var minZoom = 1;
-    var maxZoom = 5;
-    
-    function updateZoom() {
-        histogram.style.transform = 'scaleX(' + zoomLevel + ')';
-        histogram.style.transformOrigin = 'left center';
-        
-        // Update bar widths to maintain visibility
-        var bars = histogram.querySelectorAll('.histogram-bar');
-        bars.forEach(function(bar) {
-            bar.style.minWidth = (3 * zoomLevel) + 'px';
-        });
-        
-        if (zoomLevelDisplay) {
-            zoomLevelDisplay.textContent = Math.round(zoomLevel * 100) + '%';
-        }
-        
-        // Adjust container width
-        var container = histogram.parentElement;
-        if (container) {
-            container.style.overflowX = zoomLevel > 1 ? 'auto' : 'hidden';
-        }
-    }
-    
-    zoomIn.addEventListener('click', function() {
-        zoomLevel = Math.min(zoomLevel * 1.5, maxZoom);
-        updateZoom();
-    });
-    
-    zoomOut.addEventListener('click', function() {
-        zoomLevel = Math.max(zoomLevel / 1.5, minZoom);
-        updateZoom();
-    });
-    
-    zoomReset.addEventListener('click', function() {
-        zoomLevel = 1;
-        updateZoom();
-    });
-    
-    updateZoom();
-    console.log('Zoom controls initialized');
-}
+// Zoom controls removed
 
 // Add CSS class for time-filtered items
 var style = document.createElement('style');
