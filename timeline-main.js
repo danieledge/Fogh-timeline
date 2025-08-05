@@ -1921,3 +1921,80 @@ if (document.readyState === 'loading') {
 } else {
     initializeSubmissionForm();
 }
+
+// Timeline search initialization function
+function initializeTimelineSearch() {
+    console.log('Initializing timeline search...');
+    var searchInput = document.querySelector('.timeline-search-input');
+    var searchResultsCount = document.querySelector('.timeline-search .search-results-count');
+    
+    if (!searchInput || !searchResultsCount) {
+        console.log('Timeline search elements not found');
+        return;
+    }
+    
+    console.log('Timeline search elements found, setting up handlers');
+    
+    function performTimelineSearch() {
+        try {
+            var searchTerm = searchInput.value.toLowerCase().trim();
+            var timelineItems = document.querySelectorAll('.timeline-item');
+            var visibleCount = 0;
+            var totalCount = timelineItems.length;
+            
+            console.log('Searching for:', searchTerm, 'in', totalCount, 'items');
+            
+            timelineItems.forEach(function(item) {
+                if (!item) return;
+                
+                var searchableText = '';
+                
+                // Get all text content from the timeline item
+                var textElements = item.querySelectorAll('.timeline-date, .content-title, .content-description, .image-caption');
+                textElements.forEach(function(elem) {
+                    if (elem && elem.textContent) {
+                        searchableText += elem.textContent + ' ';
+                    }
+                });
+                
+                // Get citation numbers
+                var citations = item.querySelectorAll('.citation-link');
+                citations.forEach(function(citation) {
+                    if (citation && citation.textContent) {
+                        searchableText += 'citation ' + citation.textContent + ' ';
+                    }
+                });
+                
+                // Perform search
+                if (searchTerm === '' || searchableText.toLowerCase().includes(searchTerm)) {
+                    item.classList.remove('search-hidden');
+                    visibleCount++;
+                } else {
+                    item.classList.add('search-hidden');
+                }
+            });
+            
+            // Update results count
+            if (searchTerm === '') {
+                searchResultsCount.textContent = '';
+            } else {
+                searchResultsCount.textContent = 'Showing ' + visibleCount + ' of ' + totalCount + ' entries';
+            }
+            
+            console.log('Search complete. Visible:', visibleCount, 'Hidden:', totalCount - visibleCount);
+        } catch (error) {
+            console.error('Error in timeline search:', error);
+        }
+    }
+    
+    // Add event handlers
+    searchInput.addEventListener('input', performTimelineSearch);
+    searchInput.addEventListener('keyup', performTimelineSearch);
+    
+    console.log('Timeline search initialized successfully');
+}
+
+// Call timeline search initialization after a delay to ensure DOM is ready
+setTimeout(function() {
+    initializeTimelineSearch();
+}, 1000);
