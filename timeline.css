@@ -3624,11 +3624,11 @@ textarea#image-sources {
 /* Filter Drawer - slides from top as horizontal panel */
 .filter-drawer {
     position: fixed;
-    top: -250px;  /* Hidden off-screen */
+    top: -280px;  /* Hidden off-screen - compact height */
     left: 0;
     right: 0;
     width: 100%;
-    height: 250px;  /* Compact height */
+    height: 280px;  /* Reduced height - just enough for search + histogram */
     background: var(--bg-secondary);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     z-index: 88;
@@ -3650,7 +3650,7 @@ textarea#image-sources {
 }
 
 .filter-drawer-header {
-    padding: 12px 16px;
+    padding: 10px 20px;
     border-bottom: 1px solid var(--bg-tertiary);
     display: flex;
     justify-content: space-between;
@@ -3683,22 +3683,20 @@ textarea#image-sources {
 
 .filter-drawer-content {
     padding: 12px 20px;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: auto;
     flex: 1;
     background: var(--bg-secondary);
-    display: flex;
-    gap: 30px;
-    align-items: flex-start;
+    max-width: 100%;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .filter-section {
-    flex-shrink: 0;
-    min-width: 280px;
+    margin-bottom: 15px;
 }
 
 .filter-section:last-child {
-    margin-right: 20px;
+    margin-bottom: 0;
 }
 
 .filter-section h4 {
@@ -3729,16 +3727,15 @@ textarea#image-sources {
 .visual-timeline-container {
     display: block;
     margin-top: 8px;
-    min-width: 400px;
-    max-width: 600px;
+    width: 100%;
 }
 
 .visual-timeline {
     background: var(--bg-primary);
     border-radius: 6px;
-    padding: 8px 8px 25px 8px;  /* Compact padding for horizontal layout */
+    padding: 10px 15px 30px 15px;  /* Balanced padding */
     position: relative;
-    height: 90px;  /* More compact height */
+    height: 110px;  /* Slightly taller for better visibility */
     overflow: hidden;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
@@ -3787,10 +3784,10 @@ textarea#image-sources {
 
 .timeline-histogram {
     position: absolute;
-    bottom: 30px;  /* Reduced for compact layout */
-    left: 8px;
-    right: 8px;
-    height: 40px;  /* Compact height */
+    bottom: 35px;  /* Position above labels */
+    left: 15px;
+    right: 15px;
+    height: 50px;  /* Good visibility */
     display: flex;
     align-items: flex-end;
     gap: 2px;
