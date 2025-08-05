@@ -3651,40 +3651,116 @@ textarea#image-sources {
 
 .timeline-selection {
     position: absolute;
-    top: 35px;
+    top: 30px;
     left: 20px;
     right: 20px;
-    height: 50px;
-    pointer-events: none;
+    height: 60px;
+    z-index: 10;
 }
 
 .selection-range {
     position: absolute;
-    background: rgba(78, 152, 237, 0.2);
-    border: 2px solid var(--accent-primary);
+    background: rgba(31, 108, 73, 0.15);
+    border-left: 2px solid var(--accent-primary);
+    border-right: 2px solid var(--accent-primary);
     height: 100%;
-    border-radius: 4px;
-    display: none;
+    min-width: 20px;
+    cursor: move;
+    transition: background 0.2s ease;
+}
+
+.selection-range:hover {
+    background: rgba(31, 108, 73, 0.25);
+}
+
+.range-label {
+    position: absolute;
+    bottom: -20px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.range-label.start {
+    left: 0;
+    transform: translateX(-50%);
+}
+
+.range-label.end {
+    right: 0;
+    transform: translateX(50%);
 }
 
 .selection-handle {
     position: absolute;
-    width: 10px;
+    width: 24px;
     height: 100%;
-    background: var(--accent-primary);
     cursor: ew-resize;
-    display: none;
-    pointer-events: all;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.handle-grip {
+    width: 4px;
+    height: 40px;
+    background: var(--accent-primary);
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.selection-handle:hover .handle-grip {
+    transform: scaleX(1.5);
+    background: var(--accent-secondary);
 }
 
 .selection-handle.left {
-    left: -5px;
-    border-radius: 4px 0 0 4px;
+    left: -12px;
 }
 
 .selection-handle.right {
-    right: -5px;
-    border-radius: 0 4px 4px 0;
+    right: -12px;
+}
+
+.timeline-zoom-controls {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    z-index: 15;
+}
+
+.timeline-zoom-controls button {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    border: 1px solid var(--bg-tertiary);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timeline-zoom-controls button:hover {
+    background: var(--accent-primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+.zoom-level {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    min-width: 50px;
+    text-align: center;
 }
 
 .timeline-labels {
