@@ -119,8 +119,22 @@
                 <a href="https://gipsyhillfriends.org" target="_blank" rel="noopener">gipsyhillfriends.org</a>
             </div>
             <div class="wip-notice">
-                <strong>🚧 Work in progress - may contain errors!</strong> Help us document Gipsy Hill's heritage by <a href="#" onclick="document.getElementById('add-entry-button').click(); return false;">contributing your knowledge</a>, memories, and corrections.
+                <strong>🚧 Work in progress - may contain errors!</strong> This is <a href="#" onclick="showAboutBox(); return false;">beta software</a>. Help us document Gipsy Hill's heritage by <a href="#" onclick="document.getElementById('add-entry-button').click(); return false;">contributing your knowledge</a>, memories, and corrections.
             </div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TIMELINE SEARCH                                                     -->
+    <!-- Search functionality for timeline entries                           -->
+    <!-- =================================================================== -->
+    <div class="timeline-search-container">
+        <div class="timeline-search">
+            <input type="text" 
+                   class="timeline-search-input" 
+                   placeholder="Search timeline entries..." 
+                   aria-label="Search timeline">
+            <div class="search-results-count"></div>
         </div>
     </div>
 

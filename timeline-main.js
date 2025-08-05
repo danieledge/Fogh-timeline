@@ -818,6 +818,90 @@ function initializeTimeline() {
         }
         showDebug('All ' + timelineData.length + ' timeline items created!');
         
+        // Initialize timeline search functionality
+        showDebug('Initializing timeline search');
+        var searchInput = document.querySelector('.timeline-search-input');
+        var searchResultsCount = document.querySelector('.timeline-search .search-results-count');
+        
+        if (searchInput && searchResultsCount) {
+            function performTimelineSearch() {
+                var searchTerm = searchInput.value.toLowerCase().trim();
+                var timelineItems = document.querySelectorAll('.timeline-item');
+                var visibleCount = 0;
+                var totalCount = timelineItems.length;
+                
+                timelineItems.forEach(function(item) {
+                    // Get all searchable text from the timeline item
+                    var searchableText = '';
+                    
+                    // Get date
+                    var dateElement = item.querySelector('.timeline-date');
+                    if (dateElement) {
+                        searchableText += dateElement.textContent + ' ';
+                    }
+                    
+                    // Get title
+                    var titleElement = item.querySelector('.content-title');
+                    if (titleElement) {
+                        searchableText += titleElement.textContent + ' ';
+                    }
+                    
+                    // Get description
+                    var descElement = item.querySelector('.content-description');
+                    if (descElement) {
+                        searchableText += descElement.textContent + ' ';
+                    }
+                    
+                    // Get image captions
+                    var captionElements = item.querySelectorAll('.image-caption');
+                    captionElements.forEach(function(caption) {
+                        searchableText += caption.textContent + ' ';
+                    });
+                    
+                    // Get citation numbers
+                    var citationElements = item.querySelectorAll('.citation-link');
+                    citationElements.forEach(function(citation) {
+                        searchableText += 'citation ' + citation.textContent + ' ';
+                    });
+                    
+                    // Check if item matches search
+                    if (searchTerm === '' || searchableText.toLowerCase().includes(searchTerm)) {
+                        item.classList.remove('search-hidden');
+                        visibleCount++;
+                    } else {
+                        item.classList.add('search-hidden');
+                    }
+                });
+                
+                // Update results count
+                if (searchTerm === '') {
+                    searchResultsCount.textContent = '';
+                } else {
+                    searchResultsCount.textContent = 'Showing ' + visibleCount + ' of ' + totalCount + ' entries';
+                }
+                
+                // If searching and found results, ensure at least one is visible in viewport
+                if (searchTerm && visibleCount > 0) {
+                    var firstVisible = document.querySelector('.timeline-item:not(.search-hidden)');
+                    if (firstVisible) {
+                        var rect = firstVisible.getBoundingClientRect();
+                        if (rect.top < 0 || rect.bottom > window.innerHeight) {
+                            firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+                }
+            }
+            
+            // Add search event handlers
+            searchInput.addEventListener('input', performTimelineSearch);
+            searchInput.addEventListener('keyup', performTimelineSearch);
+            
+            // Handle search on page load if there's a value
+            if (searchInput.value) {
+                performTimelineSearch();
+            }
+        }
+        
         // Add click handlers for minor entries
         showDebug('Adding expand/collapse handlers for minor entries');
         var minorHeaders = document.querySelectorAll('.timeline-item.minor .content-header');

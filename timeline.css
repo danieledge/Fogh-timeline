@@ -3520,3 +3520,37 @@ textarea#image-sources {
         touch-action: manipulation;
     }
 }
+
+/* Timeline search */
+.timeline-search-container {
+    max-width: 1200px;
+    margin: 0 auto 30px;
+    padding: 0 20px;
+}
+.timeline-search {
+    position: relative;
+}
+.timeline-search-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    border: 2px solid var(--bg-tertiary);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+.timeline-search-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(78, 152, 237, 0.1);
+}
+.timeline-search .search-results-count {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-align: right;
+}
+.timeline-item.search-hidden {
+    display: none;
+}
