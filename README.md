@@ -66,16 +66,10 @@ This instance of the timeline application documents the fascinating history of G
 - **Medieval Era**: Norman conquest impacts and early land use
 - **Victorian Development**: Railway arrival and suburban growth
 - **20th Century**: Wars, social changes, and community development
-- **Modern Era**: Contemporary community initiatives and cultural evolution
-
-### Notable Features in the Gipsy Hill Data
-
-- Over 100 documented historical events
-- Verified citations from archives, museums, and historical societies
-- Connections to broader London and UK history
+- **Modern Era**: Contemporary community initiatives and cultural 
 
 ### Data Sources Include
-
+see citations
 - Local authority archives
 - British Library collections
 - Museum archives
@@ -89,7 +83,7 @@ This instance of the timeline application documents the fascinating history of G
 
 ### Viewing the Timeline
 
-Visit the live Gipsy Hill timeline at: [https://gipsyhillfriends.org/timeline.html](https://gipsyhillfriends.org/timeline.html)
+Visit the live Gipsy Hill timeline at: [https://gipsyhillhistory.com/timeline.html](https://gipsyhillhistory.com/timeline.html)
 
 ### Setting Up Your Own Timeline
 
@@ -158,7 +152,7 @@ Visit the live Gipsy Hill timeline at: [https://gipsyhillfriends.org/timeline.ht
 
 ### Privacy Notice
 
-- Your name appears publicly on GitHub
+- Your name appears publicly on GitHub (use firstname or nickname if prefered) 
 - Email addresses are MD5 hashed
 - All content becomes public once approved
 
@@ -226,7 +220,6 @@ The timeline uses Staticman for submissions:
 - Email hashing for privacy
 - HTTPS enforced
 - Moderated submissions
-- No user data storage
 
 ---
 
@@ -251,9 +244,8 @@ See [LICENSE](LICENSE) for full details.
 ### For Gipsy Hill Timeline Content
 - **Friends of Gipsy Hill**: Community organization and historical preservation
 - **Local Archives**: Lambeth Archives, British Library, Museum of London
-- **Community Contributors**: Residents sharing memories and research
-- **Special Thanks**: Local historians, long-time residents, and memory keepers
-
+- **Community Contributors**: Residents sharing memories and research and related websites
+- **Special Thanks**: 
 ---
 
 ## 📊 Version Information
