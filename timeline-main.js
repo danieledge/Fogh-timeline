@@ -1944,16 +1944,38 @@ function initializeTimelineSearch() {
             
             console.log('Searching for:', searchTerm, 'in', totalCount, 'items');
             
-            timelineItems.forEach(function(item) {
+            timelineItems.forEach(function(item, index) {
                 if (!item) return;
                 
                 var searchableText = '';
+                var debugInfo = {};
                 
-                // Get all text content from the timeline item
-                var textElements = item.querySelectorAll('.timeline-date, .content-title, .content-description, .image-caption');
-                textElements.forEach(function(elem) {
-                    if (elem && elem.textContent) {
-                        searchableText += elem.textContent + ' ';
+                // Get date
+                var dateElem = item.querySelector('.timeline-date');
+                if (dateElem && dateElem.textContent) {
+                    debugInfo.date = dateElem.textContent;
+                    searchableText += dateElem.textContent + ' ';
+                }
+                
+                // Get title
+                var titleElem = item.querySelector('.content-title');
+                if (titleElem && titleElem.textContent) {
+                    debugInfo.title = titleElem.textContent;
+                    searchableText += titleElem.textContent + ' ';
+                }
+                
+                // Get description
+                var descElem = item.querySelector('.content-description');
+                if (descElem && descElem.textContent) {
+                    debugInfo.description = descElem.textContent.substring(0, 50) + '...';
+                    searchableText += descElem.textContent + ' ';
+                }
+                
+                // Get image captions
+                var captions = item.querySelectorAll('.image-caption');
+                captions.forEach(function(caption) {
+                    if (caption && caption.textContent) {
+                        searchableText += caption.textContent + ' ';
                     }
                 });
                 
@@ -1965,6 +1987,11 @@ function initializeTimelineSearch() {
                     }
                 });
                 
+                // Debug first few items
+                if (index < 3 && searchTerm) {
+                    console.log('Item', index, debugInfo, 'Searchable text length:', searchableText.length);
+                }
+                
                 // Perform search
                 if (searchTerm === '' || searchableText.toLowerCase().includes(searchTerm)) {
                     item.classList.remove('search-hidden');
@@ -1974,11 +2001,41 @@ function initializeTimelineSearch() {
                 }
             });
             
-            // Update results count
-            if (searchTerm === '') {
-                searchResultsCount.textContent = '';
+            // Hide/show timeline line based on results
+            var timelineLine = document.querySelector('.timeline-line');
+            var timelineContainer = document.querySelector('.timeline-container');
+            
+            if (searchTerm && visibleCount === 0) {
+                // No results found
+                searchResultsCount.textContent = 'No results found for "' + searchTerm + '"';
+                searchResultsCount.style.color = '#e74c3c';
+                if (timelineLine) timelineLine.style.display = 'none';
+                
+                // Show "no results" message in timeline area
+                var noResultsMsg = document.getElementById('no-search-results');
+                if (!noResultsMsg) {
+                    noResultsMsg = document.createElement('div');
+                    noResultsMsg.id = 'no-search-results';
+                    noResultsMsg.style.cssText = 'text-align: center; padding: 60px 20px; color: #666; font-size: 1.2em;';
+                    noResultsMsg.innerHTML = '<p>No timeline entries found matching "<strong>' + searchTerm + '</strong>"</p><p style="font-size: 0.9em; margin-top: 10px;">Try searching for different keywords</p>';
+                    timelineContainer.appendChild(noResultsMsg);
+                } else {
+                    noResultsMsg.style.display = 'block';
+                    noResultsMsg.querySelector('strong').textContent = searchTerm;
+                }
             } else {
-                searchResultsCount.textContent = 'Showing ' + visibleCount + ' of ' + totalCount + ' entries';
+                // Results found or search cleared
+                if (searchTerm === '') {
+                    searchResultsCount.textContent = '';
+                } else {
+                    searchResultsCount.textContent = 'Showing ' + visibleCount + ' of ' + totalCount + ' entries';
+                    searchResultsCount.style.color = '';
+                }
+                if (timelineLine) timelineLine.style.display = '';
+                
+                // Hide no results message
+                var noResultsMsg = document.getElementById('no-search-results');
+                if (noResultsMsg) noResultsMsg.style.display = 'none';
             }
             
             console.log('Search complete. Visible:', visibleCount, 'Hidden:', totalCount - visibleCount);
