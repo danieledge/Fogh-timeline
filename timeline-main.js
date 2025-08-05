@@ -2154,22 +2154,19 @@ function initializeVisualTimeline() {
     
     console.log('Year range:', minYear, 'to', maxYear);
     
-    // Create periods (centuries or appropriate divisions)
+    // Create periods only for centuries with data
     var periods = [];
     if (yearRange > 1000) {
-        // Use centuries for large ranges
-        var startCentury = Math.floor(minYear / 100) * 100;
-        var endCentury = Math.ceil(maxYear / 100) * 100;
-        
-        for (var c = startCentury; c < endCentury; c += 100) {
+        // Only include centuries that have events
+        activeCenturies.forEach(function(century) {
             var centuryNum;
             var label;
             
             // Calculate century number correctly
-            if (c === 0) {
+            if (century === 0) {
                 centuryNum = 1; // Years 1-100 are 1st century
             } else {
-                centuryNum = Math.floor(c / 100) + 1;
+                centuryNum = Math.floor(century / 100) + 1;
             }
             
             // Format label with proper ordinals
@@ -2196,11 +2193,12 @@ function initializeVisualTimeline() {
             }
             
             periods.push({
-                start: c,
-                end: c + 99,
-                label: label
+                start: century,
+                end: century + 99,
+                label: label,
+                hasData: true
             });
-        }
+        });
     } else {
         // Use decades for smaller ranges
         var startDecade = Math.floor(minYear / 10) * 10;
@@ -2350,15 +2348,30 @@ function initializeVisualTimeline() {
         histogramContainer.appendChild(bar);
     });
     
-    // Add year labels
-    var labelCount = 5;
-    for (var i = 0; i <= labelCount; i++) {
-        var year = minYear + (yearRange * i / labelCount);
-        var label = document.createElement('div');
-        label.className = 'timeline-label';
-        label.textContent = Math.round(year);
-        label.style.left = (i * 100 / labelCount) + '%';
-        labelsContainer.appendChild(label);
+    // Add year labels based on active centuries
+    if (activeCenturies.length > 5) {
+        // Show labels for key centuries
+        var labelPositions = [0, 0.25, 0.5, 0.75, 1];
+        labelPositions.forEach(function(position, index) {
+            var centuryIndex = Math.floor(position * (activeCenturies.length - 1));
+            var century = activeCenturies[centuryIndex];
+            var label = document.createElement('div');
+            label.className = 'timeline-label';
+            label.textContent = century || minYear;
+            label.style.left = (position * 100) + '%';
+            labelsContainer.appendChild(label);
+        });
+    } else {
+        // Show all years for small ranges
+        var labelCount = 5;
+        for (var i = 0; i <= labelCount; i++) {
+            var year = minYear + (yearRange * i / labelCount);
+            var label = document.createElement('div');
+            label.className = 'timeline-label';
+            label.textContent = Math.round(year);
+            label.style.left = (i * 100 / labelCount) + '%';
+            labelsContainer.appendChild(label);
+        }
     }
     
     // Filter functions
