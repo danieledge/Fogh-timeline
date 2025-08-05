@@ -3634,6 +3634,13 @@ textarea#image-sources {
     left: 0;  /* Slide in from left */
 }
 
+/* Hide filter button when drawer is open */
+.filter-toggle-button.drawer-open {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
 .filter-drawer-header {
     padding: 20px;
     border-bottom: 1px solid var(--bg-tertiary);
