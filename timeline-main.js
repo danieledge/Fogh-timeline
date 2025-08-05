@@ -2169,8 +2169,12 @@ function initializeVisualTimeline() {
         filterButton.addEventListener('click', function() {
             filterDrawer.classList.add('active');
             filterButton.classList.add('drawer-open');
-            // Prevent horizontal scroll
-            document.body.style.overflowX = 'hidden';
+            // Prevent all scroll and save position
+            var scrollPos = window.pageYOffset;
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.top = '-' + scrollPos + 'px';
+            document.body.style.width = '100%';
             
             // Update filter status when drawer opens
             updateFilterStatus();
@@ -2187,8 +2191,13 @@ function initializeVisualTimeline() {
             filterDrawerClose.addEventListener('click', function() {
                 filterDrawer.classList.remove('active');
                 filterButton.classList.remove('drawer-open');
-                // Restore horizontal scroll
-                document.body.style.overflowX = '';
+                // Restore scroll
+                var scrollPos = parseInt(document.body.style.top || '0') * -1;
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                window.scrollTo(0, scrollPos);
             });
         }
         
@@ -2197,8 +2206,13 @@ function initializeVisualTimeline() {
             if (e.key === 'Escape' && filterDrawer.classList.contains('active')) {
                 filterDrawer.classList.remove('active');
                 filterButton.classList.remove('drawer-open');
-                // Restore horizontal scroll
-                document.body.style.overflowX = '';
+                // Restore scroll
+                var scrollPos = parseInt(document.body.style.top || '0') * -1;
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                window.scrollTo(0, scrollPos);
             }
         });
     }
