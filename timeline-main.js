@@ -2054,4 +2054,251 @@ function initializeTimelineSearch() {
 // Call timeline search initialization after a delay to ensure DOM is ready
 setTimeout(function() {
     initializeTimelineSearch();
+    initializeVisualTimeline();
 }, 1000);
+
+// Visual Timeline Navigator
+function initializeVisualTimeline() {
+    console.log('Initializing visual timeline navigator...');
+    
+    // Get timeline data and parse years
+    var timelineData = window.timelineData;
+    if (!timelineData || timelineData.length === 0) {
+        console.log('No timeline data available for visual timeline');
+        return;
+    }
+    
+    // Parse years from timeline entries
+    var years = [];
+    var eventsByYear = {};
+    
+    timelineData.forEach(function(item) {
+        if (item.active === false) return;
+        
+        // Extract year from date string
+        var yearMatch = item.date.match(/(\d{1,4})/);
+        if (yearMatch) {
+            var year = parseInt(yearMatch[1]);
+            
+            // Handle BC years
+            if (item.date.toLowerCase().includes('bc')) {
+                year = -year;
+            }
+            
+            // Normalize ancient dates
+            if (year > 0 && year < 100) {
+                // Assume it's AD unless specified
+            }
+            
+            years.push(year);
+            if (!eventsByYear[year]) {
+                eventsByYear[year] = 0;
+            }
+            eventsByYear[year]++;
+        }
+    });
+    
+    if (years.length === 0) {
+        console.log('No valid years found in timeline data');
+        return;
+    }
+    
+    // Sort years and find range
+    years.sort(function(a, b) { return a - b; });
+    var minYear = years[0];
+    var maxYear = years[years.length - 1];
+    var yearRange = maxYear - minYear;
+    
+    console.log('Year range:', minYear, 'to', maxYear);
+    
+    // Create periods (centuries or appropriate divisions)
+    var periods = [];
+    if (yearRange > 1000) {
+        // Use centuries for large ranges
+        var startCentury = Math.floor(minYear / 100) * 100;
+        var endCentury = Math.ceil(maxYear / 100) * 100;
+        
+        for (var c = startCentury; c < endCentury; c += 100) {
+            var label = c < 0 ? Math.abs(c) + ' BC' : 
+                       c === 0 ? '1st C' :
+                       c < 100 ? '1st C' :
+                       (Math.floor(c / 100) + 1) + 'th C';
+            periods.push({
+                start: c,
+                end: c + 99,
+                label: label
+            });
+        }
+    } else {
+        // Use decades for smaller ranges
+        var startDecade = Math.floor(minYear / 10) * 10;
+        var endDecade = Math.ceil(maxYear / 10) * 10;
+        
+        for (var d = startDecade; d < endDecade; d += 10) {
+            periods.push({
+                start: d,
+                end: d + 9,
+                label: d + 's'
+            });
+        }
+    }
+    
+    // Create histogram data
+    var histogramBins = 50; // Number of bars in the histogram
+    var binSize = yearRange / histogramBins;
+    var histogram = new Array(histogramBins).fill(0);
+    
+    years.forEach(function(year) {
+        var binIndex = Math.floor((year - minYear) / binSize);
+        if (binIndex >= 0 && binIndex < histogramBins) {
+            histogram[binIndex]++;
+        }
+    });
+    
+    var maxCount = Math.max.apply(null, histogram);
+    
+    // Build the visual timeline
+    var periodsContainer = document.querySelector('.timeline-periods');
+    var histogramContainer = document.querySelector('.timeline-histogram');
+    var labelsContainer = document.querySelector('.timeline-labels');
+    var filterRangeText = document.querySelector('.filter-range-text');
+    var clearButton = document.querySelector('.clear-time-filter');
+    
+    if (!periodsContainer || !histogramContainer) {
+        console.log('Visual timeline containers not found');
+        return;
+    }
+    
+    // Clear existing content
+    periodsContainer.innerHTML = '';
+    histogramContainer.innerHTML = '';
+    labelsContainer.innerHTML = '';
+    
+    // Add period labels
+    periods.forEach(function(period) {
+        var periodDiv = document.createElement('div');
+        periodDiv.className = 'timeline-period';
+        periodDiv.textContent = period.label;
+        periodDiv.dataset.start = period.start;
+        periodDiv.dataset.end = period.end;
+        periodDiv.addEventListener('click', function() {
+            filterByPeriod(period.start, period.end);
+        });
+        periodsContainer.appendChild(periodDiv);
+    });
+    
+    // Add histogram bars
+    histogram.forEach(function(count, index) {
+        var bar = document.createElement('div');
+        bar.className = 'histogram-bar';
+        bar.style.height = ((count / maxCount) * 100) + '%';
+        bar.title = count + ' events';
+        
+        var barStartYear = minYear + (index * binSize);
+        var barEndYear = barStartYear + binSize;
+        
+        bar.dataset.startYear = Math.floor(barStartYear);
+        bar.dataset.endYear = Math.floor(barEndYear);
+        
+        bar.addEventListener('click', function() {
+            filterByYearRange(Math.floor(barStartYear), Math.floor(barEndYear));
+        });
+        
+        histogramContainer.appendChild(bar);
+    });
+    
+    // Add year labels
+    var labelCount = 5;
+    for (var i = 0; i <= labelCount; i++) {
+        var year = minYear + (yearRange * i / labelCount);
+        var label = document.createElement('div');
+        label.className = 'timeline-label';
+        label.textContent = Math.round(year);
+        label.style.left = (i * 100 / labelCount) + '%';
+        labelsContainer.appendChild(label);
+    }
+    
+    // Filter functions
+    function filterByPeriod(startYear, endYear) {
+        filterByYearRange(startYear, endYear);
+    }
+    
+    function filterByYearRange(startYear, endYear) {
+        console.log('Filtering timeline:', startYear, 'to', endYear);
+        
+        // Update visual feedback
+        updateHistogramHighlight(startYear, endYear);
+        
+        // Filter timeline items
+        var timelineItems = document.querySelectorAll('.timeline-item');
+        var visibleCount = 0;
+        
+        timelineItems.forEach(function(item) {
+            var dateText = item.querySelector('.timeline-date');
+            if (!dateText) return;
+            
+            var yearMatch = dateText.textContent.match(/(\d{1,4})/);
+            if (yearMatch) {
+                var year = parseInt(yearMatch[1]);
+                if (dateText.textContent.toLowerCase().includes('bc')) {
+                    year = -year;
+                }
+                
+                if (year >= startYear && year <= endYear) {
+                    item.classList.remove('time-filtered');
+                    visibleCount++;
+                } else {
+                    item.classList.add('time-filtered');
+                }
+            }
+        });
+        
+        // Update filter info
+        var startLabel = startYear < 0 ? Math.abs(startYear) + ' BC' : startYear;
+        var endLabel = endYear < 0 ? Math.abs(endYear) + ' BC' : endYear;
+        filterRangeText.textContent = 'Showing ' + visibleCount + ' events from ' + startLabel + ' to ' + endLabel;
+        clearButton.style.display = 'inline-block';
+        
+        // Scroll to first visible item
+        var firstVisible = document.querySelector('.timeline-item:not(.time-filtered):not(.search-hidden)');
+        if (firstVisible) {
+            firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+    
+    function updateHistogramHighlight(startYear, endYear) {
+        var bars = histogramContainer.querySelectorAll('.histogram-bar');
+        bars.forEach(function(bar) {
+            var barStart = parseInt(bar.dataset.startYear);
+            var barEnd = parseInt(bar.dataset.endYear);
+            
+            if (barStart >= startYear && barEnd <= endYear) {
+                bar.classList.add('active');
+            } else {
+                bar.classList.remove('active');
+            }
+        });
+    }
+    
+    // Clear filter button
+    clearButton.addEventListener('click', function() {
+        var timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach(function(item) {
+            item.classList.remove('time-filtered');
+        });
+        
+        histogramContainer.querySelectorAll('.histogram-bar').forEach(function(bar) {
+            bar.classList.remove('active');
+        });
+        
+        filterRangeText.textContent = '';
+        clearButton.style.display = 'none';
+    });
+    
+    console.log('Visual timeline initialized');
+}
+
+// Add CSS class for time-filtered items
+var style = document.createElement('style');
+style.textContent = '.timeline-item.time-filtered { display: none; }';
+document.head.appendChild(style);
