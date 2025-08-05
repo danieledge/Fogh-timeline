@@ -3623,6 +3623,18 @@ textarea#image-sources {
     transition: all 0.2s ease;
     cursor: pointer;
     min-height: 3px;
+    position: relative;
+}
+
+/* Visual indicator for timeline gaps */
+.histogram-bar.gap-before::before {
+    content: '⋯';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 1.2rem;
 }
 
 .histogram-bar:hover {

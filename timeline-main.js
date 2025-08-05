@@ -2206,17 +2206,57 @@ function initializeVisualTimeline() {
         }
     }
     
-    // Create histogram data
+    // Create histogram data with better handling of gaps
     var histogramBins = 50; // Number of bars in the histogram
-    var binSize = yearRange / histogramBins;
     var histogram = new Array(histogramBins).fill(0);
     
+    // Group events by century to handle large gaps better
+    var eventsByCentury = {};
     years.forEach(function(year) {
-        var binIndex = Math.floor((year - minYear) / binSize);
-        if (binIndex >= 0 && binIndex < histogramBins) {
-            histogram[binIndex]++;
+        var century = Math.floor(year / 100) * 100;
+        if (!eventsByCentury[century]) {
+            eventsByCentury[century] = [];
         }
+        eventsByCentury[century].push(year);
     });
+    
+    // Get list of centuries with events
+    var activeCenturies = Object.keys(eventsByCentury).map(Number).sort(function(a, b) { return a - b; });
+    console.log('Active centuries:', activeCenturies);
+    
+    // Create a more balanced distribution
+    if (activeCenturies.length > 10) {
+        // Use century-based bins for better distribution
+        var binsPerCentury = Math.floor(histogramBins / activeCenturies.length);
+        var currentBin = 0;
+        
+        activeCenturies.forEach(function(century, idx) {
+            var centuryYears = eventsByCentury[century];
+            var centuryBins = (idx === activeCenturies.length - 1) ? 
+                histogramBins - currentBin : binsPerCentury;
+            
+            // Distribute this century's events across its bins
+            centuryYears.forEach(function(year) {
+                var yearInCentury = year - century;
+                var binInCentury = Math.floor((yearInCentury / 100) * centuryBins);
+                var absoluteBin = currentBin + Math.min(binInCentury, centuryBins - 1);
+                
+                if (absoluteBin >= 0 && absoluteBin < histogramBins) {
+                    histogram[absoluteBin]++;
+                }
+            });
+            
+            currentBin += centuryBins;
+        });
+    } else {
+        // For fewer centuries, use linear distribution
+        years.forEach(function(year) {
+            var binIndex = Math.floor(((year - minYear) / yearRange) * (histogramBins - 1));
+            if (binIndex >= 0 && binIndex < histogramBins) {
+                histogram[binIndex]++;
+            }
+        });
+    }
     
     var maxCount = Math.max.apply(null, histogram);
     
@@ -2250,21 +2290,51 @@ function initializeVisualTimeline() {
         periodsContainer.appendChild(periodDiv);
     });
     
-    // Add histogram bars
+    // Add histogram bars with proper year ranges
+    var barYearRanges = [];
+    
+    if (activeCenturies.length > 10) {
+        // Calculate year range for each bar based on century distribution
+        var binsPerCentury = Math.floor(histogramBins / activeCenturies.length);
+        var currentBin = 0;
+        
+        activeCenturies.forEach(function(century, idx) {
+            var nextCentury = century + 100;
+            var centuryBins = (idx === activeCenturies.length - 1) ? 
+                histogramBins - currentBin : binsPerCentury;
+            
+            for (var i = 0; i < centuryBins; i++) {
+                var startYear = century + (i * 100 / centuryBins);
+                var endYear = century + ((i + 1) * 100 / centuryBins);
+                barYearRanges[currentBin + i] = {
+                    start: Math.floor(startYear),
+                    end: Math.floor(endYear)
+                };
+            }
+            currentBin += centuryBins;
+        });
+    } else {
+        // Linear distribution for simple timelines
+        for (var i = 0; i < histogramBins; i++) {
+            barYearRanges[i] = {
+                start: Math.floor(minYear + (i * yearRange / histogramBins)),
+                end: Math.floor(minYear + ((i + 1) * yearRange / histogramBins))
+            };
+        }
+    }
+    
     histogram.forEach(function(count, index) {
         var bar = document.createElement('div');
         bar.className = 'histogram-bar';
-        bar.style.height = ((count / maxCount) * 100) + '%';
+        bar.style.height = count > 0 ? ((count / maxCount) * 100) + '%' : '3px';
         bar.title = count + ' events';
         
-        var barStartYear = minYear + (index * binSize);
-        var barEndYear = barStartYear + binSize;
-        
-        bar.dataset.startYear = Math.floor(barStartYear);
-        bar.dataset.endYear = Math.floor(barEndYear);
+        var yearRange = barYearRanges[index] || { start: 0, end: 0 };
+        bar.dataset.startYear = yearRange.start;
+        bar.dataset.endYear = yearRange.end;
         
         bar.addEventListener('click', function() {
-            filterByYearRange(Math.floor(barStartYear), Math.floor(barEndYear));
+            filterByYearRange(yearRange.start, yearRange.end);
         });
         
         histogramContainer.appendChild(bar);
