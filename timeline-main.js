@@ -2157,6 +2157,8 @@ function initializeVisualTimeline() {
         filterButton.addEventListener('click', function() {
             filterDrawer.classList.add('active');
             filterButton.classList.add('drawer-open');
+            // Prevent horizontal scroll
+            document.body.style.overflowX = 'hidden';
             
             // Initialize visual timeline on first open
             if (!window.visualTimelineInitialized) {
@@ -2170,6 +2172,8 @@ function initializeVisualTimeline() {
             filterDrawerClose.addEventListener('click', function() {
                 filterDrawer.classList.remove('active');
                 filterButton.classList.remove('drawer-open');
+                // Restore horizontal scroll
+                document.body.style.overflowX = '';
             });
         }
         
@@ -2178,6 +2182,8 @@ function initializeVisualTimeline() {
             if (e.key === 'Escape' && filterDrawer.classList.contains('active')) {
                 filterDrawer.classList.remove('active');
                 filterButton.classList.remove('drawer-open');
+                // Restore horizontal scroll
+                document.body.style.overflowX = '';
             }
         });
     }
