@@ -55,7 +55,7 @@ var timelineCategories = {
 var timelineData = [
 {
 "date": "AD 43-410",
-"title": "Roman Settlements and Trackways",
+"title": "Roman Era - Forest Trackways",
 "description": "Archaeological studies have revealed minor Roman-era pottery finds and trackways in the Norwood/Central Hill area, suggesting movement through the forested landscape, though no major settlement.",
 "icon": "roman",
 "importance": "major",
@@ -63,7 +63,6 @@ var timelineData = [
 "citations": ["1"],
 },
 
-,
 
 {
 "date": "AD 410-1066",
@@ -75,7 +74,6 @@ var timelineData = [
 "citations": ["2"],
 },
 
-,
 
 {
 "date": "11th-19th c.",
@@ -93,7 +91,6 @@ var timelineData = [
 "citations": ["36"]
 },
 
-,
 
 {
 "date": "1583",
@@ -108,7 +105,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1600s",
@@ -123,7 +119,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "c. 1640",
@@ -141,7 +136,6 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
-,
 
 {
 "date": "1668 (August 11)",
@@ -156,7 +150,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1740 (October 24)",
@@ -174,7 +167,6 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
-,
 
 {
 "date": "1740 (October 24)",
@@ -189,7 +181,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1768 (August 6)",
@@ -201,7 +192,6 @@ var timelineData = [
 "citations": ["57"],
 },
 
-,
 
 {
 "date": "1777",
@@ -216,7 +206,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1778",
@@ -229,7 +218,6 @@ var timelineData = [
 "citations": ["66"],
 },
 
-,
 
 {
 "date": "1810",
@@ -241,7 +229,6 @@ var timelineData = [
 "citations": ["59"],
 },
 
-,
 
 {
 "date": "1811-1814",
@@ -256,7 +243,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1832 (April 12)",
@@ -270,7 +256,6 @@ var timelineData = [
 "imageCaption": "Public Ledger and Daily Advertiser - Thursday 12 April 1832<br>Source: Historical newspaper archives",
 },
 
-,
 
 {
 "date": "1847-1858",
@@ -285,7 +270,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1853 (August 4)",
@@ -297,7 +281,6 @@ var timelineData = [
 "citations": ["67"],
 },
 
-,
 
 {
 "date": "1854 (June 10)",
@@ -312,7 +295,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1854",
@@ -327,7 +309,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1856 (December 1)",
@@ -342,7 +323,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1858",
@@ -355,7 +335,6 @@ var timelineData = [
 "citations": ["68"],
 },
 
-,
 
 {
 "date": "1862",
@@ -367,7 +346,6 @@ var timelineData = [
 "citations": ["11"],
 },
 
-,
 
 {
 "date": "1867",
@@ -382,7 +360,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1867",
@@ -394,7 +371,6 @@ var timelineData = [
 "citations": ["13"],
 },
 
-,
 
 {
 "date": "1870",
@@ -406,7 +382,6 @@ var timelineData = [
 "citations": ["14"],
 },
 
-,
 
 {
 "date": "1871",
@@ -418,7 +393,6 @@ var timelineData = [
 "citations": ["61"],
 },
 
-,
 
 {
 "date": "1870s-1890s",
@@ -436,7 +410,6 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
-,
 
 {
 "date": "1874 (January-October)",
@@ -451,7 +424,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1875",
@@ -466,7 +438,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1880 (April 12)",
@@ -478,7 +449,6 @@ var timelineData = [
 "citations": ["62"],
 },
 
-,
 
 {
 "date": "1881-1882",
@@ -490,7 +460,6 @@ var timelineData = [
 "citations": ["70"],
 },
 
-,
 
 {
 "date": "1887 (January 10)",
@@ -502,7 +471,6 @@ var timelineData = [
 "citations": ["71"],
 },
 
-,
 
 {
 "date": "1890 (July 17)",
@@ -517,7 +485,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1891-1900",
@@ -535,7 +502,6 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
-,
 
 {
 "date": "1911 (May 12)",
@@ -547,7 +513,6 @@ var timelineData = [
 "citations": ["73"],
 },
 
-,
 
 {
 "date": "1911 (June 14)",
@@ -562,7 +527,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1915-1919",
@@ -577,7 +541,6 @@ var timelineData = [
 "imageSource": "Unknown (<a href=\"#\" onclick=\"document.getElementById('add-entry-button').click(); return false;\">if known please submit</a>)",
 },
 
-,
 
 {
 "date": "1917 (January)",
@@ -592,7 +555,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1919-1940",
@@ -607,7 +569,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1920-1938",
@@ -622,7 +583,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1929 (September 22)",
@@ -634,7 +594,6 @@ var timelineData = [
 "citations": ["63"],
 },
 
-,
 
 {
 "date": "1870s",
@@ -646,7 +605,6 @@ var timelineData = [
 "citations": ["16"],
 },
 
-,
 
 {
 "date": "1939",
@@ -658,7 +616,6 @@ var timelineData = [
 "citations": ["19"],
 },
 
-,
 
 {
 "date": "1940-1941",
@@ -679,7 +636,6 @@ var timelineData = [
 "image3CaptionHTML": true,
 },
 
-,
 {
 "date": "1946-1956",
 "title": "Kingswood Estate Built",
@@ -693,7 +649,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1948",
@@ -705,7 +660,6 @@ var timelineData = [
 "citations": ["75"],
 },
 
-,
 
 {
 "date": "1953-1955",
@@ -723,7 +677,6 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
-,
 
 {
 "date": "1961",
@@ -738,7 +691,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1963-1966",
@@ -753,7 +705,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1966 (March 27)",
@@ -771,7 +722,6 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
-,
 
 {
 "date": "1960s",
@@ -786,7 +736,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1967",
@@ -801,7 +750,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "1972",
@@ -813,7 +761,6 @@ var timelineData = [
 "citations": ["26"],
 },
 
-,
 
 {
 "date": "1974",
@@ -825,7 +772,6 @@ var timelineData = [
 "citations": ["88"],
 },
 
-,
 
 {
 "date": "1978",
@@ -837,7 +783,6 @@ var timelineData = [
 "citations": ["28"],
 },
 
-,
 
 {
 "date": "1981 (October 17)",
@@ -849,7 +794,6 @@ var timelineData = [
 "citations": ["29"],
 },
 
-,
 
 {
 "date": "1982",
@@ -861,7 +805,6 @@ var timelineData = [
 "citations": ["76"],
 },
 
-,
 
 {
 "date": "1990 (February 14)",
@@ -873,7 +816,6 @@ var timelineData = [
 "citations": ["77"],
 },
 
-,
 
 {
 "date": "2000",
@@ -888,7 +830,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 
 {
@@ -901,7 +842,6 @@ var timelineData = [
 "citations": ["57"]
 },
 
-,
 
 {
 "date": "2009",
@@ -913,7 +853,6 @@ var timelineData = [
 "citations": ["43"]
 },
 
-,
 
 {
 "date": "2010",
@@ -925,7 +864,6 @@ var timelineData = [
 "citations": ["44"]
 },
 
-,
 
 {
 "date": "2011 (June 7)",
@@ -940,7 +878,6 @@ var timelineData = [
 "citations": ["45"]
 },
 
-,
 
 {
 "date": "2018 (May-October)",
@@ -955,7 +892,6 @@ var timelineData = [
 "imageCaptionHTML": true
 },
 
-,
 
 {
 "date": "2019 (July 14)",
@@ -970,7 +906,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "2020 (August 8)",
@@ -985,7 +920,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "2020 (November 21)",
@@ -1000,7 +934,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "2020",
@@ -1012,7 +945,6 @@ var timelineData = [
 "citations": ["50"],
 },
 
-,
 
 {
 "date": "2022",
@@ -1024,7 +956,6 @@ var timelineData = [
 "citations": ["51"],
 },
 
-,
 
 {
 "date": "2022",
@@ -1039,7 +970,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "2022 (May 5)",
@@ -1054,7 +984,6 @@ var timelineData = [
 "imageCaptionHTML": true,
 },
 
-,
 
 {
 "date": "2022 (October 1)",
@@ -1066,7 +995,6 @@ var timelineData = [
 "citations": ["53"],
 },
 
-,
 
 
 {
@@ -1079,7 +1007,6 @@ var timelineData = [
 "citations": ["54"],
 },
 
-,
 
 {
 "date": "2024-Present",
@@ -1109,7 +1036,6 @@ const timelineCitations = [
     "notes": "Main Roman route followed different corridor"
   },
 
-,
   {
     "number": "2",
     "timeline_entry": "AD 410\u20131066 \u2013 Anglo-Saxon Boundaries",
@@ -1119,7 +1045,6 @@ const timelineCitations = [
     "url": "https://en.wikipedia.org/wiki/History_of_Croydon"
   },
 
-,
   {
     "number": "3",
     "timeline_entry": "1583 \u2013 Vicar's Oak & Beating the Bounds",
@@ -1132,7 +1057,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "4",
     "timeline_entry": "1668 \u2013 Pepys Visits the Gypsies",
@@ -1145,7 +1069,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "5",
     "timeline_entry": "24 Oct 1740 \u2013 Death of Gypsy Queen",
@@ -1158,7 +1081,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "6",
     "timeline_entry": "1832 \u2013 Trotting Hill created",
@@ -1169,7 +1091,6 @@ const timelineCitations = [
     "notes": "Dinner & shilling reward; cost \u00a330"
   },
 
-,
   {
     "number": "7",
     "timeline_entry": "1847\u20131848 \u2013 River Effra Culverted",
@@ -1182,7 +1103,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "8",
     "timeline_entry": "1854 \u2013 Gipsy Hill Police Station built",
@@ -1195,7 +1115,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "9",
     "timeline_entry": "10 Jun 1854 \u2013 Crystal Palace opens",
@@ -1208,7 +1127,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "10",
     "timeline_entry": "1856 \u2013 Gipsy Hill station opens",
@@ -1218,7 +1136,6 @@ const timelineCitations = [
     "url": "https://en.wikipedia.org/wiki/Gipsy_Hill_railway_station"
   },
 
-,
   {
     "number": "11",
     "timeline_entry": "1862 \u2013 Iron Church Erected",
@@ -1231,7 +1148,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "12",
     "timeline_entry": "1867 \u2013 Christ Church Consecrated",
@@ -1244,7 +1160,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "13",
     "timeline_entry": "1867 \u2013 Barclay's Bank opens",
@@ -1255,7 +1170,6 @@ const timelineCitations = [
     "notes": "Local history timeline mentions Barclays opening on Westow Street"
   },
 
-,
   {
     "number": "14",
     "timeline_entry": "1870 \u2013 Crystal Palace Gas Works opens",
@@ -1265,7 +1179,6 @@ const timelineCitations = [
     "url": "https://norwoodstreethistories.org.uk/building/crystal-palace-gas-works/"
   },
 
-,
   {
     "number": "15",
     "timeline_entry": "1870s\u20131890s \u2013 Long Meadow grazing use",
@@ -1280,7 +1193,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "16",
     "timeline_entry": "Early 1870s \u2013 Athol House built",
@@ -1291,7 +1203,6 @@ const timelineCitations = [
     "notes": "Private luxury residence in Dulwich, very costly at build time"
   },
 
-,
   {
     "number": "17",
     "timeline_entry": "1875 \u2013 Gipsy Hill Primary School opens",
@@ -1305,7 +1216,6 @@ const timelineCitations = [
     "notes": "Citation status partial and quality low due to potential conflicting information between Borough Photos and Wikipedia article - requires qualification"
   },
 
-,
   {
     "number": "18",
     "timeline_entry": "1890 \u2013 Great Flood",
@@ -1318,7 +1228,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "19",
     "timeline_entry": "1939 \u2013 Police station operations move",
@@ -1328,7 +1237,6 @@ const timelineCitations = [
     "url": "https://boroughphotos.org/lambeth/former-police-station-gipsy-hill-upper-norwood/"
   },
 
-,
   {
     "number": "20",
     "timeline_entry": "1940\u201341 \u2013 WWII Blitz",
@@ -1342,7 +1250,6 @@ const timelineCitations = [
     "notes": "V-1 flying bombs described in accounts"
   },
 
-,
   {
     "number": "21",
     "timeline_entry": "1946\u201356 \u2013 Kingswood Estate built",
@@ -1355,7 +1262,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "22",
     "timeline_entry": "1948 \u2013 Police station converted",
@@ -1368,7 +1274,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "23",
     "timeline_entry": "1953\u20131955 \u2013 Athol House becomes first London Cheshire Home",
@@ -1382,7 +1287,6 @@ const timelineCitations = [
     "notes": "Marks start of charitable care in the building"
   },
 
-,
   {
     "number": "24",
     "timeline_entry": "1963\u201366 \u2013 Cold War bunker at Pear Tree House",
@@ -1396,7 +1300,6 @@ const timelineCitations = [
     "notes": "Now beneath social housing"
   },
 
-,
   {
     "number": "25",
     "timeline_entry": "1967 \u2013 Central Hill Estate built",
@@ -1409,7 +1312,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "26",
     "timeline_entry": "1972 \u2013 Kingswood House listed",
@@ -1419,7 +1321,6 @@ const timelineCitations = [
     "url": "https://historicengland.org.uk/listing/the-list/list-entry/1385883"
   },
 
-,
   {
     "number": "27",
     "timeline_entry": "1974 \u2013 Gipsy Hill Conservation Area created",
@@ -1430,7 +1331,6 @@ const timelineCitations = [
     "notes": "Includes Central Hill"
   },
 
-,
   {
     "number": "28",
     "timeline_entry": "1978 \u2013 Gipsy Hill Ward created",
@@ -1440,7 +1340,6 @@ const timelineCitations = [
     "url": "https://en.wikipedia.org/wiki/Gipsy_Hill_(ward)"
   },
 
-,
   {
     "number": "29",
     "timeline_entry": "17 Oct 1981 \u2013 IRA bomb incident",
@@ -1451,7 +1350,6 @@ const timelineCitations = [
     "notes": "Often described as Dulwich"
   },
 
-,
   {
     "number": "30",
     "timeline_entry": "2000 \u2013 Gipsy Hill ward boundary review",
@@ -1461,7 +1359,6 @@ const timelineCitations = [
     "url": "https://www.legislation.gov.uk/uksi/2000/319/made/data.xht"
   },
 
-,
   {
     "number": "31",
     "timeline_entry": "2009 \u2013 Station refurbishment",
@@ -1471,7 +1368,6 @@ const timelineCitations = [
     "url": "https://uktransport.fandom.com/wiki/Gipsy_Hill_railway_station"
   },
 
-,
   {
     "number": "32",
     "timeline_entry": "2010\u20132024 \u2013 Friends of Gipsy Hill community events",
@@ -1481,7 +1377,6 @@ const timelineCitations = [
     "url": "https://gipsyhillfriends.org/"
   },
 
-,
   {
     "number": "33",
     "timeline_entry": "2022 \u2013 Kingswood Arts transformation",
@@ -1490,7 +1385,6 @@ const timelineCitations = [
     "quality": "Low"
   },
 
-,
   {
     "number": "34",
     "timeline_entry": "2023\u201324 \u2013 Athol House redevelopment",
@@ -1499,7 +1393,6 @@ const timelineCitations = [
     "quality": "Low"
   },
 
-,
   {
     "number": "35",
     "timeline_entry": "5 May 2022 \u2013 Ward boundary revision",
@@ -1512,7 +1405,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "36",
     "timeline_entry": "1085 – The Great North Wood",
@@ -1527,7 +1419,6 @@ const timelineCitations = [
     "notes": "J. Corbet Anderson's 'The Great North Wood' (1898) reproduces Domesday evidence of woodland measured by swine-pannage. Multiple sources confirm the Archbishop of Canterbury's rights for hunting, fuel and pannage for 200 swine."
   },
 
-,
   {
     "number": "37",
     "timeline_entry": "1911 – Norwood Park opens",
@@ -1540,7 +1431,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "38",
     "timeline_entry": "1915–1919 – WWI Canadian Military Hospital (Kingswood House)",
@@ -1553,7 +1443,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "39",
     "timeline_entry": "1919–1940 – The Vestey Family Era (Kingswood House)",
@@ -1566,7 +1455,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "40",
     "timeline_entry": "1920–1938 – Margaret Lockwood's Childhood Home",
@@ -1579,7 +1467,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "41",
     "timeline_entry": "1960s – Norwood Triangle Converted to Roundabout",
@@ -1592,7 +1479,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "42",
     "timeline_entry": "1961 – Wooden Bus Shelter at South Croxted Road",
@@ -1605,7 +1491,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "43",
     "timeline_entry": "2009 – Gipsy Hill Station Refurbishment",
@@ -1615,7 +1500,6 @@ const timelineCitations = [
     "url": "https://tfl.gov.uk/info-for/media/press-releases/2009/june/tfl-sets-high-standards-in-new-rail-franchise"
   },
 
-,
   {
     "number": "44",
     "timeline_entry": "2010 – Brown & Green Café Opens",
@@ -1625,7 +1509,6 @@ const timelineCitations = [
     "url": "https://thetrianglese19.blogspot.com/2011/08/brown-green.html"
   },
 
-,
   {
     "number": "45",
     "timeline_entry": "2011 – Fanny the Gipsy Hill Cat",
@@ -1638,7 +1521,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "46",
     "timeline_entry": "2018 – Friends of Gipsy Hill Forms",
@@ -1648,7 +1530,6 @@ const timelineCitations = [
     "url": "https://gipsyhillfriends.org/about-us/"
   },
 
-,
   {
     "number": "47",
     "timeline_entry": "2019 – First Gipsy Hill Village Fete",
@@ -1661,7 +1542,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "48",
     "timeline_entry": "2020 – British Railways Sign Returns Home",
@@ -1671,7 +1551,6 @@ const timelineCitations = [
     "url": "https://gipsyhillfriends.org/station-garden/"
   },
 
-,
   {
     "number": "49",
     "timeline_entry": "2020 – First Community Gipsy Hill Christmas Tree",
@@ -1681,7 +1560,6 @@ const timelineCitations = [
     "url": "https://gipsyhillfriends.org/events/"
   },
 
-,
   {
     "number": "50",
     "timeline_entry": "2020 – COVID-19 Mutual Aid",
@@ -1691,7 +1569,6 @@ const timelineCitations = [
     "url": "https://gipsyhillfriends.org/about-us/"
   },
 
-,
   {
     "number": "51",
     "timeline_entry": "2022 – Kingswood Arts Transformation",
@@ -1701,7 +1578,6 @@ const timelineCitations = [
     "notes": "This entry requires further verification"
   },
 
-,
   {
     "number": "52",
     "timeline_entry": "2022 – Station Gardens Transform",
@@ -1714,7 +1590,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "53",
     "timeline_entry": "2022 – First Gipsy Hill Oktoberfest",
@@ -1724,7 +1599,6 @@ const timelineCitations = [
     "url": "https://gipsyhillfriends.org/category/events/"
   },
 
-,
   {
     "number": "54",
     "timeline_entry": "2023–2024 – Athol House Heritage Refurbishment",
@@ -1734,7 +1608,6 @@ const timelineCitations = [
     "notes": "This entry requires further verification"
   },
 
-,
   {
     "number": "55",
     "timeline_entry": "2024–Present – FoGH Mission Continues",
@@ -1753,7 +1626,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "56",
     "timeline_entry": "2009 – Current Ward Boundaries",
@@ -1763,7 +1635,6 @@ const timelineCitations = [
     "url": "https://www.lgbce.org.uk/sites/default/files/2023-04/lambeth_final_recommendations_report.pdf"
   },
 
-,
   {
     "number": "57",
     "timeline_entry": "1740 – Mother Bridget Succeeds as Queen of the Gypsies",
@@ -1778,7 +1649,6 @@ const timelineCitations = [
     "notes": "Primary source: 'The universal fortune teller: or, Mrs. Bridget's golden treasury explained' by Mrs. Bridget, published London 1790 by E. Matthews. This enriched reference enables comprehensive historical research on Mother Bridget, using both primary and expert biographical sources."
   },
 
-,
   {
     "number": "58",
     "timeline_entry": "1777 – The Norwood Gypsies Pantomime",
@@ -1789,7 +1659,6 @@ const timelineCitations = [
     "notes": "Primary source: 'Airs, duets, &c. in the new pantomime, called The Norwood gypsies' by James Messinck, published 1777 by Printed for the Author, London. This reference provides direct, open access to the actual historical publication as used on the timeline, ensuring full verifiability and research quality."
   },
 
-,
   {
     "number": "59",
     "timeline_entry": "1810 – Norwood Common Enclosed",
@@ -1800,7 +1669,6 @@ const timelineCitations = [
     "notes": "Primary source: 'Norwood Common Enclosure Award' by Lambeth Borough Council, 1810, held at Lambeth Borough Archives."
   },
 
-,
   {
     "number": "60",
     "timeline_entry": "1811-1814 – Kingswood Lodge Built",
@@ -1811,7 +1679,6 @@ const timelineCitations = [
     "notes": "Comprehensive historical overview from Kingswood Arts Centre documenting the building's construction circa 1811-1814 and its evolution through to present day."
   },
 
-,
   {
     "number": "61",
     "timeline_entry": "1871 – United Land Co. Begins Development",
@@ -1822,7 +1689,6 @@ const timelineCitations = [
     "notes": "Primary source: 'Gipsy Hill Estate, Norwood' held at Lambeth Archives, Catalogue Reference: Title 537/23/29. Property conveyances and plans, agreements for construction, mortgages, and assignments associated with the Gipsy Hill estate, preserved as part of the official Lambeth Borough historical collections. Date range: 1871-1915."
   },
 
-,
   {
     "number": "62",
     "timeline_entry": "1880 – Kingswood Primary School",
@@ -1833,7 +1699,6 @@ const timelineCitations = [
     "notes": "Historical records from Lambeth Borough Archives documenting the foundation of Kingswood Primary School in 1880. Additional references and sources can be found in 'Sources for the history of schools in Lambeth' (PDF), which guides researchers to official Lambeth Archives holdings concerning local schools."
   },
 
-,
   {
     "number": "63",
     "timeline_entry": "1929 – Railway Conversion Complete",
@@ -1844,7 +1709,6 @@ const timelineCitations = [
     "notes": "Article: 'Throwback to LBSCR Becoming Wired for Power' by Railway Hub, 2019. This reference provides a narrative and factual explanation of the 1929 third rail conversion, using verifiable rail history sources suitable for both academic and public documentation."
   },
 
-,
   {
     "number": "64",
     "timeline_entry": "1600s – Norwood Gypsies Settle",
@@ -1858,7 +1722,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "65",
     "timeline_entry": "c. 1640 – Margaret Finch Born",
@@ -1872,7 +1735,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "66",
     "timeline_entry": "1778 – The Gypsy House Inn",
@@ -1886,7 +1748,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "67",
     "timeline_entry": "1853 – Railway Construction Authorized",
@@ -1899,7 +1760,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "68",
     "timeline_entry": "1858 – The Great Stink & River Effra",
@@ -1912,7 +1772,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "69",
     "timeline_entry": "1874 – Annie Besant Residence",
@@ -1925,7 +1784,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "70",
     "timeline_entry": "1881–1882 – Gipsy Road Baptist Church",
@@ -1938,7 +1796,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "71",
     "timeline_entry": "1887 – Paxton Primary School Opens",
@@ -1951,7 +1808,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "72",
     "timeline_entry": "1891–1900 – The 'Bovril Castle' Era",
@@ -1964,7 +1820,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "73",
     "timeline_entry": "1911 – Railway Electrification",
@@ -1977,7 +1832,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "74",
     "timeline_entry": "1940–1941 – WWII Blitz",
@@ -1991,7 +1845,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "75",
     "timeline_entry": "1948 – Police Station Converted",
@@ -2001,7 +1854,6 @@ const timelineCitations = [
     "url": "https://boroughphotos.org/lambeth/former-police-station-gipsy-hill-upper-norwood/"
   },
 
-,
   {
     "number": "76",
     "timeline_entry": "1982 – Christ Church Fire",
@@ -2014,7 +1866,6 @@ const timelineCitations = [
     ]
   },
 
-,
   {
     "number": "77",
     "timeline_entry": "1990 – Railway Accident",
@@ -2024,7 +1875,6 @@ const timelineCitations = [
     "url": "https://web.archive.org/web/20180626222308/https://www.nsers.org/jan-dec-90.html"
   },
 
-,
   {
     "number": "88",
     "timeline_entry": "1974 – Gipsy Hill Conservation Area Designated",
@@ -2034,7 +1884,6 @@ const timelineCitations = [
     "url": "https://www.lambeth.gov.uk/planning-and-building-control/conservation-and-listed-buildings/conservation-area-profiles/gipsy"
   },
 
-,
   {
     "number": "89",
     "timeline_entry": "1917 – Gipsy Hill Montessori College Opens",
@@ -2048,7 +1897,6 @@ const timelineCitations = [
     "notes": "Newspaper clipping and historical research by Dulwich Society. Woolsthorpe house licensed by Dulwich Estate for Montessori education. Legacy continues with multiple Montessori nurseries in the area."
   },
 
-,
   {
     "number": "90",
     "timeline_entry": "1966 – World Cup Trophy Found by Pickles the Dog",
