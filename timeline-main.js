@@ -110,7 +110,7 @@ function initializeTimeline() {
         // Handle WIP notice
         var wipNotice = document.getElementById('wip-notice');
         var wipClose = document.getElementById('wip-close');
-        var currentVersion = 'v2.09'; // Update this with each release
+        var currentVersion = window.APP_VERSION || 'v2.09.1'; // Use global version or fallback
         
         if (wipNotice) {
             var dismissedVersion = localStorage.getItem('wip-dismissed-version');
