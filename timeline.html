@@ -69,23 +69,19 @@
     <div class="loading" id="loading">Loading timeline...</div>
     
     <button class="menu-toggle" id="menu-toggle" aria-label="Menu" style="display:none;">
-        <svg viewBox="0 0 24 24" fill="white"></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor"></svg>
     </button>
     
     <div class="menu-panel" id="menu-panel">
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-            <svg class="theme-toggle-icon sun" viewBox="0 0 24 24" fill="white"></svg>
-            <svg class="theme-toggle-icon moon" viewBox="0 0 24 24" fill="white"></svg>
+            <svg class="theme-toggle-icon sun" viewBox="0 0 24 24" fill="currentColor"></svg>
+            <svg class="theme-toggle-icon moon" viewBox="0 0 24 24" fill="currentColor"></svg>
             <span class="theme-text">Dark Mode</span>
         </button>
         
-        <button class="minor-toggle" id="minor-toggle" aria-label="Toggle minor entries">
-            <svg viewBox="0 0 24 24" fill="white"></svg>
-            <span class="minor-text">Show Minor Entries</span>
-        </button>
         
         <button class="add-entry-button" id="add-entry-button" aria-label="Add New Entry">
-            <svg viewBox="0 0 24 24" fill="white">
+            <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
             </svg>
             <span>Suggest Entry/Amendment</span>
@@ -94,7 +90,7 @@
         <!-- Export button will be dynamically inserted here if export=true -->
         
         <button class="about-button" id="about-button" aria-label="About">
-            <svg viewBox="0 0 24 24" fill="white"></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"></svg>
             <span>About</span>
         </button>
     </div>
@@ -130,7 +126,7 @@
     <!-- =================================================================== -->
     <button class="filter-toggle-button" id="filter-toggle-button" aria-label="Toggle filters">
         <svg class="filter-icon" viewBox="0 0 24 24" width="24" height="24">
-            <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z" fill="white"/>
+            <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z" fill="currentColor"/>
         </svg>
         <span class="filter-indicator" style="display: none;"></span>
     </button>
@@ -139,6 +135,7 @@
     <!-- FILTER DRAWER                                                       -->
     <!-- Slide-out drawer panel                                              -->
     <!-- =================================================================== -->
+    <div class="filter-backdrop" id="filter-backdrop"></div>
     <div class="filter-drawer" id="filter-drawer">
         <div class="filter-drawer-header">
             <div class="filter-header-left">
@@ -169,6 +166,15 @@
                 </div>
             </div>
 
+            <!-- Minor Entries Toggle -->
+            <div class="filter-section">
+                <label class="minor-toggle-container">
+                    <input type="checkbox" id="filter-minor-toggle" checked>
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-label">Show Minor Entries</span>
+                </label>
+            </div>
+            
             <!-- Visual Timeline Navigator -->
             <div class="filter-section">
                 <h4>Filter by Time Period</h4>
