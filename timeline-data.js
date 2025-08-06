@@ -1,5 +1,57 @@
 // Timeline data with full content - Updated with comprehensive research findings and enhanced citations
 
+// Category definitions
+var timelineCategories = {
+    "heritage": {
+        "name": "Heritage & Culture",
+        "color": "#8B4513", // Saddle brown
+        "lightColor": "#A0522D",
+        "description": "Cultural heritage, preservation, and local identity"
+    },
+    "gypsies": {
+        "name": "Gypsies & Travellers", 
+        "color": "#800080", // Purple
+        "lightColor": "#9370DB",
+        "description": "Romani community history and traditions"
+    },
+    "transport": {
+        "name": "Transport",
+        "color": "#4682B4", // Steel blue
+        "lightColor": "#5F9FD8", 
+        "description": "Railways, roads, and infrastructure"
+    },
+    "churches": {
+        "name": "Churches & Education",
+        "color": "#B8860B", // Dark goldenrod
+        "lightColor": "#DAA520",
+        "description": "Religious institutions and schools"
+    },
+    "housing": {
+        "name": "Housing & Development",
+        "color": "#CD853F", // Peru
+        "lightColor": "#DEB887",
+        "description": "Residential development and urban planning"
+    },
+    "war": {
+        "name": "War & Conflict",
+        "color": "#8B0000", // Dark red
+        "lightColor": "#CD5C5C",
+        "description": "Military events and wartime experiences"
+    },
+    "nature": {
+        "name": "Environment",
+        "color": "#228B22", // Forest green
+        "lightColor": "#32CD32",
+        "description": "Natural features and green spaces"
+    },
+    "community": {
+        "name": "Community",
+        "color": "#FF6347", // Tomato
+        "lightColor": "#FF7F50",
+        "description": "Social life and community organizations"
+    }
+};
+
 var timelineData = [
 {
 "date": "AD 43-410",
@@ -7,8 +59,11 @@ var timelineData = [
 "description": "Archaeological studies have revealed minor Roman-era pottery finds and trackways in the Norwood/Central Hill area, suggesting movement through the forested landscape, though no major settlement.",
 "icon": "roman",
 "importance": "major",
+"category": "nature",
 "citations": ["1"],
 },
+
+,
 
 {
 "date": "AD 410-1066",
@@ -16,8 +71,11 @@ var timelineData = [
 "description": "Early land grants and charters reference the wider Norwood as woodland and hunting ground in Anglo-Saxon times, which frames later developments and parish boundaries.",
 "icon": "saxon-helmet",
 "importance": "minor",
+"category": "housing",
 "citations": ["2"],
 },
+
+,
 
 {
 "date": "11th-19th c.",
@@ -25,6 +83,7 @@ var timelineData = [
 "description": "The Great North Wood gave Norwood its name and was a vast oak woodland from the 11th to 19th century covering the sides of what is now Crystal Palace ridge, including Gipsy Hill. Coppiced for charcoal burning—a major local industry with figures like 'Grimme the Collier of Croydon' becoming part of 16th-century popular culture—the wood provided essential resources for pre-industrial Surrey and Kent. Its oaks formed the timbers of Royal Navy vessels including Sir Francis Drake's Golden Hind, while oak bark supplied the leather tanning trade. The Archbishop of Canterbury and other Lords of the Manor held hunting rights and controlled timber felling, while commoners grazed animals on acorns and roots. The Domesday Book (1085) records the Archbishop's rights for 'hunting, fuel and pannage for 200 swine.' The dense woodland also sheltered outlaws and smugglers, creating a landscape both productive and mysterious that would define the area until 19th-century clearances.",
 "icon": "tree",
 "importance": "major",
+"category": "nature",
 "image": "images/great-north-wood-map.png",
 "imageCaption": "The approximate historical area of the Great North Wood<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Great_North_Wood_map.png' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Gapfall, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
 "imageCaptionHTML": true,
@@ -34,17 +93,22 @@ var timelineData = [
 "citations": ["36"]
 },
 
+,
+
 {
 "date": "1583",
 "title": "Vicar's Oak and Beating the Bounds",
 "description": "At the summit of Crystal Palace ridge stood the Vicar's Oak—a celebrated ancient tree where four parishes (Lambeth, Camberwell, Battersea, Streatham) met. This was near what is now the top of Westow Hill and Anerley Hill junction with Crystal Palace Parade. The spot was central to the community's 'beating the bounds' ceremonies, recorded in parish accounts since at least 1583, with mentions of gatherings and refreshments after circuit walks. This ancient tradition, dating from Anglo-Saxon times, involved parishioners walking their boundaries annually on Rogation Days before Ascension, often striking boundary markers with willow wands while boys were bumped against trees or turned upside-down to help them remember locations. Parish officials would read the Gospel at key points, reinforcing both spiritual and civic authority. The Vicar's Oak served as a lasting symbol of local unity and boundaries before modern borough divisions, with its hilltop location offering commanding views across the wooded landscape. The painting shows nearby Fox Hill in Upper Norwood, capturing the rural character of the area.",
 "icon": "tree",
 "importance": "major",
+"category": "nature",
 "citations": ["3"],
 "image": "images/camille-pissarro-fox-hill-upper-norwood.JPG",
 "imageCaption": "Fox Hill, Upper Norwood by Camille Pissarro (1870)<br>Source: <a href='https://www.nationalgallery.org.uk/paintings/camille-pissarro-fox-hill-upper-norwood' target='_blank' rel='noopener'>The National Gallery</a>, <a href='https://creativecommons.org/licenses/by-nc-nd/4.0/' target='_blank' rel='noopener'>CC BY-NC-ND 4.0</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1600s",
@@ -52,11 +116,14 @@ var timelineData = [
 "description": "Roma Gypsies establish camps on Norwood Common, giving the area its name. The Great North Wood covers much of the area, with coppicing for charcoal burning as the main local industry. The area is bounded by two branches of the River Effra. From at least the 17th century to the mid-19th century, gypsies camped in Norwood, Penge and Croydon Common, particularly in the summer months.",
 "icon": "house",
 "importance": "major",
+"category": "gypsies",
 "citations": ["63"],
 "image": "images/norwood-gypsies.jpg",
 "imageCaption": "The Norwood Gypsies - Margaret Finch's Cottage, Queen of The Gypsies<br>Source: <a href='https://www.norwoodsociety.co.uk/' target='_blank' rel='noopener'>The Norwood Society</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "c. 1640",
@@ -64,6 +131,7 @@ var timelineData = [
 "description": "Margaret Finch is born in Sutton, Surrey (also recorded as Kent). She would spend her life 'Traveling ye Kingdom, as Queen of ye Gypsie Tribe,' becoming the most famous and respected leader of the Norwood Gypsy community. Her election as Queen granted her power to choose community leaders and preside over the Kris (Council of Elders). After travelling over various parts of the Kingdom during the greater part of the 17th century, she settled at Norwood in her \"Gipsy House\" (believed to be near Oaks Avenue/Gipsy Hill SE19), where she lived for about 11 years. With her fame as a fortune-teller, she attracted numerous visitors and notoriety from London. She became known for her habit of sitting on the ground with her chin resting on her knees, often smoking two pipes and accompanied by her faithful dogs.",
 "icon": "crown",
 "importance": "major",
+"category": "gypsies",
 "citations": ["5", "65"],
 "image": "images/margaret-finch-engraving.jpg",
 "imageCaption": "Margaret Finch, aged 108. Engraving by J. Sharp<br>Source: <a href='https://wellcomecollection.org/' target='_blank' rel='noopener'>Wellcome Collection</a>, <a href='https://creativecommons.org/licenses/by/4.0' target='_blank' rel='noopener'>CC BY 4.0</a>",
@@ -73,17 +141,22 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
+,
+
 {
 "date": "1668 (August 11)",
 "title": "Pepys and Byron Visit the Gypsies",
 "description": "Samuel Pepys records in his diary on August 11th:  'This afternoon my wife and Mercer and Deb went with Pelling to see the gypsies at Lambeth and have their fortunes told; but what they did, I did not enquire.' His wife likely consulted Margaret Finch, who had become a renowned fortune teller. Later, Lord Byron, then at school with Dr. Glennie in Lordship Lane in Dulwich, whenever he felt inclined to play truant visited the Norwood Gypsies. These accounts illuminate how visiting gypsies for fortune-telling served as fashionable entertainment for London's social elite and captured the imagination of literary figures, providing some of the earliest documented references to the Romani presence in what would become Gipsy Hill.",
 "icon": "microphone",
 "importance": "major",
+"category": "gypsies",
 "citations": ["4"],
 "image": "images/samuel-pepys-1689.jpg",
 "imageCaption": "Samuel Pepys by Sir Godfrey Kneller, 1689<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Samuel_Pepys_by_Sir_Godfrey_Kneller_1689.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1740 (October 24)",
@@ -91,6 +164,7 @@ var timelineData = [
 "description": "Margaret Finch dies at the claimed age of 108-109 years old on October 24th. Living in a conical hut built of branches at the base of a tree, she became famous for sitting in a crouching position with her chin on her knees, smoking two pipes and accompanied by her faithful dogs. Her decades-long practice of sitting with her chin on her knees caused her sinews to become so contracted that she could not rise from that posture, requiring burial in a specially constructed deep square box. She was buried at St. George's Church, Beckenham with much pomp, attended by large crowds, mourning coaches, and 'a great concourse of people.' Her influence persists in place names including Gipsy Hill, Finch Avenue, and Romany Road.",
 "icon": "death",
 "importance": "major",
+"category": "gypsies",
 "citations": ["5"],
 "image": "images/margaret-finch-plaque.jpg",
 "imageCaption": "Margaret Finch, Queen of the Norwood Gypsies plaque<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Margaret_Finch,_Queen_of_the_Norwood_Gypsies_plaque.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Matt Brown, <a href='https://creativecommons.org/licenses/by/2.0/' target='_blank' rel='noopener'>CC BY 2.0</a>",
@@ -100,17 +174,22 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
+,
+
 {
 "date": "1740 (October 24)",
 "title": "Mother Bridget Succeeds as Queen of the Gypsies",
 "description": "Following the death of Margaret Finch, her niece Bridget—known as 'Mother Bridget'—is chosen by the community as the new Queen of the Gypsies on Norwood Common. Revered for her wisdom, Bridget gained a reputation for fortune-telling, interpreting natural signs, and inventing her own writing system. Her succession marks the continuity of Romani leadership and tradition in the Norwood area.",
 "icon": "crown",
 "importance": "major",
+"category": "gypsies",
 "citations": ["57"],
 "image": "images/mother-bridget-norwood.jpg",
 "imageCaption": "Mother Bridget of Norwood, artist unknown<br>Source: <em>The Universal Fortune Teller</em> (1790)",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1768 (August 6)",
@@ -118,8 +197,11 @@ var timelineData = [
 "description": "Mother Bridget, Queen of the Gypsies and niece of Margaret Finch, passes away at a great age. She is buried at Old Dulwich Cemetery rather than Gipsy Hill.",
 "icon": "death",
 "importance": "minor",
+"category": "gypsies",
 "citations": ["57"],
 },
+
+,
 
 {
 "date": "1777",
@@ -127,11 +209,14 @@ var timelineData = [
 "description": "A pantomime titled  'The Norwood Gypsies' is performed at Theatre Royal Covent Garden, one of the most successful dramatic productions of the time. This theatrical production celebrated the area's heritage and brought Gipsy Hill to London's cultural attention. The pantomime featured the traditional Harlequin and Columbine characters and was part of the popular 18th-century theatrical entertainment.",
 "icon": "theater",
 "importance": "major",
+"category": "gypsies",
 "citations": ["58"],
 "image": "images/norwood-gypsies-pantomime-combined.jpg",
 "imageCaption": "Airs, Duets, &c. in the new pantomime, called The Norwood Gypsies. Theatre-Royal Covent Garden, 1777<br>Source: <a href='https://archive.org/details/bim_eighteenth-century_airs-duets-c-in-the-_messinck-james_1777/' target='_blank' rel='noopener'>Archive.org</a>, Public Domain",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1778",
@@ -139,9 +224,12 @@ var timelineData = [
 "description": "The Gypsy House, an inn near the habitual camping places of the Gypsy Queen using her portrait as its inn sign, was first mentioned in records. It was where Margaret Finch had lived until her death in 1740.",
 "icon": "building",
 "importance": "minor",
+"category": "gypsies",
 "active": false,
 "citations": ["66"],
 },
+
+,
 
 {
 "date": "1810",
@@ -149,8 +237,11 @@ var timelineData = [
 "description": "The Lambeth Manor Inclosure Commissioners issue their Award, formally authorizing the enclosure of Norwood Common and establishing the road network that would define the area's development. New roads laid out include what are now Norwood High Street, Elder Road, Chapel Road, Gipsy Road, Salters Hill, and Gipsy Hill. This systematic planning transforms the ancient common land into a structured suburban landscape, marking the end of the centuries-long Gypsy presence and beginning the area's transformation from rural heath to Victorian suburb.",
 "icon": "road",
 "importance": "major",
+"category": "housing",
 "citations": ["59"],
 },
+
+,
 
 {
 "date": "1811-1814",
@@ -158,11 +249,14 @@ var timelineData = [
 "description": "Lawyer William Vizard leases land from Dulwich College and builds Kingswood Lodge, completed in 1814. The original rectangular house forms the core of what would become the magnificent Kingswood House.",
 "icon": "home",
 "importance": "minor",
+"category": "housing",
 "citations": ["60"],
 "image": "images/william-vizard.jpg",
 "imageCaption": "William Vizard (1774–1859), English lawyer. Engraving by Thomas Wright, c. 1820<br>Source: <a href='https://commons.wikimedia.org/wiki/File:William_Vizard_Wright.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1832 (April 12)",
@@ -170,10 +264,13 @@ var timelineData = [
 "description": "Part of Gipsy Hill, known as  'Beaulieu Hill,' was so steep that the local community self-funded a team of 42 workers to reduce its height by nine feet. Creating a gentler slope of 1 foot in 12, they transformed it into a 'trotting hill' where horses could maintain a trot rather than walking. Each worker was rewarded with three pints of beer and a shilling for their efforts, as reported in the Public Ledger and Daily Advertiser on April 12, 1832.",
 "icon": "hill",
 "importance": "major",
+"category": "transport",
 "citations": ["6"],
 "image": "images/beaulieu-hill-newspaper-1832.jpg",
 "imageCaption": "Public Ledger and Daily Advertiser - Thursday 12 April 1832<br>Source: Historical newspaper archives",
 },
+
+,
 
 {
 "date": "1847-1858",
@@ -181,11 +278,14 @@ var timelineData = [
 "description": "The River Effra, an important south London watercourse, begins to be culverted (arched over) for improved sanitation and flood prevention. A significant tributary rises at the top of Farquhar Road, runs along Jasper Passage and beside Long Meadow, before following the lower part of Gipsy Hill—marking the area's historic boundary between Lambeth and Camberwell (now Southwark) and shaping local land use. The section past Loughborough Road is culverted in 1847. During the 'Great Stink' of 1858, Sir Joseph Bazalgette incorporates the Effra into his revolutionary London sewerage system. The Metropolitan Board of Works undertakes this massive engineering project to address London's sewage crisis. The Effra's culverting and integration into the new sewer system were pivotal in the area's sanitation history, with boundary markers from this historic watercourse surviving today along footpaths and roads.",
 "icon": "river",
 "importance": "major",
+"category": "war",
 "citations": ["7"],
 "image": "images/norwood-gypsies-fairs.png",
 "imageCaption": "River Effra, view from Harold Road looking towards convent<br>Source: <a href='https://www.lambeth.gov.uk/archives' target='_blank' rel='noopener'>Lambeth Archives</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1853 (August 4)",
@@ -193,8 +293,11 @@ var timelineData = [
 "description": "Parliamentary Act on August 4th authorizes the West End of London and Crystal Palace Railway, giving official approval for the line including Gipsy Hill station. Construction begins by contractors Peto, Brassey & Betts on the 5.75-mile line, transforming the area from rural common to future suburban development.",
 "icon": "train",
 "importance": "major",
+"category": "transport",
 "citations": ["67"],
 },
+
+,
 
 {
 "date": "1854 (June 10)",
@@ -202,11 +305,14 @@ var timelineData = [
 "description": "The Crystal Palace opens at its new Sydenham location on June 10th, bringing thousands of visitors to the area. Crystal Palace Low Level Station opens simultaneously, creating the first railway connection that would soon reach Gipsy Hill. The relocated exhibition building from Hyde Park became a major attraction, generating demand for leisure travel that would justify the railway expansion.",
 "icon": "bookmark",
 "importance": "major",
+"category": "transport",
 "citations": ["9"],
 "image": "images/crystal-palace-sydenham-1854.png",
 "imageCaption": "Crystal Palace at Sydenham, c. 1854<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Crystal_Palace,_Sydenham.png' target='_blank' rel='noopener'>Wikimedia Commons</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1854",
@@ -214,11 +320,14 @@ var timelineData = [
 "description": "Gipsy Hill Police Station is constructed at 10 Gipsy Hill at a cost of £2,461, designed by Charles Reeves (1815-1866), the Metropolitan Police Surveyor who created 44 police stations during his tenure. The station exemplifies Reeves' signature Italianate architectural style and features distinctive iron railings along the street frontage. Standing at precisely 360.6 feet (109.9 metres) above Ordnance Datum, it holds confirmed status as London's highest police station, providing essential law enforcement for the growing community.",
 "icon": "police",
 "importance": "major",
+"category": "transport",
 "citations": ["8"],
 "image": "images/gipsy-hill-police-station.jpg",
 "imageCaption": "Former police station, Gipsy Hill by Stephen Richards<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Former_police_station,_Gipsy_Hill_-_geograph.org.uk_-_1774912.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, <a href='https://creativecommons.org/licenses/by-sa/2.0/' target='_blank' rel='noopener'>CC BY-SA 2.0</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1856 (December 1)",
@@ -226,11 +335,14 @@ var timelineData = [
 "description": "Gipsy Hill railway station opens on December 1st as part of the West End of London and Crystal Palace Railway, designed to transport crowds to the relocated Crystal Palace. The line opened from Crystal Palace to Wandsworth Common, with stations including Crystal Palace Low Level, Gipsy Hill, West Norwood, Streatham Hill, Balham, and Wandsworth Common. This transforms Gipsy Hill from rural countryside to accessible suburb, spurring rapid residential development. Construction had begun in 1853 following Parliamentary authorization.",
 "icon": "train",
 "importance": "major",
+"category": "transport",
 "citations": ["10"],
 "image": "images/gipsy-hill-station-1860s.jpg",
 "imageCaption": "Historic photograph of Gipsy Hill Station<br>Source: Image donated to <a href='https://gipsyhillfriends.org/2020/01/06/gipsy-hill-heritage-meetup/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1858",
@@ -238,9 +350,12 @@ var timelineData = [
 "description": "During the 'Great Stink' of 1858, Sir Joseph Bazalgette incorporates the River Effra into his revolutionary London sewerage system. The Effra's tributaries—including one from the top of Gipsy Hill, down Jasper Passage and past Long Meadow—had shaped the landscape and marked the ancient boundary between Lambeth and Camberwell (now Southwark). One Upper Norwood tributary ran through Long Meadow, defining the edge of the Dulwich Estate. The Metropolitan Board of Works undertakes this massive engineering project to address London's sewage crisis. The Effra's culverting and integration into the new sewer system were pivotal in the area's sanitation history, with boundary markers from this historic watercourse surviving today along footpaths and roads.",
 "icon": "stink",
 "importance": "major",
+"category": "war",
 "active": false,
 "citations": ["68"],
 },
+
+,
 
 {
 "date": "1862",
@@ -248,8 +363,11 @@ var timelineData = [
 "description": "The first church to be made on Gipsy Hill was the Iron Church. This 'Iron Church' was set up on Gipsy Hill to serve the new district of Christ Church, part of the Parish of St Luke's, Lower Norwood. This temporary structure served the growing community until a permanent church could be built, reflecting the rapid population growth following the railway's arrival.",
 "icon": "church",
 "importance": "major",
+"category": "churches",
 "citations": ["11"],
 },
+
+,
 
 {
 "date": "1867",
@@ -257,11 +375,14 @@ var timelineData = [
 "description": "The stone-built Christ Church was consecrated on Highland Road, replacing the temporary iron structure. The Foundation Stone had been laid by the Ven. Archdeacon Utterton, M.A., Canon of Winchester and Vicar of Farnham on 12th July 1866. Christ Church becomes one of the first permanent buildings on Gipsy Hill, serving as a central landmark and community gathering place for the rapidly growing population.",
 "icon": "church",
 "importance": "major",
+"category": "churches",
 "citations": ["12"],
 "image": "images/christ-church-1890.jpg",
 "imageCaption": "Christ Church, Gipsy Hill, Upper Norwood, c.1890<br>Glass lantern slide photograph showing the church before the 1982 fire<br>Source: <a href='https://boroughphotos.org/lambeth/christ-church-gipsy-hill-upper-norwood-6/' target='_blank' rel='noopener'>Lambeth Archives</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1867",
@@ -269,8 +390,11 @@ var timelineData = [
 "description": "Barclay's Bank opens on Westow Hill, providing essential financial services to the growing suburban community.",
 "icon": "building",
 "importance": "minor",
+"category": "community",
 "citations": ["13"],
 },
+
+,
 
 {
 "date": "1870",
@@ -278,8 +402,11 @@ var timelineData = [
 "description": "Crystal Palace Gas Works opens, providing gas lighting and heating to homes and businesses throughout the area. This infrastructure development marks another step in Gipsy Hill's transformation from rural community to modern Victorian suburb.",
 "icon": "factory",
 "importance": "major",
+"category": "community",
 "citations": ["14"],
 },
+
+,
 
 {
 "date": "1871",
@@ -287,8 +414,11 @@ var timelineData = [
 "description": "The United Land Company started laying out roads around Gipsy Hill, marking the beginning of systematic suburban development in the area. This speculative building company would go on to construct many of the large Victorian houses that still characterize the neighborhood today.",
 "icon": "road",
 "importance": "minor",
+"category": "housing",
 "citations": ["61"],
 },
+
+,
 
 {
 "date": "1870s-1890s",
@@ -296,6 +426,7 @@ var timelineData = [
 "description": "Thomas French of Croxted Road operates French's Farm and Dairy, keeping his cows on land halfway up Gipsy Hill (now Long Meadow) between Woodland Road and Cawnpore Street - the building still stands today. Horse breeding becomes an important local industry, taking advantage of the area's rural character and railway connections to London. Large Victorian houses are built along main roads by the United Land Company and other developers. The area sees the opening of several pubs celebrating local heritage: Ye Old Gipsy House (later Gipsy Tavern) on Gipsy Road, the Gipsy Hill Hotel (now The Great Southern), and the Gipsy Queen on Norwood High Street.",
 "icon": "cow",
 "importance": "major",
+"category": "transport",
 "citations": ["15"],
 "image": "images/frenchs-field-gipsy-hill-1890.jpg",
 "imageCaption": "French's Field, Gipsy Hill, Upper Norwood c1890<br>Source: <a href='https://boroughphotos.org/lambeth/frenchs-field-gipsy-hill-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
@@ -305,17 +436,22 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
+,
+
 {
 "date": "1874 (January-October)",
 "title": "Annie Besant Residence",
 "description": "Social reformer and birth control advocate Annie Besant moves to 39 Colby Road in January following her separation from her clergyman husband. During her ten-month residence, she gives her first public lecture 'The Political Status of Women' in August and meets Charles Bradlaugh, President of the National Secular Society. From this South London base, she would launch her remarkable career spanning workers' rights, birth control advocacy, and socialism. The house was recently built and she chose the area for its proximity to supportive friends in Dulwich. A blue plaque was erected in 1963 to commemorate her time here.",
 "icon": "poi",
 "importance": "major",
+"category": "community",
 "citations": ["69"],
 "image": "images/annie-besant-plaque.jpg",
 "imageCaption": "Annie Besant blue plaque at 39 Colby Road, Gipsy Hill, London<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Annie_Besant_plaque.JPG' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1875",
@@ -323,11 +459,14 @@ var timelineData = [
 "description": "Gipsy Hill Primary School opens, providing essential education for the growing number of families settling in the area. The school serves as a cornerstone of the developing community infrastructure.",
 "icon": "school",
 "importance": "minor",
+"category": "churches",
 "citations": ["17"],
 "image": "images/gipsy-road-school-1875.jpg",
 "imageCaption": "Gipsy Road School, built in 1875, later known as West Norwood School<br>Source: <a href='https://boroughphotos.org/lambeth/gipsy-road-school-west-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1880 (April 12)",
@@ -335,8 +474,11 @@ var timelineData = [
 "description": "Kingswood Primary School opens on April 12th with capacity for 600 pupils. This substantial educational facility demonstrates the rapid population growth and the community's commitment to providing quality education for local children.",
 "icon": "school",
 "importance": "minor",
+"category": "churches",
 "citations": ["62"],
 },
+
+,
 
 {
 "date": "1881-1882",
@@ -344,8 +486,11 @@ var timelineData = [
 "description": "Gipsy Road Baptist Church is built, with its foundation stone laid on 27th September 1881. Constructed at a cost of £4,700, this substantial religious building was designed to serve the growing community's spiritual needs. The church was enhanced in 1887 with the addition of an organ, inaugurated with a recital by the renowned organist Alfred Hollins.",
 "icon": "church",
 "importance": "minor",
+"category": "churches",
 "citations": ["70"],
 },
+
+,
 
 {
 "date": "1887 (January 10)",
@@ -353,8 +498,11 @@ var timelineData = [
 "description": "Woodland Road Elementary School (now Paxton Primary School) opens on January 10th on Cawnpore Street, Upper Norwood. Designed by architect T.J. Bailey with capacity for 800 pupils, the imposing four-story red brick Victorian building featured separate entrances for boys and girls, which continued until 1921. This original building served the community until its demolition in 1973, when it was replaced by a new structure. The school was rebuilt once more in 2016, continuing its educational legacy in modern facilities.",
 "icon": "school",
 "importance": "minor",
+"category": "churches",
 "citations": ["71"],
 },
+
+,
 
 {
 "date": "1890 (July 17)",
@@ -362,11 +510,14 @@ var timelineData = [
 "description": "A major flood from the culverted River Effra devastates the area on July 17th. A white stone tablet still visible high up on a building in Elder Road marks the \"FLOOD LEVEL 17th July 1890.\" The convent school wall was swept away and had to be rebuilt. The flood demonstrates the challenges of urban development over culverted waterways and the power of the hidden Effra during heavy rainfall.",
 "icon": "river",
 "importance": "major",
+"category": "nature",
 "citations": ["18"],
 "image": "images/river-effra-flood-1890.jpg",
 "imageCaption": "Repairs to damage caused by the River Effra flooding at Crown Hill (Crown Dale) and Central Hill junction, 1890<br>The adjacent convent wall was also badly damaged<br>Source: <a href='https://boroughphotos.org/lambeth/crown-hill-upper-norwood/' target='_blank' rel='noopener'>Lambeth Archives</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1891-1900",
@@ -374,6 +525,7 @@ var timelineData = [
 "description": "John Lawson Johnston, inventor of Bovril, acquires Kingswood House and transforms it into a Jacobethan mansion with architect Henry Vaughan Lanchester, adding the grand entrance, battlements and north wing that earn it the nickname 'Bovril Castle.'",
 "icon": "castle",
 "importance": "major",
+"category": "community",
 "citations": ["72"],
 "image": "images/john-lawson-johnston-vanity-fair-1897.jpg",
 "imageCaption": "John Lawson Johnston, inventor of Bovril, Vanity Fair caricature 1897<br>Source: <a href='https://commons.wikimedia.org/wiki/File:John_Lawson_Johnston_Vanity_Fair_18_February_1897.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
@@ -383,14 +535,19 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
+,
+
 {
 "date": "1911 (May 12)",
 "title": "Railway Electrification",
 "description": "On May 12th, the Crystal Palace line is electrified using the pioneering LBSCR overhead system, reducing journey times from Victoria to Gipsy Hill to just 15 minutes. This early electrification system was implemented in time for the Empire Exhibition at Crystal Palace and was later converted to the standard third rail in 1928.",
 "icon": "train",
 "importance": "major",
+"category": "transport",
 "citations": ["73"],
 },
+
+,
 
 {
 "date": "1911 (June 14)",
@@ -398,11 +555,14 @@ var timelineData = [
 "description": "Norwood Park officially opens on June 14th, providing 33½ acres of public green space for recreation and leisure. This significant addition to local amenities enhances the quality of life for Gipsy Hill residents and establishes an important community gathering place.",
 "icon": "tree",
 "importance": "major",
+"category": "nature",
 "citations": ["37"],
 "image": "images/norwood-park-appeal-brochure-1905.jpg",
 "imageCaption": "An urgent appeal brochure for funds to create Norwood Park, c.1905<br>Source: <a href='https://www.lambeth.gov.uk/archives' target='_blank' rel='noopener'>Lambeth Archives</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1915-1919",
@@ -410,11 +570,14 @@ var timelineData = [
 "description": "During World War I, Kingswood House serves as a convalescent hospital for wounded Canadian soldiers, funded by the Massey-Harris company, before closing in 1919.",
 "icon": "bomb",
 "importance": "major",
+"category": "war",
 "citations": ["38"],
 "image": "images/Kingswood-patients-sisters.JPG",
 "imageCaption": "Patients and Sisters outside Kingswood c. 1917",
 "imageSource": "Unknown (<a href=\"#\" onclick=\"document.getElementById('add-entry-button').click(); return false;\">if known please submit</a>)",
 },
+
+,
 
 {
 "date": "1917 (January)",
@@ -422,11 +585,14 @@ var timelineData = [
 "description": "Britain's first Montessori training college opens at Woolsthorpe, No. 10 Dulwich Wood Avenue, established by Elizabeth Southern 'Belle' Rennie and Australian educator Lillian de Lissa. Belle Rennie, step-daughter of a prominent Harrogate physician, transformed her passionate interest in nursery education into authoritative expertise after visiting the Montessori Institute in Italy in 1911. She was instrumental in organizing the British 'Conference of the New Ideals in Education' at East Runton, Norfolk (1912) and Stratford-upon-Avon (1915), where she and fellow progressive educators envisioned creating a teacher training college. The Dulwich Estate granted a licence to use the house 'as a college for the training of young children and students in the Montessori system of education.' The Gipsy Hill Training College, operating from Dulwich Wood Avenue and later Kingswood Drive, became the primary institution where most early English Montessori teachers received their training. This pioneering establishment introduced revolutionary child-centered educational methods to Britain, with its legacy evident today in at least five Montessori nurseries in Dulwich and two more within a mile.",
 "icon": "school",
 "importance": "major",
+"category": "churches",
 "citations": ["89"],
 "image": "images/Queen-And-Ladys-Aug4-1917.jpg",
 "imageCaption": "The Queen and the Lady's Newspaper, Aug 4 1917<br>Announcement of Montessori teacher training opening at Gipsy Hill",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1919-1940",
@@ -434,11 +600,14 @@ var timelineData = [
 "description": "Shipping magnate Sir William Vestey purchases Kingswood House, making it his family's principal residence. In 1922 he is elevated to the peerage as Baron Vestey of Kingswood.",
 "icon": "castle",
 "importance": "minor",
+"category": "nature",
 "citations": ["39"],
 "image": "images/william-vestey-baron-portrait.jpg",
 "imageCaption": "William Vestey, 1st Baron Vestey (1859-1940)<br>Public domain photograph<br>Source: <a href='https://en.wikipedia.org/wiki/File:Baron_Vestey_LCCN2014718289.jpg' target='_blank' rel='noopener'>Wikipedia</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1920-1938",
@@ -446,11 +615,14 @@ var timelineData = [
 "description": "Future film star Margaret Lockwood lives at various addresses on Highland Road from age 3 to early adulthood, including 14 Highland Road (1922-1923), 18a Highland Road (1923-1934), and 30 Highland Road (1934-1938). The family chose Gipsy Hill for its 'high ground and very good air.' Lockwood would go on to become British cinema's biggest female star during the 1940s, starring in classics like 'The Lady Vanishes' and 'The Wicked Lady,' the latter attracting 18.4 million British viewers. Her love of cinema began at the nearby Crystal Palace cinema, where she watched silent films. Unlike contemporaries who sought Hollywood fame, she built her career entirely within the British studio system. A blue plaque was erected at 14 Highland Road in 2018.",
 "icon": "poi",
 "importance": "minor",
+"category": "nature",
 "citations": ["40"],
 "image": "images/margaret-lockwood-plaque.jpg",
 "imageCaption": "Margaret Lockwood blue plaque at 14 Highland Road, SE19<br>Source: <a href='https://commons.wikimedia.org/wiki/File:MARGARET_LOCKWOOD_-_14_Highland_Road_Upper_Norwood_London_SE19_1DP2.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Spudgun67, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1929 (September 22)",
@@ -458,8 +630,11 @@ var timelineData = [
 "description": "The last overhead electric train runs on September 22nd as the railway line conversion to third rail system is completed. This modernization improves service reliability and integrates Gipsy Hill into the expanding Southern Railway electric network.",
 "icon": "train",
 "importance": "major",
+"category": "transport",
 "citations": ["63"],
 },
+
+,
 
 {
 "date": "1870s",
@@ -467,8 +642,11 @@ var timelineData = [
 "description": "Athol House, along with most of the substantial houses at the south end of College Road, was built by local builder Joseph Bowyer & Sons in the early 1870s. The architectural design is tentatively attributed to Robert Richardson Banks, a partner of Charles Barry Jr., the estate architect and surveyor. This is confirmed in research from the Dulwich Society.",
 "icon": "home",
 "importance": "minor",
+"category": "churches",
 "citations": ["16"],
 },
+
+,
 
 {
 "date": "1939",
@@ -476,8 +654,11 @@ var timelineData = [
 "description": "The original Gipsy Hill Police Station at 10 Gipsy Hill ceases active police operations, with services moving to a new facility on Central Hill. The Victorian building designed by Charles Reeves would later be converted to police flats in 1948 to address post-war housing needs.",
 "icon": "police",
 "importance": "minor",
+"category": "war",
 "citations": ["19"],
 },
+
+,
 
 {
 "date": "1940-1941",
@@ -485,6 +666,7 @@ var timelineData = [
 "description": "During World War II, 42 high explosive bombs are dropped on the Gipsy Hill ward between October 7, 1940, and June 6, 1941. Areas around Rommany Road are severely hit, with many homes damaged or destroyed. Margaret Lockwood's family homes at 18a and 30 Highland Road are both destroyed by V1 strikes in 1944, which killed five people. Despite the destruction, the community rebuilds and perseveres.",
 "icon": "bomb",
 "importance": "major",
+"category": "war",
 "citations": ["74"],
 "image": "images/south-london-theatre-1948.png",
 "imageCaption": "Bomb map showing locations of high explosive bombs dropped on Gipsy Hill during WWII<br>Source: <a href='http://bombsight.org' target='_blank' rel='noopener'>Bomb Sight</a>",
@@ -496,17 +678,22 @@ var timelineData = [
 "image3Caption": "American Ambulance worker salvaging belongings after V1 attack, Highland Road area, Upper Norwood<br>Image: <a href='https://www.iwm.org.uk/collections/item/object/205201051' target='_blank' rel='noopener'>IWM (D 21217)</a>",
 "image3CaptionHTML": true,
 },
+
+,
 {
 "date": "1946-1956",
 "title": "Kingswood Estate Built",
 "description": "London County Council acquires the 37-acre Kingswood House site in 1946 to address post-war housing needs. The Kingswood Estate is built around the preserved mansion, providing 789 homes and opening a community centre and library in 1956.",
 "icon": "apartment",
 "importance": "major",
+"category": "war",
 "citations": ["21"],
 "image": "images/kingswood-estate-shopping-parade-1959.jpg",
 "imageCaption": "Kingswood Estate shopping parade, 1959<br>Source: London Metropolitan Archives",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1948",
@@ -514,8 +701,11 @@ var timelineData = [
 "description": "The Victorian police station is converted to police flats, reflecting changing community needs and more efficient policing arrangements. This adaptive reuse preserves an important historic building while serving new residential purposes.",
 "icon": "police",
 "importance": "minor",
+"category": "transport",
 "citations": ["75"],
 },
+
+,
 
 {
 "date": "1953-1955",
@@ -523,6 +713,7 @@ var timelineData = [
 "description": "Following Basil Aldous's death, the Cheshire Foundation acquires Athol House for £12,500 in 1953. The building undergoes pioneering accessibility retrofitting including lift shaft installation, ramps, and widened doorways—predating statutory barrier-free standards by decades while preserving Scott's original exterior. In October 1955, Group-Captain Leonard Cheshire VC and the Duchess of Gloucester formally open London's first Cheshire Home for the Sick, offering 28 beds for people with severe physical disabilities.",
 "icon": "home",
 "importance": "major",
+"category": "housing",
 "citations": ["23"],
 "image": "images/cheshire-smile-magazine-1960-page1.jpg",
 "imageCaption": "THE CHESHIRE SMILE Vol. 6, No. I SPRING, 1960<br>Source: <a href='https://rewind.leonardcheshire.org/the-archive/cheshire-smiles/' target='_blank' rel='noopener'>Leonard Cheshire Archive</a>, Public Domain",
@@ -532,17 +723,22 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
+,
+
 {
 "date": "1961",
 "title": "Wooden Bus Shelter at South Croxted Road",
 "description": "This wooden bus shelter is an old tram stop relocated to this site in 1961 as part of wider negotiations between the Dulwich Estate and the London Borough of Camberwell about new Council Housing sites. In early 1960, Mrs Edwards, tenant at 110 Alleyn Road, agreed to give up land from her garden in return for a five-year lease extension. The Dulwich Estate gave the land to Camberwell at no cost, with the Council responsible for all paving charges, legal costs, surveyors' fees, and fence reconstruction. A deed dedicating land for use as a 'bus draw-in and shelter' was signed in November 1960. The site now belongs to Southwark, which incorporated Camberwell in 1965. Historic postcards show horse-drawn buses ran this route from around 1900, likely owned by Thomas Tilling bus company who had stables in Gipsy Road. In 1908, the route was allocated number 3, running between Brixton and South Croydon, later extended to Oxford Circus. The Dulwich Society secured funding in 2005 and 2015 to repair the shelter, and by popular demand it became Locally Listed in Southwark in 2023.",
 "icon": "bus",
 "importance": "major",
+"category": "transport",
 "citations": ["41"],
 "image": "images/wooden-bus-shelter-south-croxted.jpg",
 "imageCaption": "The historic wooden bus shelter on South Croxted Road<br>Source: <a href='https://gipsyhillfriends.org/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1963-1966",
@@ -550,11 +746,14 @@ var timelineData = [
 "description": "An 18-room nuclear bunker is constructed beneath a block of eight flats as part of Pear Tree House on Lunham Road in the Central Hill Estate. Originally designated as a control centre for Civil Defence Region 53a, the bunker featured a blast door entrance leading to an Intake Room, along with specialized facilities including a Radio Room, Health & Welfare Rooms, Communications Centre, and Control Room. In 1979 it was converted to the London SE Group War HQ administered by the GLC. During the late 1980s, 'nuclear-free' Lambeth threatened to evict the Civil Defence Authority, and the facility was ultimately vacated in 1993, marking the end of Gipsy Hill's Cold War role in London's civil defence network.",
 "icon": "bunker",
 "importance": "major",
+"category": "war",
 "citations": ["24"],
 "image": "images/pear-tree-house-civil-defence.jpg",
 "imageCaption": "The rear of Pear Tree House, Lambeth's former Civil Defence building<br>Source: <a href='https://boroughphotos.org/lambeth/pear-tree-house-civil-defence-lunham-road-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1966 (March 27)",
@@ -562,6 +761,7 @@ var timelineData = [
 "description": "In the days leading up to the 1966 FIFA World Cup, the Jules Rimet trophy was stolen from an exhibition in Westminster, creating a national crisis. On 27 March 1966, the trophy was discovered by Pickles the dog under a bush in the garden of a house on Beulah Hill—adjacent to Gipsy Hill. The area became part of football folklore, with Pickles and his owner David Corbett hailed as heroes for returning the iconic trophy so close to the start of the tournament. The trophy's dramatic recovery is celebrated in both local and footballing history as a quintessentially British moment.",
 "icon": "crown",
 "importance": "major",
+"category": "transport",
 "citations": ["90"],
 "image": "images/pickles-dog.jpg",
 "imageCaption": "Pickles (born 1962 or 1963; died 1967) was a black and white collie dog, known for his role in finding the stolen Jules Rimet Trophy in March 1966, four months before the 1966 FIFA World Cup was scheduled to begin in England.<br>Source: <a href='https://en.wikipedia.org/wiki/Pickles_(dog)' target='_blank' rel='noopener'>Wikipedia</a>",
@@ -571,17 +771,22 @@ var timelineData = [
 "image2CaptionHTML": true,
 },
 
+,
+
 {
 "date": "1960s",
 "title": "Norwood Triangle Converted to Roundabout",
 "description": "What is now the Paxton roundabout at the bottom of Gipsy Hill was for many years a triangle junction. The small piece of open space at the end of Gipsy Road, at the junction with Alleyn Road and several other roads, was converted into a large roundabout in the 1960s.",
 "icon": "road",
 "importance": "minor",
+"category": "transport",
 "citations": ["41"],
 "image": "images/norwood-triangle-junction-historic.jpg",
 "imageCaption": "The Norwood Triangle junction before conversion to roundabout<br>Source: <a href='https://boroughphotos.org/lambeth/the-triangle-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1967",
@@ -589,11 +794,14 @@ var timelineData = [
 "description": "The Central Hill Estate is built in two phases by Lambeth Council in 1967-1974, designed by Rosemary Stjernstedt, Roger Westman and the Lambeth Council planning department under the directorship of Ted Hollamby. Stjernstedt was brought in by Hollamby from the LCC and Ted Happold from Arup & Partners advised on structural engineering. This modernist housing development comprises 162 flats and 212 houses laid out in terraces of pale grey brick, representing a new chapter in community living and social housing.",
 "icon": "apartment",
 "importance": "major",
+"category": "housing",
 "citations": ["25"],
 "image": "images/central-hill-estate.jpg",
 "imageCaption": "Central Hill Estate, SE19 (1960s–70s) by Christopher Hilton<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Central_Hill_Estate,_SE19_-_geograph.org.uk_-_4918582.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, <a href='https://creativecommons.org/licenses/by-sa/2.0/' target='_blank' rel='noopener'>CC BY-SA 2.0</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "1972",
@@ -601,8 +809,11 @@ var timelineData = [
 "description": "Kingswood House receives Grade II listed-building status, officially recognising its architectural and historical importance.",
 "icon": "castle",
 "importance": "minor",
+"category": "nature",
 "citations": ["26"],
 },
+
+,
 
 {
 "date": "1974",
@@ -610,8 +821,11 @@ var timelineData = [
 "description": "The Gipsy Hill Conservation Area (CA14) is designated following work by the local community, ensuring the preservation of original Victorian frontages along Gipsy Hill. The area is characterized by its 19th-century suburban development rising up the hill and includes notable landmarks like Gipsy Hill Station, Christ Church's landmark tower, and the former police station. CA14 was extended in 1982 and revised in 1999. The adjacent Westow Hill (North Side) Conservation Area (CA23) was designated in 1998, complementing the conservation status of the area.",
 "icon": "official",
 "importance": "major",
+"category": "churches",
 "citations": ["88"],
 },
+
+,
 
 {
 "date": "1978",
@@ -619,8 +833,11 @@ var timelineData = [
 "description": "Gipsy Hill ward is formally established within Lambeth Borough, giving the area distinct political representation and recognition of its unique community identity. This administrative change acknowledges Gipsy Hill's significance within local government.",
 "icon": "official",
 "importance": "minor",
+"category": "war",
 "citations": ["28"],
 },
+
+,
 
 {
 "date": "1981 (October 17)",
@@ -628,8 +845,11 @@ var timelineData = [
 "description": "At 11:30 AM on October 17th, an IRA car bomb attack targets Lieutenant-General Sir Steuart Pringle at his home on South Croxted Road adjacent to Gipsy Hill. The magnetic device placed on his red Volkswagen Passat critically injures the Commandant General Royal Marines, severing his right leg below the knee. The attack on the Marines' most senior officer brought the Northern Ireland conflict to this quiet South London suburb. Remarkably, Pringle returned to full duties within five months, overseeing Royal Marines deployment to the Falklands War. The incident occurred just one week after the IRA's Chelsea Barracks bombing.",
 "icon": "car-explosion",
 "importance": "major",
+"category": "war",
 "citations": ["29"],
 },
+
+,
 
 {
 "date": "1982",
@@ -637,8 +857,11 @@ var timelineData = [
 "description": "Christ Church is destroyed by fire, with only the Victorian tower surviving the blaze. The loss of this central community landmark devastates local residents, but the church is rebuilt in 1987 with a distinctive hexagonal worship area, creating a modern space while preserving the historic tower.",
 "icon": "fire",
 "importance": "major",
+"category": "churches",
 "citations": ["76"],
 },
+
+,
 
 {
 "date": "1990 (February 14)",
@@ -646,8 +869,11 @@ var timelineData = [
 "description": "On February 14th, a serious railway accident occurs at Gipsy Hill station when Class 455 unit 5802 collides with a fallen tree, followed by unit 5820 crashing into the derailed train. The incident highlights the challenges of maintaining railway safety during severe weather conditions.",
 "icon": "train-crash",
 "importance": "major",
+"category": "transport",
 "citations": ["77"],
 },
+
+,
 
 {
 "date": "2000",
@@ -655,11 +881,14 @@ var timelineData = [
 "description": "The London Borough of Lambeth (Electoral Changes) Order 2000 was made on February 10, 2000, establishing new Gipsy Hill ward boundaries. These boundaries came into force for local elections held on May 2, 2002.",
 "icon": "official",
 "importance": "minor",
+"category": "war",
 "citations": ["36"],
 "image": "images/gipsy-hill-postcards.png",
 "imageCaption": "Historic boundary map<br>Source: <a href='https://www.lambeth.gov.uk/archives' target='_blank' rel='noopener'>Lambeth Archives</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 
 {
@@ -668,8 +897,11 @@ var timelineData = [
 "description": "The Lambeth ward boundaries, including Gipsy Hill, were set by changes that took effect for the 2002 elections and remained through 2009 and beyond.",
 "icon": "map",
 "importance": "minor",
+"category": "war",
 "citations": ["57"]
 },
+
+,
 
 {
 "date": "2009",
@@ -677,8 +909,11 @@ var timelineData = [
 "description": "Gipsy Hill railway station undergoes major refurbishment, modernizing the Victorian infrastructure while preserving its historic character and enhancing accessibility for thousands of daily commuters.",
 "icon": "train",
 "importance": "minor",
+"category": "transport",
 "citations": ["43"]
 },
+
+,
 
 {
 "date": "2010",
@@ -686,8 +921,11 @@ var timelineData = [
 "description": "Brown & Green open their very first kiosk café in Gipsy Hill station (since closed in 2025). The original station café only came about after a local resident petitioned the then Transport Minister if Gipsy Hill station could have a café. The simple café was rebuilt as part of the 2009 refurbishment works into its present form.",
 "icon": "fogh",
 "importance": "minor",
+"category": "community",
 "citations": ["44"]
 },
+
+,
 
 {
 "date": "2011 (June 7)",
@@ -695,11 +933,14 @@ var timelineData = [
 "description": "Fanny the cat is born on June 7th and becomes a beloved local celebrity with her trailblazing Twitter social media account and fame with her Secret London video. Often found lounging on the Oyster card reader at Gipsy Hill station or in the Friends of Gipsy Hill community garden, Fanny captures hearts and becomes an unofficial mascot for the area, representing the warm community spirit of modern Gipsy Hill.",
 "icon": "heart",
 "importance": "major",
+"category": "community",
 "image": "images/fanny-wallis-print.png",
 "imageCaption": "Fanny the Gipsy Hill station cat<br>Source: <a href='https://gipsyhillfriends.org/who-is-fanny-the-gipsy-hill-cat/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 "citations": ["45"]
 },
+
+,
 
 {
 "date": "2018 (May-October)",
@@ -707,11 +948,14 @@ var timelineData = [
 "description": "Friends of Gipsy Hill (FoGH) forms as a community group following a successful crowdfunding campaign supported by the Mayor of London. The group holds its first meeting on May 4th and formally adopts its constitution on October 6th. FoGH establishes itself with a mission to inspire residents' involvement and sustainable use of local spaces for community wellbeing, marking the beginning of a new era of community activism in Gipsy Hill.",
 "icon": "fogh",
 "importance": "major",
+"category": "community",
 "citations": ["46"],
 "image": "images/friends-of-gipsy-hill-community-group.jpg",
 "imageCaption": "Friends of Gipsy Hill community group<br>Source: <a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true
 },
+
+,
 
 {
 "date": "2019 (July 14)",
@@ -719,11 +963,14 @@ var timelineData = [
 "description": "Friends of Gipsy Hill launches the first Village Fete on Long Meadow, bringing the community together for a day of celebration. This inaugural event features local vendors, live music, children's activities, and food stalls, establishing a biennial tradition that strengthens neighborhood bonds.",
 "icon": "fogh",
 "importance": "minor",
+"category": "community",
 "citations": ["47"],
 "image": "images/gipsy-hill-village-fete-2019.jpg",
 "imageCaption": "First Gipsy Hill Village Fete on Long Meadow<br>Source: <a href='https://gipsyhillfriends.org/village-fete/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "2020 (August 8)",
@@ -731,11 +978,14 @@ var timelineData = [
 "description": "After being contacted by its owner in Devon, Friends of Gipsy Hill crowdfunds to bring an original 1950s 'British Railways Gipsy Hill' station sign back to SE19 on August 8th. The 3-metre-long, 66cm-tall sign was installed after railway nationalisation and retired in 1982 when Network South East formed. Having journeyed from South Yorkshire (2009) to Devon before returning home, this remarkably well-preserved 70-year-old piece of heritage now resides securely in the station garden for the community to enjoy.",
 "icon": "fogh",
 "importance": "minor",
+"category": "heritage",
 "citations": ["48"],
 "image": "images/gipsy-hill-railway-sign-returned.jpg",
 "imageCaption": "Railway Sign returned to Gipsy Hill<br>Source: <a href='https://gipsyhillfriends.org/british-railways-gipsy-hill-station-sign/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "2020 (November 21)",
@@ -743,11 +993,14 @@ var timelineData = [
 "description": "Despite the challenges of the COVID-19 pandemic, FoGH establishes the first Community Christmas Tree on Gipsy Hill on November 21st. This festive landmark becomes a symbol of hope and unity during difficult times, bringing light and joy to residents during the winter season.",
 "icon": "fogh",
 "importance": "minor",
+"category": "nature",
 "citations": ["49"],
 "image": "images/gipsy-hill-christmas-tree-2020.jpg",
 "imageCaption": "Gipsy Hill Community Christmas Tree 2020<br>Source: <a href='https://gipsyhillfriends.org/christmas-tree/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "2020",
@@ -755,8 +1008,11 @@ var timelineData = [
 "description": "Local pop-up food banks, mutual aid networks, and support groups coordinated pandemic responses - a testament to the area's community cohesion.",
 "icon": "covid19",
 "importance": "major",
+"category": "community",
 "citations": ["50"],
 },
+
+,
 
 {
 "date": "2022",
@@ -764,8 +1020,11 @@ var timelineData = [
 "description": "Kingswood House library closes in 2020 during the COVID-19 pandemic after funding cuts reduced its budget from £23,885 to £12,618 between 2014-2019. In 2022, Kingswood Arts CIC takes over the venue, transforming it into a vibrant arts and cultural centre. A new Kingswood Library opens in 2023 at a shop unit on Seeley Drive opposite the house. The Friends of Kingswood House volunteer group continues promoting the mansion's heritage through tours and community events.",
 "icon": "castle",
 "importance": "minor",
+"category": "nature",
 "citations": ["51"],
 },
+
+,
 
 {
 "date": "2022",
@@ -773,11 +1032,14 @@ var timelineData = [
 "description": "The Friends of Gipsy Hill station gardens flourish under community care, transforming previously neglected spaces into beautiful green areas. Volunteers maintain flower beds, plant seasonal displays, and create a welcoming environment for commuters and visitors alike.",
 "icon": "fogh",
 "importance": "minor",
+"category": "transport",
 "citations": ["52"],
 "image": "images/gipsy-hill-station-garden-fogh.jpg",
 "imageCaption": "Gipsy Hill Station Garden maintained by FoGH volunteers<br>Source: <a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "2022 (May 5)",
@@ -785,11 +1047,14 @@ var timelineData = [
 "description": "Following a review by the Local Government Boundary Commission for England, Gipsy Hill ward was reduced from three to two councillors. This change came into effect for the local elections held on May 5, 2022.",
 "icon": "official",
 "importance": "minor",
+"category": "war",
 "citations": ["36"],
 "image": "images/gipsy-hill-ward-boundaries-2022.png",
 "imageCaption": "Gipsy Hill ward boundaries since 2022<br>Source: <a href='https://foundation.m.wikimedia.org/wiki/Policy:Terms_of_Use_for_Wikimedia_Maps' target='_blank' rel='noopener'>Wikimedia Maps</a>, <a href='https://creativecommons.org/licenses/by-sa/4.0/' target='_blank' rel='noopener'>CC BY-SA 4.0</a>",
 "imageCaptionHTML": true,
 },
+
+,
 
 {
 "date": "2022 (October 1)",
@@ -797,8 +1062,11 @@ var timelineData = [
 "description": "Friends of Gipsy Hill organizes the first Oktoberfest celebration on October 1st, bringing German-inspired festivities to the community. The event features traditional beer, food, and music, adding a new cultural dimension to the neighborhood's calendar of events and further strengthening community bonds.",
 "icon": "fogh",
 "importance": "minor",
+"category": "community",
 "citations": ["53"],
 },
+
+,
 
 
 {
@@ -807,8 +1075,11 @@ var timelineData = [
 "description": "A phased refurbishment upgrades lifts, fire-safety systems and sash-window secondary glazing, partially funded by the Dulwich Estate's community-investment programme. Works respect Scott's original brick and pantile palette under conservation architects Alan Baxter Associates, demonstrating how Grade II-equivalent buildings can be sensitively modernized while maintaining their architectural integrity and continuing their vital community role.",
 "icon": "home",
 "importance": "minor",
+"category": "housing",
 "citations": ["54"],
 },
+
+,
 
 {
 "date": "2024-Present",
@@ -816,11 +1087,13 @@ var timelineData = [
 "description": "Friends of Gipsy Hill continues to grow and evolve, maintaining their core mission of inspiring community involvement and sustainable use of local spaces. Current projects include expanding green initiatives, supporting local businesses, and fostering an inclusive community that celebrates Gipsy Hill's unique character and heritage.",
 "icon": "fogh",
 "importance": "major",
+"category": "community",
 "citations": ["55"],
 "image": "images/fogh-volunteers-community-work.jpg",
 "imageCaption": "Friends of Gipsy Hill volunteers maintaining community spaces<br>Source: <a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true
-}
+},
+
 ];
 
 // Enhanced citation sources with comprehensive URLs and proper attribution
@@ -835,6 +1108,8 @@ const timelineCitations = [
     "url": "https://www.croydon.gov.uk/sites/default/files/2022-01/archaeological-priority-areas-appraisal-part-4.pdf",
     "notes": "Main Roman route followed different corridor"
   },
+
+,
   {
     "number": "2",
     "timeline_entry": "AD 410\u20131066 \u2013 Anglo-Saxon Boundaries",
@@ -843,6 +1118,8 @@ const timelineCitations = [
     "quality": "Medium",
     "url": "https://en.wikipedia.org/wiki/History_of_Croydon"
   },
+
+,
   {
     "number": "3",
     "timeline_entry": "1583 \u2013 Vicar's Oak & Beating the Bounds",
@@ -854,6 +1131,8 @@ const timelineCitations = [
       "https://norwoodstreethistories.org.uk/street/central-hill/"
     ]
   },
+
+,
   {
     "number": "4",
     "timeline_entry": "1668 \u2013 Pepys Visits the Gypsies",
@@ -865,6 +1144,8 @@ const timelineCitations = [
       "https://www.norwoodsociety.co.uk/articles/the-norwood-gipsies"
     ]
   },
+
+,
   {
     "number": "5",
     "timeline_entry": "24 Oct 1740 \u2013 Death of Gypsy Queen",
@@ -876,6 +1157,8 @@ const timelineCitations = [
       "https://www.norwoodsociety.co.uk/articles/the-norwood-gipsies"
     ]
   },
+
+,
   {
     "number": "6",
     "timeline_entry": "1832 \u2013 Trotting Hill created",
@@ -885,6 +1168,8 @@ const timelineCitations = [
     "url": "https://newspaperarchive.com/london-public-ledger-and-daily-advertiser-apr-12-1832-p-4/",
     "notes": "Dinner & shilling reward; cost \u00a330"
   },
+
+,
   {
     "number": "7",
     "timeline_entry": "1847\u20131848 \u2013 River Effra Culverted",
@@ -896,6 +1181,8 @@ const timelineCitations = [
       "https://www.wikiwand.com/en/articles/River_Effra"
     ]
   },
+
+,
   {
     "number": "8",
     "timeline_entry": "1854 \u2013 Gipsy Hill Police Station built",
@@ -907,6 +1194,8 @@ const timelineCitations = [
       "https://commons.wikimedia.org/wiki/File:Former_police_station,_Gipsy_Hill_-_geograph.org.uk_-_1774912.jpg"
     ]
   },
+
+,
   {
     "number": "9",
     "timeline_entry": "10 Jun 1854 \u2013 Crystal Palace opens",
@@ -918,6 +1207,8 @@ const timelineCitations = [
       "https://www.crystalpalacefoundation.org.uk/history/open-again-1854-2"
     ]
   },
+
+,
   {
     "number": "10",
     "timeline_entry": "1856 \u2013 Gipsy Hill station opens",
@@ -926,6 +1217,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://en.wikipedia.org/wiki/Gipsy_Hill_railway_station"
   },
+
+,
   {
     "number": "11",
     "timeline_entry": "1862 \u2013 Iron Church Erected",
@@ -937,6 +1230,8 @@ const timelineCitations = [
       "https://en.wikipedia.org/wiki/Christ_Church,_Gipsy_Hill"
     ]
   },
+
+,
   {
     "number": "12",
     "timeline_entry": "1867 \u2013 Christ Church Consecrated",
@@ -948,6 +1243,8 @@ const timelineCitations = [
       "https://en.wikipedia.org/wiki/Christ_Church,_Gipsy_Hill"
     ]
   },
+
+,
   {
     "number": "13",
     "timeline_entry": "1867 \u2013 Barclay's Bank opens",
@@ -957,6 +1254,8 @@ const timelineCitations = [
     "url": "https://norwoodstreethistories.org.uk/norwood-area/norwood-timeline/",
     "notes": "Local history timeline mentions Barclays opening on Westow Street"
   },
+
+,
   {
     "number": "14",
     "timeline_entry": "1870 \u2013 Crystal Palace Gas Works opens",
@@ -965,6 +1264,8 @@ const timelineCitations = [
     "quality": "Medium",
     "url": "https://norwoodstreethistories.org.uk/building/crystal-palace-gas-works/"
   },
+
+,
   {
     "number": "15",
     "timeline_entry": "1870s\u20131890s \u2013 Long Meadow grazing use",
@@ -978,6 +1279,8 @@ const timelineCitations = [
       "https://www.dulwichsociety.com/the-journal/autumn-2021/on-the-street-where-you-live-dulwich-wood-avenue-by-ian-mcinnes"
     ]
   },
+
+,
   {
     "number": "16",
     "timeline_entry": "Early 1870s \u2013 Athol House built",
@@ -987,6 +1290,8 @@ const timelineCitations = [
     "url": "https://www.dulwichsociety.com/the-journal/summer-2017/on-the-street-where-you-live-hitherwood-drive-by-ian-mciness",
     "notes": "Private luxury residence in Dulwich, very costly at build time"
   },
+
+,
   {
     "number": "17",
     "timeline_entry": "1875 \u2013 Gipsy Hill Primary School opens",
@@ -999,6 +1304,8 @@ const timelineCitations = [
     ],
     "notes": "Citation status partial and quality low due to potential conflicting information between Borough Photos and Wikipedia article - requires qualification"
   },
+
+,
   {
     "number": "18",
     "timeline_entry": "1890 \u2013 Great Flood",
@@ -1010,6 +1317,8 @@ const timelineCitations = [
       "https://diamondgeezer.blogspot.com/2010/06/effra-i.html"
     ]
   },
+
+,
   {
     "number": "19",
     "timeline_entry": "1939 \u2013 Police station operations move",
@@ -1018,6 +1327,8 @@ const timelineCitations = [
     "quality": "Medium",
     "url": "https://boroughphotos.org/lambeth/former-police-station-gipsy-hill-upper-norwood/"
   },
+
+,
   {
     "number": "20",
     "timeline_entry": "1940\u201341 \u2013 WWII Blitz",
@@ -1030,6 +1341,8 @@ const timelineCitations = [
     ],
     "notes": "V-1 flying bombs described in accounts"
   },
+
+,
   {
     "number": "21",
     "timeline_entry": "1946\u201356 \u2013 Kingswood Estate built",
@@ -1041,6 +1354,8 @@ const timelineCitations = [
       "https://livinglondonhistory.com/kingswood-house-the-castle-in-the-council-estate/"
     ]
   },
+
+,
   {
     "number": "22",
     "timeline_entry": "1948 \u2013 Police station converted",
@@ -1052,6 +1367,8 @@ const timelineCitations = [
       "https://boroughphotos.org/lambeth/former-police-station-gipsy-hill-upper-norwood/"
     ]
   },
+
+,
   {
     "number": "23",
     "timeline_entry": "1953\u20131955 \u2013 Athol House becomes first London Cheshire Home",
@@ -1064,6 +1381,8 @@ const timelineCitations = [
     ],
     "notes": "Marks start of charitable care in the building"
   },
+
+,
   {
     "number": "24",
     "timeline_entry": "1963\u201366 \u2013 Cold War bunker at Pear Tree House",
@@ -1076,6 +1395,8 @@ const timelineCitations = [
     ],
     "notes": "Now beneath social housing"
   },
+
+,
   {
     "number": "25",
     "timeline_entry": "1967 \u2013 Central Hill Estate built",
@@ -1087,6 +1408,8 @@ const timelineCitations = [
       "https://www.simonphipps.co.uk/case-studies/central-hill-estate/"
     ]
   },
+
+,
   {
     "number": "26",
     "timeline_entry": "1972 \u2013 Kingswood House listed",
@@ -1095,6 +1418,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://historicengland.org.uk/listing/the-list/list-entry/1385883"
   },
+
+,
   {
     "number": "27",
     "timeline_entry": "1974 \u2013 Gipsy Hill Conservation Area created",
@@ -1104,6 +1429,8 @@ const timelineCitations = [
     "url": "https://www.lambeth.gov.uk/planning-and-building-control/conservation-and-listed-buildings/conservation-area-profiles/gipsy",
     "notes": "Includes Central Hill"
   },
+
+,
   {
     "number": "28",
     "timeline_entry": "1978 \u2013 Gipsy Hill Ward created",
@@ -1112,6 +1439,8 @@ const timelineCitations = [
     "quality": "Medium",
     "url": "https://en.wikipedia.org/wiki/Gipsy_Hill_(ward)"
   },
+
+,
   {
     "number": "29",
     "timeline_entry": "17 Oct 1981 \u2013 IRA bomb incident",
@@ -1121,6 +1450,8 @@ const timelineCitations = [
     "url": "https://www.independent.co.uk/news/obituaries/lieutenantgeneral-sir-steuart-pringle-marine-who-survived-an-ira-car-bomb-8604609.html",
     "notes": "Often described as Dulwich"
   },
+
+,
   {
     "number": "30",
     "timeline_entry": "2000 \u2013 Gipsy Hill ward boundary review",
@@ -1129,6 +1460,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://www.legislation.gov.uk/uksi/2000/319/made/data.xht"
   },
+
+,
   {
     "number": "31",
     "timeline_entry": "2009 \u2013 Station refurbishment",
@@ -1137,6 +1470,8 @@ const timelineCitations = [
     "quality": "Medium",
     "url": "https://uktransport.fandom.com/wiki/Gipsy_Hill_railway_station"
   },
+
+,
   {
     "number": "32",
     "timeline_entry": "2010\u20132024 \u2013 Friends of Gipsy Hill community events",
@@ -1145,6 +1480,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://gipsyhillfriends.org/"
   },
+
+,
   {
     "number": "33",
     "timeline_entry": "2022 \u2013 Kingswood Arts transformation",
@@ -1152,6 +1489,8 @@ const timelineCitations = [
     "source": "No official or media confirmation as of 2025",
     "quality": "Low"
   },
+
+,
   {
     "number": "34",
     "timeline_entry": "2023\u201324 \u2013 Athol House redevelopment",
@@ -1159,6 +1498,8 @@ const timelineCitations = [
     "source": "No coverage or planning record known as of 2025",
     "quality": "Low"
   },
+
+,
   {
     "number": "35",
     "timeline_entry": "5 May 2022 \u2013 Ward boundary revision",
@@ -1170,6 +1511,8 @@ const timelineCitations = [
       "https://love.lambeth.gov.uk/a-new-political-map-for-the-2022-lambeth-borough-council-elections/"
     ]
   },
+
+,
   {
     "number": "36",
     "timeline_entry": "1085 – The Great North Wood",
@@ -1183,6 +1526,8 @@ const timelineCitations = [
     ],
     "notes": "J. Corbet Anderson's 'The Great North Wood' (1898) reproduces Domesday evidence of woodland measured by swine-pannage. Multiple sources confirm the Archbishop of Canterbury's rights for hunting, fuel and pannage for 200 swine."
   },
+
+,
   {
     "number": "37",
     "timeline_entry": "1911 – Norwood Park opens",
@@ -1194,6 +1539,8 @@ const timelineCitations = [
       "https://www.lambeth.gov.uk/parks/norwood-park"
     ]
   },
+
+,
   {
     "number": "38",
     "timeline_entry": "1915–1919 – WWI Canadian Military Hospital (Kingswood House)",
@@ -1205,6 +1552,8 @@ const timelineCitations = [
       "https://www.brixtonsociety.org.uk/test-site/wp-content/uploads/2019/01/Oct-15-Newsletter.pdf"
     ]
   },
+
+,
   {
     "number": "39",
     "timeline_entry": "1919–1940 – The Vestey Family Era (Kingswood House)",
@@ -1216,6 +1565,8 @@ const timelineCitations = [
       "https://www.dulwichsociety.com/people/william-vestey"
     ]
   },
+
+,
   {
     "number": "40",
     "timeline_entry": "1920–1938 – Margaret Lockwood's Childhood Home",
@@ -1227,6 +1578,8 @@ const timelineCitations = [
       "https://newsfromcrystalpalace.wordpress.com/2018/11/22/blue-plaque-to-margaret-lockwood-unveiled/"
     ]
   },
+
+,
   {
     "number": "41",
     "timeline_entry": "1960s – Norwood Triangle Converted to Roundabout",
@@ -1238,6 +1591,8 @@ const timelineCitations = [
       "https://boroughphotos.org/lambeth/the-triangle-upper-norwood/"
     ]
   },
+
+,
   {
     "number": "42",
     "timeline_entry": "1961 – Wooden Bus Shelter at South Croxted Road",
@@ -1249,6 +1604,8 @@ const timelineCitations = [
       "https://southwarknews.co.uk/area/kennington/rare-wooden-bus-shelter-in-dulwich-among-thousands-of-southwark-landmarks-awarded-special-protection/"
     ]
   },
+
+,
   {
     "number": "43",
     "timeline_entry": "2009 – Gipsy Hill Station Refurbishment",
@@ -1257,6 +1614,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://tfl.gov.uk/info-for/media/press-releases/2009/june/tfl-sets-high-standards-in-new-rail-franchise"
   },
+
+,
   {
     "number": "44",
     "timeline_entry": "2010 – Brown & Green Café Opens",
@@ -1265,6 +1624,8 @@ const timelineCitations = [
     "quality": "Medium",
     "url": "https://thetrianglese19.blogspot.com/2011/08/brown-green.html"
   },
+
+,
   {
     "number": "45",
     "timeline_entry": "2011 – Fanny the Gipsy Hill Cat",
@@ -1276,6 +1637,8 @@ const timelineCitations = [
       "https://gipsyhillfriends.org/who-is-fanny-the-gipsy-hill-cat/"
     ]
   },
+
+,
   {
     "number": "46",
     "timeline_entry": "2018 – Friends of Gipsy Hill Forms",
@@ -1284,6 +1647,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://gipsyhillfriends.org/about-us/"
   },
+
+,
   {
     "number": "47",
     "timeline_entry": "2019 – First Gipsy Hill Village Fete",
@@ -1295,6 +1660,8 @@ const timelineCitations = [
       "https://www.norwoodforum.org/events/gipsy-hill-village-fete"
     ]
   },
+
+,
   {
     "number": "48",
     "timeline_entry": "2020 – British Railways Sign Returns Home",
@@ -1303,6 +1670,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://gipsyhillfriends.org/station-garden/"
   },
+
+,
   {
     "number": "49",
     "timeline_entry": "2020 – First Community Gipsy Hill Christmas Tree",
@@ -1311,6 +1680,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://gipsyhillfriends.org/events/"
   },
+
+,
   {
     "number": "50",
     "timeline_entry": "2020 – COVID-19 Mutual Aid",
@@ -1319,6 +1690,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://gipsyhillfriends.org/about-us/"
   },
+
+,
   {
     "number": "51",
     "timeline_entry": "2022 – Kingswood Arts Transformation",
@@ -1327,6 +1700,8 @@ const timelineCitations = [
     "quality": "Low",
     "notes": "This entry requires further verification"
   },
+
+,
   {
     "number": "52",
     "timeline_entry": "2022 – Station Gardens Transform",
@@ -1338,6 +1713,8 @@ const timelineCitations = [
       "https://gipsyhillfriends.org/what-we-do/"
     ]
   },
+
+,
   {
     "number": "53",
     "timeline_entry": "2022 – First Gipsy Hill Oktoberfest",
@@ -1346,6 +1723,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://gipsyhillfriends.org/category/events/"
   },
+
+,
   {
     "number": "54",
     "timeline_entry": "2023–2024 – Athol House Heritage Refurbishment",
@@ -1354,6 +1733,8 @@ const timelineCitations = [
     "quality": "Low",
     "notes": "This entry requires further verification"
   },
+
+,
   {
     "number": "55",
     "timeline_entry": "2024–Present – FoGH Mission Continues",
@@ -1371,6 +1752,8 @@ const timelineCitations = [
       "Friends of Gipsy Hill (Lookback over 2024)"
     ]
   },
+
+,
   {
     "number": "56",
     "timeline_entry": "2009 – Current Ward Boundaries",
@@ -1379,6 +1762,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://www.lgbce.org.uk/sites/default/files/2023-04/lambeth_final_recommendations_report.pdf"
   },
+
+,
   {
     "number": "57",
     "timeline_entry": "1740 – Mother Bridget Succeeds as Queen of the Gypsies",
@@ -1392,6 +1777,8 @@ const timelineCitations = [
     ],
     "notes": "Primary source: 'The universal fortune teller: or, Mrs. Bridget's golden treasury explained' by Mrs. Bridget, published London 1790 by E. Matthews. This enriched reference enables comprehensive historical research on Mother Bridget, using both primary and expert biographical sources."
   },
+
+,
   {
     "number": "58",
     "timeline_entry": "1777 – The Norwood Gypsies Pantomime",
@@ -1401,6 +1788,8 @@ const timelineCitations = [
     "url": "https://archive.org/details/bim_airs_duets_c_in_the_new_pantomime_called_the_norwood_gypsies",
     "notes": "Primary source: 'Airs, duets, &c. in the new pantomime, called The Norwood gypsies' by James Messinck, published 1777 by Printed for the Author, London. This reference provides direct, open access to the actual historical publication as used on the timeline, ensuring full verifiability and research quality."
   },
+
+,
   {
     "number": "59",
     "timeline_entry": "1810 – Norwood Common Enclosed",
@@ -1410,6 +1799,8 @@ const timelineCitations = [
     "url": "https://www.lambeth.gov.uk/libraries-archives/lambeth-archives",
     "notes": "Primary source: 'Norwood Common Enclosure Award' by Lambeth Borough Council, 1810, held at Lambeth Borough Archives."
   },
+
+,
   {
     "number": "60",
     "timeline_entry": "1811-1814 – Kingswood Lodge Built",
@@ -1419,6 +1810,8 @@ const timelineCitations = [
     "url": "https://www.kingswoodarts.com/about/history",
     "notes": "Comprehensive historical overview from Kingswood Arts Centre documenting the building's construction circa 1811-1814 and its evolution through to present day."
   },
+
+,
   {
     "number": "61",
     "timeline_entry": "1871 – United Land Co. Begins Development",
@@ -1428,6 +1821,8 @@ const timelineCitations = [
     "url": "https://discovery.nationalarchives.gov.uk/details/a/A13532287",
     "notes": "Primary source: 'Gipsy Hill Estate, Norwood' held at Lambeth Archives, Catalogue Reference: Title 537/23/29. Property conveyances and plans, agreements for construction, mortgages, and assignments associated with the Gipsy Hill estate, preserved as part of the official Lambeth Borough historical collections. Date range: 1871-1915."
   },
+
+,
   {
     "number": "62",
     "timeline_entry": "1880 – Kingswood Primary School",
@@ -1437,6 +1832,8 @@ const timelineCitations = [
     "url": "https://boroughphotos.org/lambeth/kingswood-primary-school-gipsy-road-west-norwood/",
     "notes": "Historical records from Lambeth Borough Archives documenting the foundation of Kingswood Primary School in 1880. Additional references and sources can be found in 'Sources for the history of schools in Lambeth' (PDF), which guides researchers to official Lambeth Archives holdings concerning local schools."
   },
+
+,
   {
     "number": "63",
     "timeline_entry": "1929 – Railway Conversion Complete",
@@ -1446,6 +1843,8 @@ const timelineCitations = [
     "url": "https://www.therailwayhub.org.uk/2019/02/18/throwback-to-lbscr-becoming-wired-for-power/",
     "notes": "Article: 'Throwback to LBSCR Becoming Wired for Power' by Railway Hub, 2019. This reference provides a narrative and factual explanation of the 1929 third rail conversion, using verifiable rail history sources suitable for both academic and public documentation."
   },
+
+,
   {
     "number": "64",
     "timeline_entry": "1600s – Norwood Gypsies Settle",
@@ -1458,6 +1857,8 @@ const timelineCitations = [
       "https://en.wikipedia.org/wiki/Gipsy_Hill"
     ]
   },
+
+,
   {
     "number": "65",
     "timeline_entry": "c. 1640 – Margaret Finch Born",
@@ -1470,6 +1871,8 @@ const timelineCitations = [
       "https://hauntedpalaceblog.com/2017/09/08/margaret-finch-queen-of-the-gypsies/"
     ]
   },
+
+,
   {
     "number": "66",
     "timeline_entry": "1778 – The Gypsy House Inn",
@@ -1482,6 +1885,8 @@ const timelineCitations = [
       "https://pubwiki.co.uk/LondonPubs/Lambeth/GipsyHouse.shtml"
     ]
   },
+
+,
   {
     "number": "67",
     "timeline_entry": "1853 – Railway Construction Authorized",
@@ -1493,6 +1898,8 @@ const timelineCitations = [
       "https://en.wikipedia.org/wiki/West_End_of_London_and_Crystal_Palace_Railway"
     ]
   },
+
+,
   {
     "number": "68",
     "timeline_entry": "1858 – The Great Stink & River Effra",
@@ -1504,6 +1911,8 @@ const timelineCitations = [
       "https://diamondgeezer.blogspot.com/2010/06/effra-i.html"
     ]
   },
+
+,
   {
     "number": "69",
     "timeline_entry": "1874 – Annie Besant Residence",
@@ -1515,6 +1924,8 @@ const timelineCitations = [
       "https://norwoodstreethistories.org.uk/street/colby-road/"
     ]
   },
+
+,
   {
     "number": "70",
     "timeline_entry": "1881–1882 – Gipsy Road Baptist Church",
@@ -1526,6 +1937,8 @@ const timelineCitations = [
       "https://boroughphotos.org/lambeth/gipsy-road-baptist-church-west-norwood/"
     ]
   },
+
+,
   {
     "number": "71",
     "timeline_entry": "1887 – Paxton Primary School Opens",
@@ -1537,6 +1950,8 @@ const timelineCitations = [
       "https://boroughphotos.org/lambeth/paxton-primary-school-cawnpore-street-upper-norwood/"
     ]
   },
+
+,
   {
     "number": "72",
     "timeline_entry": "1891–1900 – The 'Bovril Castle' Era",
@@ -1548,6 +1963,8 @@ const timelineCitations = [
       "https://www.historichouses.org/house/kingswood-house/history/"
     ]
   },
+
+,
   {
     "number": "73",
     "timeline_entry": "1911 – Railway Electrification",
@@ -1559,6 +1976,8 @@ const timelineCitations = [
       "https://en.wikipedia.org/wiki/SR_Class_CP"
     ]
   },
+
+,
   {
     "number": "74",
     "timeline_entry": "1940–1941 – WWII Blitz",
@@ -1571,6 +1990,8 @@ const timelineCitations = [
       "https://www.iwm.org.uk/collections/item/object/205201051"
     ]
   },
+
+,
   {
     "number": "75",
     "timeline_entry": "1948 – Police Station Converted",
@@ -1579,6 +2000,8 @@ const timelineCitations = [
     "quality": "Medium",
     "url": "https://boroughphotos.org/lambeth/former-police-station-gipsy-hill-upper-norwood/"
   },
+
+,
   {
     "number": "76",
     "timeline_entry": "1982 – Christ Church Fire",
@@ -1590,6 +2013,8 @@ const timelineCitations = [
       "https://boroughphotos.org/lambeth/christ-church-gipsy-hill-upper-norwood-5/"
     ]
   },
+
+,
   {
     "number": "77",
     "timeline_entry": "1990 – Railway Accident",
@@ -1598,6 +2023,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://web.archive.org/web/20180626222308/https://www.nsers.org/jan-dec-90.html"
   },
+
+,
   {
     "number": "88",
     "timeline_entry": "1974 – Gipsy Hill Conservation Area Designated",
@@ -1606,6 +2033,8 @@ const timelineCitations = [
     "quality": "High",
     "url": "https://www.lambeth.gov.uk/planning-and-building-control/conservation-and-listed-buildings/conservation-area-profiles/gipsy"
   },
+
+,
   {
     "number": "89",
     "timeline_entry": "1917 – Gipsy Hill Montessori College Opens",
@@ -1618,6 +2047,8 @@ const timelineCitations = [
     ],
     "notes": "Newspaper clipping and historical research by Dulwich Society. Woolsthorpe house licensed by Dulwich Estate for Montessori education. Legacy continues with multiple Montessori nurseries in the area."
   },
+
+,
   {
     "number": "90",
     "timeline_entry": "1966 – World Cup Trophy Found by Pickles the Dog",
