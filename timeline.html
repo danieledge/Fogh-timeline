@@ -3,16 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Gipsy Hill Historical Timeline</title>
     <script>
+        // Version-based cache busting
+        var APP_VERSION = '2.09.1'; // Update this with each release
+        
         // Cache busting logic
         (function() {
             var urlParams = new URLSearchParams(window.location.search);
             var noCache = urlParams.get('cache') === 'false';
-            var cacheBust = noCache ? '?v=' + Date.now() : '';
             
-            // Add aggressive anti-caching meta tags if cache=false
-            if (noCache) {
+            // Use version for cache busting, or timestamp if noCache is set
+            var cacheBust = noCache ? '?v=' + Date.now() : '?v=' + APP_VERSION;
+            
+            // Check if user has outdated version cached
+            var lastVersion = localStorage.getItem('app-version');
+            if (lastVersion && lastVersion !== APP_VERSION) {
+                // Version has changed, force refresh of all resources
+                localStorage.setItem('app-version', APP_VERSION);
+                // Clear any service worker caches if they exist
+                if ('caches' in window) {
+                    caches.keys().then(function(names) {
+                        names.forEach(function(name) {
+                            caches.delete(name);
+                        });
+                    });
+                }
+            } else if (!lastVersion) {
+                localStorage.setItem('app-version', APP_VERSION);
+            }
+            
+            // Add aggressive anti-caching meta tags if cache=false or version changed
+            if (noCache || lastVersion !== APP_VERSION) {
                 // HTTP 1.1
                 var pragmaMeta = document.createElement('meta');
                 pragmaMeta.setAttribute('http-equiv', 'pragma');
@@ -523,6 +548,40 @@
             var savedTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
         })();
+        
+        // Register service worker for better cache management
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js?v=' + APP_VERSION)
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                        
+                        // Check for updates on page focus
+                        document.addEventListener('visibilitychange', function() {
+                            if (!document.hidden) {
+                                registration.update();
+                            }
+                        });
+                        
+                        // Handle updates
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New version available
+                                    if (confirm('A new version is available! Reload to update?')) {
+                                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
     </script>
     
     <!-- =================================================================== -->
