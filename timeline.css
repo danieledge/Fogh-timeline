@@ -859,6 +859,90 @@ body::before {
     overflow: hidden;
 }
 
+/* Category badge */
+.category-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+
+.category-badge:hover {
+    opacity: 1;
+}
+
+/* Light theme category colors */
+[data-theme="light"] .category-heritage { background: #A0522D; color: white; }
+[data-theme="light"] .category-gypsies { background: #9370DB; color: white; }
+[data-theme="light"] .category-transport { background: #5F9FD8; color: white; }
+[data-theme="light"] .category-churches { background: #DAA520; color: white; }
+[data-theme="light"] .category-housing { background: #DEB887; color: #333; }
+[data-theme="light"] .category-war { background: #CD5C5C; color: white; }
+[data-theme="light"] .category-nature { background: #32CD32; color: white; }
+[data-theme="light"] .category-community { background: #FF7F50; color: white; }
+
+/* Dark theme category colors */
+[data-theme="dark"] .category-heritage { background: #8B4513; color: white; }
+[data-theme="dark"] .category-gypsies { background: #800080; color: white; }
+[data-theme="dark"] .category-transport { background: #4682B4; color: white; }
+[data-theme="dark"] .category-churches { background: #B8860B; color: white; }
+[data-theme="dark"] .category-housing { background: #CD853F; color: white; }
+[data-theme="dark"] .category-war { background: #8B0000; color: white; }
+[data-theme="dark"] .category-nature { background: #228B22; color: white; }
+[data-theme="dark"] .category-community { background: #FF6347; color: white; }
+
+/* Category filter pills */
+.category-filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.category-pill {
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    user-select: none;
+}
+
+.category-pill.active {
+    opacity: 1;
+    border-color: currentColor;
+}
+
+.category-pill.inactive {
+    opacity: 0.4;
+    background: var(--bg-tertiary) !important;
+    color: var(--text-secondary) !important;
+}
+
+.category-pill:hover {
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+.category-pill-count {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    font-weight: 600;
+}
+
 .timeline-content::before {
     content: '';
     position: absolute;
@@ -3602,6 +3686,10 @@ textarea#image-sources {
     text-align: right;
 }
 .timeline-item.search-hidden {
+    display: none;
+}
+
+.timeline-item.category-filtered {
     display: none;
 }
 
