@@ -991,17 +991,22 @@ body::before {
     font-weight: 500;
 }
 
-/* Mobile: 2 columns for category filters */
+/* Mobile: Keep 3 columns but adjust pill size */
 @media (max-width: 480px) {
     .category-filter-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.4rem;
     }
     
     .category-pill {
-        font-size: 0.65rem;
-        padding: 0.4rem 0.5rem;
-        min-height: 2rem;
+        font-size: 0.6rem;
+        padding: 0.35rem 0.3rem;
+        min-height: 1.8rem;
+        letter-spacing: 0.2px;
+    }
+    
+    .category-pill-count {
+        font-size: 0.55rem;
     }
 }
 
