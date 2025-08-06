@@ -864,9 +864,9 @@ body::before {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
-    padding: 0.25rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -875,8 +875,32 @@ body::before {
     z-index: 10;
 }
 
+/* Ensure content doesn't overlap with badge */
+.timeline-content .content-header {
+    padding-right: 5rem; /* Space for category badge */
+}
+
+.timeline-content .content-title {
+    padding-right: 1rem; /* Additional padding for title text */
+    max-width: calc(100% - 1rem);
+}
+
 .category-badge:hover {
     opacity: 1;
+}
+
+/* Mobile adjustments for category badge */
+@media (max-width: 768px) {
+    .category-badge {
+        font-size: 0.6rem;
+        padding: 0.15rem 0.5rem;
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+    
+    .timeline-content .content-header {
+        padding-right: 4rem; /* Less space needed on mobile */
+    }
 }
 
 /* Light theme category colors */
@@ -3785,15 +3809,18 @@ textarea#image-sources {
     position: fixed;
     top: 20px;
     left: 50%;
-    transform: translateX(-50%) translateY(-500px);  /* Hidden off-screen */
+    transform: translateX(-50%) translateY(-600px);  /* Hidden off-screen */
     width: 90%;
-    max-width: 500px;
-    max-height: 80vh;  /* Don't cover entire screen */
-    height: 420px;  /* Increased to fit minor toggle */
+    max-width: 550px;
+    max-height: 85vh;  /* Allow more screen coverage */
+    height: auto;  /* Dynamic height based on content */
+    min-height: 500px;  /* Minimum height to fit all components */
     background: var(--bg-primary);
     border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     z-index: 999;  /* Above backdrop */
     transition: transform 0.3s ease;

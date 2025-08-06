@@ -82,7 +82,7 @@ var timelineData = [
 "description": "Early land grants and charters reference the wider Norwood as woodland and hunting ground in Anglo-Saxon times, which frames later developments and parish boundaries.",
 "icon": "saxon-helmet",
 "importance": "minor",
-"category": "housing",
+"category": "general",
 "citations": ["2"],
 },
 
