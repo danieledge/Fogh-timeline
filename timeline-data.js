@@ -71,7 +71,7 @@ var timelineData = [
 "description": "Archaeological studies have revealed minor Roman-era pottery finds and trackways in the Norwood/Central Hill area, suggesting movement through the forested landscape, though no major settlement.",
 "icon": "roman",
 "importance": "major",
-"category": "nature",
+"category": "general",
 "citations": ["1"],
 },
 
