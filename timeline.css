@@ -913,7 +913,7 @@ body::before {
     }
 }
 
-/* Light theme category colors */
+/* Light theme category colors - for badges and pills */
 [data-theme="light"] .category-heritage { background: #A0522D; color: white; }
 [data-theme="light"] .category-gypsies { background: #9370DB; color: white; }
 [data-theme="light"] .category-transport { background: #5F9FD8; color: white; }
@@ -925,7 +925,7 @@ body::before {
 [data-theme="light"] .category-community { background: #FF7F50; color: white; }
 [data-theme="light"] .category-general { background: #778899; color: white; }
 
-/* Dark theme category colors */
+/* Dark theme category colors - for badges and pills */
 [data-theme="dark"] .category-heritage { background: #8B4513; color: white; }
 [data-theme="dark"] .category-gypsies { background: #800080; color: white; }
 [data-theme="dark"] .category-transport { background: #4682B4; color: white; }
@@ -946,28 +946,28 @@ body::before {
 }
 
 .category-pill {
-    padding: 0.4rem 0.9rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    border: 2px solid transparent;
+    border: 1.5px solid transparent;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     user-select: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .category-pill.active {
-    opacity: 1;
-    border-color: currentColor;
+    opacity: 0.9;
 }
 
 .category-pill.inactive {
-    opacity: 0.4;
-    background: var(--bg-tertiary) !important;
-    color: var(--text-secondary) !important;
+    opacity: 0.3;
+    filter: grayscale(0.5);
 }
 
 .category-pill:hover {
