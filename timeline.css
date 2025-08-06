@@ -819,7 +819,7 @@ body::before {
 .timeline-content {
     background: var(--bg-secondary);
     border-radius: 24px;
-    padding: 1.5rem;
+    padding: 1.25rem;
     box-shadow: var(--shadow-sm);
     transition: all 0.3s ease;
     position: relative;
@@ -918,7 +918,7 @@ body::before {
 }
 
 .content-title {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     font-weight: 600;
     color: var(--text-primary);
     line-height: 1.3;
@@ -1282,7 +1282,7 @@ body::before {
     }
 
     .timeline-content {
-        padding: 1.25rem;
+        padding: 1rem;
     }
 
     .content-icon {
@@ -1296,7 +1296,7 @@ body::before {
     }
 
     .content-title {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
     }
 
     .content-description {
