@@ -107,6 +107,85 @@ function initializeTimeline() {
         document.querySelector('.header').style.display = 'block';
         document.getElementById('menu-toggle').style.display = 'flex';
         
+        // Handle WIP notice
+        var wipNotice = document.getElementById('wip-notice');
+        var wipClose = document.getElementById('wip-close');
+        var currentVersion = 'v2.09'; // Update this with each release
+        
+        if (wipNotice) {
+            var dismissedVersion = localStorage.getItem('wip-dismissed-version');
+            if (dismissedVersion === currentVersion) {
+                wipNotice.classList.add('hidden');
+            }
+            
+            if (wipClose) {
+                wipClose.addEventListener('click', function() {
+                    wipNotice.classList.add('hidden');
+                    localStorage.setItem('wip-dismissed-version', currentVersion);
+                });
+            }
+        }
+        
+        // Handle reset preferences button
+        var resetPrefsButton = document.getElementById('reset-preferences-button');
+        if (resetPrefsButton) {
+            // Add reset icon
+            resetPrefsButton.querySelector('svg').innerHTML = '<path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>';
+            
+            resetPrefsButton.addEventListener('click', function() {
+                if (confirm('This will reset all preferences including theme settings and dismissed notices. Continue?')) {
+                    // Get all localStorage keys and remove them
+                    var keysToRemove = [];
+                    for (var i = 0; i < localStorage.length; i++) {
+                        var key = localStorage.key(i);
+                        // Only clear keys that seem to belong to this app
+                        // This prevents clearing unrelated localStorage from other apps on the same domain
+                        if (key && (
+                            key.includes('theme') ||
+                            key.includes('wip') ||
+                            key.includes('confirmation') ||
+                            key.includes('timeline') ||
+                            key.includes('filter') ||
+                            key.includes('preference')
+                        )) {
+                            keysToRemove.push(key);
+                        }
+                    }
+                    
+                    // Remove all identified keys
+                    keysToRemove.forEach(function(key) {
+                        localStorage.removeItem(key);
+                    });
+                    
+                    // Also clear sessionStorage for good measure
+                    try {
+                        sessionStorage.clear();
+                    } catch (e) {
+                        // sessionStorage might not be available
+                    }
+                    
+                    // Reset theme to default (dark)
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    
+                    // Show WIP notice again
+                    if (wipNotice) {
+                        wipNotice.classList.remove('hidden');
+                    }
+                    
+                    // Close menu panel
+                    var menuPanel = document.getElementById('menu-panel');
+                    if (menuPanel) {
+                        menuPanel.classList.remove('active');
+                    }
+                    
+                    // Update theme toggle text
+                    updateThemeText();
+                    
+                    alert('All preferences have been reset to defaults.');
+                }
+            });
+        }
+        
         // Populate icons in UI
         showDebug('Populating UI icons');
         document.querySelector('#menu-toggle svg').innerHTML = menuIcon;
