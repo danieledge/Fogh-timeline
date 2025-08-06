@@ -573,6 +573,12 @@ function initializeTimeline() {
         for (var i = 0; i < timelineData.length; i++) {
         var item = timelineData[i];
         
+        // Skip undefined or null items (can happen with data formatting issues)
+        if (!item) {
+            console.warn('Skipping undefined item at index ' + i);
+            continue;
+        }
+        
         // Skip inactive entries (default to active if not specified)
         if (item.active === false) {
             continue;
