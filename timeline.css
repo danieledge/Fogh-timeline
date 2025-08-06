@@ -939,27 +939,30 @@ body::before {
 
 /* Category filter pills */
 .category-filter-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
     margin-top: 0.5rem;
 }
 
 .category-pill {
-    padding: 0.4rem 0.9rem;
+    padding: 0.5rem 0.6rem;
     border-radius: 12px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 0.4rem;
+    justify-content: center;
+    gap: 0.3rem;
     user-select: none;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     border: 2px solid transparent;
     position: relative;
+    text-align: center;
+    min-height: 2.2rem;
 }
 
 .category-pill.active {
@@ -983,9 +986,23 @@ body::before {
 }
 
 .category-pill-count {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     opacity: 0.7;
-    font-weight: 600;
+    font-weight: 500;
+}
+
+/* Mobile: 2 columns for category filters */
+@media (max-width: 480px) {
+    .category-filter-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .category-pill {
+        font-size: 0.65rem;
+        padding: 0.4rem 0.5rem;
+        min-height: 2rem;
+    }
 }
 
 .timeline-content::before {
