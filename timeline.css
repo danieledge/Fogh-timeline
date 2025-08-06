@@ -884,20 +884,24 @@ body::before {
 [data-theme="light"] .category-gypsies { background: #9370DB; color: white; }
 [data-theme="light"] .category-transport { background: #5F9FD8; color: white; }
 [data-theme="light"] .category-churches { background: #DAA520; color: white; }
+[data-theme="light"] .category-education { background: #8FBC8F; color: white; }
 [data-theme="light"] .category-housing { background: #DEB887; color: #333; }
 [data-theme="light"] .category-war { background: #CD5C5C; color: white; }
 [data-theme="light"] .category-nature { background: #32CD32; color: white; }
 [data-theme="light"] .category-community { background: #FF7F50; color: white; }
+[data-theme="light"] .category-general { background: #778899; color: white; }
 
 /* Dark theme category colors */
 [data-theme="dark"] .category-heritage { background: #8B4513; color: white; }
 [data-theme="dark"] .category-gypsies { background: #800080; color: white; }
 [data-theme="dark"] .category-transport { background: #4682B4; color: white; }
 [data-theme="dark"] .category-churches { background: #B8860B; color: white; }
+[data-theme="dark"] .category-education { background: #6B8E23; color: white; }
 [data-theme="dark"] .category-housing { background: #CD853F; color: white; }
 [data-theme="dark"] .category-war { background: #8B0000; color: white; }
 [data-theme="dark"] .category-nature { background: #228B22; color: white; }
 [data-theme="dark"] .category-community { background: #FF6347; color: white; }
+[data-theme="dark"] .category-general { background: #708090; color: white; }
 
 /* Category filter pills */
 .category-filter-container {

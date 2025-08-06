@@ -3,52 +3,64 @@
 // Category definitions
 var timelineCategories = {
     "heritage": {
-        "name": "Heritage & Culture",
+        "name": "Heritage",
         "color": "#8B4513", // Saddle brown
         "lightColor": "#A0522D",
-        "description": "Cultural heritage, preservation, and local identity"
+        "description": "Cultural heritage and preservation"
     },
     "gypsies": {
-        "name": "Gypsies & Travellers", 
+        "name": "Gypsies", 
         "color": "#800080", // Purple
         "lightColor": "#9370DB",
-        "description": "Romani community history and traditions"
+        "description": "Romani community and travellers"
     },
     "transport": {
         "name": "Transport",
         "color": "#4682B4", // Steel blue
         "lightColor": "#5F9FD8", 
-        "description": "Railways, roads, and infrastructure"
+        "description": "Railways, roads, and buses"
     },
     "churches": {
-        "name": "Churches & Education",
+        "name": "Churches",
         "color": "#B8860B", // Dark goldenrod
         "lightColor": "#DAA520",
-        "description": "Religious institutions and schools"
+        "description": "Religious institutions"
+    },
+    "education": {
+        "name": "Education",
+        "color": "#6B8E23", // Olive drab
+        "lightColor": "#8FBC8F",
+        "description": "Schools and colleges"
     },
     "housing": {
-        "name": "Housing & Development",
+        "name": "Housing",
         "color": "#CD853F", // Peru
         "lightColor": "#DEB887",
-        "description": "Residential development and urban planning"
+        "description": "Residential development"
     },
     "war": {
-        "name": "War & Conflict",
+        "name": "War",
         "color": "#8B0000", // Dark red
         "lightColor": "#CD5C5C",
-        "description": "Military events and wartime experiences"
+        "description": "Military and conflict"
     },
     "nature": {
-        "name": "Environment",
+        "name": "Nature",
         "color": "#228B22", // Forest green
         "lightColor": "#32CD32",
-        "description": "Natural features and green spaces"
+        "description": "Environment and green spaces"
     },
     "community": {
         "name": "Community",
         "color": "#FF6347", // Tomato
         "lightColor": "#FF7F50",
-        "description": "Social life and community organizations"
+        "description": "Social life and organizations"
+    },
+    "general": {
+        "name": "General",
+        "color": "#708090", // Slate gray
+        "lightColor": "#778899",
+        "description": "Other historical events"
     }
 };
 
@@ -143,7 +155,7 @@ var timelineData = [
 "description": "Samuel Pepys records in his diary on August 11th:  'This afternoon my wife and Mercer and Deb went with Pelling to see the gypsies at Lambeth and have their fortunes told; but what they did, I did not enquire.' His wife likely consulted Margaret Finch, who had become a renowned fortune teller. Later, Lord Byron, then at school with Dr. Glennie in Lordship Lane in Dulwich, whenever he felt inclined to play truant visited the Norwood Gypsies. These accounts illuminate how visiting gypsies for fortune-telling served as fashionable entertainment for London's social elite and captured the imagination of literary figures, providing some of the earliest documented references to the Romani presence in what would become Gipsy Hill.",
 "icon": "microphone",
 "importance": "major",
-"category": "gypsies",
+"category": "education",
 "citations": ["4"],
 "image": "images/samuel-pepys-1689.jpg",
 "imageCaption": "Samuel Pepys by Sir Godfrey Kneller, 1689<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Samuel_Pepys_by_Sir_Godfrey_Kneller_1689.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>",
@@ -157,7 +169,7 @@ var timelineData = [
 "description": "Margaret Finch dies at the claimed age of 108-109 years old on October 24th. Living in a conical hut built of branches at the base of a tree, she became famous for sitting in a crouching position with her chin on her knees, smoking two pipes and accompanied by her faithful dogs. Her decades-long practice of sitting with her chin on her knees caused her sinews to become so contracted that she could not rise from that posture, requiring burial in a specially constructed deep square box. She was buried at St. George's Church, Beckenham with much pomp, attended by large crowds, mourning coaches, and 'a great concourse of people.' Her influence persists in place names including Gipsy Hill, Finch Avenue, and Romany Road.",
 "icon": "death",
 "importance": "major",
-"category": "gypsies",
+"category": "churches",
 "citations": ["5"],
 "image": "images/margaret-finch-plaque.jpg",
 "imageCaption": "Margaret Finch, Queen of the Norwood Gypsies plaque<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Margaret_Finch,_Queen_of_the_Norwood_Gypsies_plaque.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Matt Brown, <a href='https://creativecommons.org/licenses/by/2.0/' target='_blank' rel='noopener'>CC BY 2.0</a>",
@@ -250,7 +262,7 @@ var timelineData = [
 "description": "Part of Gipsy Hill, known as  'Beaulieu Hill,' was so steep that the local community self-funded a team of 42 workers to reduce its height by nine feet. Creating a gentler slope of 1 foot in 12, they transformed it into a 'trotting hill' where horses could maintain a trot rather than walking. Each worker was rewarded with three pints of beer and a shilling for their efforts, as reported in the Public Ledger and Daily Advertiser on April 12, 1832.",
 "icon": "hill",
 "importance": "major",
-"category": "transport",
+"category": "war",
 "citations": ["6"],
 "image": "images/beaulieu-hill-newspaper-1832.jpg",
 "imageCaption": "Public Ledger and Daily Advertiser - Thursday 12 April 1832<br>Source: Historical newspaper archives",
@@ -417,7 +429,7 @@ var timelineData = [
 "description": "Social reformer and birth control advocate Annie Besant moves to 39 Colby Road in January following her separation from her clergyman husband. During her ten-month residence, she gives her first public lecture 'The Political Status of Women' in August and meets Charles Bradlaugh, President of the National Secular Society. From this South London base, she would launch her remarkable career spanning workers' rights, birth control advocacy, and socialism. The house was recently built and she chose the area for its proximity to supportive friends in Dulwich. A blue plaque was erected in 1963 to commemorate her time here.",
 "icon": "poi",
 "importance": "major",
-"category": "community",
+"category": "heritage",
 "citations": ["69"],
 "image": "images/annie-besant-plaque.jpg",
 "imageCaption": "Annie Besant blue plaque at 39 Colby Road, Gipsy Hill, London<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Annie_Besant_plaque.JPG' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
@@ -431,7 +443,7 @@ var timelineData = [
 "description": "Gipsy Hill Primary School opens, providing essential education for the growing number of families settling in the area. The school serves as a cornerstone of the developing community infrastructure.",
 "icon": "school",
 "importance": "minor",
-"category": "churches",
+"category": "education",
 "citations": ["17"],
 "image": "images/gipsy-road-school-1875.jpg",
 "imageCaption": "Gipsy Road School, built in 1875, later known as West Norwood School<br>Source: <a href='https://boroughphotos.org/lambeth/gipsy-road-school-west-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
@@ -445,7 +457,7 @@ var timelineData = [
 "description": "Kingswood Primary School opens on April 12th with capacity for 600 pupils. This substantial educational facility demonstrates the rapid population growth and the community's commitment to providing quality education for local children.",
 "icon": "school",
 "importance": "minor",
-"category": "churches",
+"category": "education",
 "citations": ["62"],
 },
 
@@ -467,7 +479,7 @@ var timelineData = [
 "description": "Woodland Road Elementary School (now Paxton Primary School) opens on January 10th on Cawnpore Street, Upper Norwood. Designed by architect T.J. Bailey with capacity for 800 pupils, the imposing four-story red brick Victorian building featured separate entrances for boys and girls, which continued until 1921. This original building served the community until its demolition in 1973, when it was replaced by a new structure. The school was rebuilt once more in 2016, continuing its educational legacy in modern facilities.",
 "icon": "school",
 "importance": "minor",
-"category": "churches",
+"category": "education",
 "citations": ["71"],
 },
 
@@ -548,7 +560,7 @@ var timelineData = [
 "description": "Britain's first Montessori training college opens at Woolsthorpe, No. 10 Dulwich Wood Avenue, established by Elizabeth Southern 'Belle' Rennie and Australian educator Lillian de Lissa. Belle Rennie, step-daughter of a prominent Harrogate physician, transformed her passionate interest in nursery education into authoritative expertise after visiting the Montessori Institute in Italy in 1911. She was instrumental in organizing the British 'Conference of the New Ideals in Education' at East Runton, Norfolk (1912) and Stratford-upon-Avon (1915), where she and fellow progressive educators envisioned creating a teacher training college. The Dulwich Estate granted a licence to use the house 'as a college for the training of young children and students in the Montessori system of education.' The Gipsy Hill Training College, operating from Dulwich Wood Avenue and later Kingswood Drive, became the primary institution where most early English Montessori teachers received their training. This pioneering establishment introduced revolutionary child-centered educational methods to Britain, with its legacy evident today in at least five Montessori nurseries in Dulwich and two more within a mile.",
 "icon": "school",
 "importance": "major",
-"category": "churches",
+"category": "education",
 "citations": ["89"],
 "image": "images/Queen-And-Ladys-Aug4-1917.jpg",
 "imageCaption": "The Queen and the Lady's Newspaper, Aug 4 1917<br>Announcement of Montessori teacher training opening at Gipsy Hill",
@@ -601,7 +613,7 @@ var timelineData = [
 "description": "Athol House, along with most of the substantial houses at the south end of College Road, was built by local builder Joseph Bowyer & Sons in the early 1870s. The architectural design is tentatively attributed to Robert Richardson Banks, a partner of Charles Barry Jr., the estate architect and surveyor. This is confirmed in research from the Dulwich Society.",
 "icon": "home",
 "importance": "minor",
-"category": "churches",
+"category": "education",
 "citations": ["16"],
 },
 
@@ -871,7 +883,7 @@ var timelineData = [
 "description": "Fanny the cat is born on June 7th and becomes a beloved local celebrity with her trailblazing Twitter social media account and fame with her Secret London video. Often found lounging on the Oyster card reader at Gipsy Hill station or in the Friends of Gipsy Hill community garden, Fanny captures hearts and becomes an unofficial mascot for the area, representing the warm community spirit of modern Gipsy Hill.",
 "icon": "heart",
 "importance": "major",
-"category": "community",
+"category": "war",
 "image": "images/fanny-wallis-print.png",
 "imageCaption": "Fanny the Gipsy Hill station cat<br>Source: <a href='https://gipsyhillfriends.org/who-is-fanny-the-gipsy-hill-cat/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
 "imageCaptionHTML": true,
@@ -899,7 +911,7 @@ var timelineData = [
 "description": "Friends of Gipsy Hill launches the first Village Fete on Long Meadow, bringing the community together for a day of celebration. This inaugural event features local vendors, live music, children's activities, and food stalls, establishing a biennial tradition that strengthens neighborhood bonds.",
 "icon": "fogh",
 "importance": "minor",
-"category": "community",
+"category": "nature",
 "citations": ["47"],
 "image": "images/gipsy-hill-village-fete-2019.jpg",
 "imageCaption": "First Gipsy Hill Village Fete on Long Meadow<br>Source: <a href='https://gipsyhillfriends.org/village-fete/' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
@@ -1014,7 +1026,7 @@ var timelineData = [
 "description": "Friends of Gipsy Hill continues to grow and evolve, maintaining their core mission of inspiring community involvement and sustainable use of local spaces. Current projects include expanding green initiatives, supporting local businesses, and fostering an inclusive community that celebrates Gipsy Hill's unique character and heritage.",
 "icon": "fogh",
 "importance": "major",
-"category": "community",
+"category": "transport",
 "citations": ["55"],
 "image": "images/fogh-volunteers-community-work.jpg",
 "imageCaption": "Friends of Gipsy Hill volunteers maintaining community spaces<br>Source: <a href='https://gipsyhillfriends.org' target='_blank' rel='noopener'>Friends of Gipsy Hill</a>",
