@@ -89,8 +89,8 @@ function initializeTimeline() {
         
         // Define UI icons inline
         var infoIcon = '<path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2M13 17H11V11H13M13 9H11V7H13" fill="currentColor"/>';
-        var menuIcon = '<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="white"/>';
-        var closeMenuIcon = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="white"/>';
+        var menuIcon = '<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="currentColor"/>';
+        var closeMenuIcon = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>';
         var closeIcon = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>';
         showDebug('UI icons defined');
         
@@ -236,55 +236,29 @@ function initializeTimeline() {
         // Set initial theme text
         updateThemeText();
         
-        // Minor entries toggle functionality
-        showDebug('Setting up minor entries toggle');
-        var minorToggle = document.getElementById('minor-toggle');
+        // Minor entries toggle removed - now in filter drawer only
         
-        // Create eye icons for the toggle
-        var eyeIcon = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor"/>';
-        var eyeOffIcon = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z" fill="currentColor"/>';
-        
-        minorToggle.querySelector('svg').innerHTML = eyeIcon;
-        
-        function updateMinorToggleState() {
-            var isHidden = document.body.classList.contains('hide-minor');
-            var minorText = document.querySelector('.minor-text');
+        // Setup minor toggle in filter drawer
+        var filterMinorToggle = document.getElementById('filter-minor-toggle');
+        if (filterMinorToggle) {
+            // Set initial state to match body class
+            filterMinorToggle.checked = !document.body.classList.contains('hide-minor');
             
-            if (isHidden) {
-                // When hidden, show eye icon (clicking will show entries)
-                minorToggle.querySelector('svg').innerHTML = eyeIcon;
-                if (minorText) {
-                    minorText.textContent = 'Show Minor Entries';
+            filterMinorToggle.addEventListener('change', function(e) {
+                if (e.target.checked) {
+                    document.body.classList.remove('hide-minor');
+                } else {
+                    document.body.classList.add('hide-minor');
                 }
-            } else {
-                // When shown, show eye-off icon (clicking will hide entries)
-                minorToggle.querySelector('svg').innerHTML = eyeOffIcon;
-                if (minorText) {
-                    minorText.textContent = 'Hide Minor Entries';
+                
+                // Update the old toggle in menu if it still exists
+                updateMinorToggleState();
+                
+                // Update filter status
+                if (typeof updateFilterStatus !== 'undefined') {
+                    updateFilterStatus();
                 }
-            }
-        }
-        
-        function toggleMinorEntries(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            var body = document.body;
-            body.classList.toggle('hide-minor');
-            
-            // Update button state
-            updateMinorToggleState();
-            
-            // Don't save minor entries preference - always show by default
-        }
-        
-        // Always show minor entries by default - no saved preference
-        // Set initial state (showing minor entries)
-        updateMinorToggleState();
-        
-        if (minorToggle) {
-            minorToggle.addEventListener('click', toggleMinorEntries);
-            minorToggle.addEventListener('touchend', toggleMinorEntries);
+            });
         }
         
         // About modal functionality
@@ -837,6 +811,13 @@ function initializeTimeline() {
                     showDebug('Total timeline items: ' + totalCount);
                 
                 timelineItems.forEach(function(item) {
+                    // Skip minor items if they're hidden
+                    var hideMinor = document.body.classList.contains('hide-minor');
+                    if (hideMinor && item.classList.contains('minor')) {
+                        item.classList.add('search-hidden');
+                        return;
+                    }
+                    
                     // Skip items that are filtered by time - search only within time window
                     if (item.classList.contains('time-filtered')) {
                         // Keep it hidden if outside time range
@@ -955,6 +936,9 @@ function initializeTimeline() {
             searchInput.addEventListener('input', performTimelineSearch);
             searchInput.addEventListener('keyup', performTimelineSearch);
             showDebug('Timeline search event handlers attached');
+            
+            // Make search function globally accessible for time filter integration
+            window.performTimelineSearch = performTimelineSearch;
             
             // Handle search on page load if there's a value
             if (searchInput.value) {
@@ -1995,6 +1979,19 @@ function initializeTimelineSearch() {
             timelineItems.forEach(function(item, index) {
                 if (!item) return;
                 
+                // Skip minor items if they're hidden
+                var hideMinor = document.body.classList.contains('hide-minor');
+                if (hideMinor && item.classList.contains('minor')) {
+                    item.classList.add('search-hidden');
+                    return;
+                }
+                
+                // Skip items that are filtered by time - search only within time window
+                if (item.classList.contains('time-filtered')) {
+                    item.classList.add('search-hidden');
+                    return;
+                }
+                
                 var searchableText = '';
                 var debugInfo = {};
                 
@@ -2093,6 +2090,9 @@ function initializeTimelineSearch() {
     searchInput.addEventListener('input', performTimelineSearch);
     searchInput.addEventListener('keyup', performTimelineSearch);
     
+    // Make search function globally accessible for time filter integration
+    window.performTimelineSearch = performTimelineSearch;
+    
     console.log('Timeline search initialized successfully');
 }
 
@@ -2137,16 +2137,24 @@ function initializeVisualTimeline() {
         var filterStatus = document.getElementById('filter-status');
         if (!filterStatus) return;
         
-        // Count visible items (not hidden by either filter)
-        var totalItems = document.querySelectorAll('.timeline-item').length;
-        var visibleItems = document.querySelectorAll('.timeline-item:not(.time-filtered):not(.search-hidden)').length;
+        // Check if minor entries are hidden
+        var hideMinor = document.body.classList.contains('hide-minor');
+        
+        // Count items based on minor entries visibility
+        var totalItemsSelector = hideMinor ? '.timeline-item:not(.minor)' : '.timeline-item';
+        var visibleItemsSelector = hideMinor 
+            ? '.timeline-item:not(.minor):not(.time-filtered):not(.search-hidden)' 
+            : '.timeline-item:not(.time-filtered):not(.search-hidden)';
+        
+        var totalItems = document.querySelectorAll(totalItemsSelector).length;
+        var visibleItems = document.querySelectorAll(visibleItemsSelector).length;
         
         // Get active filters info
         var searchInput = document.querySelector('.timeline-search-input');
         var hasSearch = searchInput && searchInput.value.trim() !== '';
         var hasTimeFilter = document.querySelectorAll('.timeline-item.time-filtered').length > 0;
         
-        if (hasSearch || hasTimeFilter) {
+        if (hasSearch || hasTimeFilter || hideMinor) {
             filterStatus.textContent = 'Showing ' + visibleItems + ' of ' + totalItems + ' entries';
             filterStatus.style.display = 'block';
         } else {
@@ -2161,6 +2169,7 @@ function initializeVisualTimeline() {
     // Initialize filter drawer
     var filterButton = document.getElementById('filter-toggle-button');
     var filterDrawer = document.getElementById('filter-drawer');
+    var filterBackdrop = document.getElementById('filter-backdrop');
     var filterDrawerClose = document.getElementById('filter-drawer-close');
     var filterIndicator = document.querySelector('.filter-indicator');
     
@@ -2168,13 +2177,8 @@ function initializeVisualTimeline() {
         // Open filter drawer
         filterButton.addEventListener('click', function() {
             filterDrawer.classList.add('active');
+            if (filterBackdrop) filterBackdrop.classList.add('active');
             filterButton.classList.add('drawer-open');
-            // Prevent all scroll and save position
-            var scrollPos = window.pageYOffset;
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.top = '-' + scrollPos + 'px';
-            document.body.style.width = '100%';
             
             // Update filter status when drawer opens
             updateFilterStatus();
@@ -2186,33 +2190,27 @@ function initializeVisualTimeline() {
             }
         });
         
-        // Close filter drawer
+        // Close filter drawer function
+        function closeFilterDrawer() {
+            filterDrawer.classList.remove('active');
+            if (filterBackdrop) filterBackdrop.classList.remove('active');
+            filterButton.classList.remove('drawer-open');
+        }
+        
+        // Close filter drawer via close button
         if (filterDrawerClose) {
-            filterDrawerClose.addEventListener('click', function() {
-                filterDrawer.classList.remove('active');
-                filterButton.classList.remove('drawer-open');
-                // Restore scroll
-                var scrollPos = parseInt(document.body.style.top || '0') * -1;
-                document.body.style.overflow = '';
-                document.body.style.position = '';
-                document.body.style.top = '';
-                document.body.style.width = '';
-                window.scrollTo(0, scrollPos);
-            });
+            filterDrawerClose.addEventListener('click', closeFilterDrawer);
+        }
+        
+        // Close filter drawer by clicking backdrop
+        if (filterBackdrop) {
+            filterBackdrop.addEventListener('click', closeFilterDrawer);
         }
         
         // Close on Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && filterDrawer.classList.contains('active')) {
-                filterDrawer.classList.remove('active');
-                filterButton.classList.remove('drawer-open');
-                // Restore scroll
-                var scrollPos = parseInt(document.body.style.top || '0') * -1;
-                document.body.style.overflow = '';
-                document.body.style.position = '';
-                document.body.style.top = '';
-                document.body.style.width = '';
-                window.scrollTo(0, scrollPos);
+                closeFilterDrawer();
             }
         });
     }
@@ -2758,6 +2756,9 @@ function initializeVisualTimeline() {
     function filterByYearRange(startYear, endYear) {
         console.log('Filtering timeline:', startYear, 'to', endYear);
         
+        // Check if this is the full range (no filter)
+        var isFullRange = (startYear <= minYear && endYear >= maxYear);
+        
         // Update visual feedback
         updateHistogramHighlight(startYear, endYear);
         
@@ -2829,26 +2830,68 @@ function initializeVisualTimeline() {
             }
         });
         
+        // Re-run search to respect the new time filter
+        var searchInput = document.querySelector('.timeline-search-input');
+        if (searchInput && searchInput.value) {
+            // Trigger search to reapply within new time range
+            if (typeof performTimelineSearch === 'function') {
+                performTimelineSearch();
+            } else if (window.performTimelineSearch) {
+                window.performTimelineSearch();
+            }
+        }
+        
         // Update unified filter status
         if (window.updateFilterStatus) {
             window.updateFilterStatus();
         }
-        // Show clear all button in header
+        
+        // Show/hide clear all button based on whether we have an active filter
         var clearAllButton = document.getElementById('clear-all-filters');
         if (clearAllButton) {
-            clearAllButton.style.display = 'inline-block';
+            if (isFullRange) {
+                clearAllButton.style.display = 'none';
+            } else {
+                clearAllButton.style.display = 'inline-block';
+            }
         }
         
         // Add active filter indicator to button
         var filterButton = document.getElementById('filter-toggle-button');
         var filterIndicator = document.querySelector('.filter-indicator');
-        if (filterButton) {
-            filterButton.classList.add('has-active-filter');
-        }
-        // Update indicator with count of filtered items
-        if (filterIndicator) {
-            filterIndicator.textContent = visibleCount;
-            filterIndicator.style.display = 'inline-flex';
+        var searchInput = document.querySelector('.timeline-search-input');
+        var hasSearch = searchInput && searchInput.value.trim() !== '';
+        
+        if (!isFullRange || hasSearch) {
+            // Show indicator if we have a time filter OR search
+            if (filterButton) {
+                filterButton.classList.add('has-active-filter');
+            }
+            // Update indicator with count of filtered items
+            if (filterIndicator) {
+                // If full range with search, count items not hidden by search
+                // Otherwise use the visibleCount from time filtering
+                var actualVisibleCount = visibleCount;
+                if (isFullRange && hasSearch) {
+                    // Check if minor entries are hidden
+                    var hideMinor = document.body.classList.contains('hide-minor');
+                    if (hideMinor) {
+                        actualVisibleCount = document.querySelectorAll('.timeline-item:not(.minor):not(.search-hidden)').length;
+                    } else {
+                        actualVisibleCount = document.querySelectorAll('.timeline-item:not(.search-hidden)').length;
+                    }
+                }
+                filterIndicator.textContent = actualVisibleCount;
+                filterIndicator.style.display = 'inline-flex';
+            }
+        } else {
+            // No filters active (full range AND no search)
+            if (filterButton) {
+                filterButton.classList.remove('has-active-filter');
+            }
+            if (filterIndicator) {
+                filterIndicator.style.display = 'none';
+            }
         }
         
         // Removed auto-scroll to prevent page jumping
@@ -2875,30 +2918,40 @@ function initializeVisualTimeline() {
     
     // Clear filter button handler
     function handleClearAll() {
-        // Reset timeline items (both time and search filters)
-        var timelineItems = document.querySelectorAll('.timeline-item');
-        timelineItems.forEach(function(item) {
-            item.classList.remove('time-filtered');
-            item.classList.remove('search-hidden');
-        });
+        // Clear search input first
+        var searchInput = document.querySelector('.timeline-search-input');
+        if (searchInput) {
+            searchInput.value = '';
+        }
         
-        // Reset histogram bars to default state
+        // Reset histogram bars to show all active
         histogramContainer.querySelectorAll('.histogram-bar').forEach(function(bar) {
-            bar.classList.remove('active');
+            bar.classList.add('active');
         });
         
-        // Reset range selector to full width
+        // Get range selector elements
+        var selectionRange = document.querySelector('.selection-range');
+        var leftHandle = document.querySelector('.selection-handle.left');
+        var rightHandle = document.querySelector('.selection-handle.right');
+        var startLabel = document.querySelector('.range-label.start');
+        var endLabel = document.querySelector('.range-label.end');
+        
+        // Reset range selector overlay to full width
         if (selectionRange) {
             selectionRange.style.left = '0%';
             selectionRange.style.width = '100%';
         }
         
-        // Reset handle positions to full range
+        // Reset handle positions to full range using correct positioning
         if (leftHandle) {
-            positionHandle(leftHandle, 0, true);
+            leftHandle.style.left = 'calc(0% - 30px)';
+            leftHandle.style.right = 'auto';
+            leftHandle.dataset.position = '0';
         }
         if (rightHandle) {
-            positionHandle(rightHandle, 100, false);
+            rightHandle.style.right = 'calc(0% - 30px)';
+            rightHandle.style.left = 'auto';
+            rightHandle.dataset.position = '100';
         }
         
         // Reset labels to full range
@@ -2909,16 +2962,20 @@ function initializeVisualTimeline() {
             endLabel.textContent = maxYear;
         }
         
-        // Clear search input
-        var searchInput = document.querySelector('.timeline-search-input');
-        if (searchInput) {
-            searchInput.value = '';
-        }
-        
         // Clear filter text
         if (filterRangeText) {
             filterRangeText.textContent = '';
         }
+        
+        // Apply full range filter (this will also clear time-filtered and search-hidden classes)
+        filterByYearRange(minYear, maxYear);
+        
+        // Reset timeline items (both time and search filters) - backup in case filterByYearRange didn't run
+        var timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach(function(item) {
+            item.classList.remove('time-filtered');
+            item.classList.remove('search-hidden');
+        });
         
         // Hide clear all button
         if (clearAllButton) {
