@@ -133,7 +133,7 @@ function initializeTimeline() {
             resetPrefsButton.querySelector('svg').innerHTML = '<path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>';
             
             resetPrefsButton.addEventListener('click', function() {
-                if (confirm('This will reset all preferences including theme settings and dismissed notices. Continue?')) {
+                if (confirm('Reset all preferences?')) {
                     // Get all localStorage keys and remove them
                     var keysToRemove = [];
                     for (var i = 0; i < localStorage.length; i++) {
@@ -181,7 +181,7 @@ function initializeTimeline() {
                     // Update theme toggle text
                     updateThemeText();
                     
-                    alert('All preferences have been reset to defaults.');
+                    alert('Preferences reset.');
                 }
             });
         }
@@ -669,6 +669,15 @@ function initializeTimeline() {
         title.className = 'content-title';
         title.textContent = item.title;
         header.appendChild(title);
+
+        // Add category badge if category exists
+        if (item.category && typeof timelineCategories !== 'undefined' && timelineCategories[item.category]) {
+            var categoryBadge = document.createElement('div');
+            categoryBadge.className = 'category-badge category-' + item.category;
+            categoryBadge.textContent = timelineCategories[item.category].name;
+            categoryBadge.title = timelineCategories[item.category].description;
+            content.appendChild(categoryBadge);
+        }
 
         content.appendChild(header);
 
@@ -2222,8 +2231,8 @@ function initializeVisualTimeline() {
         // Count items based on minor entries visibility
         var totalItemsSelector = hideMinor ? '.timeline-item:not(.minor)' : '.timeline-item';
         var visibleItemsSelector = hideMinor 
-            ? '.timeline-item:not(.minor):not(.time-filtered):not(.search-hidden)' 
-            : '.timeline-item:not(.time-filtered):not(.search-hidden)';
+            ? '.timeline-item:not(.minor):not(.time-filtered):not(.search-hidden):not(.category-filtered)' 
+            : '.timeline-item:not(.time-filtered):not(.search-hidden):not(.category-filtered)';
         
         var totalItems = document.querySelectorAll(totalItemsSelector).length;
         var visibleItems = document.querySelectorAll(visibleItemsSelector).length;
@@ -2232,8 +2241,9 @@ function initializeVisualTimeline() {
         var searchInput = document.querySelector('.timeline-search-input');
         var hasSearch = searchInput && searchInput.value.trim() !== '';
         var hasTimeFilter = document.querySelectorAll('.timeline-item.time-filtered').length > 0;
+        var hasCategoryFilter = activeCategoryFilters.size < Object.keys(timelineCategories || {}).length;
         
-        if (hasSearch || hasTimeFilter || hideMinor) {
+        if (hasSearch || hasTimeFilter || hideMinor || hasCategoryFilter) {
             filterStatus.textContent = 'Showing ' + visibleItems + ' of ' + totalItems + ' entries';
             filterStatus.style.display = 'block';
         } else {
@@ -2244,6 +2254,102 @@ function initializeVisualTimeline() {
     
     // Make it globally accessible
     window.updateFilterStatus = updateFilterStatus;
+    
+    // Initialize category filter
+    var activeCategoryFilters = new Set(); // Start with all categories active
+    
+    function initializeCategoryFilter() {
+        var container = document.getElementById('category-filter-container');
+        if (!container || typeof timelineCategories === 'undefined') return;
+        
+        // Clear existing pills
+        container.innerHTML = '';
+        
+        // Count entries per category
+        var categoryCounts = {};
+        var allEntries = document.querySelectorAll('.timeline-item');
+        
+        // Initialize all categories as active
+        for (var catKey in timelineCategories) {
+            activeCategoryFilters.add(catKey);
+            categoryCounts[catKey] = 0;
+        }
+        
+        // Count entries
+        allEntries.forEach(function(entry) {
+            // Find the corresponding data item
+            var title = entry.querySelector('.content-title');
+            if (title) {
+                var dataItem = timelineData.find(function(item) {
+                    return item.title === title.textContent;
+                });
+                if (dataItem && dataItem.category) {
+                    categoryCounts[dataItem.category] = (categoryCounts[dataItem.category] || 0) + 1;
+                    // Store category on element for filtering
+                    entry.dataset.category = dataItem.category;
+                }
+            }
+        });
+        
+        // Create pills for each category
+        for (var categoryKey in timelineCategories) {
+            var category = timelineCategories[categoryKey];
+            var count = categoryCounts[categoryKey] || 0;
+            
+            var pill = document.createElement('div');
+            pill.className = 'category-pill category-' + categoryKey + ' active';
+            pill.dataset.category = categoryKey;
+            
+            var nameSpan = document.createElement('span');
+            nameSpan.textContent = category.name;
+            pill.appendChild(nameSpan);
+            
+            var countSpan = document.createElement('span');
+            countSpan.className = 'category-pill-count';
+            countSpan.textContent = '(' + count + ')';
+            pill.appendChild(countSpan);
+            
+            pill.title = category.description + ' - Click to toggle';
+            
+            // Add click handler
+            pill.addEventListener('click', function() {
+                var catKey = this.dataset.category;
+                
+                if (activeCategoryFilters.has(catKey)) {
+                    activeCategoryFilters.delete(catKey);
+                    this.classList.remove('active');
+                    this.classList.add('inactive');
+                } else {
+                    activeCategoryFilters.add(catKey);
+                    this.classList.add('active');
+                    this.classList.remove('inactive');
+                }
+                
+                applyCategoryFilter();
+                updateFilterStatus();
+                updateFilterIndicator();
+            });
+            
+            container.appendChild(pill);
+        }
+    }
+    
+    function applyCategoryFilter() {
+        var allEntries = document.querySelectorAll('.timeline-item');
+        
+        allEntries.forEach(function(entry) {
+            var category = entry.dataset.category;
+            
+            if (!category || activeCategoryFilters.has(category)) {
+                entry.classList.remove('category-filtered');
+            } else {
+                entry.classList.add('category-filtered');
+            }
+        });
+    }
+    
+    // Initialize categories
+    initializeCategoryFilter();
     
     // Initialize filter drawer
     var filterButton = document.getElementById('filter-toggle-button');
@@ -3003,6 +3109,17 @@ function initializeVisualTimeline() {
             searchInput.value = '';
         }
         
+        // Reset category filters - activate all
+        activeCategoryFilters.clear();
+        for (var catKey in timelineCategories) {
+            activeCategoryFilters.add(catKey);
+        }
+        // Update category pills UI
+        document.querySelectorAll('.category-pill').forEach(function(pill) {
+            pill.classList.add('active');
+            pill.classList.remove('inactive');
+        });
+        
         // Reset histogram bars to show all active
         histogramContainer.querySelectorAll('.histogram-bar').forEach(function(bar) {
             bar.classList.add('active');
@@ -3054,7 +3171,11 @@ function initializeVisualTimeline() {
         timelineItems.forEach(function(item) {
             item.classList.remove('time-filtered');
             item.classList.remove('search-hidden');
+            item.classList.remove('category-filtered');
         });
+        
+        // Apply category filter
+        applyCategoryFilter();
         
         // Hide clear all button
         if (clearAllButton) {
