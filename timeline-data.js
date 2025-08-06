@@ -32,11 +32,11 @@ var timelineCategories = {
         "lightColor": "#8FBC8F",
         "description": "Schools and colleges"
     },
-    "housing": {
-        "name": "Housing",
+    "buildings": {
+        "name": "Buildings",
         "color": "#CD853F", // Peru
         "lightColor": "#DEB887",
-        "description": "Residential development"
+        "description": "Houses, estates, and structures"
     },
     "war": {
         "name": "War",
@@ -237,7 +237,7 @@ var timelineData = [
 "description": "The Lambeth Manor Inclosure Commissioners issue their Award, formally authorizing the enclosure of Norwood Common and establishing the road network that would define the area's development. New roads laid out include what are now Norwood High Street, Elder Road, Chapel Road, Gipsy Road, Salters Hill, and Gipsy Hill. This systematic planning transforms the ancient common land into a structured suburban landscape, marking the end of the centuries-long Gypsy presence and beginning the area's transformation from rural heath to Victorian suburb.",
 "icon": "road",
 "importance": "major",
-"category": "housing",
+"category": "buildings",
 "citations": ["59"],
 },
 
@@ -248,7 +248,7 @@ var timelineData = [
 "description": "Lawyer William Vizard leases land from Dulwich College and builds Kingswood Lodge, completed in 1814. The original rectangular house forms the core of what would become the magnificent Kingswood House.",
 "icon": "home",
 "importance": "minor",
-"category": "housing",
+"category": "buildings",
 "citations": ["60"],
 "image": "images/william-vizard.jpg",
 "imageCaption": "William Vizard (1774–1859), English lawyer. Engraving by Thomas Wright, c. 1820<br>Source: <a href='https://commons.wikimedia.org/wiki/File:William_Vizard_Wright.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, Public Domain",
@@ -401,7 +401,7 @@ var timelineData = [
 "description": "The United Land Company started laying out roads around Gipsy Hill, marking the beginning of systematic suburban development in the area. This speculative building company would go on to construct many of the large Victorian houses that still characterize the neighborhood today.",
 "icon": "road",
 "importance": "minor",
-"category": "housing",
+"category": "buildings",
 "citations": ["61"],
 },
 
@@ -679,7 +679,7 @@ var timelineData = [
 "description": "Following Basil Aldous's death, the Cheshire Foundation acquires Athol House for £12,500 in 1953. The building undergoes pioneering accessibility retrofitting including lift shaft installation, ramps, and widened doorways—predating statutory barrier-free standards by decades while preserving Scott's original exterior. In October 1955, Group-Captain Leonard Cheshire VC and the Duchess of Gloucester formally open London's first Cheshire Home for the Sick, offering 28 beds for people with severe physical disabilities.",
 "icon": "home",
 "importance": "major",
-"category": "housing",
+"category": "buildings",
 "citations": ["23"],
 "image": "images/cheshire-smile-magazine-1960-page1.jpg",
 "imageCaption": "THE CHESHIRE SMILE Vol. 6, No. I SPRING, 1960<br>Source: <a href='https://rewind.leonardcheshire.org/the-archive/cheshire-smiles/' target='_blank' rel='noopener'>Leonard Cheshire Archive</a>, Public Domain",
@@ -755,7 +755,7 @@ var timelineData = [
 "description": "The Central Hill Estate is built in two phases by Lambeth Council in 1967-1974, designed by Rosemary Stjernstedt, Roger Westman and the Lambeth Council planning department under the directorship of Ted Hollamby. Stjernstedt was brought in by Hollamby from the LCC and Ted Happold from Arup & Partners advised on structural engineering. This modernist housing development comprises 162 flats and 212 houses laid out in terraces of pale grey brick, representing a new chapter in community living and social housing.",
 "icon": "apartment",
 "importance": "major",
-"category": "housing",
+"category": "buildings",
 "citations": ["25"],
 "image": "images/central-hill-estate.jpg",
 "imageCaption": "Central Hill Estate, SE19 (1960s–70s) by Christopher Hilton<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Central_Hill_Estate,_SE19_-_geograph.org.uk_-_4918582.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, <a href='https://creativecommons.org/licenses/by-sa/2.0/' target='_blank' rel='noopener'>CC BY-SA 2.0</a>",
@@ -1015,7 +1015,7 @@ var timelineData = [
 "description": "A phased refurbishment upgrades lifts, fire-safety systems and sash-window secondary glazing, partially funded by the Dulwich Estate's community-investment programme. Works respect Scott's original brick and pantile palette under conservation architects Alan Baxter Associates, demonstrating how Grade II-equivalent buildings can be sensitively modernized while maintaining their architectural integrity and continuing their vital community role.",
 "icon": "home",
 "importance": "minor",
-"category": "housing",
+"category": "buildings",
 "citations": ["54"],
 },
 
