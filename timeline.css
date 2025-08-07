@@ -3305,14 +3305,14 @@ body.hide-minor .timeline-item.minor {
 
 /* Confirmation Modal Styles */
 .confirmation-modal {
-    max-width: 500px;
-    padding: 30px;
+    max-width: 450px;
+    padding: 20px;
 }
 
 .confirmation-modal h3 {
-    margin: 0 0 20px 0;
+    margin: 0 0 15px 0;
     color: var(--text-primary);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .confirmation-info {
@@ -3426,8 +3426,8 @@ body.hide-minor .timeline-item.minor {
     background: #fff3cd;
     border: 1px solid #ffeaa7;
     border-radius: 4px;
-    padding: 16px;
-    margin-bottom: 20px;
+    padding: 12px;
+    margin-bottom: 15px;
 }
 
 .privacy-notice p {
