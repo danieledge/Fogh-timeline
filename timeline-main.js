@@ -2418,21 +2418,25 @@ function initializeTimeline() {
                     // Previous button
                     html += '<button class="pagination-button" ' + (currentPage === 1 ? 'disabled' : '') + ' data-page="prev">Previous</button>';
                     
-                    // Page numbers
-                    var startPage = Math.max(1, currentPage - 2);
+                    // Calculate which page group to show (groups of 5)
+                    var pageGroup = Math.ceil(currentPage / 5);
+                    var startPage = (pageGroup - 1) * 5 + 1;
                     var endPage = Math.min(totalPages, startPage + 4);
                     
+                    // Show first page if not in first group
                     if (startPage > 1) {
                         html += '<button class="pagination-button" data-page="1">1</button>';
-                        if (startPage > 2) html += '<span class="pagination-ellipsis">...</span>';
+                        html += '<span class="pagination-ellipsis">...</span>';
                     }
                     
+                    // Show up to 5 page numbers
                     for (var i = startPage; i <= endPage; i++) {
                         html += '<button class="pagination-button ' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</button>';
                     }
                     
+                    // Show last page if not in last group
                     if (endPage < totalPages) {
-                        if (endPage < totalPages - 1) html += '<span class="pagination-ellipsis">...</span>';
+                        html += '<span class="pagination-ellipsis">...</span>';
                         html += '<button class="pagination-button" data-page="' + totalPages + '">' + totalPages + '</button>';
                     }
                     
