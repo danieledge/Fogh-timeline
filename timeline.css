@@ -1,6 +1,55 @@
+/* Prevent zoom on mobile devices */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+select,
+textarea {
+    font-size: 16px !important; /* Prevents zoom on iOS when focusing inputs */
+}
+
+/* Prevent double-tap zoom */
+button,
+a,
+.clickable,
+.timeline-item,
+.citation-link,
+.category-badge,
+.filter-toggle-button,
+.content-header,
+.citation-card-header,
+.collapsible-header,
+.carousel-arrow {
+    touch-action: manipulation; /* Prevents double-tap zoom while allowing scrolling */
+}
+
+/* Ensure body doesn't overflow horizontally */
+body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+/* Ensure all containers respect viewport width */
+.timeline-container,
+.header,
+.modal-content,
+.filter-drawer {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
 :root {
     --bg-primary: #fafafa;
     --bg-secondary: #ffffff;
+    --bg-secondary-rgb: 255, 255, 255;
     --bg-tertiary: #f5f5f5;
     --text-primary: #2c3e50;
     --text-secondary: #6c757d;
@@ -21,6 +70,7 @@
 [data-theme="dark"] {
     --bg-primary: #1a1a1a;
     --bg-secondary: #242424;
+    --bg-secondary-rgb: 36, 36, 36;
     --bg-tertiary: #2e2e2e;
     --text-primary: #e8e8e8;
     --text-secondary: #a8a8a8;
@@ -307,7 +357,7 @@ body::before {
 /* Remove old theme toggle icon styles that were causing issues */
 
 .header {
-    padding: 1.5rem 1.5rem 2rem;
+    padding: 1rem 1.5rem 1rem; /* Reduced top and bottom padding */
     position: relative;
     z-index: 10;
     width: 100%;
@@ -360,7 +410,7 @@ body::before {
     font-size: 1rem;
     color: var(--text-secondary);
     max-width: 600px;
-    margin: 0 auto 1rem;
+    margin: 0 auto 0.25rem; /* Reduced bottom margin */
     line-height: 1.6;
     opacity: 0;
     animation: fadeInDown 0.8s ease forwards 0.3s;
@@ -369,7 +419,7 @@ body::before {
 .header-link {
     opacity: 0;
     animation: fadeInDown 0.8s ease forwards 0.4s;
-    margin: 0.25rem 0 0.75rem;
+    margin: 0.1rem 0 0.5rem; /* Reduced margins */
     text-align: center;
 }
 
@@ -394,7 +444,7 @@ body::before {
     border: 1.5px solid var(--accent-primary);
     border-radius: 8px;
     padding: 10px 40px 10px 14px;
-    margin: 16px auto 0;
+    margin: 8px auto 0; /* Reduced top margin */
     font-size: 13px;
     color: var(--text-secondary);
     max-width: 600px;
@@ -492,6 +542,12 @@ body::before {
     margin: 0 auto;
     position: relative;
     padding: 1rem 1rem 4rem;
+    transition: margin-top 0.3s ease;
+}
+
+/* Move timeline up when WIP notice is hidden */
+.wip-hidden .timeline-container {
+    margin-top: -1rem; /* Move timeline up */
 }
 
 .timeline-line {
@@ -512,7 +568,7 @@ body::before {
 
 .timeline-item {
     position: relative;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem; /* Reduced from 2rem for more compact view */
     padding-left: 100px;
     /* Removed initial opacity and animation - items are visible by default */
 }
@@ -521,7 +577,7 @@ body::before {
 
 /* Minor timeline entries - collapsed by default */
 .timeline-item.minor {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.25rem; /* Reduced from 1.75rem for more compact view */
 }
 
 /* Ensure consistent spacing between all timeline items */
@@ -586,6 +642,19 @@ body::before {
     cursor: pointer;
 }
 
+/* Show images when major entries are expanded */
+.timeline-item.major.expanded .content-images-wrapper {
+    display: block !important;
+}
+
+.timeline-item.major.expanded .content-images-wrapper.dual-images {
+    display: flex !important;
+}
+
+.timeline-item.major.expanded .content-images-wrapper.triple-images {
+    display: flex !important;
+}
+
 /* Make title clickable for major entries */
 .timeline-item.major .content-title {
     cursor: pointer;
@@ -631,8 +700,13 @@ body::before {
 
 .timeline-item.minor .timeline-content {
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.03);
-    max-width: 85%;
     transition: all 0.3s ease;
+}
+
+/* When expanded, minor entries can use full width like major entries */
+.timeline-item.minor.expanded .timeline-content {
+    display: block !important;
+    max-width: 100%;
 }
 
 .timeline-item.minor .content-header {
@@ -673,26 +747,28 @@ body::before {
 .timeline-item.minor .timeline-date {
     font-size: 1rem !important;
     padding: 0.4rem 1rem !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 0.5rem !important; /* Reduced from 1rem */
 }
 
 .timeline-item.minor:not(.expanded) .timeline-content {
-    display: block !important;
+    display: block !important; /* Block to force new line */
+    width: fit-content !important; /* Size to content */
     padding: 1.25rem !important;
     background: var(--bg-secondary);
     border-radius: 24px !important;
     box-shadow: var(--shadow-sm) !important;
-    width: fit-content !important;
-    max-width: fit-content !important;
+    max-width: 100% !important; /* Allow to scale up to major entry width */
     position: relative !important;
     overflow: visible !important;
+    cursor: pointer;
 }
 
 
 .timeline-item.minor:not(.expanded) .content-header {
     margin-bottom: 0 !important;
-    align-items: center;
-    display: flex !important;
+    align-items: flex-start; /* Align to top for wrapped content */
+    display: inline-flex !important; /* Use inline-flex to size to content */
+    width: auto !important;
 }
 
 /* Smaller but proportional icon for collapsed state - same shape as major */
@@ -712,8 +788,10 @@ body::before {
     font-size: 1rem !important;
     font-weight: 500 !important;
     color: var(--text-primary) !important;
-    padding-right: 40px !important; /* Space for chevron */
-    white-space: nowrap !important;
+    display: flex !important;
+    flex-direction: column !important; /* Stack vertically */
+    align-items: flex-start !important;
+    gap: 0.25rem !important;
 }
 
 /* Icon SVG styling for collapsed state */
@@ -728,28 +806,24 @@ body::before {
     position: relative;
 }
 
-.timeline-item.minor .content-title::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 28px;
-    height: 20px;
-    background: url('icons/chevron-down.svg') no-repeat center,
-                linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-    background-size: 12px 12px, 100% 100%;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    opacity: 0.9;
-    flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(255, 111, 97, 0.2);
+/* Title text for collapsed minor entries */
+.timeline-item.minor:not(.expanded) .title-text {
+    display: block;
+    white-space: normal; /* Allow text to wrap if needed */
 }
 
-.timeline-item.minor .content-title:hover::after {
-    opacity: 1;
-    transform: translateY(-50%) translateY(-1px);
-    box-shadow: 0 3px 10px rgba(255, 111, 97, 0.3);
+/* Read more indicator for collapsed minor entries */
+.timeline-item.minor:not(.expanded) .read-more-text {
+    display: block; /* Force new line */
+    color: var(--accent-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    margin-top: 0.25rem; /* Add spacing above */
+}
+
+.timeline-item.minor:not(.expanded) .content-title:hover .read-more-text {
+    color: var(--accent-secondary);
 }
 
 /* Expanded state */
@@ -770,33 +844,28 @@ body::before {
     margin-bottom: 1rem;
 }
 
-/* Hide the inline + when expanded */
-.timeline-item.minor.expanded .content-title::after {
+/* Hide read more text when expanded */
+.timeline-item.minor.expanded .read-more-text {
     display: none;
 }
 
-.timeline-item.minor.expanded .content-header::after {
-    content: '';
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 28px;
-    height: 20px;
-    background: url('icons/chevron-up.svg') no-repeat center,
-                linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-    background-size: 12px 12px, 100% 100%;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    opacity: 0.9;
-    z-index: 10;
-    box-shadow: 0 2px 8px rgba(255, 111, 97, 0.2);
+/* Show less indicator for expanded minor entries */
+.timeline-item.minor.expanded .read-less-text {
+    display: inline-block;
+    color: var(--accent-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    cursor: pointer;
 }
 
-.timeline-item.minor.expanded .content-header:hover::after {
-    opacity: 1;
-    transform: translateY(-50%) translateY(-1px);
-    box-shadow: 0 3px 10px rgba(255, 111, 97, 0.3);
+.timeline-item.minor.expanded .read-less-text:hover {
+    color: var(--accent-secondary);
+}
+
+/* Hide read less when collapsed */
+.timeline-item.minor:not(.expanded) .read-less-text {
+    display: none;
 }
 
 @keyframes fadeIn {
@@ -832,14 +901,15 @@ body::before {
 }
 
 .timeline-date {
-    display: inline-block;
+    display: block;
+    width: fit-content;
     background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
     color: white;
     padding: 0.75rem 2rem;
     border-radius: 50px;
     font-weight: 600;
     font-size: 1.125rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem; /* Reduced from 1.5rem */
     box-shadow: 0 4px 15px rgba(255, 111, 97, 0.3);
     transition: all 0.3s ease;
 }
@@ -862,9 +932,9 @@ body::before {
 /* Category badge */
 .category-badge {
     position: absolute;
-    top: 0.75rem;
+    top: 1rem;
     right: 0.75rem;
-    padding: 0.2rem 0.6rem;
+    padding: 0.3rem 0.7rem;
     border-radius: 10px;
     font-size: 0.65rem;
     font-weight: 600;
@@ -873,6 +943,15 @@ body::before {
     opacity: 0.85;
     transition: all 0.2s ease;
     z-index: 10;
+}
+
+/* Adjust category badge position in expanded minor entries */
+.timeline-item.minor.expanded .category-badge {
+    position: absolute !important; /* Keep absolute positioning */
+    top: 0.75rem;
+    right: 0.75rem; /* Fully right-aligned like major entries */
+    width: auto !important; /* Auto width to fit content */
+    flex-shrink: 0; /* Prevent badge from shrinking */
 }
 
 /* Hide category badge on collapsed minor entries */
@@ -890,6 +969,25 @@ body::before {
     padding-right: 0 !important;
 }
 
+/* For expanded minor entries, reorganize header layout */
+.timeline-item.minor.expanded .content-header {
+    padding-right: 5rem !important; /* Space for category badge */
+    display: flex;
+    align-items: center; /* Center align items vertically */
+    flex-wrap: nowrap; /* Prevent wrapping */
+    position: relative;
+    width: 100%;
+}
+
+.timeline-item.minor.expanded .content-title {
+    font-size: 1.125rem !important;
+    line-height: 1.3;
+    flex: 1 1 auto;
+    word-wrap: break-word;
+    white-space: normal; /* Allow text wrapping when absolutely necessary */
+    max-width: calc(100% - 1rem); /* Ensure title doesn't extend under badge */
+}
+
 .timeline-content .content-title {
     padding-right: 1rem; /* Additional padding for title text */
     max-width: calc(100% - 1rem);
@@ -903,8 +1001,8 @@ body::before {
 @media (max-width: 768px) {
     .category-badge {
         font-size: 0.6rem;
-        padding: 0.15rem 0.5rem;
-        top: 0.5rem;
+        padding: 0.25rem 0.6rem;
+        top: 0.75rem;
         right: 0.5rem;
     }
     
@@ -1102,7 +1200,7 @@ body::before {
 }
 
 .content-title {
-    font-size: 1.25rem;
+    font-size: 1.15rem; /* Reduced from 1.25rem */
     font-weight: 600;
     color: var(--text-primary);
     line-height: 1.3;
@@ -1191,6 +1289,214 @@ body::before {
     margin-top: 1.5rem;
 }
 
+/* Image Carousel */
+.content-images-wrapper.image-carousel {
+    margin-top: 1.5rem;
+    position: relative;
+    width: 100%; /* Full width of container */
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: visible; /* Change to visible so arrows aren't clipped */
+    border-radius: 16px;
+    background: var(--bg-secondary);
+    padding: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-viewport {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    background: transparent;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    position: relative;
+}
+
+.carousel-slide {
+    min-width: 100%; /* Each slide takes full width */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-right: 8px;
+}
+
+.carousel-slide > .content-image {
+    width: 100%;
+    margin: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    max-width: none !important;
+    position: relative;
+    display: block;
+    /* Height is auto to accommodate caption */
+}
+
+.carousel-slide > .content-image > img {
+    width: 100% !important;
+    height: 180px !important;
+    max-height: 180px !important; 
+    min-height: 180px !important;
+    display: block;
+    border-radius: 8px;
+    cursor: pointer;
+    object-fit: cover !important; /* Crop to fit while maintaining aspect ratio */
+    object-position: center top; /* Align to top to avoid cutting heads/important parts */
+    background: transparent !important;
+}
+
+.carousel-slide .content-image-caption {
+    padding: 8px 4px 4px 4px;
+    margin-top: 8px;
+    font-size: 0.7rem;
+    line-height: 1.3;
+    color: var(--text-secondary);
+    display: block !important;
+    /* Remove height restriction to show full caption */
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Fade gradient overlay on right side */
+.carousel-viewport::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 30%;
+    background: linear-gradient(to right, 
+        transparent 0%, 
+        rgba(var(--bg-secondary-rgb), 0.3) 20%,
+        rgba(var(--bg-secondary-rgb), 0.7) 60%,
+        rgba(var(--bg-secondary-rgb), 0.95) 100%);
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Carousel Navigation Arrows */
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 20; /* Higher than overlay */
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    opacity: 0.9;
+}
+
+.carousel-arrow:hover {
+    background: rgba(0, 0, 0, 0.7);
+    transform: translateY(-50%) scale(1.1);
+    opacity: 1;
+}
+
+.carousel-arrow svg {
+    width: 18px;
+    height: 18px;
+}
+
+.carousel-prev {
+    left: 8px;
+}
+
+.carousel-next {
+    right: 8px;
+}
+
+/* Carousel Indicators */
+.carousel-indicators {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 15; /* Above overlay but below arrows */
+}
+
+.carousel-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.carousel-dot.active {
+    background: rgba(255, 255, 255, 1);
+    width: 8px;
+    height: 8px;
+}
+
+.carousel-dot:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* Fade effect for next image preview */
+.carousel-container::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1));
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Dark theme adjustments */
+/* Light theme adjustments for carousel arrows */
+[data-theme="light"] .carousel-arrow {
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .carousel-arrow:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark theme keeps default styles */
+[data-theme="dark"] .carousel-arrow {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .carousel-arrow:hover {
+    background: rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .carousel-container::after {
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.05));
+}
+
+/* Keep original styles for single images and old dual/triple layout */
 .content-images-wrapper.dual-images {
     display: flex;
     gap: 1rem;
@@ -1205,6 +1511,13 @@ body::before {
     border-radius: 16px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+}
+
+/* But carousel images should not have padding or background */
+.carousel-slide > .content-image {
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
 }
 
 /* When there are two images, adjust their sizing */
@@ -1229,16 +1542,16 @@ body::before {
     }
 }
 
-/* Always show images, even when content is collapsed */
+/* Hide images when major entries are collapsed */
 .timeline-item.major:not(.expanded) .content-images-wrapper,
 .timeline-item.major:not(.expanded) .content-image,
 .timeline-item.major:not(.expanded) .content-image-caption {
-    display: block !important;
+    display: none !important;
 }
 
-/* Keep flex display for dual images in major entries */
+/* Hide dual images when collapsed */
 .timeline-item.major:not(.expanded) .content-images-wrapper.dual-images {
-    display: flex !important;
+    display: none !important;
 }
 
 /* Triple images layout */
@@ -1269,9 +1582,9 @@ body::before {
     }
 }
 
-/* Keep flex display for triple images in major entries */
+/* Hide triple images when collapsed */
 .timeline-item.major:not(.expanded) .content-images-wrapper.triple-images {
-    display: flex !important;
+    display: none !important;
 }
 
 .content-image {
@@ -1320,7 +1633,23 @@ body::before {
     user-select: none; /* Prevent text selection on long press */
 }
 
+/* Force uniform height for carousel images only, not containers */
+.content-images-wrapper.image-carousel .carousel-slide .content-image {
+    height: auto !important; /* Allow height for image + caption */
+}
+
+.content-images-wrapper.image-carousel .carousel-slide .content-image img {
+    width: 100% !important;
+    height: auto !important; /* Let height adjust naturally */
+    max-height: 250px !important; /* Reasonable max to prevent huge images */
+    object-fit: contain !important; /* Show full image without cropping */
+}
+
 [data-theme="dark"] .content-image img {
+    background: #2a2a2a;
+}
+
+[data-theme="dark"] .carousel-slide .content-image {
     background: #2a2a2a;
 }
 
@@ -1488,12 +1817,12 @@ body::before {
     }
 
     .header {
-        padding: 1.5rem 1rem 2rem;
+        padding: 0.75rem 1rem 0.75rem; /* Further reduced on mobile */
     }
     
     .fogh-logo-header svg,
 .fogh-logo-header img {
-        width: 280px;
+        width: 220px; /* Reduced from 280px for mobile */
     }
     
     .header h1 {
@@ -1528,11 +1857,11 @@ body::before {
     .timeline-item.minor:not(.expanded) .timeline-date {
         font-size: 0.85rem !important;
         padding: 0.35rem 0.75rem !important;
-        margin-bottom: 0.75rem !important;
+        margin-bottom: 0.4rem !important; /* Reduced from 0.75rem */
     }
     
     .timeline-item.minor.expanded .timeline-content {
-        max-width: 90%;
+        max-width: 100%; /* Same as major entries on mobile */
     }
     
     .timeline-item.minor .content-icon {
@@ -1549,30 +1878,32 @@ body::before {
         font-size: 1rem;
     }
     
-    .timeline-item.minor .content-title::after {
-        width: 24px;
-        height: 16px;
-        background-size: 100% 100%, 16px 16px;
-        right: -5px; /* Adjust for mobile */
+    /* Read more text styling for mobile */
+    .timeline-item.minor:not(.expanded) .read-more-text {
+        font-size: 0.85rem;
     }
     
-    .timeline-item.minor.expanded .content-header::after {
-        width: 24px;
-        height: 16px;
-        background-size: 100% 100%, 14px 14px;
-        right: 0.5rem;
+    .timeline-item.minor.expanded .read-less-text {
+        font-size: 0.85rem;
+    }
+    
+    /* Adjust padding for minor expanded on mobile */
+    .timeline-item.minor.expanded .content-header {
+        padding-right: 4rem !important; /* Space for category badge on mobile */
     }
     
     /* Collapsed minor entries on mobile with flexible sizing */
     .timeline-item.minor:not(.expanded) .timeline-content {
+        display: block !important; /* Block to force new line */
+        width: fit-content !important; /* Size to content */
         padding: 1rem !important;
         background: var(--bg-secondary);
         border-radius: 12px !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-        width: fit-content !important;
-        max-width: 100% !important;
+        max-width: 100% !important; /* Allow full width on mobile if needed */
         position: relative !important;
         overflow: visible !important;
+        cursor: pointer;
     }
     
     .timeline-item.minor:not(.expanded) .content-icon {
@@ -1589,7 +1920,7 @@ body::before {
     
     .timeline-item.minor:not(.expanded) .content-title {
         font-size: 0.85rem !important;
-        padding-right: 30px !important; /* Less space needed on mobile */
+        gap: 0.15rem !important; /* Smaller gap on mobile */
     }
     
     .timeline-item.minor:not(.expanded) .content-icon svg {
@@ -1693,6 +2024,7 @@ body::before {
     border-radius: 50%;
     width: 36px;
     height: 36px;
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2402,11 +2734,12 @@ body.hide-minor .timeline-item.minor {
 .citation-list {
     max-width: 1000px;
     margin: 20px auto 40px;
-    padding: 30px;
+    padding: 30px 30px 40px 30px; /* Extra bottom padding */
     background: var(--bg-secondary);
     border-radius: 12px;
     box-shadow: var(--shadow-sm);
     position: relative;
+    overflow: visible; /* Ensure nothing is clipped */
 }
 
 .citation-list::before {
@@ -2461,12 +2794,36 @@ body.hide-minor .timeline-item.minor {
     background: rgba(255, 193, 7, 0.1);
     border: 1px solid rgba(255, 193, 7, 0.3);
     border-radius: 8px;
-    padding: 16px 20px;
+    padding: 16px 40px 16px 20px;
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 0.9rem;
     color: var(--text-secondary);
     line-height: 1.7;
+    position: relative;
+}
+
+.work-in-progress-note .wip-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.work-in-progress-note .wip-close:hover {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .work-in-progress-note strong {
@@ -2516,6 +2873,7 @@ body.hide-minor .timeline-item.minor {
 /* Citation card styles */
 .citations-grid {
     margin-top: 20px;
+    padding-bottom: 20px; /* Ensure last card isn't cut off */
 }
 
 .citation-card {
@@ -2526,6 +2884,10 @@ body.hide-minor .timeline-item.minor {
     transition: all 0.3s ease;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.citation-card:last-child {
+    margin-bottom: 0; /* No margin on last card */
 }
 
 [data-theme="dark"] .citation-card {
@@ -2730,7 +3092,7 @@ body.hide-minor .timeline-item.minor {
 }
 
 .citation-card-body:not(.collapsed) {
-    max-height: 2000px;
+    max-height: none;
     padding: 20px;
     border-top: 1px solid var(--bg-tertiary);
     overflow: visible;
@@ -2744,6 +3106,7 @@ body.hide-minor .timeline-item.minor {
     margin-bottom: 12px;
     font-size: 0.9rem;
     line-height: 1.5;
+    color: var(--text-secondary);
 }
 
 .citation-detail:last-child {
@@ -3103,7 +3466,11 @@ body.hide-minor .timeline-item.minor {
     color: var(--accent-primary);
     text-decoration: none;
     border-bottom: 1px dotted var(--accent-primary);
-    padding: 0 2px;
+    padding: 4px 6px;  /* Increased padding for larger touch area */
+    margin: -4px -2px; /* Negative margin to compensate for extra padding */
+    display: inline-block;
+    min-width: 24px;   /* Minimum touch target width */
+    text-align: center;
     transition: all 0.2s ease;
 }
 
@@ -3822,42 +4189,703 @@ textarea#image-sources {
 
 /* Filter backdrop overlay */
 .filter-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 998;
+    display: none !important;
 }
 
-.filter-backdrop.active {
-    opacity: 1;
-    pointer-events: auto;
+/* Citation Modal */
+.citation-modal-content {
+    max-width: 650px;
+    width: 90%;
+    max-height: 80vh;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
-[data-theme="dark"] .filter-backdrop {
-    background: rgba(0, 0, 0, 0.5);
+/* Citation Modal Header */
+.citation-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    position: relative;
+    z-index: 100;
+}
+
+/* Citation Navigation Controls in header */
+.citation-nav-controls {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.citation-nav-btn {
+    padding: 0.25rem 0.5rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.citation-nav-btn:hover:not(:disabled) {
+    background: var(--bg-secondary);
+    border-color: var(--accent-primary);
+}
+
+.citation-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.citation-nav-info {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    padding: 0 0.5rem;
+}
+
+/* Ensure citation modal close button stays on top */
+#citation-modal .modal-close {
+    position: static;
+    margin-left: auto;
+}
+
+.citation-modal-body {
+    padding: 0;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Remove card styling in citation modal - content displays directly */
+.citation-modal-body .citation-card {
+    margin: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.citation-modal-body .citation-card-header {
+    cursor: default;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 0;
+}
+
+.citation-modal-body .citation-card-header:hover {
+    background: var(--bg-secondary);
+}
+
+/* Adjust citation number in modal for cleaner look */
+.citation-modal-body .citation-number {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.citation-modal-body .citation-card-body {
+    padding: 1.5rem;
+    border: none;
+    border-radius: 0;
+}
+
+.citation-modal-body .citation-card-body.expanded {
+    display: block;
+}
+
+/* Make badges clickable in citation modal */
+.citation-modal-body .clickable-badge {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.citation-modal-body .clickable-badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Citation badges in modals */
+.citation-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.citation-badge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.citation-badge.quality-medium {
+    background: rgba(255, 193, 7, 0.1);
+    color: #f39c12;
+    border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+[data-theme="dark"] .citation-badge.quality-medium {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffa500;
+}
+
+.citation-badge.quality-low {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.2);
+}
+
+[data-theme="dark"] .citation-badge.quality-low {
+    background: rgba(220, 53, 69, 0.15);
+    color: #ff6b6b;
+}
+
+.citation-badge.status-partial {
+    background: rgba(108, 117, 125, 0.1);
+    color: #6c757d;
+    border: 1px solid rgba(108, 117, 125, 0.2);
+}
+
+[data-theme="dark"] .citation-badge.status-partial {
+    background: rgba(108, 117, 125, 0.15);
+    color: #adb5bd;
+}
+
+.citation-badge.status-unverified {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.2);
+}
+
+[data-theme="dark"] .citation-badge.status-unverified {
+    background: rgba(220, 53, 69, 0.15);
+    color: #ff6b6b;
+}
+
+/* References Modal - Full Screen */
+.references-modal-content {
+    max-width: 1400px;
+    width: 96%;
+    height: 90vh;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 0.75rem;
+    position: relative;
+}
+
+/* Position references modal close button to avoid key button */
+#references-modal .modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 1000;
+}
+
+/* Ensure chevron animation in modal */
+.references-modal-body .citation-chevron svg {
+    transition: transform 0.3s ease;
+}
+
+.references-modal-header {
+    padding: 0.75rem 3rem 0.5rem 1.25rem; /* Increased padding for key button */
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.references-modal-header h2 {
+    margin: 0;
+    color: var(--accent-primary);
+    font-size: 1.25rem; /* Reduced from 1.5rem */
+}
+
+/* Header top with title and key button */
+.references-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.35rem; /* Further reduced spacing */
+}
+
+.header-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.clear-filters-btn,
+.key-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.3rem 0.6rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clear-filters-btn:hover,
+.key-toggle-btn:hover {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+}
+
+.clear-filters-btn {
+    background: rgba(220, 53, 69, 0.1);
+    border-color: rgba(220, 53, 69, 0.3);
+    color: #dc3545;
+}
+
+.clear-filters-btn:hover {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+/* Standalone Key Modal */
+.key-modal-content {
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 1.5rem;
+    border-radius: 24px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.key-modal-body {
+    padding-top: 1rem; /* Add padding to avoid close button */
+}
+
+.key-modal-body h3 {
+    margin: 0 2rem 1.5rem 0; /* Add right margin to avoid close button */
+    color: var(--accent-primary);
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Ensure close button stays on top in key modal */
+#key-modal .modal-close {
+    z-index: 1000;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+/* Key section in modal */
+.references-key-modal {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0;
+    margin-bottom: 0.75rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.references-key-modal:not(.collapsed) {
+    padding: 1rem;
+    max-height: 200px;
+}
+
+.key-grid-modal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.key-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.key-section-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+    opacity: 0.8;
+}
+
+.key-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.key-description {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Responsive key layout */
+@media (max-width: 768px) {
+    .key-grid-modal {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .references-key-modal:not(.collapsed) {
+        max-height: 300px;
+    }
+}
+
+.references-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem; /* Reduced gap between search and filter */
+    margin-top: 0.15rem; /* Reduced space from header */
+}
+
+.references-toolbar-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.references-search {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.references-search-input {
+    width: 100%;
+    padding: 0.4rem 2.5rem 0.4rem 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+}
+
+.search-clear-btn {
+    position: absolute;
+    right: 0.25rem;
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.search-clear-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.references-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.references-filter {
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    cursor: pointer;
+    min-width: 0;
+}
+
+.clear-all-filters-btn {
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--accent-primary);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--accent-primary);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.clear-all-filters-btn:hover {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.references-status {
+    margin-top: 0.75rem; /* Increased vertical spacing from filters */
+    padding-top: 0.25rem; /* Additional padding for better separation */
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.references-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Multi-column layout for references modal */
+.references-modal-body .citations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    gap: 1rem;
+}
+
+@media (min-width: 1200px) {
+    .references-modal-body .citations-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1600px) {
+    .references-modal-body .citations-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1199px) {
+    .references-modal-content {
+        height: 88vh;
+        max-height: 88vh;
+    }
+    
+    .references-modal-body .citations-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Compact citation cards in modal */
+.references-modal-body .citation-card {
+    margin: 0;
+    height: fit-content;
+}
+
+.references-modal-body .citation-card-header {
+    padding: 0.75rem 1rem;
+}
+
+/* Hide body content when collapsed */
+.references-modal-body .citation-card-body.collapsed {
+    display: none;
+}
+
+.references-modal-body .citation-card-body.expanded {
+    display: block;
+    padding: 0.75rem 1rem;
+}
+
+.references-modal-body .citation-detail {
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.references-modal-body .citation-number {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+}
+
+.references-modal-body .citation-title {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.references-modal-body .status-badge,
+.references-modal-body .quality-badge {
+    font-size: 0.65rem;
+    padding: 2px 5px;
+}
+
+.references-pagination {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    flex-wrap: wrap; /* Allow wrapping to prevent overflow */
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Medium screens - prevent horizontal scroll */
+@media (max-width: 1100px) {
+    .references-toolbar {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .references-search {
+        width: 100%;
+    }
+    
+    .references-filters {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .references-modal-content {
+        width: 100%;
+        height: 92vh;
+        max-height: 92vh;
+        border-radius: 0;
+        padding: 0.5rem;
+    }
+    
+    .references-toolbar {
+        flex-direction: column;
+    }
+    
+    .references-search {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+    
+    .references-filters {
+        flex: 1 1 100%;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .references-filter,
+    .clear-filters-btn {
+        flex: 1;
+        font-size: 0.75rem;
+        padding: 0.3rem 0.4rem;
+    }
+    
+    .references-modal-body .citations-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.references-pagination > * {
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+.references-pagination select {
+    max-width: 80px;
+}
+
+.pagination-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background: var(--bg-tertiary);
+}
+
+.pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-button.active {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+}
+
+.pagination-info {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0 1rem;
+}
+
+/* References button in menu */
+.references-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    border-radius: 8px;
+}
+
+.references-button:hover {
+    background: var(--bg-tertiary);
+}
+
+.references-button svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
 }
 
 /* Filter Drawer - slides from top as horizontal panel */
 .filter-drawer {
     position: fixed;
-    top: 20px;
+    top: 15px;
     left: 50%;
     transform: translateX(-50%) translateY(-800px);  /* Hidden further off-screen */
     width: 90%;
-    max-width: 550px;
-    max-height: 85vh;  /* Allow more screen coverage */
+    max-width: 500px;  /* Slightly narrower */
+    max-height: 85vh;  /* Increased to accommodate expanded content */
     height: auto;  /* Dynamic height based on content */
-    min-height: 500px;  /* Minimum height to fit all components */
+    min-height: auto;  /* Let content determine height */
     background: var(--bg-primary);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 0.5rem;
+    border-radius: 12px;
+    padding: 0.4rem;
     display: flex;
     flex-direction: column;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
@@ -3889,19 +4917,19 @@ textarea#image-sources {
 /* Body scroll no longer locked - backdrop handles it */
 
 .filter-drawer-header {
-    padding: 12px 16px;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+    padding: 0.75rem 1rem 0.5rem 1rem; /* Match references modal */
+    border-bottom: 1px solid var(--border-color);
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 12px;
-    background: rgba(0, 0, 0, 0.03);
-    min-height: 60px;
+    gap: 8px;
+    background: transparent; /* Match references modal */
+    min-height: 45px;  /* Reduced height */
 }
 
 [data-theme="dark"] .filter-drawer-header {
-    background: rgba(255, 255, 255, 0.03);
-    border-bottom-color: rgba(255, 255, 255, 0.08);
+    background: transparent; /* Keep consistent with light theme */
+    border-bottom-color: var(--border-color);
 }
 
 .filter-header-left {
@@ -3924,8 +4952,8 @@ textarea#image-sources {
 
 .filter-drawer-header h3 {
     margin: 0;
-    font-size: 1rem;
-    color: var(--text-primary);
+    font-size: 1.25rem; /* Match references modal */
+    color: var(--accent-primary); /* Match references modal */
     font-weight: 600;
     text-align: center;
 }
@@ -4041,11 +5069,12 @@ textarea#image-sources {
 }
 
 .filter-drawer-content {
-    padding: 16px 20px 20px 20px;
+    padding: 10px 15px 15px 15px;
     overflow-y: auto;
     overflow-x: hidden;  /* Prevent horizontal overflow */
-    flex: 1;
+    flex: 1 1 auto;  /* Allow growing and shrinking */
     min-height: 0;  /* Allow flex item to shrink */
+    max-height: calc(85vh - 60px);  /* Adjusted to match drawer height */
     background: transparent;
     max-width: 100%;
     margin: 0 auto;
@@ -4056,7 +5085,7 @@ textarea#image-sources {
 }
 
 .filter-section {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .filter-section:last-child {
@@ -4070,6 +5099,110 @@ textarea#image-sources {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+/* Search section styling */
+.search-section {
+    padding: 4px 0;
+    margin-bottom: 6px;
+}
+
+.search-section .timeline-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border: 1px solid var(--bg-tertiary);
+    border-radius: 6px;
+    background: var(--bg-secondary);
+}
+
+/* More Options section */
+.more-options-section {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.more-options-section .collapsible-header {
+    background: transparent;
+    padding: 12px 16px;
+    font-size: 0.9rem; /* Reduced font size */
+}
+
+.more-options-section .collapsible-content {
+    padding: 0 16px 16px 16px;
+}
+
+/* Subsections within More Options */
+.filter-subsection {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.filter-subsection:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.filter-subsection h5 {
+    margin: 0 0 12px 0;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Collapsible sections */
+.filter-section.collapsible-section {
+    border: 1px solid var(--bg-tertiary);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+    margin: 0 !important;
+}
+
+.collapsible-header:hover {
+    background-color: var(--bg-secondary);
+}
+
+.collapse-icon {
+    transition: transform 0.3s ease;
+    color: var(--text-secondary);
+}
+
+.collapsible-section.collapsed .collapse-icon {
+    transform: rotate(-90deg);
+}
+
+.collapsible-content {
+    padding: 0 15px 15px 15px;
+    transition: all 0.3s ease;
+    max-height: 2500px; /* Increased to accommodate all categories */
+    opacity: 1;
+    overflow: hidden;
+}
+
+.collapsible-section.collapsed .collapsible-content {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+}
+
+.minor-toggle-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--bg-tertiary);
 }
 
 /* Active filters animation */
@@ -4090,16 +5223,17 @@ textarea#image-sources {
 /* Visual Timeline Navigator */
 .visual-timeline-container {
     display: block;
-    margin-top: 8px;
+    margin-top: 0;
     width: 100%;
 }
 
 .visual-timeline {
-    background: rgba(0, 0, 0, 0.04);
-    border-radius: 8px;
-    padding: 10px 15px 35px 15px;  /* More bottom padding for handles */
+    background: var(--bg-primary);
+    border: 1px solid var(--bg-tertiary);
+    border-radius: 6px;
+    padding: 8px 12px 30px 12px;  /* Reduced padding */
     position: relative;
-    height: 130px;  /* Increased to show handles fully */
+    height: 100px;  /* Reduced height */
     overflow: hidden;  /* Prevent overflow issues */
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(0, 0, 0, 0.08);
