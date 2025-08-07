@@ -422,19 +422,13 @@ function submitToStaticman(url, formData, type) {
                             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
                         </svg>
                     </div>
-                    <h2 style="color: var(--text-primary, #333); font-size: 1.75rem; margin: 0 0 0.75rem; font-weight: 600;">Successfully Submitted!</h2>
+                    <h2 style="color: var(--text-primary, #333); font-size: 1.75rem; margin: 0 0 0.75rem; font-weight: 600;">Submitted!</h2>
                 </div>
                 
                 <div style="max-width: 400px; margin: 0 auto;">
-                    <p style="font-size: 1.1rem; color: var(--text-primary, #333); margin-bottom: 1.25rem; line-height: 1.5;">
-                        Thank you for your contribution to the Gipsy Hill timeline.
+                    <p style="font-size: 1rem; color: var(--text-secondary, #666); margin-bottom: 1.25rem; line-height: 1.4;">
+                        Thank you. We'll review and add to the timeline once approved.
                     </p>
-                    
-                    <div style="background: var(--bg-secondary, #f5f5f5); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
-                        <p style="margin: 0; color: var(--text-secondary, #666); font-size: 0.9rem; line-height: 1.5;">
-                            We'll review your submission and once approved, it will appear on the timeline.
-                        </p>
-                    </div>
                     
                     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                         ${prUrl ? `<a href="${prUrl}" 
