@@ -3407,6 +3407,11 @@ function initializeVisualTimeline() {
             // Update filter status when drawer opens
             updateFilterStatus();
             
+            // Update filter indicator to ensure clear all button shows correctly
+            if (window.updateFilterIndicator) {
+                window.updateFilterIndicator();
+            }
+            
             // Focus on search input when drawer opens
             setTimeout(function() {
                 var searchInput = filterDrawer.querySelector('.timeline-search-input');
