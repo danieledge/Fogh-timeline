@@ -2201,6 +2201,20 @@ function initializeTimeline() {
             var paginationContainer = document.querySelector('.references-pagination');
             var statusDiv = document.querySelector('#references-modal .references-status');
             
+            // Ensure key section starts collapsed
+            var keySection = document.getElementById('references-key-modal');
+            if (keySection) {
+                keySection.classList.add('collapsed');
+                // Update button text to match collapsed state
+                var keyToggleBtn = document.getElementById('toggle-references-key');
+                if (keyToggleBtn) {
+                    var btnText = keyToggleBtn.querySelector('span');
+                    if (btnText) {
+                        btnText.textContent = 'Key';
+                    }
+                }
+            }
+            
             var currentPage = 1;
             var perPage = 10; // Default to 10 for better readability
             var filteredCitations = [];
