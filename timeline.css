@@ -771,7 +771,7 @@ body::before {
 
 .timeline-item.minor:not(.expanded) .content-header {
     margin-bottom: 0 !important;
-    align-items: flex-start; /* Align to top for wrapped content */
+    align-items: center; /* Vertically center align icon and title */
     display: inline-flex !important; /* Use inline-flex to size to content */
     width: auto !important;
 }
@@ -5140,8 +5140,9 @@ textarea#image-sources {
 
 .more-options-section .collapsible-header {
     background: transparent;
-    padding: 12px 16px;
-    font-size: 0.9rem; /* Reduced font size */
+    padding: 10px 16px;
+    font-size: 0.8rem; /* Further reduced font size */
+    font-weight: 500; /* Slightly lighter weight */
 }
 
 .more-options-section .collapsible-content {

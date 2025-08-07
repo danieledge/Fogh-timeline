@@ -2418,25 +2418,45 @@ function initializeTimeline() {
                     // Previous button
                     html += '<button class="pagination-button" ' + (currentPage === 1 ? 'disabled' : '') + ' data-page="prev">Previous</button>';
                     
-                    // Calculate which page group to show (groups of 5)
-                    var pageGroup = Math.ceil(currentPage / 5);
-                    var startPage = (pageGroup - 1) * 5 + 1;
-                    var endPage = Math.min(totalPages, startPage + 4);
+                    // Calculate page range - always show max 5 numbered buttons
+                    var maxButtons = 5;
+                    var halfRange = Math.floor(maxButtons / 2);
                     
-                    // Show first page if not in first group
-                    if (startPage > 1) {
-                        html += '<button class="pagination-button" data-page="1">1</button>';
-                        html += '<span class="pagination-ellipsis">...</span>';
+                    var startPage, endPage;
+                    
+                    if (totalPages <= maxButtons) {
+                        // Show all pages if total is 5 or less
+                        startPage = 1;
+                        endPage = totalPages;
+                    } else {
+                        // Center around current page
+                        startPage = Math.max(1, currentPage - halfRange);
+                        endPage = Math.min(totalPages, startPage + maxButtons - 1);
+                        
+                        // Adjust if we're near the end
+                        if (endPage === totalPages) {
+                            startPage = Math.max(1, endPage - maxButtons + 1);
+                        }
                     }
                     
-                    // Show up to 5 page numbers
+                    // Show first page and ellipsis if needed
+                    if (startPage > 2) {
+                        html += '<button class="pagination-button" data-page="1">1</button>';
+                        html += '<span class="pagination-ellipsis">...</span>';
+                    } else if (startPage === 2) {
+                        html += '<button class="pagination-button" data-page="1">1</button>';
+                    }
+                    
+                    // Show page numbers (max 5 or 3 if we're showing first/last)
                     for (var i = startPage; i <= endPage; i++) {
                         html += '<button class="pagination-button ' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</button>';
                     }
                     
-                    // Show last page if not in last group
-                    if (endPage < totalPages) {
+                    // Show last page and ellipsis if needed
+                    if (endPage < totalPages - 1) {
                         html += '<span class="pagination-ellipsis">...</span>';
+                        html += '<button class="pagination-button" data-page="' + totalPages + '">' + totalPages + '</button>';
+                    } else if (endPage === totalPages - 1) {
                         html += '<button class="pagination-button" data-page="' + totalPages + '">' + totalPages + '</button>';
                     }
                     
