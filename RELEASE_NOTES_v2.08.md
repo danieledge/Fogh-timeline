@@ -11,8 +11,7 @@
 
 ### Image Carousel
 - **Multiple Images Support**: Entries can now display up to 3 images
-- **Smooth Navigation**: Browse images with left/right arrows or swipe on mobile
-- **Auto-rotation**: Images automatically cycle every 5 seconds
+- **Smooth Navigation**: Browse images with left/right arrows or swipe gestures on mobile
 - **Thumbnail Indicators**: Visual dots show current image and allow direct navigation
 
 ### References System
@@ -66,7 +65,7 @@
 - Ensured references key modal is always collapsed when opened
 
 ## 🔧 Technical Changes
-- Removed all references to AI assistants from codebase
+- Cleaned up codebase documentation
 - Improved word wrapping logic for better text flow
 - Updated version tracking to 2.08
 
