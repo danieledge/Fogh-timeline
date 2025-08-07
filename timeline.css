@@ -4399,13 +4399,13 @@ textarea#image-sources {
 .references-modal-content {
     max-width: 1400px;
     width: 96%;
-    height: 90vh;
-    max-height: 90vh;
+    height: 80vh;
+    max-height: 80vh;
     display: flex;
     flex-direction: column;
     background: var(--bg-primary);
     color: var(--text-primary);
-    padding: 0.75rem;
+    padding: 0.5rem;
     position: relative;
 }
 
@@ -4423,7 +4423,7 @@ textarea#image-sources {
 }
 
 .references-modal-header {
-    padding: 0.75rem 3rem 0.5rem 1.25rem; /* Increased padding for key button */
+    padding: 0.5rem 3rem 0.35rem 1rem; /* Reduced vertical padding */
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
 }
@@ -4431,7 +4431,7 @@ textarea#image-sources {
 .references-modal-header h2 {
     margin: 0;
     color: var(--accent-primary);
-    font-size: 1.25rem; /* Reduced from 1.5rem */
+    font-size: 1.1rem; /* Further reduced from 1.25rem */
 }
 
 /* Header top with title and key button */
@@ -4439,7 +4439,7 @@ textarea#image-sources {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.35rem; /* Further reduced spacing */
+    margin-bottom: 0.25rem; /* Further reduced spacing */
 }
 
 .header-buttons {
@@ -4520,15 +4520,15 @@ textarea#image-sources {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 0;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     max-height: 0;
     overflow: hidden;
     transition: all 0.3s ease;
 }
 
 .references-key-modal:not(.collapsed) {
-    padding: 1rem;
-    max-height: 200px;
+    padding: 0.75rem;
+    max-height: 150px;
 }
 
 .key-grid-modal {
@@ -4579,8 +4579,8 @@ textarea#image-sources {
 .references-toolbar {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem; /* Reduced gap between search and filter */
-    margin-top: 0.15rem; /* Reduced space from header */
+    gap: 0.2rem; /* Further reduced gap */
+    margin-top: 0.1rem; /* Minimal space from header */
 }
 
 .references-toolbar-row {
@@ -4658,8 +4658,8 @@ textarea#image-sources {
 }
 
 .references-status {
-    margin-top: 0.75rem; /* Increased vertical spacing from filters */
-    padding-top: 0.25rem; /* Additional padding for better separation */
+    margin-top: 0.4rem; /* Reduced spacing from filters */
+    padding-top: 0.15rem; /* Less padding */
     color: var(--text-secondary);
     font-size: 0.85rem;
 }
@@ -4667,7 +4667,7 @@ textarea#image-sources {
 .references-modal-body {
     flex: 1;
     overflow-y: auto;
-    padding: 1rem;
+    padding: 0.75rem;
     background: var(--bg-primary);
     color: var(--text-primary);
 }
@@ -4694,8 +4694,8 @@ textarea#image-sources {
 /* Tablet adjustments */
 @media (min-width: 769px) and (max-width: 1199px) {
     .references-modal-content {
-        height: 88vh;
-        max-height: 88vh;
+        height: 78vh;
+        max-height: 78vh;
     }
     
     .references-modal-body .citations-grid {
@@ -4710,7 +4710,7 @@ textarea#image-sources {
 }
 
 .references-modal-body .citation-card-header {
-    padding: 0.75rem 1rem;
+    padding: 0.6rem 0.9rem;
 }
 
 /* Hide body content when collapsed */
@@ -4720,7 +4720,7 @@ textarea#image-sources {
 
 .references-modal-body .citation-card-body.expanded {
     display: block;
-    padding: 0.75rem 1rem;
+    padding: 0.6rem 0.9rem;
 }
 
 .references-modal-body .citation-detail {
@@ -4746,12 +4746,12 @@ textarea#image-sources {
 }
 
 .references-pagination {
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.75rem;
     border-top: 1px solid var(--border-color);
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
     flex-shrink: 0;
     flex-wrap: wrap; /* Allow wrapping to prevent overflow */
     max-width: 100%;
@@ -4779,10 +4779,10 @@ textarea#image-sources {
 @media (max-width: 768px) {
     .references-modal-content {
         width: 100%;
-        height: 92vh;
-        max-height: 92vh;
+        height: 85vh;
+        max-height: 85vh;
         border-radius: 0;
-        padding: 0.5rem;
+        padding: 0.4rem;
     }
     
     .references-toolbar {
@@ -4822,7 +4822,7 @@ textarea#image-sources {
 }
 
 .pagination-button {
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.8rem;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     background: var(--bg-secondary);
