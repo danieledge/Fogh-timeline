@@ -116,11 +116,13 @@ function initializeTimeline() {
             var dismissedVersion = localStorage.getItem('wip-dismissed-version');
             if (dismissedVersion === currentVersion) {
                 wipNotice.classList.add('hidden');
+                document.body.classList.add('wip-hidden');
             }
             
             if (wipClose) {
                 wipClose.addEventListener('click', function() {
                     wipNotice.classList.add('hidden');
+                    document.body.classList.add('wip-hidden');
                     localStorage.setItem('wip-dismissed-version', currentVersion);
                 });
             }
@@ -673,7 +675,22 @@ function initializeTimeline() {
         // Create title
         var title = document.createElement('div');
         title.className = 'content-title';
-        title.textContent = item.title;
+        
+        // For minor entries, add "Read more" text
+        if (item.importance === 'minor') {
+            var titleText = document.createElement('span');
+            titleText.className = 'title-text';
+            titleText.textContent = item.title;
+            title.appendChild(titleText);
+            
+            var readMoreText = document.createElement('span');
+            readMoreText.className = 'read-more-text';
+            readMoreText.innerHTML = '→ Read more';
+            title.appendChild(readMoreText);
+        } else {
+            title.textContent = item.title;
+        }
+        
         header.appendChild(title);
 
         // Add category badge if category exists
@@ -733,18 +750,8 @@ function initializeTimeline() {
                     }
                 }
                 
-                // Add icon based on quality class
-                var iconText = '';
-                if (qualityClass === 'high') {
-                    // No icon for high quality
-                    return '<a href="#ref-' + num + '" class="citation-link citation-pill quality-' + qualityClass + '">' + num + '</a>';
-                } else if (qualityClass === 'medium') {
-                    iconText = '?';
-                } else {
-                    iconText = '!';
-                }
-                
-                return '<a href="#ref-' + num + '" class="citation-link citation-pill quality-' + qualityClass + '"><span class="citation-icon">' + iconText + '</span>' + num + '</a>';
+                // Return citation link without icons
+                return '<a href="#ref-' + num + '" class="citation-link citation-pill quality-' + qualityClass + '">' + num + '</a>';
             }).join(' ');
             descriptionText += citationPills;
         }
@@ -752,32 +759,281 @@ function initializeTimeline() {
         desc.innerHTML = descriptionText;
         content.appendChild(desc);
         
-        // Add read more/less indicators for major entries
+        // Add read more/less indicators
         if (item.importance !== 'minor') {
-            // Add read more button
+            // Add read more button for major entries
             var readMore = document.createElement('span');
             readMore.className = 'read-more-indicator';
             readMore.innerHTML = 'Read more →';
             desc.appendChild(readMore);
             
-            // Add read less button
+            // Add read less button for major entries
             var readLess = document.createElement('span');
             readLess.className = 'read-less-indicator';
             readLess.innerHTML = '← Show less';
             content.appendChild(readLess);
+        } else {
+            // Add show less text for minor entries
+            var readLessText = document.createElement('div');
+            readLessText.className = 'read-less-text';
+            readLessText.innerHTML = '← Show less';
+            content.appendChild(readLessText);
         }
 
         // Add image(s) if present, or show contribution prompt
         if (item.image || item.image2 || item.image3) {
+            // Collect all images
+            var allImages = [];
+            if (item.image) allImages.push({ src: item.image, caption: item.imageCaption, captionHTML: item.imageCaptionHTML });
+            if (item.image2) allImages.push({ src: item.image2, caption: item.image2Caption, captionHTML: item.image2CaptionHTML });
+            if (item.image3) allImages.push({ src: item.image3, caption: item.image3Caption, captionHTML: item.image3CaptionHTML });
+            
             // Create container for images
             var imagesWrapper = document.createElement('div');
             imagesWrapper.className = 'content-images-wrapper';
             
+            // If multiple images, create carousel
+            if (allImages.length > 1) {
+                try {
+                    // Creating carousel for multiple images
+                    imagesWrapper.className += ' image-carousel';
+                    
+                    // Store images locally to avoid scope issues
+                    var carouselImages = allImages.slice(); // Create a copy
+                    var totalImages = carouselImages.length;
+                
+                // Create carousel container
+                var carouselContainer = document.createElement('div');
+                carouselContainer.className = 'carousel-container';
+                
+                // Create viewport for the track
+                var viewport = document.createElement('div');
+                viewport.className = 'carousel-viewport';
+                
+                // Create images track
+                var imagesTrack = document.createElement('div');
+                imagesTrack.className = 'carousel-track';
+                
+                // Add all images to track
+                carouselImages.forEach(function(imageData, index) {
+                    var slideWrapper = document.createElement('div');
+                    slideWrapper.className = 'carousel-slide';
+                    
+                    var imageContent = createImageWithCaption(imageData.src, imageData.caption, imageData.captionHTML, index);
+                    
+                    // Force consistent height on just the image, preserve caption outside
+                    if (imageContent) {
+                        // Don't constrain the container height, just style it
+                        imageContent.style.height = 'auto';
+                        imageContent.style.overflow = 'visible';
+                        
+                        var img = imageContent.querySelector('img');
+                        if (img) {
+                            // Allow image to display at its natural aspect ratio
+                            img.style.maxHeight = '250px'; // Increased max height
+                            img.style.height = 'auto'; // Let height adjust to maintain aspect ratio
+                            img.style.width = '100%';
+                            img.style.objectFit = 'contain'; // Maintain aspect ratio
+                            img.style.objectPosition = 'center'; // Center the image
+                            img.style.display = 'block'; // Ensure block display
+                        }
+                        
+                        // Ensure caption is visible if it exists
+                        var caption = imageContent.querySelector('.content-image-caption');
+                        if (caption) {
+                            caption.style.display = 'block';
+                            caption.style.marginTop = '8px';
+                        }
+                    }
+                    
+                    slideWrapper.appendChild(imageContent);
+                    imagesTrack.appendChild(slideWrapper);
+                });
+                
+                viewport.appendChild(imagesTrack);
+                carouselContainer.appendChild(viewport);
+                
+                // Store reference to track for later use
+                var trackElement = imagesTrack;
+                
+                // Add navigation arrows with inline onclick
+                var prevArrow = document.createElement('button');
+                prevArrow.className = 'carousel-arrow carousel-prev';
+                prevArrow.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/></svg>';
+                prevArrow.setAttribute('aria-label', 'Previous image');
+                prevArrow.style.cssText = 'position: absolute; left: 8px; top: 50%; transform: translateY(-50%); z-index: 100;';
+                
+                var nextArrow = document.createElement('button');
+                nextArrow.className = 'carousel-arrow carousel-next';
+                nextArrow.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/></svg>';
+                nextArrow.setAttribute('aria-label', 'Next image');
+                nextArrow.style.cssText = 'position: absolute; right: 8px; top: 50%; transform: translateY(-50%); z-index: 100;';
+                
+                // Add carousel indicators first
+                var indicators = document.createElement('div');
+                indicators.className = 'carousel-indicators';
+                carouselImages.forEach(function(_, index) {
+                    var dot = document.createElement('span');
+                    dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
+                    indicators.appendChild(dot);
+                });
+                
+                // Append all elements to container
+                carouselContainer.appendChild(prevArrow);
+                carouselContainer.appendChild(nextArrow);
+                carouselContainer.appendChild(indicators);
+                
+                
+                // Carousel functionality
+                var currentSlide = 0;
+                
+                function showSlide(index) {
+                    try {
+                        
+                        if (!trackElement) {
+                            console.error('Track element not found!');
+                            return;
+                        }
+                        
+                        var dots = indicators.querySelectorAll('.carousel-dot');
+                        
+                        // Ensure index is within bounds
+                        if (index < 0) {
+                            index = totalImages - 1;
+                        } else if (index >= totalImages) {
+                            index = 0;
+                        }
+                        
+                        
+                        // Update dots
+                        dots.forEach(function(dot, i) {
+                            dot.classList.toggle('active', i === index);
+                        });
+                        
+                        // Update track position (100% per slide for proper alignment)
+                        var translateX = index * 100;
+                        trackElement.style.transform = 'translateX(-' + translateX + '%)';
+                        
+                        currentSlide = index;
+                    } catch (error) {
+                        console.error('Error in showSlide:', error);
+                    }
+                }
+                
+                // Add swipe support
+                var touchStartX = 0;
+                var touchEndX = 0;
+                var isDragging = false;
+                
+                viewport.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                    isDragging = true;
+                }, { passive: true });
+                
+                viewport.addEventListener('touchmove', function(e) {
+                    if (!isDragging) return;
+                    touchEndX = e.changedTouches[0].screenX;
+                }, { passive: true });
+                
+                viewport.addEventListener('touchend', function(e) {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                }, { passive: true });
+                
+                function handleSwipe() {
+                    var swipeThreshold = 50;
+                    var diff = touchStartX - touchEndX;
+                    
+                    if (Math.abs(diff) > swipeThreshold) {
+                        if (diff > 0) {
+                            // Swipe left - next image
+                            showSlide(currentSlide + 1);
+                        } else {
+                            // Swipe right - previous image
+                            showSlide(currentSlide - 1);
+                        }
+                    }
+                }
+                
+                // Append carousel to wrapper first
+                imagesWrapper.appendChild(carouselContainer);
+                
+                // Initialize first slide
+                showSlide(0);
+                
+                // Create a closure to capture the current carousel's state
+                (function(carousel, track, slides, dots) {
+                    var currentIndex = 0;
+                    var numSlides = slides;
+                    
+                    function moveToSlide(index) {
+                        if (index < 0) {
+                            index = numSlides - 1;
+                        } else if (index >= numSlides) {
+                            index = 0;
+                        }
+                        
+                        track.style.transform = 'translateX(-' + (index * 100) + '%)';
+                        
+                        // Update dots
+                        var allDots = carousel.querySelectorAll('.carousel-dot');
+                        allDots.forEach(function(d, i) {
+                            d.classList.toggle('active', i === index);
+                        });
+                        
+                        currentIndex = index;
+                    }
+                    
+                    // Attach handlers directly
+                    prevArrow.onclick = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        moveToSlide(currentIndex - 1);
+                        return false;
+                    };
+                    
+                    nextArrow.onclick = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        moveToSlide(currentIndex + 1);
+                        return false;
+                    };
+                    
+                    // Initialize
+                    moveToSlide(0);
+                    
+                    // Dots
+                    dots.forEach(function(dot, index) {
+                        dot.onclick = function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            moveToSlide(index);
+                            return false;
+                        };
+                    });
+                })(carouselContainer, trackElement, totalImages, indicators.querySelectorAll('.carousel-dot'));
+                } catch (error) {
+                    console.error('Error creating carousel:', error);
+                    console.error('Error stack:', error.stack);
+                }
+            } else {
+                // Single image - use original layout
+                imagesWrapper.appendChild(createImageWithCaption(
+                    allImages[0].src,
+                    allImages[0].caption,
+                    allImages[0].captionHTML,
+                    false
+                ));
+            }
+            
+            content.appendChild(imagesWrapper);
+            
             // Helper function to create image element with caption
-            function createImageWithCaption(imageSrc, captionText, captionHTML, isSecond) {
+            function createImageWithCaption(imageSrc, captionText, captionHTML, index) {
                 var imageContainer = document.createElement('div');
                 imageContainer.className = 'content-image';
-                if (isSecond) imageContainer.className += ' second-image';
                 
                 var img = document.createElement('img');
                 
@@ -795,18 +1051,39 @@ function initializeTimeline() {
                 img.alt = item.title;
                 img.loading = 'lazy'; // Add lazy loading
                 
-                // Handle both click and touch events properly
-                function handleImageClick(e) {
+                // Track if this is a swipe to prevent modal opening
+                var touchMoved = false;
+                var touchStartPos = null;
+                
+                img.addEventListener('touchstart', function(e) {
+                    touchMoved = false;
+                    touchStartPos = e.changedTouches[0].screenX;
+                }, { passive: true });
+                
+                img.addEventListener('touchmove', function(e) {
+                    if (touchStartPos !== null) {
+                        var currentPos = e.changedTouches[0].screenX;
+                        if (Math.abs(currentPos - touchStartPos) > 10) {
+                            touchMoved = true;
+                        }
+                    }
+                }, { passive: true });
+                
+                // Handle click for desktop
+                img.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     openImageModal(imageSrc, captionText, captionHTML);
-                }
+                });
                 
-                img.addEventListener('click', handleImageClick);
+                // Handle touch for mobile - only open modal if not swiping
                 img.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleImageClick(e);
+                    if (!touchMoved) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openImageModal(imageSrc, captionText, captionHTML);
+                    }
+                    touchStartPos = null;
                 });
                 
                 // Add error handler to fallback to original image if thumbnail doesn't exist
@@ -831,50 +1108,6 @@ function initializeTimeline() {
                 
                 return imageContainer;
             }
-            
-            // Add first image
-            if (item.image) {
-                imagesWrapper.appendChild(createImageWithCaption(
-                    item.image, 
-                    item.imageCaption, 
-                    item.imageCaptionHTML,
-                    false
-                ));
-            }
-            
-            // Add second image if present
-            if (item.image2) {
-                imagesWrapper.appendChild(createImageWithCaption(
-                    item.image2, 
-                    item.image2Caption, 
-                    item.image2CaptionHTML,
-                    true
-                ));
-            }
-            
-            // Add third image if present
-            if (item.image3) {
-                imagesWrapper.appendChild(createImageWithCaption(
-                    item.image3, 
-                    item.image3Caption, 
-                    item.image3CaptionHTML,
-                    true
-                ));
-            }
-            
-            // Add class for multiple images layout
-            var imageCount = 0;
-            if (item.image) imageCount++;
-            if (item.image2) imageCount++;
-            if (item.image3) imageCount++;
-            
-            if (imageCount === 2) {
-                imagesWrapper.className += ' dual-images';
-            } else if (imageCount === 3) {
-                imagesWrapper.className += ' triple-images';
-            }
-            
-            content.appendChild(imagesWrapper);
         } else if (item.icon !== 'fogh') {
             // Contribution prompt removed - use suggest edit button instead
         }
@@ -928,10 +1161,16 @@ function initializeTimeline() {
                         searchableText += dateElement.textContent + ' ';
                     }
                     
-                    // Get title
+                    // Get title (handle both simple text and nested structure)
                     var titleElement = item.querySelector('.content-title');
-                    if (titleElement && titleElement.textContent) {
-                        searchableText += titleElement.textContent + ' ';
+                    if (titleElement) {
+                        // For minor entries with nested spans, get the first span's text
+                        var titleTextSpan = titleElement.querySelector('span');
+                        if (titleTextSpan) {
+                            searchableText += titleTextSpan.textContent + ' ';
+                        } else if (titleElement.textContent) {
+                            searchableText += titleElement.textContent + ' ';
+                        }
                     }
                     
                     // Get description
@@ -974,38 +1213,9 @@ function initializeTimeline() {
                     window.updateFilterStatus();
                 }
                 
-                // Update filter indicator
-                var filterIndicator = document.querySelector('.filter-indicator');
-                var filterButton = document.getElementById('filter-toggle-button');
-                var clearAllButton = document.getElementById('clear-all-filters');
-                var timeFiltered = document.querySelectorAll('.timeline-item.time-filtered').length > 0;
-                
-                if (searchTerm !== '' || timeFiltered) {
-                    // Show indicator if either search or time filter is active
-                    if (filterButton) {
-                        filterButton.classList.add('has-active-filter');
-                    }
-                    if (filterIndicator) {
-                        // Always show the count of currently visible items
-                        filterIndicator.textContent = visibleCount;
-                        filterIndicator.style.display = 'inline-flex';
-                    }
-                    // Show clear all button
-                    if (clearAllButton) {
-                        clearAllButton.style.display = 'inline-block';
-                    }
-                } else {
-                    // No filters active
-                    if (filterButton) {
-                        filterButton.classList.remove('has-active-filter');
-                    }
-                    if (filterIndicator) {
-                        filterIndicator.style.display = 'none';
-                    }
-                    // Hide clear all button
-                    if (clearAllButton) {
-                        clearAllButton.style.display = 'none';
-                    }
+                // Update filter indicator - this also handles the clear button
+                if (window.updateFilterIndicator) {
+                    window.updateFilterIndicator();
                 }
                 
                 showDebug('Search complete. Visible: ' + visibleCount + ', Hidden: ' + (totalCount - visibleCount));
@@ -1066,6 +1276,23 @@ function initializeTimeline() {
                 }
             });
         });
+        
+        // Handle clicks on "Show less" text for minor entries
+        var minorReadLess = document.querySelectorAll('.timeline-item.minor .read-less-text');
+        minorReadLess.forEach(function(readLess) {
+            readLess.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                var timelineItem = this.closest('.timeline-item');
+                if (timelineItem) {
+                    timelineItem.classList.remove('expanded');
+                    // Scroll the timeline item into view
+                    timelineItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        });
+        
         showDebug('Expand/collapse handlers added');
         
         // Add click handlers for major entries' read more/less buttons and description text
@@ -1145,6 +1372,36 @@ function initializeTimeline() {
         });
         showDebug('Major entries expand/collapse handlers added');
         
+        // Handle clicks on minor entry content to toggle expansion
+        var minorEntries = document.querySelectorAll('.timeline-item.minor .timeline-content');
+        minorEntries.forEach(function(content) {
+            content.addEventListener('click', function(e) {
+                // Don't toggle if clicking on links or buttons
+                if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('button')) {
+                    return;
+                }
+                
+                // Don't toggle if clicking on "Show less" text
+                if (e.target.classList.contains('show-less-text') || e.target.closest('.show-less-text')) {
+                    return;
+                }
+                
+                var timelineItem = this.closest('.timeline-item');
+                if (timelineItem) {
+                    if (timelineItem.classList.contains('expanded')) {
+                        timelineItem.classList.remove('expanded');
+                        timelineItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        timelineItem.classList.add('expanded');
+                    }
+                }
+            });
+        });
+        showDebug('Minor entries expand/collapse handlers added');
+        
+        // REMOVED: Citations section - now replaced by References modal accessed via hamburger menu
+        // The collapsible citations section has been removed to avoid redundancy
+        /*
         // Add citations section if citations exist
         if (typeof timelineCitations !== 'undefined' && timelineCitations.length > 0) {
             showDebug('Adding citations section...');
@@ -1161,20 +1418,35 @@ function initializeTimeline() {
             var citationsContent = document.createElement('div');
             citationsContent.className = 'citations-content collapsed';
             
-            // Add work in progress note
-            var workInProgressNote = document.createElement('p');
-            workInProgressNote.className = 'work-in-progress-note';
-            workInProgressNote.innerHTML = '🚧 <strong>We need your help!</strong> This timeline relies on community contributions, especially for citations marked as <span class="status-badge unverified">Unverified</span> or <span class="quality-badge low">Low</span> quality. If you have better sources, spot inaccuracies, or can verify information, please <a href="#" class="suggest-amendment-link">suggest an amendment</a>.';
-            citationsContent.appendChild(workInProgressNote);
-            
-            // Add click handler for the suggest amendment link
-            var amendmentLink = workInProgressNote.querySelector('.suggest-amendment-link');
-            if (amendmentLink) {
-                amendmentLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    // Open submission modal instead of about modal
-                    openSubmissionModal('new');
-                });
+            // Add work in progress note (if not hidden by user preference)
+            var citationsWipHidden = localStorage.getItem('citations-wip-hidden-' + APP_VERSION) === 'true';
+            if (!citationsWipHidden) {
+                var workInProgressNote = document.createElement('div');
+                workInProgressNote.className = 'work-in-progress-note';
+                workInProgressNote.id = 'citations-wip-note';
+                workInProgressNote.innerHTML = '<button class="wip-close" aria-label="Close notice">×</button>' +
+                    '🚧 <strong>We need your help!</strong> This timeline relies on community contributions, especially for citations marked as <span class="status-badge unverified">Unverified</span> or <span class="quality-badge low">Low</span> quality. If you have better sources, spot inaccuracies, or can verify information, please <a href="#" class="suggest-amendment-link">suggest an amendment</a>.';
+                citationsContent.appendChild(workInProgressNote);
+                
+                // Add close button handler
+                var closeBtn = workInProgressNote.querySelector('.wip-close');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        workInProgressNote.style.display = 'none';
+                        localStorage.setItem('citations-wip-hidden-' + APP_VERSION, 'true');
+                    });
+                }
+                
+                // Add click handler for the suggest amendment link
+                var amendmentLink = workInProgressNote.querySelector('.suggest-amendment-link');
+                if (amendmentLink) {
+                    amendmentLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Open submission modal instead of about modal
+                        openSubmissionModal('new');
+                    });
+                }
             }
             
             // Add key/legend
@@ -1526,6 +1798,7 @@ function initializeTimeline() {
             timelineContainer.parentNode.insertBefore(citationsContainer, timelineContainer.nextSibling);
             showDebug('Citations section added');
         }
+        */
         
         // Removed global contribute-link handler to prevent accidental modal opening
         
@@ -1592,84 +1865,730 @@ function initializeTimeline() {
         // Make openImageModal accessible globally for the onclick handlers
         window.openImageModal = openImageModal;
         
-        // Add click handler for citation links
+        // Add click handler for citation links to show in modal
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('citation-link')) {
                 e.preventDefault();
                 
                 var citationNumber = e.target.getAttribute('href').replace('#ref-', '');
-                var citationCard = document.getElementById('ref-' + citationNumber);
                 
-                if (citationCard) {
-                    // First, ensure the references section is visible
-                    var referencesSection = document.querySelector('.citation-list');
-                    if (referencesSection) {
-                        // Expand the main references section if it's collapsed
-                        var citationsContent = referencesSection.querySelector('.citations-content');
-                        var citationsHeader = referencesSection.querySelector('.citations-header');
-                        
-                        if (citationsContent && citationsContent.classList.contains('collapsed')) {
-                            citationsContent.classList.remove('collapsed');
-                            if (citationsHeader) {
-                                citationsHeader.classList.add('expanded');
-                            }
-                        }
-                        
-                        // Clear any search filter
-                        var searchInput = referencesSection.querySelector('.references-search-input');
-                        if (searchInput && searchInput.value) {
-                            searchInput.value = '';
-                            // Trigger search to show all cards
-                            var event = new Event('input', { bubbles: true });
-                            searchInput.dispatchEvent(event);
-                        }
-                        
-                        // Ensure all citation cards are visible
-                        var allCitationCards = referencesSection.querySelectorAll('.citation-card');
-                        allCitationCards.forEach(function(card) {
-                            card.style.display = 'block';
+                // Find the timeline item this citation belongs to
+                var timelineItem = e.target.closest('.timeline-item');
+                var relatedCitations = null;
+                
+                if (timelineItem) {
+                    // Get all citation links from this timeline item
+                    var allCitationLinks = timelineItem.querySelectorAll('.citation-link');
+                    if (allCitationLinks.length > 1) {
+                        relatedCitations = Array.from(allCitationLinks).map(function(link) {
+                            return link.getAttribute('href').replace('#ref-', '');
                         });
-                        
-                        // Hide any no results message
-                        var noResultsMsg = referencesSection.querySelector('.no-results');
-                        if (noResultsMsg) {
-                            noResultsMsg.style.display = 'none';
-                        }
                     }
-                    
-                    // Expand the specific citation card
-                    var cardBody = citationCard.querySelector('.citation-card-body');
-                    if (cardBody && cardBody.classList.contains('collapsed')) {
-                        cardBody.classList.remove('collapsed');
-                        cardBody.classList.add('expanded');
-                        
-                        // Update chevron
-                        var chevron = citationCard.querySelector('.expand-icon');
-                        if (chevron) {
-                            chevron.textContent = '▼';
-                        }
-                    }
-                    
-                    // Add highlight effect
-                    citationCard.classList.add('highlight');
-                    setTimeout(function() {
-                        citationCard.classList.remove('highlight');
-                    }, 2000);
-                    
-                    // Scroll to the citation with some offset for the fixed header
-                    setTimeout(function() {
-                        var headerHeight = 70; // Adjust based on your header height
-                        var elementPosition = citationCard.getBoundingClientRect().top;
-                        var offsetPosition = elementPosition + window.pageYOffset - headerHeight;
-                        
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-                    }, 100);
                 }
+                
+                showCitationModal(citationNumber, relatedCitations);
             }
         });
+        
+        // Helper functions for citation quality and status
+        function getQualityClass(citation) {
+            if (!citation) return 'low';
+            
+            // High quality: has source and either details or URL
+            if (citation.source && (citation.details || citation.url)) {
+                return 'high';
+            }
+            // Medium quality: has source
+            if (citation.source) {
+                return 'medium';
+            }
+            // Low quality: minimal information
+            return 'low';
+        }
+        
+        function getStatusClass(citation) {
+            if (!citation) return 'unverified';
+            
+            // Verified: has URL or accessed date
+            if (citation.url && citation.accessed) {
+                return 'verified';
+            }
+            // Partial: has some verification
+            if (citation.url || citation.details) {
+                return 'partial';
+            }
+            // Unverified: minimal verification
+            return 'unverified';
+        }
+        
+        // Function to show citation in modal - matching main page styling exactly
+        function showCitationModal(citationNumber, relatedCitations) {
+            var citation = timelineCitations[citationNumber - 1]; // Citations array is 0-indexed
+            if (!citation) return;
+            
+            var modal = document.getElementById('citation-modal');
+            var modalBody = document.getElementById('citation-modal-body');
+            
+            if (!modal || !modalBody) return;
+            
+            // Store related citations for navigation
+            modal.currentCitations = relatedCitations || [citationNumber];
+            modal.currentIndex = modal.currentCitations.indexOf(citationNumber.toString());
+            
+            // Build citation card HTML matching the main page structure exactly
+            var html = '<div class="citation-card" id="modal-ref-' + citation.number + '">';
+            
+            // Card header
+            html += '<div class="citation-card-header">';
+            
+            // Left side - number and title
+            html += '<div class="citation-header-left">';
+            html += '<span class="citation-number">' + citation.number + '</span>';
+            html += '<span class="citation-title">' + (citation.timeline_entry || '') + '</span>';
+            html += '</div>';
+            
+            // Right side - status and quality badges
+            html += '<div class="citation-header-right">';
+            
+            // Status badge - make clickable
+            var statusClass = citation.status === 'Verified' ? 'verified' : 
+                            (citation.status === 'Partial' || citation.status === 'Partially Verified') ? 'partial' : 'unverified';
+            html += '<span class="status-badge clickable-badge ' + statusClass + '" onclick="showKeyModal()">' + citation.status + '</span>';
+            
+            // Quality badge - make clickable
+            var qualityClass = citation.quality === 'High' ? 'high' : 
+                              citation.quality === 'Medium' ? 'medium' : 'low';
+            html += '<span class="quality-badge clickable-badge ' + qualityClass + '" onclick="showKeyModal()">' + citation.quality + '</span>';
+            
+            html += '</div></div>';
+            
+            // Card body - expanded by default in modal
+            html += '<div class="citation-card-body expanded">';
+            
+            // Summary (source field)
+            if (citation.source) {
+                html += '<div class="citation-detail">';
+                html += '<strong>Summary:</strong> ' + citation.source;
+                html += '</div>';
+            }
+            
+            // Sources section with formatted URLs
+            if (citation.url || (citation.additional_urls && citation.additional_urls.length > 0)) {
+                html += '<div class="citation-detail citation-sources">';
+                html += '<strong>Sources:</strong> ';
+                
+                // Helper function to extract source name from URL
+                function getSourceName(url) {
+                    try {
+                        var urlObj = new URL(url);
+                        var hostname = urlObj.hostname.replace('www.', '');
+                        
+                        var sourceNames = {
+                            'en.wikipedia.org': 'Wikipedia',
+                            'wikipedia.org': 'Wikipedia',
+                            'pepysdiary.com': 'Pepys Diary',
+                            'norwoodsociety.co.uk': 'Norwood Society',
+                            'lambeth.gov.uk': 'Lambeth Council',
+                            'british-history.ac.uk': 'British History Online',
+                            'gipsyhillfriends.org': 'Friends of Gipsy Hill',
+                            'historicengland.org.uk': 'Historic England',
+                            'boroughphotos.org': 'Borough Photos',
+                            'commons.wikimedia.org': 'Wikimedia Commons',
+                            'archive.org': 'Internet Archive'
+                        };
+                        
+                        return sourceNames[hostname] || hostname;
+                    } catch (e) {
+                        return 'Link';
+                    }
+                }
+                
+                var sourceLinks = [];
+                if (citation.url) {
+                    sourceLinks.push('<a href="' + citation.url + '" target="_blank">' + 
+                                    getSourceName(citation.url) + '</a>');
+                }
+                
+                if (citation.additional_urls && citation.additional_urls.length > 0) {
+                    citation.additional_urls.forEach(function(url) {
+                        sourceLinks.push('<a href="' + url + '" target="_blank">' + 
+                                       getSourceName(url) + '</a>');
+                    });
+                }
+                
+                html += sourceLinks.join(', ');
+                html += '</div>';
+            }
+            
+            // Additional notes
+            if (citation.details || citation.notes) {
+                var notesText = citation.details || citation.notes;
+                html += '<div class="citation-detail citation-notes">';
+                html += '<strong>Notes:</strong> ' + notesText;
+                html += '</div>';
+            }
+            
+            // Accessed date
+            if (citation.accessed) {
+                html += '<div class="citation-detail citation-accessed">';
+                html += '<strong>Accessed:</strong> ' + citation.accessed;
+                html += '</div>';
+            }
+            
+            // Find linked timeline entries
+            var linkedEntries = [];
+            timelineData.forEach(function(item) {
+                if (item.citations && item.citations.includes(citation.number)) {
+                    linkedEntries.push({
+                        date: item.date,
+                        title: item.title
+                    });
+                }
+            });
+            
+            if (linkedEntries.length > 0) {
+                html += '<div class="citation-detail citation-linked-entries">';
+                html += '<strong>Timeline Entries:</strong> ';
+                html += '<div class="linked-entries-list">';
+                
+                linkedEntries.forEach(function(entry, index) {
+                    if (index > 0) html += ' • ';
+                    html += '<span class="linked-entry-date">' + entry.date + '</span>: ';
+                    html += '<span class="linked-entry-title">' + entry.title + '</span>';
+                });
+                
+                html += '</div></div>';
+            }
+            
+            html += '</div></div>';
+            
+            modalBody.innerHTML = html;
+            
+            // Add navigation controls to header if there are multiple citations
+            var navControls = document.getElementById('citation-nav-controls');
+            if (navControls) {
+                if (modal.currentCitations && modal.currentCitations.length > 1) {
+                    var navHtml = '';
+                    navHtml += '<button class="citation-nav-btn citation-nav-prev" ' + 
+                            (modal.currentIndex <= 0 ? 'disabled' : '') + ' title="Previous reference">';
+                    navHtml += '←</button>';
+                    navHtml += '<span class="citation-nav-info">' + 
+                            (modal.currentIndex + 1) + ' / ' + modal.currentCitations.length + '</span>';
+                    navHtml += '<button class="citation-nav-btn citation-nav-next" ' + 
+                            (modal.currentIndex >= modal.currentCitations.length - 1 ? 'disabled' : '') + ' title="Next reference">';
+                    navHtml += '→</button>';
+                    
+                    navControls.innerHTML = navHtml;
+                    navControls.style.display = 'flex';
+                    
+                    // Add navigation event listeners
+                    var prevBtn = navControls.querySelector('.citation-nav-prev');
+                    var nextBtn = navControls.querySelector('.citation-nav-next');
+                    
+                    if (prevBtn && !prevBtn.disabled) {
+                        prevBtn.addEventListener('click', function() {
+                            if (modal.currentIndex > 0) {
+                                var prevCitation = modal.currentCitations[modal.currentIndex - 1];
+                                showCitationModal(prevCitation, modal.currentCitations);
+                            }
+                        });
+                    }
+                    
+                    if (nextBtn && !nextBtn.disabled) {
+                        nextBtn.addEventListener('click', function() {
+                            if (modal.currentIndex < modal.currentCitations.length - 1) {
+                                var nextCitation = modal.currentCitations[modal.currentIndex + 1];
+                                showCitationModal(nextCitation, modal.currentCitations);
+                            }
+                        });
+                    }
+                } else {
+                    navControls.innerHTML = '';
+                    navControls.style.display = 'none';
+                }
+            }
+            
+            modal.classList.add('active');
+            
+            // Ensure close button is visible
+            var closeBtn = document.getElementById('citation-modal-close');
+            if (closeBtn) {
+                closeBtn.style.display = 'flex';
+                closeBtn.style.visibility = 'visible';
+                closeBtn.style.zIndex = '1000';
+            }
+        }
+        
+        // Function to show key modal
+        function showKeyModal() {
+            var modal = document.getElementById('key-modal');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+        
+        // Make modal functions globally accessible immediately after definition
+        window.showCitationModal = showCitationModal;
+        window.showReferencesModal = showReferencesModal;
+        window.showKeyModal = showKeyModal;
+        
+        // Close citation modal
+        var citationModalClose = document.getElementById('citation-modal-close');
+        if (citationModalClose) {
+            citationModalClose.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var modal = document.getElementById('citation-modal');
+                if (modal) modal.classList.remove('active');
+            });
+            
+            // Prevent close button from being hidden accidentally
+            citationModalClose.style.display = 'flex';
+            citationModalClose.style.visibility = 'visible';
+        }
+        
+        // Close key modal
+        var keyModalClose = document.getElementById('key-modal-close');
+        if (keyModalClose) {
+            keyModalClose.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var modal = document.getElementById('key-modal');
+                if (modal) modal.classList.remove('active');
+            });
+        }
+        
+        // References button handler
+        var referencesButton = document.getElementById('references-button');
+        if (referencesButton) {
+            referencesButton.addEventListener('click', function() {
+                // Close menu panel
+                var menuPanel = document.getElementById('menu-panel');
+                if (menuPanel) {
+                    menuPanel.classList.remove('active');
+                }
+                var menuToggle = document.getElementById('menu-toggle');
+                if (menuToggle) {
+                    menuToggle.querySelector('svg').innerHTML = '<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="currentColor"/>';
+                }
+                
+                // Show references modal
+                if (window.showReferencesModal) {
+                    window.showReferencesModal();
+                } else {
+                    console.error('showReferencesModal function not found');
+                }
+            });
+        }
+        
+        // Function to show references modal
+        function showReferencesModal() {
+            var modal = document.getElementById('references-modal');
+            var modalBody = document.getElementById('references-modal-body');
+            
+            if (!modal || !modalBody) return;
+            
+            // Initialize references with pagination
+            initializeReferencesModal();
+            modal.classList.add('active');
+        }
+        
+        // Initialize references modal with pagination and filters
+        function initializeReferencesModal() {
+            var modalBody = document.getElementById('references-modal-body');
+            var searchInput = document.querySelector('#references-modal .references-search-input');
+            var statusFilter = document.getElementById('status-filter');
+            var qualityFilter = document.getElementById('quality-filter');
+            var perPageSelect = document.getElementById('per-page');
+            var paginationContainer = document.querySelector('.references-pagination');
+            var statusDiv = document.querySelector('#references-modal .references-status');
+            
+            var currentPage = 1;
+            var perPage = 10; // Default to 10 for better readability
+            var filteredCitations = [];
+            
+            // Helper function to extract source name from URL
+            function getSourceName(url) {
+                try {
+                    var urlObj = new URL(url);
+                    var hostname = urlObj.hostname.replace('www.', '');
+                    
+                    var sourceNames = {
+                        'en.wikipedia.org': 'Wikipedia',
+                        'wikipedia.org': 'Wikipedia',
+                        'pepysdiary.com': 'Pepys Diary',
+                        'norwoodsociety.co.uk': 'Norwood Society',
+                        'lambeth.gov.uk': 'Lambeth Council',
+                        'british-history.ac.uk': 'British History Online',
+                        'gipsyhillfriends.org': 'Friends of Gipsy Hill',
+                        'historicengland.org.uk': 'Historic England',
+                        'boroughphotos.org': 'Borough Photos',
+                        'commons.wikimedia.org': 'Wikimedia Commons',
+                        'archive.org': 'Internet Archive'
+                    };
+                    
+                    return sourceNames[hostname] || hostname;
+                } catch (e) {
+                    return 'Link';
+                }
+            }
+            
+            function updateReferences() {
+                // Get filter values
+                var searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+                var statusValue = statusFilter ? statusFilter.value.toLowerCase() : '';
+                var qualityValue = qualityFilter ? qualityFilter.value.toLowerCase() : '';
+                perPage = perPageSelect ? (perPageSelect.value === 'all' ? 999999 : parseInt(perPageSelect.value)) : 20;
+                
+                // Filter citations array (0-indexed)
+                filteredCitations = [];
+                timelineCitations.forEach(function(citation, index) {
+                    // Apply status filter
+                    if (statusValue) {
+                        var citStatus = (citation.status || 'Unverified').toLowerCase();
+                        if (citStatus === 'partially verified') citStatus = 'partial';
+                        if (statusValue === 'partial' && citStatus !== 'partial' && citStatus !== 'partially verified') return;
+                        if (statusValue === 'verified' && citStatus !== 'verified') return;
+                        if (statusValue === 'unverified' && citStatus !== 'unverified') return;
+                    }
+                    
+                    // Apply quality filter
+                    if (qualityValue) {
+                        var citQuality = (citation.quality || 'Low').toLowerCase();
+                        if (qualityValue !== citQuality) return;
+                    }
+                    
+                    // Search filter
+                    if (searchTerm) {
+                        var searchText = (
+                            citation.number + ' ' + 
+                            (citation.source || '') + ' ' + 
+                            (citation.timeline_entry || '') + ' ' +
+                            (citation.details || '') + ' ' + 
+                            (citation.notes || '')
+                        ).toLowerCase();
+                        if (!searchText.includes(searchTerm)) return;
+                    }
+                    
+                    filteredCitations.push(citation);
+                });
+                
+                // Calculate pagination
+                var totalPages = Math.ceil(filteredCitations.length / perPage);
+                if (currentPage > totalPages) currentPage = 1;
+                
+                var startIndex = (currentPage - 1) * perPage;
+                var endIndex = Math.min(startIndex + perPage, filteredCitations.length);
+                var pageCitations = filteredCitations.slice(startIndex, endIndex);
+                
+                // Build HTML for current page - matching main page structure exactly
+                var html = '<div class="citations-grid">';
+                
+                if (pageCitations.length === 0) {
+                    html += '<div class="no-results">No references found matching your filters.</div>';
+                } else {
+                    pageCitations.forEach(function(citation) {
+                        html += '<div class="citation-card" id="modal-ref-' + citation.number + '">';
+                        
+                        // Card header
+                        html += '<div class="citation-card-header">';
+                        
+                        // Left side - number and title
+                        html += '<div class="citation-header-left">';
+                        html += '<span class="citation-number">' + citation.number + '</span>';
+                        html += '<span class="citation-title">' + (citation.timeline_entry || '') + '</span>';
+                        html += '</div>';
+                        
+                        // Right side - status and quality badges
+                        html += '<div class="citation-header-right">';
+                        
+                        // Status badge
+                        var statusClass = citation.status === 'Verified' ? 'verified' : 
+                                        (citation.status === 'Partial' || citation.status === 'Partially Verified') ? 'partial' : 'unverified';
+                        html += '<span class="status-badge ' + statusClass + '">' + citation.status + '</span>';
+                        
+                        // Quality badge
+                        var qualityClass = citation.quality === 'High' ? 'high' : 
+                                          citation.quality === 'Medium' ? 'medium' : 'low';
+                        html += '<span class="quality-badge ' + qualityClass + '">' + citation.quality + '</span>';
+                        
+                        // Chevron for expand/collapse
+                        html += '<span class="citation-chevron">';
+                        html += '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M7 10l5 5 5-5z" fill="currentColor"/></svg>';
+                        html += '</span>';
+                        
+                        html += '</div></div>';
+                        
+                        // Card body - collapsed by default, expandable on click
+                        html += '<div class="citation-card-body collapsed">';
+                        
+                        // Summary
+                        if (citation.source) {
+                            html += '<div class="citation-detail">';
+                            html += '<strong>Summary:</strong> ' + citation.source;
+                            html += '</div>';
+                        }
+                        
+                        // Sources with formatted links
+                        if (citation.url || (citation.additional_urls && citation.additional_urls.length > 0)) {
+                            html += '<div class="citation-detail citation-sources">';
+                            html += '<strong>Sources:</strong> ';
+                            
+                            var sourceLinks = [];
+                            if (citation.url) {
+                                sourceLinks.push('<a href="' + citation.url + '" target="_blank">' + 
+                                                getSourceName(citation.url) + '</a>');
+                            }
+                            
+                            if (citation.additional_urls && citation.additional_urls.length > 0) {
+                                citation.additional_urls.forEach(function(url) {
+                                    sourceLinks.push('<a href="' + url + '" target="_blank">' + 
+                                                   getSourceName(url) + '</a>');
+                                });
+                            }
+                            
+                            html += sourceLinks.join(', ');
+                            html += '</div>';
+                        }
+                        
+                        // Notes
+                        if (citation.details || citation.notes) {
+                            var notesText = citation.details || citation.notes;
+                            html += '<div class="citation-detail citation-notes">';
+                            html += '<strong>Notes:</strong> ' + notesText;
+                            html += '</div>';
+                        }
+                        
+                        // Accessed date
+                        if (citation.accessed) {
+                            html += '<div class="citation-detail citation-accessed">';
+                            html += '<strong>Accessed:</strong> ' + citation.accessed;
+                            html += '</div>';
+                        }
+                        
+                        html += '</div></div>';
+                    });
+                }
+                
+                html += '</div>';
+                modalBody.innerHTML = html;
+                
+                // Add click handlers for expand/collapse
+                modalBody.querySelectorAll('.citation-card-header').forEach(function(header) {
+                    header.addEventListener('click', function() {
+                        var card = this.parentElement;
+                        var body = card.querySelector('.citation-card-body');
+                        var chevron = this.querySelector('.citation-chevron svg');
+                        
+                        if (body.classList.contains('collapsed')) {
+                            body.classList.remove('collapsed');
+                            body.classList.add('expanded');
+                            if (chevron) {
+                                chevron.style.transform = 'rotate(180deg)';
+                            }
+                        } else {
+                            body.classList.add('collapsed');
+                            body.classList.remove('expanded');
+                            if (chevron) {
+                                chevron.style.transform = 'rotate(0deg)';
+                            }
+                        }
+                    });
+                });
+                
+                // Update status
+                if (statusDiv) {
+                    if (filteredCitations.length === 0) {
+                        statusDiv.textContent = 'No references found';
+                    } else if (perPageSelect && perPageSelect.value === 'all') {
+                        statusDiv.textContent = 'Showing all ' + filteredCitations.length + ' references';
+                    } else {
+                        statusDiv.textContent = 'Showing ' + startIndex + 1 + '-' + endIndex + ' of ' + filteredCitations.length + ' references';
+                    }
+                }
+                
+                // Update pagination
+                updatePagination(totalPages);
+            }
+            
+            function updatePagination(totalPages) {
+                if (!paginationContainer) return;
+                
+                var html = '';
+                
+                if (perPageSelect && perPageSelect.value !== 'all' && totalPages > 1) {
+                    // Previous button
+                    html += '<button class="pagination-button" ' + (currentPage === 1 ? 'disabled' : '') + ' data-page="prev">Previous</button>';
+                    
+                    // Page numbers
+                    var startPage = Math.max(1, currentPage - 2);
+                    var endPage = Math.min(totalPages, startPage + 4);
+                    
+                    if (startPage > 1) {
+                        html += '<button class="pagination-button" data-page="1">1</button>';
+                        if (startPage > 2) html += '<span class="pagination-ellipsis">...</span>';
+                    }
+                    
+                    for (var i = startPage; i <= endPage; i++) {
+                        html += '<button class="pagination-button ' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</button>';
+                    }
+                    
+                    if (endPage < totalPages) {
+                        if (endPage < totalPages - 1) html += '<span class="pagination-ellipsis">...</span>';
+                        html += '<button class="pagination-button" data-page="' + totalPages + '">' + totalPages + '</button>';
+                    }
+                    
+                    // Next button
+                    html += '<button class="pagination-button" ' + (currentPage === totalPages ? 'disabled' : '') + ' data-page="next">Next</button>';
+                }
+                
+                paginationContainer.innerHTML = html;
+                
+                // Add click handlers
+                paginationContainer.querySelectorAll('.pagination-button').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        var page = this.dataset.page;
+                        if (page === 'prev') {
+                            currentPage = Math.max(1, currentPage - 1);
+                        } else if (page === 'next') {
+                            currentPage = Math.min(totalPages, currentPage + 1);
+                        } else {
+                            currentPage = parseInt(page);
+                        }
+                        updateReferences();
+                    });
+                });
+            }
+            
+            // Search clear button (X in search box)
+            var searchClearBtn = document.getElementById('clear-search');
+            
+            // Clear all filters button
+            var clearAllBtn = document.getElementById('clear-all-filters');
+            
+            // Clear references filters button (in header)
+            var clearReferencesBtn = document.getElementById('clear-references-filters');
+            
+            // Function to check if any filters are active and update clear buttons
+            function updateClearButtons() {
+                var hasSearch = searchInput && searchInput.value;
+                var hasStatusFilter = statusFilter && statusFilter.value;
+                var hasQualityFilter = qualityFilter && qualityFilter.value;
+                var hasAnyFilter = hasSearch || hasStatusFilter || hasQualityFilter;
+                
+                // Update search clear button
+                if (searchClearBtn) {
+                    searchClearBtn.style.display = hasSearch ? 'block' : 'none';
+                }
+                
+                // Update clear all button
+                if (clearAllBtn) {
+                    clearAllBtn.style.display = hasAnyFilter ? 'inline-block' : 'none';
+                }
+                
+                // Update header clear button
+                if (clearReferencesBtn) {
+                    clearReferencesBtn.style.display = hasAnyFilter ? 'inline-flex' : 'none';
+                }
+            }
+            
+            // Set up event listeners
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    currentPage = 1;
+                    updateClearButtons();
+                    updateReferences();
+                });
+            }
+            
+            if (statusFilter) {
+                statusFilter.addEventListener('change', function() {
+                    currentPage = 1;
+                    updateClearButtons();
+                    updateReferences();
+                });
+            }
+            
+            if (qualityFilter) {
+                qualityFilter.addEventListener('change', function() {
+                    currentPage = 1;
+                    updateClearButtons();
+                    updateReferences();
+                });
+            }
+            
+            if (perPageSelect) {
+                perPageSelect.addEventListener('change', function() {
+                    currentPage = 1;
+                    updateReferences();
+                });
+            }
+            
+            // Search clear button click handler
+            if (searchClearBtn) {
+                searchClearBtn.addEventListener('click', function() {
+                    if (searchInput) {
+                        searchInput.value = '';
+                        currentPage = 1;
+                        updateClearButtons();
+                        updateReferences();
+                    }
+                });
+            }
+            
+            // Clear all button click handler
+            if (clearAllBtn) {
+                clearAllBtn.addEventListener('click', function() {
+                    if (searchInput) searchInput.value = '';
+                    if (statusFilter) statusFilter.value = '';
+                    if (qualityFilter) qualityFilter.value = '';
+                    currentPage = 1;
+                    updateClearButtons();
+                    updateReferences();
+                });
+            }
+            
+            // Clear references filters button click handler (in header)
+            if (clearReferencesBtn) {
+                clearReferencesBtn.addEventListener('click', function() {
+                    if (searchInput) searchInput.value = '';
+                    if (statusFilter) statusFilter.value = '';
+                    if (qualityFilter) qualityFilter.value = '';
+                    currentPage = 1;
+                    updateClearButtons();
+                    updateReferences();
+                });
+            }
+            
+            // Initial state
+            updateClearButtons();
+            
+            // Key toggle button
+            var keyToggleBtn = document.getElementById('toggle-references-key');
+            var keySection = document.getElementById('references-key-modal');
+            if (keyToggleBtn && keySection) {
+                keyToggleBtn.addEventListener('click', function() {
+                    keySection.classList.toggle('collapsed');
+                    // Update button text
+                    var btnText = keyToggleBtn.querySelector('span');
+                    if (btnText) {
+                        btnText.textContent = keySection.classList.contains('collapsed') ? 'Key' : 'Hide Key';
+                    }
+                });
+            }
+            
+            // Initial load
+            updateReferences();
+        }
+        
+        // Close references modal
+        var referencesModalClose = document.getElementById('references-modal-close');
+        if (referencesModalClose) {
+            referencesModalClose.addEventListener('click', function() {
+                var modal = document.getElementById('references-modal');
+                if (modal) modal.classList.remove('active');
+            });
+        }
+        
+        // Citation link handler has been replaced by modal approach
         
         showDebug('Timeline initialization complete!');
         
@@ -2145,6 +3064,11 @@ function initializeTimelineSearch() {
                 window.updateFilterStatus();
             }
             
+            // Update filter indicator - this also handles the clear button
+            if (window.updateFilterIndicator) {
+                window.updateFilterIndicator();
+            }
+            
             // Hide/show timeline line based on results
             var timelineLine = document.querySelector('.timeline-line');
             var timelineContainer = document.querySelector('.timeline-container');
@@ -2225,6 +3149,88 @@ window.testVisualTimeline = function() {
 function initializeVisualTimeline() {
     console.log('=== VISUAL TIMELINE START ===');
     console.log('Function called at:', new Date().toISOString());
+    
+    // Unified filter indicator update function
+    function updateFilterIndicator() {
+        var filterButton = document.getElementById('filter-toggle-button');
+        // Get the filter indicator that's in the filter button specifically
+        var filterIndicator = filterButton ? filterButton.querySelector('.filter-indicator') : null;
+        
+        if (!filterIndicator) {
+            // Fallback to global selector if needed
+            filterIndicator = document.querySelector('#filter-toggle-button .filter-indicator');
+        }
+        
+        var searchInput = document.querySelector('.timeline-search-input');
+        var clearAllButton = document.getElementById('clear-all-filters');
+        
+        // Check active filters
+        var hasSearch = searchInput && searchInput.value.trim() !== '';
+        var hasTimeFilter = document.querySelectorAll('.timeline-item.time-filtered').length > 0;
+        var hasCategoryFilter = document.querySelectorAll('.timeline-item.category-filtered').length > 0;
+        
+        // Update clear all button visibility without flickering
+        if (clearAllButton) {
+            var shouldShow = hasSearch || hasTimeFilter || hasCategoryFilter;
+            var isCurrentlyShown = clearAllButton.style.display !== 'none';
+            if (shouldShow !== isCurrentlyShown) {
+                clearAllButton.style.display = shouldShow ? 'inline-block' : 'none';
+            }
+        }
+        
+        // Check if all categories are active (none filtered out)
+        var allCategoriesActive = true;
+        var categoryPills = document.querySelectorAll('#category-filter-container .category-pill');
+        categoryPills.forEach(function(pill) {
+            if (pill.classList.contains('inactive')) {
+                allCategoriesActive = false;
+            }
+        });
+        var hasActualCategoryFilter = hasCategoryFilter || !allCategoriesActive;
+        
+        // Check if minor entries are hidden
+        var hideMinor = document.body.classList.contains('hide-minor');
+        
+        // Use the EXACT same selector as updateFilterStatus for consistency
+        var visibleItemsSelector = hideMinor 
+            ? '.timeline-item:not(.minor):not(.time-filtered):not(.search-hidden):not(.category-filtered)' 
+            : '.timeline-item:not(.time-filtered):not(.search-hidden):not(.category-filtered)';
+        
+        // Force re-query the DOM to get fresh count
+        var allVisibleItems = document.querySelectorAll(visibleItemsSelector);
+        var visibleItems = allVisibleItems.length;
+        
+        // Check if we have any active filters
+        var hasAnyFilter = hasSearch || hasTimeFilter || hasActualCategoryFilter;
+        
+        // Update filter button and indicator
+        if (hasAnyFilter) {
+            if (filterButton) {
+                filterButton.classList.add('has-active-filter');
+            }
+            if (filterIndicator) {
+                // Force update the text content
+                filterIndicator.textContent = '';  // Clear first
+                filterIndicator.textContent = String(visibleItems);  // Set as string
+                filterIndicator.style.display = 'inline-flex';
+            }
+            // Clear all button visibility already handled above
+        } else {
+            if (filterButton) {
+                filterButton.classList.remove('has-active-filter');
+            }
+            if (filterIndicator) {
+                filterIndicator.style.display = 'none';
+            }
+            // Hide clear all button
+            if (clearAllButton) {
+                clearAllButton.style.display = 'none';
+            }
+        }
+    }
+    
+    // Make it globally accessible
+    window.updateFilterIndicator = updateFilterIndicator;
     
     // Unified filter status update function
     function updateFilterStatus() {
@@ -2365,6 +3371,33 @@ function initializeVisualTimeline() {
     var filterIndicator = document.querySelector('.filter-indicator');
     
     if (filterButton && filterDrawer) {
+        // Initialize collapsible sections in filter drawer
+        function initializeCollapsibleSections() {
+            var collapsibleSections = filterDrawer.querySelectorAll('.collapsible-section');
+            collapsibleSections.forEach(function(section) {
+                // Start with More Options collapsed
+                if (section.classList.contains('more-options-section')) {
+                    section.classList.add('collapsed');
+                }
+                
+                var header = section.querySelector('.collapsible-header');
+                if (header) {
+                    header.addEventListener('click', function() {
+                        section.classList.toggle('collapsed');
+                        // Update filter drawer size when expanding/collapsing
+                        setTimeout(function() {
+                            if (window.updateFilterStatus) {
+                                window.updateFilterStatus();
+                            }
+                        }, 300);
+                    });
+                }
+            });
+        }
+        
+        // Initialize on page load
+        initializeCollapsibleSections();
+        
         // Open filter drawer
         filterButton.addEventListener('click', function() {
             filterDrawer.classList.add('active');
@@ -2373,6 +3406,14 @@ function initializeVisualTimeline() {
             
             // Update filter status when drawer opens
             updateFilterStatus();
+            
+            // Focus on search input when drawer opens
+            setTimeout(function() {
+                var searchInput = filterDrawer.querySelector('.timeline-search-input');
+                if (searchInput) {
+                    searchInput.focus();
+                }
+            }, 300);
             
             // Initialize visual timeline on first open
             if (!window.visualTimelineInitialized) {
@@ -3058,30 +4099,14 @@ function initializeVisualTimeline() {
             if (filterButton) {
                 filterButton.classList.add('has-active-filter');
             }
-            // Update indicator with count of filtered items
-            if (filterIndicator) {
-                // If full range with search, count items not hidden by search
-                // Otherwise use the visibleCount from time filtering
-                var actualVisibleCount = visibleCount;
-                if (isFullRange && hasSearch) {
-                    // Check if minor entries are hidden
-                    var hideMinor = document.body.classList.contains('hide-minor');
-                    if (hideMinor) {
-                        actualVisibleCount = document.querySelectorAll('.timeline-item:not(.minor):not(.search-hidden)').length;
-                    } else {
-                        actualVisibleCount = document.querySelectorAll('.timeline-item:not(.search-hidden)').length;
-                    }
-                }
-                filterIndicator.textContent = actualVisibleCount;
-                filterIndicator.style.display = 'inline-flex';
+            // Let the unified updateFilterIndicator handle this
+            if (window.updateFilterIndicator) {
+                window.updateFilterIndicator();
             }
         } else {
-            // No filters active (full range AND no search)
-            if (filterButton) {
-                filterButton.classList.remove('has-active-filter');
-            }
-            if (filterIndicator) {
-                filterIndicator.style.display = 'none';
+            // No filters active - let unified function handle it
+            if (window.updateFilterIndicator) {
+                window.updateFilterIndicator();
             }
         }
         
