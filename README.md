@@ -30,6 +30,10 @@ An interactive, community-driven timeline application documenting the rich histo
 
 [📄 View detailed release notes →](RELEASE_NOTES_v2.08.md) | [📋 All releases →](https://github.com/danieledge/Fogh-timeline/releases)
 
+### Version 2.81 - Minor Update
+- **Fixed Category Filtering** - Minor entries now properly respect category filters
+- **Data Correction** - "Death of the Gypsy Queen" correctly categorized under "Gypsies" instead of "Churches"
+
 ---
 
 ## 📝 TODO / Roadmap
