@@ -12,10 +12,13 @@ An interactive, community-driven timeline application documenting the rich histo
 
 ### Key Highlights
 - ✅ **Fixed critical timeline loading issue** - Timeline now renders correctly
-- 📚 **New References System** - Complete citation management with search and filtering
+- 🏷️ **Category System** - Filter timeline by categories (Heritage, Transport, Churches, etc.)
+- 🔍 **Advanced Filtering** - Search, date range, and category filters for easy exploration
+- 📚 **References System** - Citations with verification status and quality ratings
+- 🖼️ **Image Carousel** - Browse multiple images per entry with smooth navigation
 - 📱 **Mobile Optimized** - Enhanced touch controls and responsive design
+- 💡 **Smart Disclaimers** - Hide informational messages permanently (resets on updates)
 - 🎨 **UI Polish** - Cleaner text wrapping, improved spacing, and simplified navigation
-- 🐛 **Bug Fixes** - Resolved modal issues, filter controls, and pagination problems
 
 [📄 View detailed release notes →](RELEASE_NOTES_v2.08.md) | [📋 All releases →](https://github.com/danieledge/Fogh-timeline/releases)
 
