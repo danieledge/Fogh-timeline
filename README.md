@@ -11,7 +11,8 @@ An interactive, community-driven timeline application documenting the rich histo
 **Version 2.81** (August 2025) - Minor update with important fixes
 - **Fixed Category Filtering** - Minor entries now properly respect category filters
 - **Data Correction** - "Death of the Gypsy Queen" correctly categorized under "Gypsies" instead of "Churches"
-- **Version Reset** - WIP notices now properly reappear when version changes
+- **Banner Display Fix** - WIP and informational banners now properly reappear when version changes
+- **Version Reset** - Dismissed notices reset on version update to ensure important messages are seen
 
 ---
 
