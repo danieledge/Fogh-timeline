@@ -6,41 +6,18 @@ An interactive, community-driven timeline application documenting the rich histo
 
 ---
 
-## 📋 Latest Release Notes
+## 🚀 Latest Updates
 
-### v2.08 (07/08/2025)
+**Version 2.08** (August 2025) - Major improvements to user experience and interface refinements.
 
-#### 🎨 UI/UX Improvements
-- **Timeline Entries**: Fixed title wrapping, removed hyphenation, consistent spacing, proper vertical alignment
-- **References Modal**: Enhanced title with gradient effect, reduced height (80vh), compact spacing, simplified pagination (max 5 buttons)
-- **Citation Modal**: Added "Citation Details" header
-- **Submission Forms**: Simplified messages, reduced modal size, non-technical language
-- **Filter Controls**: Fixed clear button visibility, smaller "More Options" text
-- **About Box**: Condensed content, enhanced beta warning, reduced size
+### Key Highlights
+- ✅ **Fixed critical timeline loading issue** - Timeline now renders correctly
+- 📚 **New References System** - Complete citation management with search and filtering
+- 📱 **Mobile Optimized** - Enhanced touch controls and responsive design
+- 🎨 **UI Polish** - Cleaner text wrapping, improved spacing, and simplified navigation
+- 🐛 **Bug Fixes** - Resolved modal issues, filter controls, and pagination problems
 
-#### 🐛 Bug Fixes
-- Fixed references key button not working on first modal access
-- Fixed clear all button visibility when filter drawer reopens
-- Fixed pagination showing more than 5 numbered buttons
-- Ensured references key modal is always collapsed when opened
-
-### v2.07 (06-07/08/2025)
-
-#### Major Updates
-- **Fixed timeline not loading** - Resolved critical JavaScript error preventing timeline rendering
-- **New References System** - Full modal with citations, navigation, and filtering
-- **Mobile Optimization** - Prevented accidental zooming, larger touch targets for citations
-- **Enhanced Citation Interaction** - Navigate between multiple citations with controls
-- **Space Optimization** - More compact view with reduced spacing throughout
-
-#### Key Features Added
-- Citation modal popup when clicking reference numbers
-- Collapsible Key/Legend for status and quality badges
-- Navigation between multiple citations in entries
-- "Read more" text indicators for minor entries
-- Improved minor entry interaction (click anywhere to collapse)
-
-[View full release history →](https://github.com/danieledge/Fogh-timeline/releases)
+[📄 View detailed release notes →](RELEASE_NOTES_v2.08.md) | [📋 All releases →](https://github.com/danieledge/Fogh-timeline/releases)
 
 ---
 
