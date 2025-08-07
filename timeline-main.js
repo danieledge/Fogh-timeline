@@ -2599,16 +2599,25 @@ function initializeTimeline() {
             // Initial state
             updateClearButtons();
             
-            // Key toggle button
+            // Key toggle button - set up once
             var keyToggleBtn = document.getElementById('toggle-references-key');
             var keySection = document.getElementById('references-key-modal');
             if (keyToggleBtn && keySection) {
+                // Remove any existing listeners to prevent duplicates
+                var newKeyToggleBtn = keyToggleBtn.cloneNode(true);
+                keyToggleBtn.parentNode.replaceChild(newKeyToggleBtn, keyToggleBtn);
+                keyToggleBtn = newKeyToggleBtn;
+                
+                // Add fresh click listener
                 keyToggleBtn.addEventListener('click', function() {
-                    keySection.classList.toggle('collapsed');
-                    // Update button text
-                    var btnText = keyToggleBtn.querySelector('span');
-                    if (btnText) {
-                        btnText.textContent = keySection.classList.contains('collapsed') ? 'Key' : 'Hide Key';
+                    var keySectionElement = document.getElementById('references-key-modal');
+                    if (keySectionElement) {
+                        keySectionElement.classList.toggle('collapsed');
+                        // Update button text
+                        var btnText = this.querySelector('span');
+                        if (btnText) {
+                            btnText.textContent = keySectionElement.classList.contains('collapsed') ? 'Key' : 'Hide Key';
+                        }
                     }
                 });
             }
