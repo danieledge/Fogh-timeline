@@ -34,8 +34,14 @@ An interactive, community-driven timeline application documenting the rich histo
 
 ## 📝 TODO / Roadmap
 
+### 🚨 CRITICAL
+- **Make Fanny the Gipsy Hill cat look less menacing in logo** 😺 - Add some friendly emojis to soften Fanny's intimidating gaze 🐾✨
+
 ### Data Management
 - **Migrate submissions to dedicated repository** - Move user submissions and amendments to a separate GitHub project to improve maintainability, allowing clear separation between application issues and data contributions (currently both stored as issues in this repository)
+
+### User Experience
+- **Cleanup submissions UI** - Improve the overall user experience for the submission and amendment feature, including form design, validation feedback, and success messaging
 
 ---
 
