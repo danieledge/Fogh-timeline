@@ -658,10 +658,11 @@ body::before {
 /* Make title clickable for major entries */
 .timeline-item.major .content-title {
     cursor: pointer;
-    padding-right: 1rem; /* Ensure space from badge */
-    max-width: calc(100% - 6rem); /* Don't overlap category badge */
-    word-break: break-word;
-    hyphens: auto;
+    padding-right: 0.5rem; /* Minimal space from badge */
+    max-width: calc(100% - 3.5rem); /* Allow text closer to category badge */
+    word-wrap: break-word;
+    word-break: normal; /* Only break at word boundaries */
+    hyphens: none; /* No hyphenation */
 }
 
 .timeline-item.major.expanded .read-more-indicator {
@@ -812,8 +813,9 @@ body::before {
 .timeline-item.minor:not(.expanded) .title-text {
     display: inline;
     white-space: normal; /* Allow text to wrap if needed */
-    word-break: break-word; /* Break long words if necessary */
-    hyphens: auto; /* Enable hyphenation for better text flow */
+    word-wrap: break-word;
+    word-break: normal; /* Only break at word boundaries */
+    hyphens: none; /* No hyphenation */
 }
 
 /* Read more indicator for collapsed minor entries */
@@ -965,7 +967,7 @@ body::before {
 
 /* Ensure content doesn't overlap with badge */
 .timeline-content .content-header {
-    padding-right: 6rem; /* More space for category badge */
+    padding-right: 4rem; /* Reduced space - text can go closer to badge */
     position: relative;
 }
 
@@ -976,7 +978,7 @@ body::before {
 
 /* For expanded minor entries, reorganize header layout */
 .timeline-item.minor.expanded .content-header {
-    padding-right: 5rem !important; /* Space for category badge */
+    padding-right: 3.5rem !important; /* Reduced space for category badge */
     display: flex;
     align-items: center; /* Center align items vertically */
     flex-wrap: nowrap; /* Prevent wrapping */
@@ -989,15 +991,18 @@ body::before {
     line-height: 1.4;
     word-wrap: break-word;
     white-space: normal; /* Allow text wrapping when absolutely necessary */
-    max-width: calc(100% - 6rem); /* Ensure title doesn't extend under badge */
-    padding-right: 1rem;
+    max-width: calc(100% - 3.5rem); /* Allow text closer to badge */
+    padding-right: 0.5rem;
+    word-break: normal; /* Only break at word boundaries */
+    hyphens: none; /* No hyphenation */
 }
 
 .timeline-content .content-title {
-    padding-right: 1rem; /* Additional padding for title text */
-    max-width: calc(100% - 2rem);
-    word-break: break-word;
-    hyphens: auto;
+    padding-right: 0.5rem; /* Minimal padding for title text */
+    max-width: calc(100% - 1rem);
+    word-wrap: break-word;
+    word-break: normal; /* Only break at word boundaries */
+    hyphens: none; /* No hyphenation */
 }
 
 .category-badge:hover {
@@ -1211,8 +1216,9 @@ body::before {
     font-weight: 600;
     color: var(--text-primary);
     line-height: 1.4;
-    word-break: break-word;
-    hyphens: auto;
+    word-wrap: break-word;
+    word-break: normal; /* Only break at word boundaries */
+    hyphens: none; /* No hyphenation */
 }
 
 .content-description {
