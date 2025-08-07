@@ -8,7 +8,14 @@ An interactive, community-driven timeline application documenting the rich histo
 
 ## 🚀 Latest Updates
 
-**Version 2.08** (August 2025) - Major improvements to user experience and interface refinements.
+**Version 2.81** (August 2025) - Minor update with important fixes
+- **Fixed Category Filtering** - Minor entries now properly respect category filters
+- **Data Correction** - "Death of the Gypsy Queen" correctly categorized under "Gypsies" instead of "Churches"
+- **Version Reset** - WIP notices now properly reappear when version changes
+
+---
+
+**Version 2.08** - Major improvements to user experience and interface refinements.
 
 ### Key Highlights
 - ✅ **Fixed critical timeline loading issue** - Timeline now renders correctly
@@ -29,10 +36,6 @@ An interactive, community-driven timeline application documenting the rich histo
 - **Visual Polish** - Cleaner citation display, consistent category colors, better badge positioning
 
 [📄 View detailed release notes →](RELEASE_NOTES_v2.08.md) | [📋 All releases →](https://github.com/danieledge/Fogh-timeline/releases)
-
-### Version 2.81 - Minor Update
-- **Fixed Category Filtering** - Minor entries now properly respect category filters
-- **Data Correction** - "Death of the Gypsy Queen" correctly categorized under "Gypsies" instead of "Churches"
 
 ---
 
