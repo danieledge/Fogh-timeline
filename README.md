@@ -24,6 +24,13 @@ An interactive, community-driven timeline application documenting the rich histo
 
 ---
 
+## 📝 TODO / Roadmap
+
+### Data Management
+- **Migrate submissions to dedicated repository** - Move user submissions and amendments to a separate GitHub project to improve maintainability, allowing clear separation between application issues and data contributions (currently both stored as issues in this repository)
+
+---
+
 ## 🌟 Application Overview
 
 The FoGH Timeline is a powerful, flexible timeline application built with vanilla JavaScript for maximum compatibility and performance. While originally created for Gipsy Hill's history, the application can be adapted for any community or historical documentation project.
