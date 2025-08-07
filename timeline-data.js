@@ -169,7 +169,7 @@ var timelineData = [
 "description": "Margaret Finch dies at the claimed age of 108-109 years old on October 24th. Living in a conical hut built of branches at the base of a tree, she became famous for sitting in a crouching position with her chin on her knees, smoking two pipes and accompanied by her faithful dogs. Her decades-long practice of sitting with her chin on her knees caused her sinews to become so contracted that she could not rise from that posture, requiring burial in a specially constructed deep square box. She was buried at St. George's Church, Beckenham with much pomp, attended by large crowds, mourning coaches, and 'a great concourse of people.' Her influence persists in place names including Gipsy Hill, Finch Avenue, and Romany Road.",
 "icon": "death",
 "importance": "major",
-"category": "churches",
+"category": "gypsies",
 "citations": ["5"],
 "image": "images/margaret-finch-plaque.jpg",
 "imageCaption": "Margaret Finch, Queen of the Norwood Gypsies plaque<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Margaret_Finch,_Queen_of_the_Norwood_Gypsies_plaque.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>, by Matt Brown, <a href='https://creativecommons.org/licenses/by/2.0/' target='_blank' rel='noopener'>CC BY 2.0</a>",
