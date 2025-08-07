@@ -1,6 +1,32 @@
 # Release Notes - v2.08
 **Date:** 07/08/2025
 
+## 🆕 Major Features
+
+### Category System & Filtering
+- **Category Filters**: Timeline entries can be filtered by categories (Heritage, Transport, Churches, Education, Buildings, War, Nature, Community, General)
+- **Advanced Search**: Combined search, date range slider, and category filtering for powerful timeline exploration
+- **Visual Category Badges**: Each entry displays its category with color-coded badges
+- **Filter Persistence**: Filters remain active while browsing the timeline
+
+### Image Carousel
+- **Multiple Images Support**: Entries can now display up to 3 images
+- **Smooth Navigation**: Browse images with left/right arrows or swipe on mobile
+- **Auto-rotation**: Images automatically cycle every 5 seconds
+- **Thumbnail Indicators**: Visual dots show current image and allow direct navigation
+
+### References System
+- **Verification Status**: Each citation marked as Verified, Partial, or Unverified
+- **Quality Ratings**: High, Medium, or Low quality indicators based on source completeness
+- **Searchable Database**: Filter references by status, quality, or keyword
+- **Citation Navigation**: Navigate between multiple citations within an entry
+- **Visual Indicators**: Color-coded badges for quick status recognition
+
+### Smart Disclaimers
+- **Dismissible Messages**: WIP disclaimer and other informational messages can be hidden permanently
+- **Version-aware**: Messages automatically reappear when new version is deployed
+- **User Preferences**: Respects user's choice to hide messages across sessions
+
 ## 🎨 UI/UX Improvements
 
 ### Timeline Entries
