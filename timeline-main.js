@@ -599,6 +599,10 @@ function initializeTimeline() {
         if (item.icon) {
             timelineItem.setAttribute('data-icon', item.icon);
         }
+        // Add category data attribute for filtering
+        if (item.category) {
+            timelineItem.dataset.category = item.category;
+        }
         // Animation removed to prevent rendering issues
 
         // Create timeline dot
@@ -3399,6 +3403,8 @@ function initializeVisualTimeline() {
         allEntries.forEach(function(entry) {
             var category = entry.dataset.category;
             
+            // Apply category filter to both major and minor entries
+            // Only show entries whose category is active
             if (!category || activeCategoryFilters.has(category)) {
                 entry.classList.remove('category-filtered');
             } else {
