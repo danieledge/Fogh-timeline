@@ -42,7 +42,7 @@
 .leftline-media{
   height:var(--ll-height);width:auto;overflow:hidden;border-radius:var(--ll-radius);
   box-shadow:var(--ll-shadow);background:var(--ll-bg);display:block;
-  border:1px solid var(--ll-border)
+  border:1px solid var(--ll-border);position:relative;z-index:1;pointer-events:auto
 }
 .leftline-media>img{
   width:100%;height:100%;display:block;object-position:center
@@ -78,7 +78,7 @@
   opacity:1
 }
 /* Overlaid controls */
-.leftline-overlay{pointer-events:none;position:absolute;inset:0;display:grid;place-items:center}
+.leftline-overlay{pointer-events:none;position:absolute;inset:0;display:grid;place-items:center;z-index:2}
 .leftline-arrows{pointer-events:auto;position:absolute;inset-inline:0;inset-block:0;display:flex;justify-content:space-between;align-items:center;padding:0 .25rem}
 .leftline-btn{
   width:40px;height:40px;border-radius:10px;display:grid;place-items:center;
@@ -358,8 +358,16 @@
       c.style.cursor = 'pointer';
       med.appendChild(c);
       
-      // Add click handler for modal
-      c.addEventListener('click', function(e) {
+      // Add click handler for modal - function to handle clicks
+      var isDragging = false;
+      var startPos = null;
+      
+      var handleImageClick = function(e) {
+        // Don't open modal if we were dragging
+        if (isDragging) {
+          isDragging = false;
+          return;
+        }
         e.preventDefault();
         e.stopPropagation();
         // Try to get full-size image from data attribute first, fallback to src
@@ -373,7 +381,45 @@
         } else {
           console.error('openImageModal function not found!');
         }
-      });
+      };
+      
+      // Track drag to prevent false clicks
+      var handlePointerDown = function(e) {
+        startPos = { x: e.clientX, y: e.clientY };
+        isDragging = false;
+      };
+      
+      var handlePointerMove = function(e) {
+        if (startPos) {
+          var dx = Math.abs(e.clientX - startPos.x);
+          var dy = Math.abs(e.clientY - startPos.y);
+          if (dx > 5 || dy > 5) {
+            isDragging = true;
+          }
+        }
+      };
+      
+      var handlePointerUp = function(e) {
+        if (!isDragging) {
+          handleImageClick(e);
+        }
+        startPos = null;
+        isDragging = false;
+      };
+      
+      // Add both click and pointer handlers for better touch support
+      c.addEventListener('click', handleImageClick);
+      med.addEventListener('click', handleImageClick);
+      
+      // Add pointer events for better touch handling
+      med.addEventListener('pointerdown', handlePointerDown);
+      med.addEventListener('pointermove', handlePointerMove);
+      med.addEventListener('pointerup', handlePointerUp);
+      c.addEventListener('pointerdown', handlePointerDown);
+      c.addEventListener('pointermove', handlePointerMove);
+      c.addEventListener('pointerup', handlePointerUp);
+      
+      med.style.cursor = 'pointer';  // Make media container clickable
       
       var cap = el('figcaption','leftline-caption'); cap.textContent = img.getAttribute('data-caption') || img.getAttribute('alt') || '';
       fig.appendChild(med); fig.appendChild(cap); li.appendChild(fig);
