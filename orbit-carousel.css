@@ -1,0 +1,96 @@
+/* Orbit carousel: perfect circular path + responsive radius */
+
+/* When JS enhances a .carousel container, keep original content for fallback */
+.carousel[data-orbit-enhanced="true"] > *:not(.orbit) {
+  display: none;
+}
+
+.orbit {
+  position: relative;
+  inline-size: 100%;
+  aspect-ratio: 1 / 1;
+  container-type: inline-size;
+}
+
+.orbit-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  --angle: 0deg;
+  transform: rotateZ(var(--angle));
+  transition: transform 0.5s ease;
+}
+
+.orbit-center.is-animating {
+  animation: orbit-spin 20s linear infinite;
+}
+
+@keyframes orbit-spin {
+  from { transform: rotateZ(0deg); }
+  to { transform: rotateZ(360deg); }
+}
+
+.orbit-item {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  --r: 150px;
+  transform: 
+    rotate(var(--angle)) 
+    translateX(var(--r)) 
+    rotate(calc(-1 * var(--angle)));
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.orbit-nav {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.orbit-nav button {
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.orbit-nav button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Responsive radius */
+@container (max-width: 400px) {
+  .orbit-item {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@container (min-width: 600px) {
+  .orbit-item {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* Dark mode support */
+[data-theme="dark"] .orbit-nav button {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .orbit-nav button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

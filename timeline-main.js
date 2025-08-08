@@ -796,231 +796,71 @@ function initializeTimeline() {
             var imagesWrapper = document.createElement('div');
             imagesWrapper.className = 'content-images-wrapper';
             
-            // If multiple images, create carousel
+            // If multiple images, create leftline carousel
             if (allImages.length > 1) {
-                try {
-                    // Creating carousel for multiple images
-                    imagesWrapper.className += ' image-carousel';
+                console.log('[TIMELINE] Creating carousel for', item.title, 'with', allImages.length, 'images');
+                imagesWrapper.className += ' image-carousel';
+                
+                // Create leftline carousel container
+                var carousel = document.createElement('div');
+                carousel.className = 'leftline-carousel'; // Use 'leftline-carousel' class
+                
+                // Add all images directly to carousel with data-caption attributes
+                allImages.forEach(function(imageData, index) {
+                    var img = document.createElement('img');
                     
-                    // Store images locally to avoid scope issues
-                    var carouselImages = allImages.slice(); // Create a copy
-                    var totalImages = carouselImages.length;
-                
-                // Create carousel container
-                var carouselContainer = document.createElement('div');
-                carouselContainer.className = 'carousel-container';
-                
-                // Create viewport for the track
-                var viewport = document.createElement('div');
-                viewport.className = 'carousel-viewport';
-                
-                // Create images track
-                var imagesTrack = document.createElement('div');
-                imagesTrack.className = 'carousel-track';
-                
-                // Add all images to track
-                carouselImages.forEach(function(imageData, index) {
-                    var slideWrapper = document.createElement('div');
-                    slideWrapper.className = 'carousel-slide';
-                    
-                    var imageContent = createImageWithCaption(imageData.src, imageData.caption, imageData.captionHTML, index);
-                    
-                    // Force consistent height on just the image, preserve caption outside
-                    if (imageContent) {
-                        // Don't constrain the container height, just style it
-                        imageContent.style.height = 'auto';
-                        imageContent.style.overflow = 'visible';
-                        
-                        var img = imageContent.querySelector('img');
-                        if (img) {
-                            // Allow image to display at its natural aspect ratio
-                            img.style.maxHeight = '250px'; // Increased max height
-                            img.style.height = 'auto'; // Let height adjust to maintain aspect ratio
-                            img.style.width = '100%';
-                            img.style.objectFit = 'contain'; // Maintain aspect ratio
-                            img.style.objectPosition = 'center'; // Center the image
-                            img.style.display = 'block'; // Ensure block display
-                        }
-                        
-                        // Ensure caption is visible if it exists
-                        var caption = imageContent.querySelector('.content-image-caption');
-                        if (caption) {
-                            caption.style.display = 'block';
-                            caption.style.marginTop = '8px';
-                        }
+                    // Generate thumbnail path
+                    var thumbSrc = imageData.src;
+                    var lastDot = imageData.src.lastIndexOf('.');
+                    if (lastDot > -1) {
+                        var basePath = imageData.src.substring(0, lastDot);
+                        var ext = imageData.src.substring(lastDot);
+                        thumbSrc = basePath + '-thumb' + ext;
                     }
                     
-                    slideWrapper.appendChild(imageContent);
-                    imagesTrack.appendChild(slideWrapper);
-                });
-                
-                viewport.appendChild(imagesTrack);
-                carouselContainer.appendChild(viewport);
-                
-                // Store reference to track for later use
-                var trackElement = imagesTrack;
-                
-                // Add navigation arrows with inline onclick
-                var prevArrow = document.createElement('button');
-                prevArrow.className = 'carousel-arrow carousel-prev';
-                prevArrow.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/></svg>';
-                prevArrow.setAttribute('aria-label', 'Previous image');
-                prevArrow.style.cssText = 'position: absolute; left: 8px; top: 50%; transform: translateY(-50%); z-index: 100;';
-                
-                var nextArrow = document.createElement('button');
-                nextArrow.className = 'carousel-arrow carousel-next';
-                nextArrow.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/></svg>';
-                nextArrow.setAttribute('aria-label', 'Next image');
-                nextArrow.style.cssText = 'position: absolute; right: 8px; top: 50%; transform: translateY(-50%); z-index: 100;';
-                
-                // Add carousel indicators first
-                var indicators = document.createElement('div');
-                indicators.className = 'carousel-indicators';
-                carouselImages.forEach(function(_, index) {
-                    var dot = document.createElement('span');
-                    dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
-                    indicators.appendChild(dot);
-                });
-                
-                // Append all elements to container
-                carouselContainer.appendChild(prevArrow);
-                carouselContainer.appendChild(nextArrow);
-                carouselContainer.appendChild(indicators);
-                
-                
-                // Carousel functionality
-                var currentSlide = 0;
-                
-                function showSlide(index) {
-                    try {
-                        
-                        if (!trackElement) {
-                            console.error('Track element not found!');
-                            return;
+                    img.src = thumbSrc;
+                    img.setAttribute('data-full-src', imageData.src); // Store full-size image URL
+                    img.alt = item.title;
+                    img.loading = 'lazy';
+                    
+                    // Click handler removed - Leftline carousel will handle this
+                    // img.addEventListener('click', function() {
+                    //     openImageModal(imageData.src, imageData.caption, imageData.captionHTML);
+                    // });
+                    
+                    // Add error handler to fallback to original if thumbnail doesn't exist
+                    img.addEventListener('error', function() {
+                        if (img.src !== imageData.src) {
+                            img.src = imageData.src;
                         }
-                        
-                        var dots = indicators.querySelectorAll('.carousel-dot');
-                        
-                        // Ensure index is within bounds
-                        if (index < 0) {
-                            index = totalImages - 1;
-                        } else if (index >= totalImages) {
-                            index = 0;
-                        }
-                        
-                        
-                        // Update dots
-                        dots.forEach(function(dot, i) {
-                            dot.classList.toggle('active', i === index);
-                        });
-                        
-                        // Update track position (100% per slide for proper alignment)
-                        var translateX = index * 100;
-                        trackElement.style.transform = 'translateX(-' + translateX + '%)';
-                        
-                        currentSlide = index;
-                    } catch (error) {
-                        console.error('Error in showSlide:', error);
-                    }
-                }
-                
-                // Add swipe support
-                var touchStartX = 0;
-                var touchEndX = 0;
-                var isDragging = false;
-                
-                viewport.addEventListener('touchstart', function(e) {
-                    touchStartX = e.changedTouches[0].screenX;
-                    isDragging = true;
-                }, { passive: true });
-                
-                viewport.addEventListener('touchmove', function(e) {
-                    if (!isDragging) return;
-                    touchEndX = e.changedTouches[0].screenX;
-                }, { passive: true });
-                
-                viewport.addEventListener('touchend', function(e) {
-                    if (!isDragging) return;
-                    isDragging = false;
-                    touchEndX = e.changedTouches[0].screenX;
-                    handleSwipe();
-                }, { passive: true });
-                
-                function handleSwipe() {
-                    var swipeThreshold = 50;
-                    var diff = touchStartX - touchEndX;
-                    
-                    if (Math.abs(diff) > swipeThreshold) {
-                        if (diff > 0) {
-                            // Swipe left - next image
-                            showSlide(currentSlide + 1);
-                        } else {
-                            // Swipe right - previous image
-                            showSlide(currentSlide - 1);
-                        }
-                    }
-                }
-                
-                // Append carousel to wrapper first
-                imagesWrapper.appendChild(carouselContainer);
-                
-                // Initialize first slide
-                showSlide(0);
-                
-                // Create a closure to capture the current carousel's state
-                (function(carousel, track, slides, dots) {
-                    var currentIndex = 0;
-                    var numSlides = slides;
-                    
-                    function moveToSlide(index) {
-                        if (index < 0) {
-                            index = numSlides - 1;
-                        } else if (index >= numSlides) {
-                            index = 0;
-                        }
-                        
-                        track.style.transform = 'translateX(-' + (index * 100) + '%)';
-                        
-                        // Update dots
-                        var allDots = carousel.querySelectorAll('.carousel-dot');
-                        allDots.forEach(function(d, i) {
-                            d.classList.toggle('active', i === index);
-                        });
-                        
-                        currentIndex = index;
-                    }
-                    
-                    // Attach handlers directly
-                    prevArrow.onclick = function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        moveToSlide(currentIndex - 1);
-                        return false;
-                    };
-                    
-                    nextArrow.onclick = function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        moveToSlide(currentIndex + 1);
-                        return false;
-                    };
-                    
-                    // Initialize
-                    moveToSlide(0);
-                    
-                    // Dots
-                    dots.forEach(function(dot, index) {
-                        dot.onclick = function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            moveToSlide(index);
-                            return false;
-                        };
                     });
-                })(carouselContainer, trackElement, totalImages, indicators.querySelectorAll('.carousel-dot'));
-                } catch (error) {
-                    console.error('Error creating carousel:', error);
-                    console.error('Error stack:', error.stack);
+                    
+                    // Add alt text for accessibility
+                    img.alt = imageData.caption ? imageData.caption.replace(/<[^>]*>/g, '') : item.title || 'Timeline image';
+                    
+                    // Add data-caption attribute for leftline carousel (strip HTML)
+                    if (imageData.caption) {
+                        // Strip HTML tags from caption for clean display
+                        var cleanCaption = imageData.caption.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+                        img.setAttribute('data-caption', cleanCaption);
+                    }
+                    
+                    // Add image directly to carousel container
+                    carousel.appendChild(img);
+                });
+                
+                // Leftline carousel will auto-enhance this container
+                imagesWrapper.appendChild(carousel);
+                
+                // Manually trigger carousel enhancement if Leftline is available
+                if (window.Leftline && window.Leftline.mount) {
+                    setTimeout(function() {
+                        console.log('[TIMELINE] Mounting carousel for', item.title, 'with', carousel.querySelectorAll('img').length, 'images');
+                        var result = window.Leftline.mount(carousel);
+                        console.log('[TIMELINE] Mount result:', result ? 'success' : 'failed');
+                    }, 100);
+                } else {
+                    console.log('[TIMELINE] Leftline not available yet for', item.title);
                 }
             } else {
                 // Single image - use original layout
@@ -1052,6 +892,7 @@ function initializeTimeline() {
                 
                 // Use thumbnail for display, full image for modal
                 img.src = thumbSrc;
+                img.setAttribute('data-full-src', imageSrc); // Store full-size image URL
                 img.alt = item.title;
                 img.loading = 'lazy'; // Add lazy loading
                 
@@ -1097,6 +938,7 @@ function initializeTimeline() {
                     }
                 });
                 
+                // Add image directly to container
                 imageContainer.appendChild(img);
                 
                 if (captionText) {
@@ -1107,6 +949,22 @@ function initializeTimeline() {
                     } else {
                         caption.textContent = captionText;
                     }
+                    
+                    // Set caption width to match image on load
+                    function updateCaptionWidth() {
+                        if (img.offsetWidth > 0) {
+                            imageContainer.style.setProperty('--img-width', img.offsetWidth + 'px');
+                            caption.style.maxWidth = img.offsetWidth + 'px';
+                        }
+                    }
+                    
+                    img.addEventListener('load', updateCaptionWidth);
+                    
+                    // Check if already loaded
+                    if (img.complete) {
+                        setTimeout(updateCaptionWidth, 10);
+                    }
+                    
                     imageContainer.appendChild(caption);
                 }
                 
@@ -1806,16 +1664,465 @@ function initializeTimeline() {
         
         // Removed global contribute-link handler to prevent accidental modal opening
         
-        // Image Modal functionality
-        showDebug('Setting up image modal');
+        // Enhanced Image Modal with Smart Zoom & Navigation
+        showDebug('Setting up enhanced image modal with smart zoom');
         var imageModal = document.getElementById('image-modal');
         var imageModalClose = document.getElementById('image-modal-close');
         var modalImage = document.getElementById('modal-image');
         var modalImageCaption = document.getElementById('modal-image-caption');
+        var modalWrapper = document.getElementById('image-modal-wrapper');
+        var navigationHint = document.getElementById('zoom-navigation-hint');
+        var minimap = document.getElementById('image-minimap');
+        var minimapImage = document.getElementById('minimap-image');
+        var minimapViewport = document.getElementById('minimap-viewport');
+        
+        // Zoom state
+        var zoomState = {
+            level: 1,
+            minZoom: 0.5,
+            maxZoom: 5,
+            x: 0,
+            y: 0,
+            isPanning: false,
+            startX: 0,
+            startY: 0,
+            imageRect: null,
+            wrapperRect: null,
+            smoothZoom: true,
+            panSpeed: 50,
+            zoomSpeed: 0.1
+        };
+        
+        // Zoom controls
+        var zoomInBtn = document.getElementById('zoom-in');
+        var zoomOutBtn = document.getElementById('zoom-out');
+        var zoomResetBtn = document.getElementById('zoom-reset');
+        var zoomFitBtn = document.getElementById('zoom-fit');
+        var zoomLevelDisplay = document.getElementById('zoom-level');
+        var controlsToggle = document.getElementById('controls-toggle');
+        var zoomControls = document.getElementById('image-zoom-controls');
+        
+        // Update zoom with smooth animation and boundaries
+        function updateZoom(smooth) {
+            if (!modalImage || !modalWrapper) return;
+            
+            // Get actual dimensions
+            var imgWidth = modalImage.naturalWidth || modalImage.width;
+            var imgHeight = modalImage.naturalHeight || modalImage.height;
+            var wrapperWidth = modalWrapper.clientWidth;
+            var wrapperHeight = modalWrapper.clientHeight;
+            
+            // Calculate max pan distances to keep image in view
+            var scaledWidth = imgWidth * zoomState.level;
+            var scaledHeight = imgHeight * zoomState.level;
+            
+            var maxX = Math.max(0, (scaledWidth - wrapperWidth) / 2);
+            var maxY = Math.max(0, (scaledHeight - wrapperHeight) / 2);
+            
+            // Constrain pan
+            zoomState.x = Math.max(-maxX, Math.min(maxX, zoomState.x));
+            zoomState.y = Math.max(-maxY, Math.min(maxY, zoomState.y));
+            
+            // Apply transform with proper transition
+            var transform = 'scale(' + zoomState.level + ') translate(' + (zoomState.x / zoomState.level) + 'px, ' + (zoomState.y / zoomState.level) + 'px)';
+            
+            // Use transition only for smooth updates
+            if (smooth) {
+                modalImage.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            } else {
+                modalImage.style.transition = 'none';
+            }
+            
+            modalImage.style.transform = transform;
+            
+            // Update UI
+            if (zoomLevelDisplay) {
+                zoomLevelDisplay.textContent = Math.round(zoomState.level * 100) + '%';
+            }
+            
+            // Update wrapper cursor
+            if (modalWrapper) {
+                modalWrapper.classList.toggle('can-pan', zoomState.level > 1);
+            }
+            
+            // Show/hide minimap for high zoom levels
+            if (minimap) {
+                minimap.classList.toggle('active', zoomState.level > 2);
+                updateMinimap();
+            }
+            
+            // Show hint when zoomed
+            if (navigationHint && zoomState.level > 1) {
+                navigationHint.classList.add('visible');
+                setTimeout(function() {
+                    navigationHint.classList.remove('visible');
+                }, 3000);
+            }
+        }
+        
+        // Zoom to specific point (for mouse wheel and double-click)
+        function zoomToPoint(newLevel, clientX, clientY) {
+            if (!modalImage || !modalWrapper) return;
+            
+            var rect = modalWrapper.getBoundingClientRect();
+            var x = clientX - rect.left - rect.width / 2;
+            var y = clientY - rect.top - rect.height / 2;
+            
+            // Calculate new position to keep point under cursor
+            var scaleDiff = newLevel / zoomState.level;
+            zoomState.x = x - (x - zoomState.x) * scaleDiff;
+            zoomState.y = y - (y - zoomState.y) * scaleDiff;
+            zoomState.level = newLevel;
+            
+            updateZoom(true);
+        }
+        
+        // Reset zoom and center image
+        function resetZoom() {
+            zoomState.level = 1;
+            zoomState.x = 0;
+            zoomState.y = 0;
+            updateZoom(true);
+        }
+        
+        // Fit image to screen
+        function fitToScreen() {
+            if (!modalImage || !modalWrapper) return;
+            
+            var wrapperWidth = modalWrapper.clientWidth - 40;
+            var wrapperHeight = modalWrapper.clientHeight - 40;
+            var imageWidth = modalImage.naturalWidth;
+            var imageHeight = modalImage.naturalHeight;
+            
+            var scaleX = wrapperWidth / imageWidth;
+            var scaleY = wrapperHeight / imageHeight;
+            
+            zoomState.level = Math.min(scaleX, scaleY, 1);
+            zoomState.x = 0;
+            zoomState.y = 0;
+            updateZoom(true);
+        }
+        
+        // Pan by amount
+        function pan(dx, dy) {
+            zoomState.x += dx;
+            zoomState.y += dy;
+            updateZoom(false);
+        }
+        
+        // Update minimap
+        function updateMinimap() {
+            if (!minimap || !minimapViewport || !modalImage || zoomState.level <= 2) return;
+            
+            // Get minimap dimensions
+            var minimapWidth = 200;
+            var minimapHeight = 150;
+            
+            // Calculate scale to fit image in minimap
+            var imgAspect = modalImage.naturalWidth / modalImage.naturalHeight;
+            var minimapAspect = minimapWidth / minimapHeight;
+            
+            var scale;
+            if (imgAspect > minimapAspect) {
+                scale = minimapWidth / modalImage.naturalWidth;
+            } else {
+                scale = minimapHeight / modalImage.naturalHeight;
+            }
+            
+            // Calculate viewport size in minimap
+            var viewportWidth = (modalWrapper.clientWidth / zoomState.level) * scale;
+            var viewportHeight = (modalWrapper.clientHeight / zoomState.level) * scale;
+            
+            // Calculate viewport position (centered)
+            var centerX = minimapWidth / 2;
+            var centerY = minimapHeight / 2;
+            var viewportX = centerX - (zoomState.x * scale / zoomState.level) - viewportWidth / 2;
+            var viewportY = centerY - (zoomState.y * scale / zoomState.level) - viewportHeight / 2;
+            
+            minimapViewport.style.width = viewportWidth + 'px';
+            minimapViewport.style.height = viewportHeight + 'px';
+            minimapViewport.style.left = viewportX + 'px';
+            minimapViewport.style.top = viewportY + 'px';
+        }
+        
+        // Make minimap interactive
+        if (minimap) {
+            minimap.addEventListener('click', function(e) {
+                if (zoomState.level <= 2 || !modalImage) return;
+                
+                var rect = minimap.getBoundingClientRect();
+                var x = e.clientX - rect.left;
+                var y = e.clientY - rect.top;
+                
+                // Calculate scale
+                var imgAspect = modalImage.naturalWidth / modalImage.naturalHeight;
+                var minimapAspect = 200 / 150;
+                
+                var scale;
+                if (imgAspect > minimapAspect) {
+                    scale = 200 / modalImage.naturalWidth;
+                } else {
+                    scale = 150 / modalImage.naturalHeight;
+                }
+                
+                // Convert click position to pan offset
+                var centerX = 100;
+                var centerY = 75;
+                
+                zoomState.x = (centerX - x) * zoomState.level / scale;
+                zoomState.y = (centerY - y) * zoomState.level / scale;
+                
+                updateZoom(true);
+            });
+        }
+        
+        // Button handlers
+        if (zoomInBtn) {
+            zoomInBtn.addEventListener('click', function() {
+                zoomState.level = Math.min(zoomState.level * 1.5, zoomState.maxZoom);
+                updateZoom(true);
+            });
+        }
+        if (zoomOutBtn) {
+            zoomOutBtn.addEventListener('click', function() {
+                zoomState.level = Math.max(zoomState.level / 1.5, zoomState.minZoom);
+                updateZoom(true);
+            });
+        }
+        if (zoomResetBtn) {
+            zoomResetBtn.addEventListener('click', function() {
+                resetZoom();
+            });
+        }
+        if (zoomFitBtn) {
+            zoomFitBtn.addEventListener('click', function() {
+                fitToScreen();
+            });
+        }
+        
+        // Controls toggle
+        if (controlsToggle && zoomControls) {
+            controlsToggle.addEventListener('click', function() {
+                var isHidden = zoomControls.classList.toggle('hidden');
+                controlsToggle.classList.toggle('active', !isHidden);
+                
+                // Store preference
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.setItem('hideZoomControls', isHidden ? 'true' : 'false');
+                }
+            });
+            
+            // Hide controls by default, restore preference if exists
+            if (typeof localStorage !== 'undefined') {
+                var hideControls = localStorage.getItem('hideZoomControls');
+                // Default to hidden if no preference set
+                if (hideControls === null || hideControls === 'true') {
+                    zoomControls.classList.add('hidden');
+                    controlsToggle.classList.remove('active');
+                } else {
+                    controlsToggle.classList.add('active');
+                }
+            } else {
+                // Default to hidden if no localStorage
+                zoomControls.classList.add('hidden');
+                controlsToggle.classList.remove('active');
+            }
+        }
+        
+        // Mouse wheel zoom (no modifier key needed)
+        if (modalWrapper) {
+            modalWrapper.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                var delta = e.deltaY > 0 ? 0.9 : 1.1;
+                var newLevel = Math.max(zoomState.minZoom, Math.min(zoomState.maxZoom, zoomState.level * delta));
+                zoomToPoint(newLevel, e.clientX, e.clientY);
+            }, { passive: false });
+            
+            // Double-click to zoom
+            modalWrapper.addEventListener('dblclick', function(e) {
+                e.preventDefault();
+                var newLevel = zoomState.level > 1.5 ? 1 : 2.5;
+                zoomToPoint(newLevel, e.clientX, e.clientY);
+            });
+            
+            // Pan with mouse
+            modalWrapper.addEventListener('mousedown', function(e) {
+                if (zoomState.level > 1 && e.button === 0) {
+                    zoomState.isPanning = true;
+                    zoomState.startX = e.clientX - zoomState.x;
+                    zoomState.startY = e.clientY - zoomState.y;
+                    modalWrapper.classList.add('panning');
+                    e.preventDefault();
+                }
+            });
+            
+            // Touch support for panning
+            modalWrapper.addEventListener('touchstart', function(e) {
+                if (zoomState.level > 1 && e.touches.length === 1) {
+                    zoomState.isPanning = true;
+                    zoomState.startX = e.touches[0].clientX - zoomState.x;
+                    zoomState.startY = e.touches[0].clientY - zoomState.y;
+                    modalWrapper.classList.add('panning');
+                    e.preventDefault(); // Prevent scrolling the background
+                    e.stopPropagation();
+                }
+            }, { passive: false });
+            
+            modalWrapper.addEventListener('touchmove', function(e) {
+                if (zoomState.isPanning && e.touches.length === 1) {
+                    zoomState.x = e.touches[0].clientX - zoomState.startX;
+                    zoomState.y = e.touches[0].clientY - zoomState.startY;
+                    updateZoom(false);
+                    e.preventDefault(); // Prevent scrolling the background
+                    e.stopPropagation();
+                }
+            }, { passive: false });
+            
+            modalWrapper.addEventListener('touchend', function(e) {
+                if (zoomState.isPanning) {
+                    zoomState.isPanning = false;
+                    modalWrapper.classList.remove('panning');
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            // Pinch to zoom support
+            var initialPinchDistance = 0;
+            var initialZoom = 1;
+            
+            modalWrapper.addEventListener('touchstart', function(e) {
+                if (e.touches.length === 2) {
+                    // Calculate initial pinch distance
+                    var touch1 = e.touches[0];
+                    var touch2 = e.touches[1];
+                    initialPinchDistance = Math.hypot(
+                        touch2.clientX - touch1.clientX,
+                        touch2.clientY - touch1.clientY
+                    );
+                    initialZoom = zoomState.level;
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            modalWrapper.addEventListener('touchmove', function(e) {
+                if (e.touches.length === 2 && initialPinchDistance > 0) {
+                    var touch1 = e.touches[0];
+                    var touch2 = e.touches[1];
+                    var currentDistance = Math.hypot(
+                        touch2.clientX - touch1.clientX,
+                        touch2.clientY - touch1.clientY
+                    );
+                    
+                    var scale = currentDistance / initialPinchDistance;
+                    var newZoom = Math.max(zoomState.minZoom, Math.min(zoomState.maxZoom, initialZoom * scale));
+                    
+                    // Calculate center point between fingers
+                    var centerX = (touch1.clientX + touch2.clientX) / 2;
+                    var centerY = (touch1.clientY + touch2.clientY) / 2;
+                    
+                    zoomToPoint(newZoom, centerX, centerY);
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            modalWrapper.addEventListener('touchend', function(e) {
+                if (e.touches.length < 2) {
+                    initialPinchDistance = 0;
+                }
+            }, { passive: false });
+            
+            document.addEventListener('mousemove', function(e) {
+                if (zoomState.isPanning) {
+                    zoomState.x = e.clientX - zoomState.startX;
+                    zoomState.y = e.clientY - zoomState.startY;
+                    updateZoom(false);
+                }
+            });
+            
+            document.addEventListener('mouseup', function() {
+                if (zoomState.isPanning) {
+                    zoomState.isPanning = false;
+                    modalWrapper.classList.remove('panning');
+                }
+            });
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (!imageModal || !imageModal.classList.contains('active')) return;
+            
+            var handled = true;
+            switch(e.key) {
+                case 'ArrowUp':
+                    pan(0, zoomState.panSpeed);
+                    break;
+                case 'ArrowDown':
+                    pan(0, -zoomState.panSpeed);
+                    break;
+                case 'ArrowLeft':
+                    pan(zoomState.panSpeed, 0);
+                    break;
+                case 'ArrowRight':
+                    pan(-zoomState.panSpeed, 0);
+                    break;
+                case '+':
+                case '=':
+                    zoomState.level = Math.min(zoomState.level * 1.2, zoomState.maxZoom);
+                    updateZoom(true);
+                    break;
+                case '-':
+                case '_':
+                    zoomState.level = Math.max(zoomState.level / 1.2, zoomState.minZoom);
+                    updateZoom(true);
+                    break;
+                case ' ':
+                case 'r':
+                case 'R':
+                    e.preventDefault();
+                    resetZoom();
+                    break;
+                case 'c':
+                case 'C':
+                    if (controlsToggle) {
+                        controlsToggle.click();
+                    }
+                    break;
+                case 'f':
+                case 'F':
+                    fitToScreen();
+                    break;
+                default:
+                    handled = false;
+            }
+            
+            if (handled) {
+                e.preventDefault();
+            }
+        });
         
         function openImageModal(imageSrc, captionText, captionHTML) {
+            // Don't reset zoom yet - wait for image to load
+            
             if (modalImage) {
+                // Clear any previous image
+                modalImage.src = '';
+                
+                // Set new image
                 modalImage.src = imageSrc;
+                
+                // Set minimap image
+                if (minimapImage) {
+                    minimapImage.src = imageSrc;
+                }
+                
+                // When image loads, set to 100% (actual size)
+                modalImage.onload = function() {
+                    // Set to 100% zoom (actual pixel size)
+                    zoomState.level = 1;
+                    zoomState.x = 0;
+                    zoomState.y = 0;
+                    updateZoom(false);
+                };
             }
             if (modalImageCaption) {
                 if (captionHTML && captionText) {
@@ -1828,6 +2135,7 @@ function initializeTimeline() {
             }
             if (imageModal) {
                 imageModal.classList.add('active');
+                document.body.classList.add('modal-open');
             }
         }
         
@@ -1838,10 +2146,13 @@ function initializeTimeline() {
             }
             if (imageModal) {
                 imageModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
             }
             if (modalImage) {
                 modalImage.src = '';
             }
+            // Reset zoom when closing
+            resetZoom();
         }
         
         // Add close button handler
@@ -1850,21 +2161,8 @@ function initializeTimeline() {
             imageModalClose.addEventListener('touchend', closeImageModal);
         }
         
-        // Close on overlay click
-        if (imageModal) {
-            imageModal.addEventListener('click', function(e) {
-                if (e.target === imageModal || e.target === modalImage) {
-                    closeImageModal(e);
-                }
-            });
-        }
-        
-        // Close on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && imageModal && imageModal.classList.contains('active')) {
-                closeImageModal();
-            }
-        });
+        // Removed close on overlay click - only X button should close modal
+        // Removed close on Escape key - only X button should close modal
         
         // Make openImageModal accessible globally for the onclick handlers
         window.openImageModal = openImageModal;
@@ -4604,3 +4902,39 @@ function initializeRangeSelector() {
 var style = document.createElement('style');
 style.textContent = '.timeline-item.time-filtered { display: none; }';
 document.head.appendChild(style);
+
+// Auto-enhance any remaining carousel elements not handled by timeline
+(function() {
+    function enhanceOrphanCarousels() {
+        // Find all .carousel elements that haven't been enhanced
+        var orphanCarousels = document.querySelectorAll('.carousel:not([data-carousel-enhanced="true"])');
+        
+        orphanCarousels.forEach(function(carousel) {
+            // Skip if this carousel was created by timeline code
+            if (carousel.closest('.timeline-carousel')) return;
+            
+            // Mark as enhanced to prevent double-processing
+            carousel.dataset.carouselEnhanced = 'true';
+            
+            // Find images in this carousel
+            var images = carousel.querySelectorAll('img');
+            if (images.length <= 1) return; // No need for carousel with single image
+            
+            // Apply lazy loading attributes
+            images.forEach(function(img) {
+                img.decoding = img.decoding || 'async';
+                img.loading = img.loading || 'lazy';
+            });
+            
+            console.log('Enhanced orphan carousel with', images.length, 'images');
+        });
+    }
+    
+    // Run enhancement when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', enhanceOrphanCarousels);
+    } else {
+        // Also run after a short delay to catch dynamically added content
+        setTimeout(enhanceOrphanCarousels, 100);
+    }
+})();
