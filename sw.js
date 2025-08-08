@@ -1,7 +1,7 @@
 // Service Worker for Gipsy Hill Timeline
 // Version-based cache management
 
-const CACHE_VERSION = 'v2.09.1';
+const CACHE_VERSION = 'v2.85';
 const CACHE_NAME = `timeline-cache-${CACHE_VERSION}`;
 const urlsToCache = [
     '/',
@@ -9,7 +9,8 @@ const urlsToCache = [
     '/timeline.css',
     '/timeline-main.js',
     '/timeline-data.js',
-    '/staticman-integration.js'
+    '/staticman-integration.js',
+    '/leftline-v13-zoom.bundle.js'
 ];
 
 // Install event - cache resources

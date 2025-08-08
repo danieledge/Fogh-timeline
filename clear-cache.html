@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Cache</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Clear Timeline Cache</h1>
+    <p>Click the button below to clear all cached data and reload the timeline with the latest version.</p>
+    
+    <button onclick="clearAllCaches()">Clear All Caches</button>
+    <button onclick="unregisterServiceWorker()">Unregister Service Worker</button>
+    <button onclick="goToTimeline()">Go to Timeline</button>
+    
+    <div id="status"></div>
+    
+    <script>
+        function log(message, type = 'info') {
+            const status = document.getElementById('status');
+            status.innerHTML += `<p class="${type}">${new Date().toLocaleTimeString()}: ${message}</p>`;
+        }
+        
+        async function clearAllCaches() {
+            try {
+                // Clear all caches
+                if ('caches' in window) {
+                    const names = await caches.keys();
+                    log('Found caches: ' + names.join(', '));
+                    
+                    for (const name of names) {
+                        await caches.delete(name);
+                        log('Deleted cache: ' + name, 'success');
+                    }
+                }
+                
+                // Clear local storage
+                localStorage.clear();
+                log('Cleared localStorage', 'success');
+                
+                // Clear session storage
+                sessionStorage.clear();
+                log('Cleared sessionStorage', 'success');
+                
+                // Update service worker
+                if ('serviceWorker' in navigator) {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    if (registration) {
+                        registration.update();
+                        log('Service worker update triggered', 'success');
+                    }
+                }
+                
+                log('All caches cleared! Reload the page to get the latest version.', 'success');
+                
+                // Auto redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/timeline.html';
+                }, 2000);
+                
+            } catch (error) {
+                log('Error: ' + error.message, 'error');
+            }
+        }
+        
+        async function unregisterServiceWorker() {
+            try {
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (const registration of registrations) {
+                        await registration.unregister();
+                        log('Service worker unregistered', 'success');
+                    }
+                }
+                
+                // Clear all caches too
+                if ('caches' in window) {
+                    const names = await caches.keys();
+                    for (const name of names) {
+                        await caches.delete(name);
+                    }
+                }
+                
+                log('Service worker removed! Reload to get latest version.', 'success');
+                
+                // Auto redirect
+                setTimeout(() => {
+                    window.location.href = '/timeline.html';
+                }, 2000);
+                
+            } catch (error) {
+                log('Error: ' + error.message, 'error');
+            }
+        }
+        
+        function goToTimeline() {
+            window.location.href = '/timeline.html';
+        }
+        
+        // Check current state
+        window.addEventListener('load', async () => {
+            if ('serviceWorker' in navigator) {
+                const registration = await navigator.serviceWorker.getRegistration();
+                if (registration) {
+                    log('Service worker is registered');
+                    if (registration.active) {
+                        log('Active service worker: ' + registration.active.scriptURL);
+                    }
+                } else {
+                    log('No service worker registered');
+                }
+            }
+            
+            if ('caches' in window) {
+                const names = await caches.keys();
+                if (names.length > 0) {
+                    log('Caches found: ' + names.join(', '));
+                } else {
+                    log('No caches found');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

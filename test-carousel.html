@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stack3D Carousel Demo</title>
+<link rel="stylesheet" href="stack3d.css">
+<style>
+  body {
+    font-family: sans-serif;
+    background: #f5f5f5;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .demo-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+  }
+  h3 {
+    margin-top: 0;
+  }
+</style>
+</head>
+<body>
+
+<h2>Stack3D Carousel Demo</h2>
+
+<div class="demo-section">
+  <h3>Historical Images Gallery</h3>
+  <div class="stack3d" id="gallery1">
+    <img src="images/gipsy-hill-station-1860s.jpg" alt="Gipsy Hill Station 1860s">
+    <img src="images/crystal-palace-sydenham-1854.png" alt="Crystal Palace">
+    <img src="images/margaret-finch-plaque.jpg" alt="Margaret Finch Plaque">
+    <img src="images/norwood-gypsies.jpg" alt="Norwood Gypsies">
+    <img src="images/river-effra-flood-1890.jpg" alt="River Effra Flood">
+    <img src="images/pickles-dog.jpg" alt="Pickles the Dog">
+  </div>
+  <div class="stack3d-controls">
+    <button type="button" onclick="document.getElementById('gallery1').stack3d?.prev()">‹</button>
+    <button type="button" onclick="document.getElementById('gallery1').stack3d?.next()">›</button>
+  </div>
+</div>
+
+<div class="demo-section">
+  <h3>Community Images</h3>
+  <div class="stack3d" id="gallery2">
+    <img src="images/friends-of-gipsy-hill-community-group.jpg" alt="Community Group">
+    <img src="images/gipsy-hill-village-fete-2019.jpg" alt="Village Fete">
+    <img src="images/gipsy-hill-christmas-tree-2020.jpg" alt="Christmas Tree">
+    <img src="images/gipsy-hill-police-station.jpg" alt="Police Station">
+    <img src="images/gipsy-hill-station-garden-fogh.jpg" alt="Station Garden">
+  </div>
+  <div class="stack3d-controls">
+    <button type="button" onclick="document.getElementById('gallery2').stack3d?.prev()">‹</button>
+    <button type="button" onclick="document.getElementById('gallery2').stack3d?.next()">›</button>
+  </div>
+</div>
+
+<div class="demo-section">
+  <h3>Instructions</h3>
+  <p>Navigate through the images using:</p>
+  <ul>
+    <li>Arrow buttons below each gallery</li>
+    <li>Keyboard arrow keys (← →) when gallery is focused</li>
+    <li>Swipe gestures on touch devices</li>
+    <li>Click on side images to navigate to them</li>
+  </ul>
+</div>
+
+<script src="stack3d.js"></script>
+<script>
+console.log('Stack3D carousel demo loaded');
+</script>
+
+</body>
+</html>

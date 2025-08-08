@@ -1,0 +1,82 @@
+<div class="stack3d" id="gallery">
+  <img src="images/a.jpg" alt="Old Gipsy Hill photo A">
+  <img src="images/b.jpg" alt="Old Gipsy Hill photo B">
+  <img src="images/c.jpg" alt="Old Gipsy Hill photo C">
+  <!-- as many as you like -->
+</div>
+<div class="stack3d-controls">
+  <button type="button" data-prev>‹</button>
+  <button type="button" data-next>›</button>
+</div>
+<script>
+  document.querySelector('[data-next]')?.addEventListener('click', () => document.getElementById('gallery')?.stack3d?.next());
+  document.querySelector('[data-prev]')?.addEventListener('click', () => document.getElementById('gallery')?.stack3d?.prev());
+
+/* stack3d.css
+   3D stack/coverflow carousel (vanilla JS companion: stack3d.js)
+   Usage markup example:
+     <div class="stack3d" id="gallery">
+       <img src="images/1.jpg" alt="">
+       <img src="images/2.jpg" alt="">
+       ...
+     </div>
+     <div class="stack3d-controls">
+       <button type="button" data-prev>‹</button>
+       <button type="button" data-next>›</button>
+     </div>
+*/
+
+.stack3d {
+  position: relative;
+  width: min(900px, 100%);
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  overflow: visible; /* allow depth overflow */
+  touch-action: pan-y; /* keep page scroll vertical */
+  outline: none; /* we’ll set focus ring on active slide */
+}
+
+.stack3d > img {
+  position: absolute; inset: 0;
+  margin: auto;
+  max-width: 70%;
+  max-height: 80%;
+  transform-style: preserve-3d;
+  transition: transform 400ms ease, filter 300ms ease, opacity 300ms ease;
+  will-change: transform;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  opacity: 0;               /* hidden until laid out */
+  backface-visibility: hidden;
+}
+
+.stack3d > img.is-visible { opacity: 1; }
+
+/* Focus/active styling */
+.stack3d > img[data-active="true"] {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  filter: none !important;
+}
+
+/* Optional controls */
+.stack3d-controls {
+  display: flex;
+  gap: .5rem;
+  justify-content: center;
+  margin-top: .5rem;
+}
+.stack3d-controls button {
+  font: inherit;
+  padding: .35rem .6rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Reduced motion fallback */
+@media (prefers-reduced-motion: reduce) {
+  .stack3d > img { transition: none; }
+}
