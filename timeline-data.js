@@ -387,11 +387,13 @@ var timelineData = [
 {
 "date": "1870",
 "title": "Crystal Palace Gas Works",
-"description": "Crystal Palace Gas Works opens, providing gas lighting and heating to homes and businesses throughout the area. This infrastructure development marks another step in Gipsy Hill's transformation from rural community to modern Victorian suburb.",
+"description": "Crystal Palace Gas Works opens, providing gas lighting and heating to homes and businesses throughout the area. The gas works had its origins in two separate companies founded in 1852 and 1853, which merged in 1854 to form the Crystal Palace District Gas Company. This infrastructure development marks another step in Gipsy Hill's transformation from rural community to modern Victorian suburb.",
+"image": "images/GasWorksBellGreen.JPEG",
+"imageCaption": "South Suburban Gas Works, Bell Green, Sydenham, c. 1910 later Crystal Palace Gas Works (Credit: University of Greenwich)",
 "icon": "factory",
 "importance": "major",
 "category": "community",
-"citations": ["14"],
+"citations": ["14", "78"],
 },
 
 
@@ -466,6 +468,9 @@ var timelineData = [
 "date": "1881-1882",
 "title": "Gipsy Road Baptist Church",
 "description": "Gipsy Road Baptist Church is built, with its foundation stone laid on 27th September 1881. Constructed at a cost of £4,700, this substantial religious building was designed to serve the growing community's spiritual needs. The church was enhanced in 1887 with the addition of an organ, inaugurated with a recital by the renowned organist Alfred Hollins.",
+"image": "images/gipsy-road-baptist-church.jpg",
+"imageCaption": "Gipsy Road Baptist Church, West Norwood. The original foundation stone was laid on 27th September 1881 and the church was built at a cost of £4,700. An organ was added in 1887 with the famous organist Alfred Hollins giving the opening recital. Photograph by Sam Lambert.<br>Source: <a href='https://boroughphotos.org/lambeth/gipsy-road-baptist-church-west-norwood/' target='_blank' rel='noopener'>Lambeth Archives</a>",
+"imageCaptionHTML": true,
 "icon": "church",
 "importance": "minor",
 "category": "churches",
@@ -621,7 +626,10 @@ var timelineData = [
 {
 "date": "1939",
 "title": "Police Station Operations Move",
-"description": "The original Gipsy Hill Police Station at 10 Gipsy Hill ceases active police operations, with services moving to a new facility on Central Hill. The Victorian building designed by Charles Reeves would later be converted to police flats in 1948 to address post-war housing needs.",
+"description": "The original Gipsy Hill Police Station at 10 Gipsy Hill ceases active police operations, with services moving to a new facility on Central Hill. Built in 1854 and designed by Charles Reeves, this Victorian building served the community for 85 years before the move. The building would later be converted to police flats in 1948 to address post-war housing needs.",
+"image": "images/gipsy-hill-police-station.jpg",
+"imageCaption": "Former Gipsy Hill Police Station<br>Source: <a href='https://boroughphotos.org/lambeth/former-police-station-gipsy-hill-upper-norwood/' target='_blank' rel='noopener'>boroughphotos.org</a>",
+"imageCaptionHTML": true,
 "icon": "police",
 "importance": "minor",
 "category": "community",
@@ -770,7 +778,7 @@ var timelineData = [
 "icon": "castle",
 "importance": "minor",
 "category": "nature",
-"citations": ["26"],
+"citations": ["26", "91"],
 },
 
 
@@ -1888,6 +1896,15 @@ const timelineCitations = [
   },
 
   {
+    "number": "78",
+    "timeline_entry": "1870 – Crystal Palace Gas Works",
+    "status": "Verified",
+    "source": "University of Greenwich Ideal Homes archive documents the South Suburban Gas Works at Bell Green, Sydenham, later known as Crystal Palace Gas Works, with historical photograph c. 1910.",
+    "quality": "High",
+    "url": "https://ideal-homes.gre.ac.uk/lewisham/assets/galleries/sydenham/gas-works.html"
+  },
+
+  {
     "number": "88",
     "timeline_entry": "1974 – Gipsy Hill Conservation Area Designated",
     "status": "Verified",
@@ -1919,6 +1936,15 @@ const timelineCitations = [
     "additional_urls": [
       "https://en.wikipedia.org/wiki/Pickles_(dog)"
     ]
+  },
+
+  {
+    "number": "91",
+    "timeline_entry": "1972 – Kingswood House Nationally Listed",
+    "status": "Verified",
+    "source": "Historic England listing for Kingswood House, Grade II listed building, List Entry Number 1385883. Georgian mansion with later additions, significant architectural and historical importance.",
+    "quality": "High",
+    "url": "https://historicengland.org.uk/listing/the-list/list-entry/1385883"
   }
 ];
 // Make data globally accessible
