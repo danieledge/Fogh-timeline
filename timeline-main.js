@@ -820,13 +820,49 @@ function initializeTimeline() {
                     
                     img.src = thumbSrc;
                     img.setAttribute('data-full-src', imageData.src); // Store full-size image URL
-                    img.alt = item.title;
                     img.loading = 'lazy';
                     
-                    // Click handler removed - Leftline carousel will handle this
-                    // img.addEventListener('click', function() {
-                    //     openImageModal(imageData.src, imageData.caption, imageData.captionHTML);
-                    // });
+                    // Store caption data for modal
+                    if (imageData.caption) {
+                        img.setAttribute('data-modal-caption', imageData.caption);
+                    }
+                    if (imageData.captionHTML) {
+                        img.setAttribute('data-modal-caption-html', imageData.captionHTML);
+                    }
+                    
+                    // Add click handler directly to the image before carousel processes it
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', function(e) {
+                        console.log('[TIMELINE] Direct image click handler fired!');
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        var fullSrc = imageData.src;
+                        var caption = imageData.caption || '';
+                        var captionHTML = imageData.captionHTML || null;
+                        
+                        console.log('[TIMELINE] Opening modal from direct handler:', fullSrc);
+                        
+                        // Use setTimeout to ensure modal opens after any other handlers
+                        setTimeout(function() {
+                            if (window.openImageModal) {
+                                window.openImageModal(fullSrc, caption, captionHTML);
+                            } else {
+                                // If openImageModal isn't ready yet, wait and try again
+                                var attempts = 0;
+                                var tryOpen = setInterval(function() {
+                                    attempts++;
+                                    if (window.openImageModal) {
+                                        window.openImageModal(fullSrc, caption, captionHTML);
+                                        clearInterval(tryOpen);
+                                    } else if (attempts > 10) {
+                                        console.error('[TIMELINE] Failed to find openImageModal after 10 attempts');
+                                        clearInterval(tryOpen);
+                                    }
+                                }, 100);
+                            }
+                        }, 0);
+                    });
                     
                     // Add error handler to fallback to original if thumbnail doesn't exist
                     img.addEventListener('error', function() {
@@ -856,8 +892,79 @@ function initializeTimeline() {
                 if (window.Leftline && window.Leftline.mount) {
                     setTimeout(function() {
                         console.log('[TIMELINE] Mounting carousel for', item.title, 'with', carousel.querySelectorAll('img').length, 'images');
+                        
+                        // Check if openImageModal is available
+                        if (!window.openImageModal) {
+                            console.error('[TIMELINE] openImageModal not available when mounting carousel');
+                        } else {
+                            console.log('[TIMELINE] openImageModal is available for carousel');
+                        }
+                        
                         var result = window.Leftline.mount(carousel);
                         console.log('[TIMELINE] Mount result:', result ? 'success' : 'failed');
+                        
+                        // Add fallback click handlers to carousel images after mounting
+                        // This ensures modal opens even if Leftline's handlers don't work
+                        setTimeout(function() {
+                            // Try multiple selectors to find carousel images
+                            var selectors = [
+                                '.leftline-media img',
+                                '.leftline-carousel img',
+                                '.leftline-item img',
+                                '.leftline-figure img',
+                                'img'
+                            ];
+                            
+                            var carouselImages = null;
+                            for (var i = 0; i < selectors.length; i++) {
+                                carouselImages = carousel.querySelectorAll(selectors[i]);
+                                if (carouselImages.length > 0) {
+                                    console.log('[TIMELINE] Found', carouselImages.length, 'images with selector:', selectors[i]);
+                                    break;
+                                }
+                            }
+                            
+                            if (!carouselImages || carouselImages.length === 0) {
+                                console.error('[TIMELINE] No carousel images found!');
+                                console.log('[TIMELINE] Carousel HTML:', carousel.innerHTML.substring(0, 500));
+                                return;
+                            }
+                            
+                            console.log('[TIMELINE] Adding click handlers to', carouselImages.length, 'carousel images');
+                            carouselImages.forEach(function(img, index) {
+                                console.log('[TIMELINE] Processing image', index, '- src:', img.src.substring(img.src.lastIndexOf('/') + 1));
+                                
+                                // Remove any existing click handlers to avoid conflicts
+                                var newImg = img.cloneNode(true);
+                                img.parentNode.replaceChild(newImg, img);
+                                
+                                // Add our click handler
+                                newImg.style.cursor = 'pointer';
+                                newImg.setAttribute('data-modal-handler', 'true');
+                                
+                                newImg.addEventListener('click', function(e) {
+                                    console.log('[TIMELINE] Image clicked! Event:', e);
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    
+                                    var fullSrc = newImg.getAttribute('data-full-src') || newImg.src;
+                                    var caption = newImg.getAttribute('data-modal-caption') || newImg.getAttribute('data-caption') || newImg.alt || '';
+                                    var captionHTML = newImg.getAttribute('data-modal-caption-html') || null;
+                                    
+                                    console.log('[TIMELINE] Opening modal with:', {
+                                        fullSrc: fullSrc,
+                                        caption: caption,
+                                        captionHTML: captionHTML
+                                    });
+                                    
+                                    if (window.openImageModal) {
+                                        window.openImageModal(fullSrc, caption, captionHTML);
+                                    } else {
+                                        console.error('[TIMELINE] openImageModal not found!');
+                                    }
+                                }, true); // Use capture phase
+                            });
+                        }, 500); // Wait longer for Leftline to finish setup
                     }, 100);
                 } else {
                     console.log('[TIMELINE] Leftline not available yet for', item.title);
@@ -2122,6 +2229,8 @@ function initializeTimeline() {
                     zoomState.x = 0;
                     zoomState.y = 0;
                     updateZoom(false);
+                    // Now that image is loaded and zoom is set, update minimap
+                    updateMinimap();
                 };
             }
             if (modalImageCaption) {
