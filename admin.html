@@ -2560,26 +2560,81 @@
                 
                 const newData = this.getFormData();
                 
-                // Option to use Staticman API
-                const useStaticman = confirm('Would you like to submit via Staticman API?\n\nYes = Submit via Staticman (automatic PR)\nNo = Generate manual Git commands');
+                // Show preview and confirmation
+                this.showPreviewAndConfirm(newData, commitMsg, prDesc);
+            },
+            
+            showPreviewAndConfirm: function(entryData, commitMsg, prDesc) {
+                const modalDiv = document.createElement('div');
+                modalDiv.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000;';
                 
-                if (useStaticman) {
-                    this.submitViaStaticman(newData, commitMsg, prDesc);
-                    return;
+                const contentDiv = document.createElement('div');
+                contentDiv.style.cssText = 'background: linear-gradient(135deg, #2c3e50 0%, #1a1a2e 100%); color: white; padding: 30px; border-radius: 10px; max-width: 700px; max-height: 80vh; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.5);';
+                
+                let htmlContent = '<h2 style="margin-bottom: 20px; color: #3498db;">📝 Review Your Changes</h2>';
+                
+                // Show what will be changed
+                htmlContent += '<div style="background: #1a1a2e; padding: 15px; border-radius: 5px; margin-bottom: 20px;">';
+                htmlContent += '<h3 style="color: #27ae60; margin-bottom: 10px;">Entry Details:</h3>';
+                
+                if (this.currentEntry === 'new') {
+                    htmlContent += '<p style="color: #f39c12; margin-bottom: 10px;">➕ <strong>Creating New Entry</strong></p>';
+                } else {
+                    htmlContent += '<p style="color: #f39c12; margin-bottom: 10px;">✏️ <strong>Updating Existing Entry</strong></p>';
                 }
                 
-                // Generate the git commands for creating a PR
-                let commands = 'GITHUB PR CREATION COMMANDS\n';
-                commands += '=' .repeat(50) + '\n\n';
-                commands += 'Run these commands to create a pull request:\n\n';
+                htmlContent += '<table style="width: 100%; border-collapse: collapse;">';
+                if (entryData.date) htmlContent += `<tr><td style="padding: 5px; color: #95a5a6;">Date:</td><td style="padding: 5px;">${entryData.date}</td></tr>`;
+                if (entryData.title) htmlContent += `<tr><td style="padding: 5px; color: #95a5a6;">Title:</td><td style="padding: 5px;">${entryData.title}</td></tr>`;
+                if (entryData.category) htmlContent += `<tr><td style="padding: 5px; color: #95a5a6;">Category:</td><td style="padding: 5px;">${entryData.category}</td></tr>`;
+                if (entryData.importance) htmlContent += `<tr><td style="padding: 5px; color: #95a5a6;">Importance:</td><td style="padding: 5px;">${entryData.importance}</td></tr>`;
+                if (entryData.icon) htmlContent += `<tr><td style="padding: 5px; color: #95a5a6;">Icon:</td><td style="padding: 5px;">${entryData.icon}</td></tr>`;
+                htmlContent += '</table>';
+                
+                if (entryData.description) {
+                    htmlContent += '<div style="margin-top: 10px;">';
+                    htmlContent += '<strong style="color: #95a5a6;">Description:</strong>';
+                    htmlContent += `<p style="margin-top: 5px; padding: 10px; background: #2c3e50; border-radius: 5px;">${entryData.description.substring(0, 200)}${entryData.description.length > 200 ? '...' : ''}</p>`;
+                    htmlContent += '</div>';
+                }
+                htmlContent += '</div>';
+                
+                // Show commit details
+                htmlContent += '<div style="background: #1a1a2e; padding: 15px; border-radius: 5px; margin-bottom: 20px;">';
+                htmlContent += '<h3 style="color: #3498db; margin-bottom: 10px;">Commit Details:</h3>';
+                htmlContent += `<p><strong>Message:</strong> ${commitMsg}</p>`;
+                htmlContent += `<p style="margin-top: 10px;"><strong>PR Description:</strong></p>`;
+                htmlContent += `<p style="padding: 10px; background: #2c3e50; border-radius: 5px; margin-top: 5px;">${prDesc}</p>`;
+                htmlContent += '</div>';
+                
+                // Action buttons
+                htmlContent += '<div style="display: flex; gap: 10px; justify-content: center;">';
+                htmlContent += '<button onclick="adminTools.entryEditor.confirmAndGenerateCommands(); this.parentElement.parentElement.parentElement.remove();" style="background: #27ae60; color: white; border: none; padding: 12px 30px; border-radius: 5px; cursor: pointer; font-size: 16px;">✅ Confirm & Generate PR</button>';
+                htmlContent += '<button onclick="this.parentElement.parentElement.parentElement.remove()" style="background: #e74c3c; color: white; border: none; padding: 12px 30px; border-radius: 5px; cursor: pointer; font-size: 16px;">❌ Cancel</button>';
+                htmlContent += '</div>';
+                
+                contentDiv.innerHTML = htmlContent;
+                modalDiv.appendChild(contentDiv);
+                document.body.appendChild(modalDiv);
+            },
+            
+            confirmAndGenerateCommands: function() {
+                const commitMsg = document.getElementById('commit-message').value.trim();
+                const prDesc = document.getElementById('pr-description').value.trim();
+                const newData = this.getFormData();
+                
+                // Generate the git commands for creating a PR that modifies timeline-data.js
+                let commands = '#!/bin/bash\n\n';
+                commands += '# GitHub PR Creation Script\n';
+                commands += '# This script will create a pull request with your timeline changes\n\n';
                 
                 // Create a new branch
                 const branchName = `timeline-update-${Date.now()}`;
-                commands += `# Create and checkout new branch\n`;
+                commands += `echo "Creating new branch: ${branchName}"\n`;
                 commands += `git checkout -b ${branchName}\n\n`;
                 
                 // Generate the modification script
-                commands += `# Create modification script\n`;
+                commands += `echo "Creating timeline update script..."\n`;
                 commands += `cat > update_timeline.js << 'EOF'\n`;
                 commands += `const fs = require('fs');\n`;
                 commands += `const content = fs.readFileSync('timeline-data.js', 'utf8');\n`;
@@ -2588,227 +2643,74 @@
                 if (this.currentEntry === 'new') {
                     commands += `// Add new entry\n`;
                     commands += `const newEntry = ${JSON.stringify(newData, null, 2)};\n`;
-                    commands += `const insertPoint = updatedContent.indexOf(']') - 1;\n`;
-                    commands += `const insertion = ',\\n' + JSON.stringify(newEntry, null, 2);\n`;
-                    commands += `updatedContent = updatedContent.slice(0, insertPoint) + insertion + updatedContent.slice(insertPoint);\n`;
+                    commands += `const arrayEndIndex = updatedContent.lastIndexOf('];');\n`;
+                    commands += `const lastEntryIndex = updatedContent.lastIndexOf('}', arrayEndIndex);\n`;
+                    commands += `const insertion = ',\\n    ' + JSON.stringify(newEntry, null, 2).split('\\n').map((line, i) => i === 0 ? line : '    ' + line).join('\\n');\n`;
+                    commands += `updatedContent = updatedContent.slice(0, lastEntryIndex + 1) + insertion + updatedContent.slice(lastEntryIndex + 1);\n`;
                 } else {
                     commands += `// Update existing entry\n`;
                     commands += `const oldEntry = ${JSON.stringify(this.originalEntry, null, 2)};\n`;
                     commands += `const newEntry = ${JSON.stringify(newData, null, 2)};\n`;
-                    commands += `const oldEntryStr = JSON.stringify(oldEntry);\n`;
-                    commands += `const newEntryStr = JSON.stringify(newEntry, null, 2);\n`;
-                    commands += `updatedContent = updatedContent.replace(oldEntryStr, newEntryStr);\n`;
+                    
+                    // Use a more robust replacement method
+                    commands += `// Find and replace the entry based on date\n`;
+                    commands += `const entryRegex = new RegExp(\n`;
+                    commands += `  '\\\\{[^}]*"date"\\\\s*:\\\\s*"${this.originalEntry.date.replace(/[.*+?^${}()|[\]\\]/g, '\\\\$&')}"[^}]*\\\\}',\n`;
+                    commands += `  's'\n`;
+                    commands += `);\n`;
+                    commands += `const formattedEntry = JSON.stringify(newEntry, null, 2).split('\\n').map((line, i) => i === 0 ? line : '    ' + line).join('\\n');\n`;
+                    commands += `updatedContent = updatedContent.replace(entryRegex, formattedEntry);\n`;
                 }
                 
-                commands += `fs.writeFileSync('timeline-data.js', updatedContent);\n`;
-                commands += `console.log('Timeline updated successfully');\n`;
+                commands += `\nfs.writeFileSync('timeline-data.js', updatedContent);\n`;
+                commands += `console.log('✅ Timeline updated successfully');\n`;
                 commands += `EOF\n\n`;
                 
-                commands += `# Run the update script\n`;
+                commands += `echo "Running update script..."\n`;
                 commands += `node update_timeline.js\n\n`;
                 
-                commands += `# Commit changes\n`;
+                commands += `echo "Committing changes..."\n`;
                 commands += `git add timeline-data.js\n`;
-                commands += `git commit -m "${commitMsg}"\n\n`;
+                commands += `git commit -m "${commitMsg.replace(/"/g, '\\"')}"\n\n`;
                 
-                commands += `# Push branch\n`;
+                commands += `echo "Pushing branch to origin..."\n`;
                 commands += `git push -u origin ${branchName}\n\n`;
                 
-                commands += `# Create PR using GitHub CLI\n`;
-                commands += `gh pr create --title "${commitMsg}" --body "${prDesc || 'Timeline entry update via admin panel'}"\n\n`;
+                commands += `echo "Creating pull request..."\n`;
+                commands += `# If you have GitHub CLI installed:\n`;
+                commands += `if command -v gh &> /dev/null; then\n`;
+                commands += `    gh pr create --title "${commitMsg.replace(/"/g, '\\"')}" --body "${prDesc.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"\n`;
+                commands += `    echo "✅ Pull request created successfully!"\n`;
+                commands += `else\n`;
+                commands += `    echo "GitHub CLI not found. Please visit:"\n`;
+                commands += `    echo "https://github.com/danieledge/Fogh-timeline/compare/${branchName}?expand=1"\n`;
+                commands += `    echo "to create the pull request manually."\n`;
+                commands += `fi\n\n`;
                 
-                commands += `# Alternative: Create PR via GitHub web interface\n`;
-                commands += `echo "Or visit: https://github.com/[your-repo]/compare/${branchName}?expand=1"\n\n`;
+                commands += `# Clean up\n`;
+                commands += `rm update_timeline.js\n`;
+                commands += `echo "Done! Your pull request has been created."\n`;
                 
-                commands += `# ============================================\n`;
-                commands += `# AUTOMATED SUBMISSION OPTIONS:\n`;
-                commands += `# ============================================\n\n`;
-                
-                commands += `# Option 1: Submit via GitHub API (requires token)\n`;
-                commands += `# First, set your GitHub token:\n`;
-                commands += `# export GITHUB_TOKEN="your-personal-access-token"\n\n`;
-                
-                commands += `# Then run this script:\n`;
-                commands += `cat > submit_pr.sh << 'SCRIPT'\n`;
-                commands += `#!/bin/bash\n`;
-                commands += `REPO_OWNER="your-github-username"\n`;
-                commands += `REPO_NAME="your-repo-name"\n`;
-                commands += `BRANCH="${branchName}"\n`;
-                commands += `BASE_BRANCH="main"\n\n`;
-                
-                commands += `# Create branch and commit\n`;
-                commands += `git checkout -b $BRANCH\n`;
-                commands += `node update_timeline.js\n`;
-                commands += `git add timeline-data.js\n`;
-                commands += `git commit -m "${commitMsg}"\n`;
-                commands += `git push -u origin $BRANCH\n\n`;
-                
-                commands += `# Create PR via API\n`;
-                commands += `curl -X POST \\\n`;
-                commands += `  -H "Authorization: token $GITHUB_TOKEN" \\\n`;
-                commands += `  -H "Accept: application/vnd.github.v3+json" \\\n`;
-                commands += `  https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/pulls \\\n`;
-                commands += `  -d '{\n`;
-                commands += `    "title": "${commitMsg.replace(/'/g, "\\'")}",\n`;
-                commands += `    "body": "${prDesc.replace(/'/g, "\\'").replace(/\n/g, "\\n")}",\n`;
-                commands += `    "head": "'$BRANCH'",\n`;
-                commands += `    "base": "'$BASE_BRANCH'"\n`;
-                commands += `  }'\n`;
-                commands += `SCRIPT\n\n`;
-                
-                commands += `# Make executable and run:\n`;
-                commands += `chmod +x submit_pr.sh\n`;
-                commands += `./submit_pr.sh\n\n`;
-                
-                commands += `# Option 2: Use GitHub CLI (if installed)\n`;
-                commands += `# This is the easiest method if you have gh installed:\n`;
-                commands += `gh pr create --title "${commitMsg}" --body "${prDesc}"\n`;
-                
-                this.showOutput('Pull Request Commands', commands);
-                
-                // Also copy to clipboard
+                this.showOutput('Pull Request Script', commands);
                 this.copyToClipboard(commands);
                 
-                // Show success message
+                // Show success message with instructions
                 const successMsg = document.createElement('div');
-                successMsg.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%); color: white; padding: 20px; border-radius: 10px; z-index: 10000; box-shadow: 0 4px 20px rgba(0,0,0,0.3);';
-                successMsg.innerHTML = '<h3>✅ PR Commands Generated!</h3><p>Commands have been copied to clipboard.</p><p style="font-size: 0.9rem; margin-top: 10px;">Run them in your terminal to submit the PR.</p>';
+                successMsg.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%); color: white; padding: 30px; border-radius: 10px; z-index: 10000; box-shadow: 0 4px 20px rgba(0,0,0,0.3); max-width: 500px;';
+                successMsg.innerHTML = `
+                    <h3 style="margin-bottom: 15px;">✅ Script Generated!</h3>
+                    <p style="margin-bottom: 15px;">The PR creation script has been copied to your clipboard.</p>
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                        <p style="margin-bottom: 10px;"><strong>To submit your changes:</strong></p>
+                        <ol style="margin-left: 20px; line-height: 1.6;">
+                            <li>Save the script as: <code>create_pr.sh</code></li>
+                            <li>Make it executable: <code>chmod +x create_pr.sh</code></li>
+                            <li>Run it: <code>./create_pr.sh</code></li>
+                        </ol>
+                    </div>
+                    <button onclick="this.parentElement.remove()" style="background: white; color: #27ae60; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">Close</button>
+                `;
                 document.body.appendChild(successMsg);
-                setTimeout(() => successMsg.remove(), 4000);
-            },
-            
-            submitViaStaticman: function(entryData, commitMsg, prDesc) {
-                // Staticman configuration
-                const STATICMAN_CONFIG = {
-                    baseUrl: 'https://incomparable-cupcake-fef8d5.netlify.app',
-                    username: 'danieledge',
-                    repository: 'Fogh-timeline',
-                    branch: 'main'
-                };
-                
-                // Note: For admin submissions, we'll use a special endpoint that creates PRs
-                // This requires the staticman.yml to have adminTimelineUpdates configured
-                
-                // Show loading state
-                const loadingMsg = document.createElement('div');
-                loadingMsg.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; padding: 20px; border-radius: 10px; z-index: 10000; box-shadow: 0 4px 20px rgba(0,0,0,0.3);';
-                loadingMsg.innerHTML = '<h3>⏳ Submitting to Staticman...</h3><p>Please wait while we create your pull request.</p>';
-                document.body.appendChild(loadingMsg);
-                
-                // Prepare form data for Staticman
-                const formData = new FormData();
-                
-                // Add user info (can be admin or actual user name)
-                formData.append('fields[name]', 'Admin Panel Update');
-                formData.append('fields[email]', 'admin@gipsyhillfriends.org');
-                
-                // Use the admin-specific endpoint that creates PRs
-                const isNewEntry = this.currentEntry === 'new';
-                
-                // Common fields for all admin updates
-                formData.append('fields[date]', entryData.date || '');
-                formData.append('fields[title]', entryData.title || '');
-                formData.append('fields[description]', entryData.description || '');
-                formData.append('fields[citations]', entryData.citations ? entryData.citations.join(', ') : '');
-                formData.append('fields[category]', entryData.category || '');
-                formData.append('fields[importance]', entryData.importance || '');
-                formData.append('fields[icon]', entryData.icon || '');
-                
-                if (entryData.image) {
-                    formData.append('fields[imageUrls]', entryData.image);
-                    formData.append('fields[imageCaptions]', entryData.imageCaption || '');
-                    formData.append('fields[imageSources]', 'Admin upload');
-                }
-                
-                // Add update type and original entry info if updating
-                if (isNewEntry) {
-                    formData.append('fields[updateType]', 'New Entry');
-                } else {
-                    formData.append('fields[updateType]', 'Update Entry');
-                    formData.append('fields[originalEntryDate]', this.originalEntry.date);
-                    formData.append('fields[amendments]', `Updated via admin panel: ${commitMsg}`);
-                }
-                
-                // Add metadata for PR
-                formData.append('options[slug]', `admin-update-${Date.now()}`);
-                formData.append('options[parent]', '');
-                formData.append('options[origin]', window.location.origin);
-                
-                // Use adminTimelineUpdates endpoint for PR creation
-                var endpoint = 'adminTimelineUpdates';
-                
-                // Build Staticman URL
-                const staticmanUrl = `${STATICMAN_CONFIG.baseUrl}/v3/entry/${STATICMAN_CONFIG.username}/${STATICMAN_CONFIG.repository}/${STATICMAN_CONFIG.branch}/${endpoint}`;
-                
-                // Submit to Staticman
-                fetch(staticmanUrl, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => {
-                    loadingMsg.remove();
-                    
-                    if (!response.ok) {
-                        return response.text().then(text => {
-                            try {
-                                const data = JSON.parse(text);
-                                throw new Error(data.errorCode || data.message || `Submission failed: ${response.status}`);
-                            } catch (e) {
-                                throw new Error(`Server error (${response.status}): ${text.substring(0, 100)}`);
-                            }
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Staticman submission successful:', data);
-                    
-                    // Extract PR URL from response
-                    const prUrl = data.redirect || data.url || '';
-                    
-                    // Show success message
-                    const successMsg = document.createElement('div');
-                    successMsg.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%); color: white; padding: 30px; border-radius: 10px; z-index: 10000; box-shadow: 0 4px 20px rgba(0,0,0,0.3); text-align: center; max-width: 400px;';
-                    
-                    let successHTML = '<h3 style="margin-bottom: 15px;">✅ Submitted Successfully!</h3>';
-                    successHTML += '<p style="margin-bottom: 15px;">Your timeline update has been submitted for review.</p>';
-                    
-                    if (prUrl) {
-                        successHTML += `<a href="${prUrl}" target="_blank" style="display: inline-block; background: white; color: #27ae60; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 10px;">View Pull Request</a>`;
-                    } else {
-                        successHTML += `<a href="https://github.com/${STATICMAN_CONFIG.username}/${STATICMAN_CONFIG.repository}/pulls" target="_blank" style="display: inline-block; background: white; color: #27ae60; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 10px;">View All Pull Requests</a>`;
-                    }
-                    
-                    successHTML += '<br><button onclick="this.parentElement.remove()" style="margin-top: 15px; background: transparent; border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; cursor: pointer;">Close</button>';
-                    
-                    successMsg.innerHTML = successHTML;
-                    document.body.appendChild(successMsg);
-                    
-                    // Clear form after successful submission
-                    this.clearForm();
-                })
-                .catch(error => {
-                    loadingMsg.remove();
-                    console.error('Staticman submission error:', error);
-                    
-                    // Show error with fallback to manual commands
-                    const errorMsg = document.createElement('div');
-                    errorMsg.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 30px; border-radius: 10px; z-index: 10000; box-shadow: 0 4px 20px rgba(0,0,0,0.3); max-width: 500px;';
-                    
-                    let errorHTML = '<h3 style="margin-bottom: 15px;">⚠️ Staticman Submission Failed</h3>';
-                    errorHTML += `<p style="margin-bottom: 15px;">Error: ${error.message}</p>`;
-                    errorHTML += '<p style="margin-bottom: 15px;">The Staticman service may be offline or not configured. Would you like to generate manual Git commands instead?</p>';
-                    errorHTML += '<div style="display: flex; gap: 10px; justify-content: center;">';
-                    errorHTML += '<button onclick="adminTools.entryEditor.createManualPR(); this.parentElement.parentElement.remove();" style="background: white; color: #e74c3c; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">Generate Git Commands</button>';
-                    errorHTML += '<button onclick="this.parentElement.parentElement.remove()" style="background: transparent; border: 1px solid white; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Cancel</button>';
-                    errorHTML += '</div>';
-                    
-                    errorMsg.innerHTML = errorHTML;
-                    document.body.appendChild(errorMsg);
-                });
             },
             
             clearForm: function() {
@@ -2836,74 +2738,6 @@
                     resultsDiv.innerHTML = '';
                     resultsDiv.style.display = 'none';
                 }
-            },
-            
-            createManualPR: function() {
-                const commitMsg = document.getElementById('commit-message').value.trim() || 'Update timeline entry';
-                const prDesc = document.getElementById('pr-description').value.trim() || 'Timeline update via admin panel';
-                const newData = this.getFormData();
-                
-                // Generate the git commands for creating a PR
-                let commands = 'GITHUB PR CREATION COMMANDS\n';
-                commands += '=' .repeat(50) + '\n\n';
-                commands += 'Run these commands to create a pull request:\n\n';
-                
-                // Create a new branch
-                const branchName = `timeline-update-${Date.now()}`;
-                commands += `# Create and checkout new branch\n`;
-                commands += `git checkout -b ${branchName}\n\n`;
-                
-                // Generate the modification script
-                commands += `# Create modification script\n`;
-                commands += `cat > update_timeline.js << 'EOF'\n`;
-                commands += `const fs = require('fs');\n`;
-                commands += `const content = fs.readFileSync('timeline-data.js', 'utf8');\n`;
-                commands += `let updatedContent = content;\n\n`;
-                
-                if (this.currentEntry === 'new') {
-                    commands += `// Add new entry\n`;
-                    commands += `const newEntry = ${JSON.stringify(newData, null, 2)};\n`;
-                    commands += `const insertPoint = updatedContent.indexOf(']') - 1;\n`;
-                    commands += `const insertion = ',\\n' + JSON.stringify(newEntry, null, 2);\n`;
-                    commands += `updatedContent = updatedContent.slice(0, insertPoint) + insertion + updatedContent.slice(insertPoint);\n`;
-                } else {
-                    commands += `// Update existing entry\n`;
-                    commands += `const oldEntry = ${JSON.stringify(this.originalEntry, null, 2)};\n`;
-                    commands += `const newEntry = ${JSON.stringify(newData, null, 2)};\n`;
-                    commands += `const oldEntryStr = JSON.stringify(oldEntry);\n`;
-                    commands += `const newEntryStr = JSON.stringify(newEntry, null, 2);\n`;
-                    commands += `updatedContent = updatedContent.replace(oldEntryStr, newEntryStr);\n`;
-                }
-                
-                commands += `fs.writeFileSync('timeline-data.js', updatedContent);\n`;
-                commands += `console.log('Timeline updated successfully');\n`;
-                commands += `EOF\n\n`;
-                
-                commands += `# Run the update script\n`;
-                commands += `node update_timeline.js\n\n`;
-                
-                commands += `# Commit changes\n`;
-                commands += `git add timeline-data.js\n`;
-                commands += `git commit -m "${commitMsg}"\n\n`;
-                
-                commands += `# Push branch\n`;
-                commands += `git push -u origin ${branchName}\n\n`;
-                
-                commands += `# Create PR using GitHub CLI\n`;
-                commands += `gh pr create --title "${commitMsg}" --body "${prDesc || 'Timeline entry update via admin panel'}"\n\n`;
-                
-                commands += `# Alternative: Create PR via GitHub web interface\n`;
-                commands += `echo "Or visit: https://github.com/[your-repo]/compare/${branchName}?expand=1"\n`;
-                
-                this.showOutput('Pull Request Commands', commands);
-                this.copyToClipboard(commands);
-                
-                // Show success message
-                const successMsg = document.createElement('div');
-                successMsg.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%); color: white; padding: 20px; border-radius: 10px; z-index: 10000; box-shadow: 0 4px 20px rgba(0,0,0,0.3);';
-                successMsg.innerHTML = '<h3>✅ PR Commands Generated!</h3><p>Commands have been copied to clipboard.</p><p style="font-size: 0.9rem; margin-top: 10px;">Run them in your terminal to submit the PR.</p>';
-                document.body.appendChild(successMsg);
-                setTimeout(() => successMsg.remove(), 4000);
             }
         };
 
