@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin Entry Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #fff;
+        }
+        .container {
+            background: #2c3e50;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        button:hover {
+            background: #229954;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #27ae60;
+        }
+        .error {
+            background: #e74c3c;
+        }
+        .info {
+            background: #3498db;
+        }
+        pre {
+            background: #1a1a2e;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Admin Entry Submission</h1>
+        <p>Click the button below to submit a test entry to Staticman:</p>
+        
+        <button onclick="submitTestEntry()">Submit Test Entry</button>
+        
+        <div id="status" class="status"></div>
+        
+        <h3>Test Entry Details:</h3>
+        <pre id="entryDetails"></pre>
+    </div>
+
+    <script>
+        // Generate test data
+        const timestamp = Date.now();
+        const testEntry = {
+            date: `2024-TEST-${timestamp}`,
+            title: `Test Entry ${new Date().toLocaleString()}`,
+            description: `This is an automated test entry created at ${new Date().toISOString()} to verify the GitHub Actions workflow for processing admin panel submissions.`,
+            category: "Development",
+            importance: "3",
+            icon: "experiment"
+        };
+        
+        // Display test entry
+        document.getElementById('entryDetails').textContent = JSON.stringify(testEntry, null, 2);
+        
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + type;
+            statusDiv.style.display = 'block';
+        }
+        
+        function submitTestEntry() {
+            showStatus('Submitting to Staticman...', 'info');
+            
+            const STATICMAN_CONFIG = {
+                baseUrl: 'https://incomparable-cupcake-fef8d5.netlify.app',
+                username: 'danieledge',
+                repository: 'Fogh-timeline',
+                branch: 'main'
+            };
+            
+            // Prepare form data
+            const formData = new FormData();
+            
+            // Metadata
+            formData.append('fields[name]', 'Test Submission');
+            formData.append('fields[email]', 'test@example.com');
+            formData.append('fields[updateType]', 'new');
+            formData.append('fields[commitMessage]', 'Test: Automated workflow verification');
+            formData.append('fields[prDescription]', 'This is an automated test to verify the GitHub Actions workflow processes admin submissions correctly.');
+            
+            // Entry data
+            formData.append('fields[entryData]', JSON.stringify(testEntry));
+            
+            // Individual fields for PR display
+            formData.append('fields[date]', testEntry.date);
+            formData.append('fields[title]', testEntry.title);
+            formData.append('fields[description]', testEntry.description);
+            formData.append('fields[category]', testEntry.category);
+            formData.append('fields[importance]', testEntry.importance);
+            formData.append('fields[icon]', testEntry.icon);
+            
+            // Options
+            formData.append('options[slug]', `test-${timestamp}`);
+            
+            const endpoint = 'adminTimelineUpdates';
+            const url = `${STATICMAN_CONFIG.baseUrl}/v3/entry/${STATICMAN_CONFIG.username}/${STATICMAN_CONFIG.repository}/${STATICMAN_CONFIG.branch}/${endpoint}`;
+            
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Server error (${response.status}): ${text.substring(0, 200)}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                const prUrl = data.redirect || data.url || '';
+                
+                let message = '✅ Test entry submitted successfully!\n\n';
+                if (prUrl) {
+                    message += `Pull Request URL: ${prUrl}\n\n`;
+                    message += `<a href="${prUrl}" target="_blank" style="color: white;">View Pull Request</a>`;
+                } else {
+                    message += 'Check GitHub for the new pull request.';
+                }
+                
+                showStatus(message, 'success');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showStatus(`❌ Error: ${error.message}`, 'error');
+            });
+        }
+    </script>
+</body>
+</html>
