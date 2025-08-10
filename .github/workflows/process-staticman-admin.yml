@@ -18,14 +18,33 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
         token: ${{ secrets.PAT_TIMELINE_BOT }}
-        persist-credentials: true
+        persist-credentials: false
         
     - name: Configure git authentication
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        # Ensure the PAT is used for all git operations
-        git remote set-url origin https://x-access-token:${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
+        
+        # Debug: Check if PAT exists (will show '***' if it exists)
+        if [ -z "${{ secrets.PAT_TIMELINE_BOT }}" ]; then
+          echo "ERROR: PAT_TIMELINE_BOT secret is not set!"
+          echo "Please add the PAT_TIMELINE_BOT secret in repository settings"
+          exit 1
+        else
+          echo "PAT_TIMELINE_BOT secret is configured"
+        fi
+        
+        # Set up authentication with PAT
+        git remote set-url origin https://${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
+        
+        # Test authentication
+        echo "Testing authentication..."
+        if git ls-remote origin main > /dev/null 2>&1; then
+          echo "✓ Authentication successful"
+        else
+          echo "✗ Authentication failed - please check PAT permissions"
+          exit 1
+        fi
         
     - name: Check for admin update files
       id: check_files
