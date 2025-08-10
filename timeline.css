@@ -1026,55 +1026,66 @@ body::before {
 }
 
 /* Light theme category colors - for badges and pills */
-[data-theme="light"] .category-heritage { background: #A0522D; color: white; }
-[data-theme="light"] .category-gypsies { background: #9370DB; color: white; }
-[data-theme="light"] .category-transport { background: #5F9FD8; color: white; }
-[data-theme="light"] .category-churches { background: #DAA520; color: white; }
-[data-theme="light"] .category-education { background: #8FBC8F; color: white; }
-[data-theme="light"] .category-buildings { background: #DEB887; color: #333; }
-[data-theme="light"] .category-war { background: #CD5C5C; color: white; }
-[data-theme="light"] .category-nature { background: #32CD32; color: white; }
-[data-theme="light"] .category-community { background: #FF7F50; color: white; }
-[data-theme="light"] .category-general { background: #778899; color: white; }
+[data-theme="light"] .category-Culture { background: #9B59B6; color: white; }
+[data-theme="light"] .category-Civic { background: #3498DB; color: white; }
+[data-theme="light"] .category-Community { background: #E67E22; color: white; }
+[data-theme="light"] .category-Development { background: #7F8C8D; color: white; }
+[data-theme="light"] .category-Education { background: #F39C12; color: white; }
+[data-theme="light"] .category-Gypsies { background: #8E44AD; color: white; }
+[data-theme="light"] .category-Heritage { background: #D35400; color: white; }
+[data-theme="light"] .category-Historical { background: #5D6D7E; color: white; }
+[data-theme="light"] .category-Infrastructure { background: #34495E; color: white; }
+[data-theme="light"] .category-Nature { background: #27AE60; color: white; }
+[data-theme="light"] .category-Railway { background: #C0392B; color: white; }
+[data-theme="light"] .category-Religious { background: #16A085; color: white; }
+[data-theme="light"] .category-Wartime { background: #E74C3C; color: white; }
 
 /* Dark theme category colors - for badges and pills */
-[data-theme="dark"] .category-heritage { background: #8B4513; color: white; }
-[data-theme="dark"] .category-gypsies { background: #800080; color: white; }
-[data-theme="dark"] .category-transport { background: #4682B4; color: white; }
-[data-theme="dark"] .category-churches { background: #B8860B; color: white; }
-[data-theme="dark"] .category-education { background: #6B8E23; color: white; }
-[data-theme="dark"] .category-buildings { background: #CD853F; color: white; }
-[data-theme="dark"] .category-war { background: #8B0000; color: white; }
-[data-theme="dark"] .category-nature { background: #228B22; color: white; }
-[data-theme="dark"] .category-community { background: #FF6347; color: white; }
-[data-theme="dark"] .category-general { background: #708090; color: white; }
+[data-theme="dark"] .category-Culture { background: #AF7AC5; color: white; }
+[data-theme="dark"] .category-Civic { background: #5DADE2; color: white; }
+[data-theme="dark"] .category-Community { background: #F39C12; color: white; }
+[data-theme="dark"] .category-Development { background: #95A5A6; color: white; }
+[data-theme="dark"] .category-Education { background: #F7DC6F; color: #333; }
+[data-theme="dark"] .category-Gypsies { background: #BB7FCF; color: white; }
+[data-theme="dark"] .category-Heritage { background: #E67E22; color: white; }
+[data-theme="dark"] .category-Historical { background: #7F8C8D; color: white; }
+[data-theme="dark"] .category-Infrastructure { background: #5D6D7E; color: white; }
+[data-theme="dark"] .category-Nature { background: #52BE80; color: white; }
+[data-theme="dark"] .category-Railway { background: #EC7063; color: white; }
+[data-theme="dark"] .category-Religious { background: #48C9B0; color: white; }
+[data-theme="dark"] .category-Wartime { background: #E74C3C; color: white; }
 
 /* Category filter pills */
 .category-filter-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 0.4rem;
     margin-top: 0.5rem;
+    max-width: 100%;
 }
 
 .category-pill {
-    padding: 0.5rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.7rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.62rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.3rem;
+    gap: 0.2rem;
     user-select: none;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
+    text-transform: capitalize;
+    letter-spacing: 0.2px;
     border: 2px solid transparent;
     position: relative;
     text-align: center;
-    min-height: 2.2rem;
+    min-height: 2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .category-pill.active {
@@ -1103,22 +1114,22 @@ body::before {
     font-weight: 500;
 }
 
-/* Mobile: Keep 3 columns but adjust pill size */
+/* Mobile: Responsive columns based on screen width */
 @media (max-width: 480px) {
     .category-filter-container {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.4rem;
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+        gap: 0.3rem;
     }
     
     .category-pill {
-        font-size: 0.6rem;
-        padding: 0.35rem 0.3rem;
-        min-height: 1.8rem;
-        letter-spacing: 0.2px;
+        font-size: 0.55rem;
+        padding: 0.3rem 0.25rem;
+        min-height: 1.6rem;
+        letter-spacing: 0.15px;
     }
     
     .category-pill-count {
-        font-size: 0.55rem;
+        font-size: 0.5rem;
     }
 }
 

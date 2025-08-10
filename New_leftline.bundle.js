@@ -79,8 +79,9 @@
 }
 /* Overlaid controls */
 .leftline-overlay{pointer-events:none;position:absolute;inset:0;display:grid;place-items:center;z-index:2}
-.leftline-arrows{pointer-events:auto;position:absolute;inset-inline:0;inset-block:0;display:flex;justify-content:space-between;align-items:center;padding:0 .25rem}
+.leftline-arrows{pointer-events:none;position:absolute;inset-inline:0;inset-block:0;display:flex;justify-content:space-between;align-items:center;padding:0 .25rem}
 .leftline-btn{
+  pointer-events:auto;
   width:40px;height:40px;border-radius:10px;display:grid;place-items:center;
   border:1px solid var(--ll-border);
   background:var(--bg-tertiary, rgba(255,255,255,.9));
