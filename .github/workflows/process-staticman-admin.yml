@@ -18,6 +18,7 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
         token: ${{ secrets.GITHUB_TOKEN }}
+        persist-credentials: false
         
     - name: Check for admin update files
       id: check_files
@@ -204,7 +205,12 @@ jobs:
         
     - name: Push changes
       if: steps.check_files.outputs.is_admin_update == 'true'
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT_TIMELINE_BOT || secrets.GITHUB_TOKEN }}
       run: |
+        # Configure git to use the token
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+        
         # Push the changes back to the PR branch
         git push origin HEAD:${{ github.event.pull_request.head.ref }}
         

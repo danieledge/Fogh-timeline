@@ -1,0 +1,177 @@
+name: Process Staticman Admin (Simple)
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  process:
+    if: startsWith(github.head_ref, 'staticman_')
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        
+    - name: Check and process admin update
+      id: process
+      run: |
+        echo "Checking PR branch for admin update files..."
+        
+        # Fetch the PR branch
+        git fetch origin ${{ github.event.pull_request.head.ref }}
+        
+        # Check for JSON files in the PR
+        git diff --name-only origin/main..origin/${{ github.event.pull_request.head.ref }} | grep "\.json$" || true
+        
+        # Try to find admin update file
+        TEMP_DIR=$(mktemp -d)
+        git show origin/${{ github.event.pull_request.head.ref }}:_data/timeline/admin-updates/ 2>/dev/null | grep "\.json" | while read file; do
+          git show origin/${{ github.event.pull_request.head.ref }}:_data/timeline/admin-updates/$file > $TEMP_DIR/$file
+        done
+        
+        # Find JSON with entryData
+        JSON_FILE=$(find $TEMP_DIR -name "*.json" -type f | xargs grep -l "entryData" 2>/dev/null | head -1)
+        
+        if [ -z "$JSON_FILE" ]; then
+          echo "No admin update file found"
+          echo "is_admin_update=false" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        
+        echo "Found admin update: $JSON_FILE"
+        echo "is_admin_update=true" >> $GITHUB_OUTPUT
+        
+        # Process the update
+        cat > process-update.js << 'EOF'
+        const fs = require('fs');
+        const jsonFile = process.argv[2];
+        const updateData = JSON.parse(fs.readFileSync(jsonFile, 'utf8'));
+        
+        let timelineContent = fs.readFileSync('timeline-data.js', 'utf8');
+        
+        // Parse entry data
+        let entry;
+        if (updateData.entryData) {
+          entry = typeof updateData.entryData === 'string' 
+            ? JSON.parse(updateData.entryData) 
+            : updateData.entryData;
+        } else {
+          entry = {
+            date: updateData.date,
+            title: updateData.title,
+            description: updateData.description,
+            category: updateData.category,
+            importance: updateData.importance,
+            icon: updateData.icon
+          };
+          
+          if (updateData.citations) {
+            const citationArray = updateData.citations.split(',').map(c => c.trim()).filter(c => c);
+            if (citationArray.length > 0) {
+              entry.citations = citationArray;
+            }
+          }
+          
+          if (updateData.imageUrls) {
+            entry.image = updateData.imageUrls;
+            if (updateData.imageCaptions) {
+              entry.imageCaption = updateData.imageCaptions;
+            }
+          }
+        }
+        
+        const isUpdate = (updateData.updateType === 'update' || updateData.updateType === 'Update Entry') 
+                        && (updateData.originalDate || updateData.originalEntryDate);
+        
+        if (isUpdate) {
+          const originalDate = updateData.originalDate || updateData.originalEntryDate;
+          console.log(`Updating entry: ${originalDate}`);
+          
+          const escapedDate = originalDate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const entryPattern = new RegExp(
+            `\\{[^{}]*"date"\\s*:\\s*"${escapedDate}"[^{}]*\\}`,
+            'g'
+          );
+          
+          const matches = timelineContent.match(entryPattern);
+          if (matches && matches.length > 0) {
+            const newEntryStr = JSON.stringify(entry, null, 2)
+              .split('\n')
+              .map((line, i) => i === 0 ? line : '    ' + line)
+              .join('\n');
+            
+            timelineContent = timelineContent.replace(matches[0], newEntryStr);
+            console.log('Entry updated');
+          } else {
+            console.log('No match found, adding as new');
+            const arrayEnd = timelineContent.lastIndexOf('];');
+            const lastEntry = timelineContent.lastIndexOf('}', arrayEnd);
+            
+            const newEntryStr = JSON.stringify(entry, null, 2)
+              .split('\n')
+              .map((line, i) => i === 0 ? line : '    ' + line)
+              .join('\n');
+            
+            const insertion = ',\n    ' + newEntryStr;
+            timelineContent = timelineContent.slice(0, lastEntry + 1) + insertion + timelineContent.slice(lastEntry + 1);
+          }
+        } else {
+          console.log('Adding new entry');
+          
+          const arrayEnd = timelineContent.lastIndexOf('];');
+          const lastEntry = timelineContent.lastIndexOf('}', arrayEnd);
+          
+          const newEntryStr = JSON.stringify(entry, null, 2)
+            .split('\n')
+            .map((line, i) => i === 0 ? line : '    ' + line)
+            .join('\n');
+          
+          const insertion = ',\n    ' + newEntryStr;
+          timelineContent = timelineContent.slice(0, lastEntry + 1) + insertion + timelineContent.slice(lastEntry + 1);
+        }
+        
+        fs.writeFileSync('timeline-data.js', timelineContent);
+        console.log('Timeline updated successfully');
+        EOF
+        
+        node process-update.js "$JSON_FILE"
+        
+    - name: Create commit
+      if: steps.process.outputs.is_admin_update == 'true'
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "Apply timeline update from PR #${{ github.event.pull_request.number }}"
+        branch: auto-update-${{ github.event.pull_request.number }}
+        delete-branch: true
+        title: "Auto: Apply timeline update from PR #${{ github.event.pull_request.number }}"
+        body: |
+          This PR applies the timeline update from #${{ github.event.pull_request.number }}
+          
+          The admin panel submission has been processed and timeline-data.js has been updated.
+          
+          After merging this PR, you can close the original Staticman PR.
+        
+    - name: Comment on original PR
+      if: steps.process.outputs.is_admin_update == 'true'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '✅ **Timeline Update Processed**\n\nA new PR has been created with the timeline-data.js changes.\n\nPlease review and merge the automated PR, then close this one.'
+          })
