@@ -86,7 +86,7 @@ var timelineData = [
 {
       "date": "AD 43-410",
       "title": "Roman Era - Forest Trackways",
-      "description": "Archaeological studies have revealed minor Roman-era pottery finds and trackways in the Norwood/Central Hill area, suggesting movement through the forested landscape, though no major settlement. Test",
+      "description": "Archaeological studies have revealed minor Roman-era pottery finds and trackways in the Norwood/Central Hill area, suggesting movement through the forested landscape, though no major settlement. ",
       "icon": "roman",
       "importance": "major",
       "category": "Historical",
