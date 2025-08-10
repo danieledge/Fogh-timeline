@@ -1,0 +1,18 @@
+{
+  "_id": "86411db48b99dd4b16b14cdb03ae8b85",
+  "name": "Admin Panel Update",
+  "email": "b7e8eab5ff801a45bce2902a0aa24fd1",
+  "updateType": "update",
+  "commitMessage": "Update Anglo-Saxon Boundaries (AD 410-1066)",
+  "prDescription": "## Timeline Entry Update",
+  "entryData": "{\"date\":\"AD 410-1066\",\"title\":\"Anglo-Saxon Boundaries\",\"description\":\"Early land grants and charters reference the wider Norwood as woodland and hunting ground in Anglo-Saxon times, which frames later developments and parish boundaries.test\",\"icon\":\"saxon-helmet\",\"importance\":\"minor\",\"category\":\"Historical\",\"citations\":[\"2\"]}",
+  "originalEntry": "{\"date\":\"AD 410-1066\",\"title\":\"Anglo-Saxon Boundaries\",\"description\":\"Early land grants and charters reference the wider Norwood as woodland and hunting ground in Anglo-Saxon times, which frames later developments and parish boundaries.\",\"icon\":\"saxon-helmet\",\"importance\":\"minor\",\"category\":\"Historical\",\"citations\":[\"2\"]}",
+  "originalDate": "AD 410-1066",
+  "date": "2025-08-10T14:54:20.827Z",
+  "title": "Anglo-Saxon Boundaries",
+  "description": "Early land grants and charters reference the wider Norwood as woodland and hunting ground in Anglo-Saxon times, which frames later developments and parish boundaries.test",
+  "category": "Historical",
+  "importance": "minor",
+  "icon": "saxon-helmet",
+  "citations": "2"
+}
