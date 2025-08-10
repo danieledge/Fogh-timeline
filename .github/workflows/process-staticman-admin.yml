@@ -20,6 +20,13 @@ jobs:
         token: ${{ secrets.PAT_TIMELINE_BOT }}
         persist-credentials: true
         
+    - name: Configure git authentication
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        # Ensure the PAT is used for all git operations
+        git remote set-url origin https://x-access-token:${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
+        
     - name: Check for admin update files
       id: check_files
       run: |
@@ -181,9 +188,7 @@ jobs:
     - name: Commit changes
       if: steps.check_files.outputs.is_admin_update == 'true'
       run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        
+        # Git config already set in earlier step
         # Check if timeline-data.js was modified
         if git diff --name-only | grep -q "timeline-data.js"; then
           # Stage the changes
@@ -207,8 +212,7 @@ jobs:
       if: steps.check_files.outputs.is_admin_update == 'true'
       run: |
         # Push the changes back to the PR branch
-        # Set the remote URL with the PAT
-        git remote set-url origin https://x-access-token:${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
+        # Remote URL already configured with PAT in earlier step
         git push origin HEAD:${{ github.event.pull_request.head.ref }}
         
     - name: Comment on PR
