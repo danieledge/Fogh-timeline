@@ -72,17 +72,17 @@ category_mappings = [
     ("Anglo-Saxon Boundaries", "410", "Historical"),
     ("Vicar's Oak and Beating the Bounds", "1583", "Historical"),
     
-    # Infrastructure
-    ("Trotting Hill Created", "1832", "Infrastructure"),
-    ("River Effra Culverted & The Great Stink", "1847", "Infrastructure"),
-    ("Gipsy Hill Police Station Built", "1854", "Infrastructure"),
-    ("The Great Stink & River Effra", "1858", "Infrastructure"),
-    ("Crystal Palace Gas Works", "1870", "Infrastructure"),
-    ("Norwood Triangle Converted to Roundabout", "1960", "Infrastructure"),
-    ("Wooden Bus Shelter at South Croxted Road", "1961", "Infrastructure"),
-    ("Barclay's Bank Opens", "1867", "Infrastructure"),
-    ("Police Station Operations Move", "1939", "Infrastructure"),
-    ("Police Station Converted", "1948", "Infrastructure"),
+    # Services
+    ("Trotting Hill Created", "1832", "Services"),
+    ("River Effra Culverted & The Great Stink", "1847", "Services"),
+    ("Gipsy Hill Police Station Built", "1854", "Services"),
+    ("The Great Stink & River Effra", "1858", "Services"),
+    ("Crystal Palace Gas Works", "1870", "Services"),
+    ("Norwood Triangle Converted to Roundabout", "1960", "Services"),
+    ("Wooden Bus Shelter at South Croxted Road", "1961", "Services"),
+    ("Barclay's Bank Opens", "1867", "Services"),
+    ("Police Station Operations Move", "1939", "Services"),
+    ("Police Station Converted", "1948", "Services"),
     
     # Nature
     ("The Great North Wood", "11", "Nature"),
@@ -200,8 +200,8 @@ new_categories = '''var timelineCategories = {
         "lightColor": "#95A5A6",
         "description": "Ancient and medieval history"
     },
-    "Infrastructure": {
-        "name": "Infrastructure",
+    "Services": {
+        "name": "Services",
         "color": "#34495E",
         "lightColor": "#5D6D7E",
         "description": "Public works and utilities"
