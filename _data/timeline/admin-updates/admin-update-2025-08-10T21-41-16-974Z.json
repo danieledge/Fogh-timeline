@@ -1,0 +1,20 @@
+{
+  "_id": "86411db48b99dd4b16b14cdb03ae8b85",
+  "name": "Admin Panel Update",
+  "email": "b7e8eab5ff801a45bce2902a0aa24fd1",
+  "updateType": "update",
+  "commitMessage": "Update Pepys and Byron Visit the Gypsies (1668 (August 11))",
+  "prDescription": "## Timeline Entry Update",
+  "entryData": "{\"date\":\"1668 (August 11)\",\"title\":\"Pepys and Byron Visit the Gypsies\",\"description\":\"Samuel Pepys records in his diary on August 11th:  'This afternoon my wife and Mercer and Deb went with Pelling to see the gypsies at Lambeth and have their fortunes told; but what they did, I did not enquire.' His wife likely consulted Margaret Finch, who had become a renowned fortune teller. Later, Lord Byron, then at school with Dr. Glennie in Lordship Lane in Dulwich, whenever he felt inclined to play truant visited the Norwood Gypsies. These accounts illuminate how visiting gypsies for fortune-telling served as fashionable entertainment for London's social elite and captured the imagination of literary figures, providing some of the earliest documented references to the Romani presence in what would become Gipsy Hill.\",\"icon\":\"microphone\",\"importance\":\"major\",\"category\":\"Gypsies\",\"citations\":[\"4\"],\"image\":\"images/samuel-pepys-1689.jpg\",\"imageCaption\":\"Samuel Pepys by Sir Godfrey Kneller, 1689<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Samuel_Pepys_by_Sir_Godfrey_Kneller_1689.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>\",\"imageCaptionHTML\":true}",
+  "originalEntry": "{\"date\":\"1668 (August 11)\",\"title\":\"Pepys and Byron Visit the Gypsies\",\"description\":\"Samuel Pepys records in his diary on August 11th:  'This afternoon my wife and Mercer and Deb went with Pelling to see the gypsies at Lambeth and have their fortunes told; but what they did, I did not enquire.' His wife likely consulted Margaret Finch, who had become a renowned fortune teller. Later, Lord Byron, then at school with Dr. Glennie in Lordship Lane in Dulwich, whenever he felt inclined to play truant visited the Norwood Gypsies. These accounts illuminate how visiting gypsies for fortune-telling served as fashionable entertainment for London's social elite and captured the imagination of literary figures, providing some of the earliest documented references to the Romani presence in what would become Gipsy Hill.\",\"icon\":\"microphone\",\"importance\":\"major\",\"category\":\"Gypsies\",\"citations\":[\"4\"],\"image\":\"images/samuel-pepys-1689.jpg\",\"imageCaption\":\"Samuel Pepys by Sir Godfrey Kneller, 1689<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Samuel_Pepys_by_Sir_Godfrey_Kneller_1689.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>\",\"imageCaptionHTML\":true}",
+  "originalDate": "1668 (August 11)",
+  "date": "2025-08-10T21:41:16.974Z",
+  "title": "Pepys and Byron Visit the Gypsies",
+  "description": "Samuel Pepys records in his diary on August 11th:  'This afternoon my wife and Mercer and Deb went with Pelling to see the gypsies at Lambeth and have their fortunes told; but what they did, I did not enquire.' His wife likely consulted Margaret Finch, who had become a renowned fortune teller. Later, Lord Byron, then at school with Dr. Glennie in Lordship Lane in Dulwich, whenever he felt inclined to play truant visited the Norwood Gypsies. These accounts illuminate how visiting gypsies for fortune-telling served as fashionable entertainment for London's social elite and captured the imagination of literary figures, providing some of the earliest documented references to the Romani presence in what would become Gipsy Hill.",
+  "category": "Gypsies",
+  "importance": "major",
+  "icon": "microphone",
+  "citations": "4",
+  "imageUrls": "images/samuel-pepys-1689.jpg",
+  "imageCaptions": "Samuel Pepys by Sir Godfrey Kneller, 1689<br>Source: <a href='https://commons.wikimedia.org/wiki/File:Samuel_Pepys_by_Sir_Godfrey_Kneller_1689.jpg' target='_blank' rel='noopener'>Wikimedia Commons</a>"
+}
