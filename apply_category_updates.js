@@ -68,17 +68,17 @@ const categoryUpdates = {
     "AD 410-1066": { title: "Anglo-Saxon Boundaries", category: "Historical" },
     "1583": { title: "Vicar's Oak and Beating the Bounds", category: "Historical" },
     
-    // Infrastructure
-    "1832": { title: "Trotting Hill Created", category: "Infrastructure" },
-    "1847-1858": { title: "River Effra Culverted & The Great Stink", category: "Infrastructure" },
-    "1854": { title: "Gipsy Hill Police Station Built", category: "Infrastructure" },
-    "1858": { title: "The Great Stink & River Effra", category: "Infrastructure" },
-    "1870": { title: "Crystal Palace Gas Works", category: "Infrastructure" },
-    "1960s": { title: "Norwood Triangle Converted to Roundabout", category: "Infrastructure" },
-    "1961": { title: "Wooden Bus Shelter at South Croxted Road", category: "Infrastructure" },
-    "1867": { title: "Barclay's Bank Opens", category: "Infrastructure" },
-    "1939": { title: "Police Station Operations Move", category: "Infrastructure" },
-    "1948": { title: "Police Station Converted", category: "Infrastructure" },
+    // Services
+    "1832": { title: "Trotting Hill Created", category: "Services" },
+    "1847-1858": { title: "River Effra Culverted & The Great Stink", category: "Services" },
+    "1854": { title: "Gipsy Hill Police Station Built", category: "Services" },
+    "1858": { title: "The Great Stink & River Effra", category: "Services" },
+    "1870": { title: "Crystal Palace Gas Works", category: "Services" },
+    "1960s": { title: "Norwood Triangle Converted to Roundabout", category: "Services" },
+    "1961": { title: "Wooden Bus Shelter at South Croxted Road", category: "Services" },
+    "1867": { title: "Barclay's Bank Opens", category: "Services" },
+    "1939": { title: "Police Station Operations Move", category: "Services" },
+    "1948": { title: "Police Station Converted", category: "Services" },
     
     // Nature
     "11th-19th c.": { title: "The Great North Wood", category: "Nature" },

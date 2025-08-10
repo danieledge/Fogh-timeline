@@ -34,7 +34,8 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: ${{ steps.get_pr.outputs.branch }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.PAT_TIMELINE_BOT }}
+        persist-credentials: true
         
     - name: Setup Node.js
       uses: actions/setup-node@v3

@@ -1378,7 +1378,7 @@
                     output += '   - Street layout changes\n';
                     output += '   - Lost buildings and landmarks\n';
                     output += '   - Field boundaries and land use\n';
-                    output += '   - Railway and transport infrastructure\n';
+                    output += '   - Railway and transport services\n';
                     output += '   - Public buildings and institutions\n';
                     output += '   - Parks and open spaces\n';
                     output += '   - Industrial sites\n';

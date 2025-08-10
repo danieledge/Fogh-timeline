@@ -1034,7 +1034,7 @@ body::before {
 [data-theme="light"] .category-Gypsies { background: #8E44AD; color: white; }
 [data-theme="light"] .category-Heritage { background: #D35400; color: white; }
 [data-theme="light"] .category-Historical { background: #5D6D7E; color: white; }
-[data-theme="light"] .category-Infrastructure { background: #34495E; color: white; }
+[data-theme="light"] .category-Services { background: #34495E; color: white; }
 [data-theme="light"] .category-Nature { background: #27AE60; color: white; }
 [data-theme="light"] .category-Railway { background: #C0392B; color: white; }
 [data-theme="light"] .category-Religious { background: #16A085; color: white; }
@@ -1049,7 +1049,7 @@ body::before {
 [data-theme="dark"] .category-Gypsies { background: #BB7FCF; color: white; }
 [data-theme="dark"] .category-Heritage { background: #E67E22; color: white; }
 [data-theme="dark"] .category-Historical { background: #7F8C8D; color: white; }
-[data-theme="dark"] .category-Infrastructure { background: #5D6D7E; color: white; }
+[data-theme="dark"] .category-Services { background: #5D6D7E; color: white; }
 [data-theme="dark"] .category-Nature { background: #52BE80; color: white; }
 [data-theme="dark"] .category-Railway { background: #EC7063; color: white; }
 [data-theme="dark"] .category-Religious { background: #48C9B0; color: white; }
