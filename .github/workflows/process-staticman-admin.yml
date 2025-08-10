@@ -25,14 +25,8 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         
-        # Debug: Check if PAT exists (will show '***' if it exists)
-        if [ -z "${{ secrets.PAT_TIMELINE_BOT }}" ]; then
-          echo "ERROR: PAT_TIMELINE_BOT secret is not set!"
-          echo "Please add the PAT_TIMELINE_BOT secret in repository settings"
-          exit 1
-        else
-          echo "PAT_TIMELINE_BOT secret is configured"
-        fi
+        # Note: The PAT will be masked as *** in logs
+        echo "Configuring authentication with PAT_TIMELINE_BOT..."
         
         # Set up authentication with PAT
         git remote set-url origin https://${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
