@@ -17,7 +17,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: ${{ github.event.pull_request.head.ref }}
-        token: ${{ secrets.PAT_TIMELINE_BOT }}
+        # Don't use token here to avoid conflicts
         persist-credentials: false
         
     - name: Configure git authentication
@@ -25,18 +25,26 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         
-        # Note: The PAT will be masked as *** in logs
-        echo "Configuring authentication with PAT_TIMELINE_BOT..."
-        
         # Set up authentication with PAT
-        git remote set-url origin https://${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
+        echo "Configuring git authentication..."
+        
+        # Use the PAT directly in the URL
+        REPO_URL="https://${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git"
+        git remote set-url origin "$REPO_URL"
+        
+        # Verify the remote is set correctly
+        echo "Remote URL configured (token hidden)"
         
         # Test authentication
         echo "Testing authentication..."
-        if git ls-remote origin main > /dev/null 2>&1; then
+        if git fetch origin 2>&1; then
           echo "✓ Authentication successful"
         else
-          echo "✗ Authentication failed - please check PAT permissions"
+          echo "✗ Authentication failed"
+          echo "Please ensure:"
+          echo "1. PAT_TIMELINE_BOT secret exists in repository settings"
+          echo "2. The PAT has 'repo' scope permissions"
+          echo "3. The PAT is not expired"
           exit 1
         fi
         
