@@ -35,14 +35,14 @@ jobs:
       with:
         ref: ${{ steps.get_pr.outputs.branch }}
         token: ${{ secrets.PAT_TIMELINE_BOT }}
-        persist-credentials: true
+        persist-credentials: false
         
     - name: Configure git authentication
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        # Ensure the PAT is used for all git operations
-        git remote set-url origin https://x-access-token:${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
+        # Set up authentication with PAT
+        git remote set-url origin https://${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
         
     - name: Setup Node.js
       uses: actions/setup-node@v3
