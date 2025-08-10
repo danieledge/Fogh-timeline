@@ -109,8 +109,8 @@ adminTimelineUpdates:
   enabled: true
   path: "_data/timeline/admin-updates"
   branch: "main"
-  requiredFields: ["name", "email", "title", "description"]
-  allowedFields: ["name", "email", "date", "title", "description", "citations", "imageUrls", "imageCaptions", "imageSources", "originalEntryDate", "amendments", "category", "importance", "icon", "updateType"]
+  requiredFields: ["name", "email"]
+  allowedFields: ["name", "email", "date", "title", "description", "citations", "imageUrls", "imageCaptions", "imageSources", "originalEntryDate", "originalEntry", "originalDate", "amendments", "category", "importance", "icon", "updateType", "entryData", "commitMessage", "prDescription"]
   transforms:
     email: md5
   moderation: true

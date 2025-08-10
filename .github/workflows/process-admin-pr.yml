@@ -2,7 +2,7 @@ name: Process Admin Timeline Updates
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
     paths:
       - '_data/timeline/admin-updates/**'
 
@@ -10,8 +10,8 @@ jobs:
   process-admin-update:
     # Only run on PRs created by Staticman for admin updates
     if: |
-      startsWith(github.head_ref, 'staticman_') &&
-      contains(github.event.pull_request.body, 'Admin Panel Timeline Update')
+      (startsWith(github.head_ref, 'staticman_') || contains(github.event.pull_request.title, 'Admin Panel')) &&
+      (contains(github.event.pull_request.body, 'Admin Panel Timeline Update') || contains(github.event.pull_request.body, 'adminTimelineUpdates'))
     
     runs-on: ubuntu-latest
     
@@ -52,42 +52,60 @@ jobs:
         // Read timeline-data.js
         let timelineContent = fs.readFileSync('timeline-data.js', 'utf8');
         
-        // Extract the fields from the update
-        const entry = {
-          date: updateData.date,
-          title: updateData.title,
-          description: updateData.description,
-          category: updateData.category,
-          importance: updateData.importance,
-          icon: updateData.icon
-        };
-        
-        // Add citations if provided
-        if (updateData.citations) {
-          const citationArray = updateData.citations.split(',').map(c => c.trim()).filter(c => c);
-          if (citationArray.length > 0) {
-            entry.citations = citationArray;
+        // Parse the entryData field which contains the actual entry
+        let entry;
+        if (updateData.entryData) {
+          // New format with entryData field
+          entry = typeof updateData.entryData === 'string' 
+            ? JSON.parse(updateData.entryData) 
+            : updateData.entryData;
+        } else {
+          // Fallback to old format
+          entry = {
+            date: updateData.date,
+            title: updateData.title,
+            description: updateData.description,
+            category: updateData.category,
+            importance: updateData.importance,
+            icon: updateData.icon
+          };
+          
+          // Add citations if provided
+          if (updateData.citations) {
+            const citationArray = updateData.citations.split(',').map(c => c.trim()).filter(c => c);
+            if (citationArray.length > 0) {
+              entry.citations = citationArray;
+            }
           }
-        }
-        
-        // Add image if provided
-        if (updateData.imageUrls) {
-          entry.image = updateData.imageUrls;
-          if (updateData.imageCaptions) {
-            entry.imageCaption = updateData.imageCaptions;
+          
+          // Add image if provided
+          if (updateData.imageUrls) {
+            entry.image = updateData.imageUrls;
+            if (updateData.imageCaptions) {
+              entry.imageCaption = updateData.imageCaptions;
+            }
           }
         }
         
         // Determine if this is a new entry or update
-        const isUpdate = updateData.updateType === 'Update Entry';
+        const isUpdate = updateData.updateType === 'update' || updateData.updateType === 'Update Entry';
         
-        if (isUpdate && updateData.originalEntryDate) {
-          console.log(`Updating entry with date: ${updateData.originalEntryDate}`);
+        if (isUpdate && (updateData.originalDate || updateData.originalEntryDate)) {
+          const originalDate = updateData.originalDate || updateData.originalEntryDate;
+          console.log(`Updating entry with date: ${originalDate}`);
           
-          // Find and replace the existing entry
+          // Parse original entry if provided for better matching
+          let originalEntry = null;
+          if (updateData.originalEntry) {
+            originalEntry = typeof updateData.originalEntry === 'string' 
+              ? JSON.parse(updateData.originalEntry)
+              : updateData.originalEntry;
+          }
+          
+          // Find and replace the existing entry using date
           const entryRegex = new RegExp(
-            `\\{[^}]*"date"\\s*:\\s*"${updateData.originalEntryDate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^}]*\\}`,
-            'g'
+            `\\{[^}]*"date"\\s*:\\s*"${originalDate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^}]*\\}`,
+            's'
           );
           
           const newEntryStr = JSON.stringify(entry, null, 2).split('\n').map((line, i) => 
