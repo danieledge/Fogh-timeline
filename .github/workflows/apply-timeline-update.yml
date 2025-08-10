@@ -37,6 +37,13 @@ jobs:
         token: ${{ secrets.PAT_TIMELINE_BOT }}
         persist-credentials: true
         
+    - name: Configure git authentication
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        # Ensure the PAT is used for all git operations
+        git remote set-url origin https://x-access-token:${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
+        
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
@@ -194,9 +201,7 @@ jobs:
         
     - name: Commit and push changes
       run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        
+        # Git config already set in earlier step
         # Check for changes
         if git diff --name-only | grep -q "timeline-data.js"; then
           git add timeline-data.js
@@ -208,8 +213,7 @@ jobs:
         
         Automated by GitHub Actions"
           
-          # Set the remote URL with the PAT
-          git remote set-url origin https://x-access-token:${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
+          # Remote URL already configured with PAT in earlier step
           git push origin HEAD:${{ steps.get_pr.outputs.branch }}
           
           echo "✅ Changes pushed successfully"
