@@ -1,0 +1,124 @@
+## Timeline Category Reassignment Prompt
+
+**TASK:** Remove all existing category assignments from the 75 timeline entries and create a new categorization system. Assign each entry to exactly one of the following 12 categories based on its primary subject matter.
+
+**NEW CATEGORY ASSIGNMENTS:**
+
+**Culture: 2 entries**
+
+- Crystal Palace Opens | 1854 (June 10) | Culture
+- The Norwood Gypsies Pantomime | 1777 | Culture
+
+**Civic: 6 entries**
+
+- Norwood Common Enclosed | 1810 | Civic
+- Gipsy Hill Conservation Area Designated | 1974 | Civic
+- Gipsy Hill Ward Created | 1978 | Civic
+- Ward Boundary Revision | 2000 | Civic
+- Current Ward Boundaries | 2009 | Civic
+- Ward Boundary Revision | 2022 (May 5) | Civic
+
+**Community: 9 entries**
+
+- Friends of Gipsy Hill Forms | 2018 (May-October) | Community
+- First Gipsy Hill Village Fete | 2019 (July 14) | Community
+- First Community Gipsy Hill Christmas Tree | 2020 (November 21) | Community
+- COVID-19 Mutual Aid | 2020 | Community
+- Station Gardens Transform | 2022 | Community
+- First Gipsy Hill Oktoberfest | 2022 (October 1) | Community
+- FoGH Mission Continues | 2024-Present | Community
+- Fanny the Gipsy Hill Cat | 2011 (June 7) | Community
+- Brown & Green Café Opens | 2010 | Community
+
+**Development: 10 entries**
+
+- Kingswood Lodge Built | 1811-1814 | Development
+- The Paxton Hotel | 1855 | Development
+- Long Meadow and Norwood Central Dairy | 1870s-1890s | Development
+- Athol House Built | 1870s | Development
+- United Land Co. Begins Development | 1871 | Development
+- The ‘Bovril Castle’ Era | 1891-1900 | Development
+- The Vestey Family Era | 1919-1940 | Development
+- Kingswood Estate Built | 1946-1956 | Development
+- Central Hill Estate | 1967 | Development
+- Athol House Heritage Refurbishment | 2023-2024 | Development
+
+**Education: 4 entries**
+
+- Gipsy Hill Primary School | 1875 | Education
+- Kingswood Primary School | 1880 (April 12) | Education
+- Paxton Primary School Opens | 1887 (January 10) | Education
+- Gipsy Hill Montessori College Opens | 1917 (January) | Education
+
+**Gypsies: 8 entries**
+
+- Norwood Gypsies Settle | 1600s | Gypsies
+- Margaret Finch Born | c. 1640 | Gypsies
+- Pepys and Byron Visit the Gypsies | 1668 (August 11) | Gypsies
+- Death of the Gypsy Queen | 1740 (October 24) | Gypsies
+- Mother Bridget Succeeds as Queen of the Gypsies | 1740 (October 24) | Gypsies
+- Death of Mother Bridget | 1768 (August 6) | Gypsies
+- The Norwood Gypsies Pantomime | 1777 | Gypsies
+- The Gypsy House Inn | 1778 | Gypsies
+
+**Heritage: 6 entries**
+
+- Annie Besant Residence | 1874 (January-October) | Heritage
+- Margaret Lockwood’s Childhood Home | 1920-1938 | Heritage
+- World Cup Trophy Found by Pickles the Dog | 1966 (March 27) | Heritage
+- Kingswood House Nationally Listed | 1972 | Heritage
+- Kingswood Arts Transformation | 2022 | Heritage
+- Athol House Becomes First London Cheshire Home | 1953-1955 | Heritage
+
+**Historical: 3 entries**
+
+- Roman Era - Forest Trackways | AD 43-410 | Historical
+- Anglo-Saxon Boundaries | AD 410-1066 | Historical
+- Vicar’s Oak and Beating the Bounds | 1583 | Historical
+
+**Infrastructure: 10 entries**
+
+- Trotting Hill Created | 1832 (April 12) | Infrastructure
+- River Effra Culverted & The Great Stink | 1847-1858 | Infrastructure
+- Gipsy Hill Police Station Built | 1854 | Infrastructure
+- The Great Stink & River Effra | 1858 | Infrastructure
+- Crystal Palace Gas Works | 1870 | Infrastructure
+- Norwood Triangle Converted to Roundabout | 1960s | Infrastructure
+- Wooden Bus Shelter at South Croxted Road | 1961 | Infrastructure
+- Barclay’s Bank Opens | 1867 | Infrastructure
+- Police Station Operations Move | 1939 | Infrastructure
+- Police Station Converted | 1948 | Infrastructure
+
+**Nature: 3 entries**
+
+- The Great North Wood | 11th-19th c. | Nature
+- Great Flood | 1890 (July 17) | Nature
+- Norwood Park Opens | 1911 (June 14) | Nature
+
+**Railway: 7 entries**
+
+- Railway Construction Authorized | 1853 (August 4) | Railway
+- Railway Revolution | 1856 (December 1) | Railway
+- Railway Electrification | 1911 (May 12) | Railway
+- Railway Conversion Complete | 1929 (September 22) | Railway
+- Gipsy Hill Station Refurbishment | 2009 | Railway
+- Railway Accident | 1990 (February 14) | Railway
+- British Railways Sign Returns Home | 2020 (August 8) | Railway
+
+**Religious: 4 entries**
+
+- Gipsy Hill Iron Church Erected | 1862 | Religious
+- Christ Church Built | 1867 | Religious
+- Gipsy Road Baptist Church | 1881-1882 | Religious
+- Christ Church Fire | 1982 | Religious
+
+**Wartime: 4 entries**
+
+- WWI Canadian Military Hospital | 1915-1919 | Wartime
+- WWII Blitz | 1940-1941 | Wartime
+- Cold War Bunker at Pear Tree House | 1963-1966 | Wartime
+- IRA Bomb Incident | 1981 (October 17) | Wartime
+
+**INSTRUCTIONS:** Replace all existing category fields in the timeline database with these new category assignments. Each entry should be assigned to exactly one category as specified above.
+
+**Total: 75 entries across 12 categories**
