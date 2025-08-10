@@ -103,3 +103,18 @@ timelineAmendments:
     body: "Type: Amendment\nSubmitted by: {{fields.name}}\nDate: {{date}}\n\n## Amendment Details\n\n**Original Entry Date:** {{fields.originalEntryDate}}\n**Amendments:** {{fields.amendments}}\n\n**Updated Title:** {{fields.title}}\n**Updated Description:** {{fields.description}}\n\n**Citations:** {{fields.citations}}\n\n**Image URLs:** {{fields.imageUrls}}\n**Image Captions:** {{fields.imageCaptions}}\n**Image Sources:** {{fields.imageSources}}"
   # Uncomment below to use pull requests instead of issues
   # pullRequestBody: "Type: Amendment\nSubmitted by: {{fields.name}}\nDate: {{date}}\n\n## Amendment Details\n\n**Original Entry Date:** {{fields.originalEntryDate}}\n**Amendments:** {{fields.amendments}}\n\n**Updated Title:** {{fields.title}}\n**Updated Description:** {{fields.description}}\n\n**Citations:** {{fields.citations}}\n\n**Image URLs:** {{fields.imageUrls}}\n**Image Captions:** {{fields.imageCaptions}}\n**Image Sources:** {{fields.imageSources}}"
+
+# Admin timeline updates (creates PRs instead of issues)
+adminTimelineUpdates:
+  enabled: true
+  path: "_data/timeline/admin-updates"
+  branch: "main"
+  requiredFields: ["name", "email", "title", "description"]
+  allowedFields: ["name", "email", "date", "title", "description", "citations", "imageUrls", "imageCaptions", "imageSources", "originalEntryDate", "amendments", "category", "importance", "icon", "updateType"]
+  transforms:
+    email: md5
+  moderation: true
+  format: "json"
+  filename: "admin-update-{@timestamp}"
+  # Create pull requests for admin updates
+  pullRequestBody: "## Admin Panel Timeline Update\n\nSubmitted by: {{fields.name}}\nDate: {{date}}\n\n### Update Type: {{fields.updateType}}\n\n**Entry Date:** {{fields.date}}\n**Title:** {{fields.title}}\n**Description:** {{fields.description}}\n**Category:** {{fields.category}}\n\n**Citations:** {{fields.citations}}\n\n**Image URLs:** {{fields.imageUrls}}\n**Image Captions:** {{fields.imageCaptions}}\n**Image Sources:** {{fields.imageSources}}\n\n---\n*This update was submitted via the admin panel*"
