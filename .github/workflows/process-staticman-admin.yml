@@ -48,6 +48,13 @@ jobs:
           exit 1
         fi
         
+    - name: Get timeline-data.js from main branch
+      run: |
+        echo "Fetching timeline-data.js from main branch..."
+        git fetch origin main
+        git checkout origin/main -- timeline-data.js
+        echo "Got timeline-data.js from main branch"
+        
     - name: Check for admin update files
       id: check_files
       run: |
