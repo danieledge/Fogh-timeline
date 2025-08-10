@@ -2009,9 +2009,16 @@ function initializeTimeline() {
         
         // Controls toggle
         if (controlsToggle && zoomControls) {
+            var toggleIcon = document.getElementById('controls-toggle-icon');
+            
             controlsToggle.addEventListener('click', function() {
                 var isHidden = zoomControls.classList.toggle('hidden');
                 controlsToggle.classList.toggle('active', !isHidden);
+                
+                // Toggle icon between controls.svg and controls-off.svg
+                if (toggleIcon) {
+                    toggleIcon.src = isHidden ? 'icons/controls-off.svg' : 'icons/controls.svg';
+                }
                 
                 // Store preference
                 if (typeof localStorage !== 'undefined') {
@@ -2026,13 +2033,22 @@ function initializeTimeline() {
                 if (hideControls === null || hideControls === 'true') {
                     zoomControls.classList.add('hidden');
                     controlsToggle.classList.remove('active');
+                    if (toggleIcon) {
+                        toggleIcon.src = 'icons/controls-off.svg';
+                    }
                 } else {
                     controlsToggle.classList.add('active');
+                    if (toggleIcon) {
+                        toggleIcon.src = 'icons/controls.svg';
+                    }
                 }
             } else {
                 // Default to hidden if no localStorage
                 zoomControls.classList.add('hidden');
                 controlsToggle.classList.remove('active');
+                if (toggleIcon) {
+                    toggleIcon.src = 'icons/controls-off.svg';
+                }
             }
         }
         
@@ -3770,6 +3786,14 @@ function initializeVisualTimeline() {
             pill.className = 'category-pill category-' + categoryKey + ' active';
             pill.dataset.category = categoryKey;
             
+            // Apply color from category definition
+            var isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+            var bgColor = isDarkTheme ? (category.lightColor || category.color) : category.color;
+            if (bgColor) {
+                pill.style.backgroundColor = bgColor;
+                pill.style.color = 'white';
+            }
+            
             var nameSpan = document.createElement('span');
             nameSpan.textContent = category.name;
             pill.appendChild(nameSpan);
@@ -3784,15 +3808,26 @@ function initializeVisualTimeline() {
             // Add click handler
             pill.addEventListener('click', function() {
                 var catKey = this.dataset.category;
+                var category = timelineCategories[catKey];
+                var isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
                 
                 if (activeCategoryFilters.has(catKey)) {
                     activeCategoryFilters.delete(catKey);
                     this.classList.remove('active');
                     this.classList.add('inactive');
+                    // Gray out inactive pills
+                    this.style.backgroundColor = '';
+                    this.style.color = '';
                 } else {
                     activeCategoryFilters.add(catKey);
                     this.classList.add('active');
                     this.classList.remove('inactive');
+                    // Restore color for active pills
+                    var bgColor = isDarkTheme ? (category.lightColor || category.color) : category.color;
+                    if (bgColor) {
+                        this.style.backgroundColor = bgColor;
+                        this.style.color = 'white';
+                    }
                 }
                 
                 applyCategoryFilter();
