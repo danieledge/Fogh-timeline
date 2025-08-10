@@ -1,0 +1,158 @@
+name: Process Admin Timeline Updates
+
+on:
+  pull_request:
+    types: [opened]
+    paths:
+      - '_data/timeline/admin-updates/**'
+
+jobs:
+  process-admin-update:
+    # Only run on PRs created by Staticman for admin updates
+    if: |
+      startsWith(github.head_ref, 'staticman_') &&
+      contains(github.event.pull_request.body, 'Admin Panel Timeline Update')
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout PR branch
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        
+    - name: Process admin update
+      id: process
+      run: |
+        # Find the new JSON file in admin-updates
+        JSON_FILE=$(find _data/timeline/admin-updates -name "*.json" -type f | head -1)
+        
+        if [ -z "$JSON_FILE" ]; then
+          echo "No JSON file found in admin-updates directory"
+          exit 1
+        fi
+        
+        echo "Processing file: $JSON_FILE"
+        
+        # Create Node.js script to update timeline-data.js
+        cat > update-timeline.js << 'EOF'
+        const fs = require('fs');
+        const path = require('path');
+        
+        // Read the admin update JSON
+        const jsonFile = process.argv[2];
+        const updateData = JSON.parse(fs.readFileSync(jsonFile, 'utf8'));
+        
+        // Read timeline-data.js
+        let timelineContent = fs.readFileSync('timeline-data.js', 'utf8');
+        
+        // Extract the fields from the update
+        const entry = {
+          date: updateData.date,
+          title: updateData.title,
+          description: updateData.description,
+          category: updateData.category,
+          importance: updateData.importance,
+          icon: updateData.icon
+        };
+        
+        // Add citations if provided
+        if (updateData.citations) {
+          const citationArray = updateData.citations.split(',').map(c => c.trim()).filter(c => c);
+          if (citationArray.length > 0) {
+            entry.citations = citationArray;
+          }
+        }
+        
+        // Add image if provided
+        if (updateData.imageUrls) {
+          entry.image = updateData.imageUrls;
+          if (updateData.imageCaptions) {
+            entry.imageCaption = updateData.imageCaptions;
+          }
+        }
+        
+        // Determine if this is a new entry or update
+        const isUpdate = updateData.updateType === 'Update Entry';
+        
+        if (isUpdate && updateData.originalEntryDate) {
+          console.log(`Updating entry with date: ${updateData.originalEntryDate}`);
+          
+          // Find and replace the existing entry
+          const entryRegex = new RegExp(
+            `\\{[^}]*"date"\\s*:\\s*"${updateData.originalEntryDate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^}]*\\}`,
+            'g'
+          );
+          
+          const newEntryStr = JSON.stringify(entry, null, 2).split('\n').map((line, i) => 
+            i === 0 ? line : '    ' + line
+          ).join('\n');
+          
+          timelineContent = timelineContent.replace(entryRegex, newEntryStr);
+        } else {
+          console.log('Adding new entry');
+          
+          // Find the timelineData array and add the new entry
+          const arrayEndIndex = timelineContent.lastIndexOf('];');
+          const lastEntryIndex = timelineContent.lastIndexOf('}', arrayEndIndex);
+          
+          const newEntryStr = JSON.stringify(entry, null, 2).split('\n').map((line, i) => 
+            i === 0 ? line : '    ' + line
+          ).join('\n');
+          
+          const insertion = ',\n    ' + newEntryStr;
+          timelineContent = timelineContent.slice(0, lastEntryIndex + 1) + insertion + timelineContent.slice(lastEntryIndex + 1);
+        }
+        
+        // Write updated timeline-data.js
+        fs.writeFileSync('timeline-data.js', timelineContent);
+        console.log('Timeline updated successfully');
+        
+        // Archive the processed JSON file
+        const archiveDir = '_data/timeline/admin-updates/processed';
+        fs.mkdirSync(archiveDir, { recursive: true });
+        const archivePath = path.join(archiveDir, path.basename(jsonFile));
+        fs.renameSync(jsonFile, archivePath);
+        console.log(`Archived to: ${archivePath}`);
+        EOF
+        
+        # Run the update script
+        node update-timeline.js "$JSON_FILE"
+        
+    - name: Commit changes
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # Stage the changes
+        git add timeline-data.js
+        git add _data/timeline/admin-updates/
+        
+        # Commit with a descriptive message
+        git commit -m "Apply admin timeline update to timeline-data.js
+
+        This commit processes the admin panel submission and updates
+        the timeline-data.js file with the changes.
+        
+        Automated by GitHub Actions"
+        
+    - name: Push changes
+      run: |
+        git push origin HEAD:${{ github.event.pull_request.head.ref }}
+        
+    - name: Comment on PR
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '✅ **Timeline Update Applied**\n\nThe admin panel submission has been processed and timeline-data.js has been updated.\n\nPlease review the changes and merge when ready.'
+          })
