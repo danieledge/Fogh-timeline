@@ -1,0 +1,18 @@
+{
+  "_id": "86411db48b99dd4b16b14cdb03ae8b85",
+  "name": "Admin Panel Update",
+  "email": "b7e8eab5ff801a45bce2902a0aa24fd1",
+  "updateType": "update",
+  "commitMessage": "Update Roman Era - Forest Trackways (AD 43-410)",
+  "prDescription": "## Timeline Entry Update",
+  "entryData": "{\"date\":\"AD 43-410\",\"title\":\"Roman Era - Forest Trackways\",\"description\":\"Archaeological studies have revealed minor Roman-era pottery finds and trackways in the Norwood/Central Hill area, suggesting movement through the forested landscape, though no major settlement. Testing\",\"icon\":\"roman\",\"importance\":\"major\",\"category\":\"Historical\",\"citations\":[\"1\"]}",
+  "originalEntry": "{\"date\":\"AD 43-410\",\"title\":\"Roman Era - Forest Trackways\",\"description\":\"Archaeological studies have revealed minor Roman-era pottery finds and trackways in the Norwood/Central Hill area, suggesting movement through the forested landscape, though no major settlement. \",\"icon\":\"roman\",\"importance\":\"major\",\"category\":\"Historical\",\"citations\":[\"1\"]}",
+  "originalDate": "AD 43-410",
+  "date": "2025-08-10T21:37:39.593Z",
+  "title": "Roman Era - Forest Trackways",
+  "description": "Archaeological studies have revealed minor Roman-era pottery finds and trackways in the Norwood/Central Hill area, suggesting movement through the forested landscape, though no major settlement. Testing",
+  "category": "Historical",
+  "importance": "major",
+  "icon": "roman",
+  "citations": "1"
+}
