@@ -207,7 +207,8 @@ jobs:
       if: steps.check_files.outputs.is_admin_update == 'true'
       run: |
         # Push the changes back to the PR branch
-        # Uses the PAT from the checkout step
+        # Set the remote URL with the PAT
+        git remote set-url origin https://x-access-token:${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
         git push origin HEAD:${{ github.event.pull_request.head.ref }}
         
     - name: Comment on PR
