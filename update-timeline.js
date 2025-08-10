@@ -50,7 +50,7 @@ if (updateData.entryData) {
 console.log('Entry to process:', JSON.stringify(entry, null, 2));
 
 // Determine if this is a new entry or update
-const isUpdate = updateData.updateType === 'update' || updateData.updateType === 'Update Entry';
+const isUpdate = updateData.updateType === 'update' || updateData.updateType === 'Update Entry' || updateData.updateType === 'Update';
 
 if (isUpdate && (updateData.originalDate || updateData.originalEntryDate)) {
   const originalDate = updateData.originalDate || updateData.originalEntryDate;
