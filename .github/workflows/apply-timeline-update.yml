@@ -1,0 +1,226 @@
+name: Apply Timeline Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull Request number to process'
+        required: true
+        type: string
+
+jobs:
+  apply-update:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Get PR information
+      id: get_pr
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const pr = await github.rest.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: ${{ github.event.inputs.pr_number }}
+          });
+          
+          console.log(`PR #${pr.data.number}: ${pr.data.title}`);
+          console.log(`Branch: ${pr.data.head.ref}`);
+          
+          core.setOutput('branch', pr.data.head.ref);
+          core.setOutput('title', pr.data.title);
+          
+    - name: Checkout PR branch
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ steps.get_pr.outputs.branch }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        
+    - name: Find and process admin update file
+      run: |
+        echo "Looking for admin update JSON files..."
+        
+        # Find JSON files with entryData field
+        JSON_FILE=$(find . -name "*.json" -type f | xargs grep -l "entryData" 2>/dev/null | head -1)
+        
+        if [ -z "$JSON_FILE" ]; then
+          echo "No admin update file found with entryData field"
+          echo "Checking for any JSON files in standard locations..."
+          
+          # Check common locations
+          for dir in "_data/timeline/admin-updates" "_data/timeline" "_data" "."; do
+            if [ -d "$dir" ]; then
+              JSON_FILE=$(find "$dir" -maxdepth 2 -name "*.json" -type f | head -1)
+              if [ -n "$JSON_FILE" ]; then
+                echo "Found JSON file: $JSON_FILE"
+                break
+              fi
+            fi
+          done
+        fi
+        
+        if [ -z "$JSON_FILE" ]; then
+          echo "ERROR: No JSON files found to process"
+          exit 1
+        fi
+        
+        echo "Processing file: $JSON_FILE"
+        cat "$JSON_FILE"
+        
+        # Create the update script
+        cat > update-timeline.js << 'EOF'
+        const fs = require('fs');
+        const path = require('path');
+        
+        const jsonFile = process.argv[2];
+        console.log('\n=== Processing Timeline Update ===');
+        console.log('Input file:', jsonFile);
+        
+        const updateData = JSON.parse(fs.readFileSync(jsonFile, 'utf8'));
+        console.log('Update type:', updateData.updateType || 'unknown');
+        
+        let timelineContent = fs.readFileSync('timeline-data.js', 'utf8');
+        console.log('Loaded timeline-data.js');
+        
+        // Parse the entry data
+        let entry;
+        if (updateData.entryData) {
+          entry = typeof updateData.entryData === 'string' 
+            ? JSON.parse(updateData.entryData) 
+            : updateData.entryData;
+          console.log('Parsed entryData field');
+        } else {
+          // Build entry from individual fields
+          entry = {};
+          if (updateData.date) entry.date = updateData.date;
+          if (updateData.title) entry.title = updateData.title;
+          if (updateData.description) entry.description = updateData.description;
+          if (updateData.category) entry.category = updateData.category;
+          if (updateData.importance) entry.importance = updateData.importance;
+          if (updateData.icon) entry.icon = updateData.icon;
+          
+          if (updateData.citations) {
+            const citationArray = updateData.citations.split(',').map(c => c.trim()).filter(c => c);
+            if (citationArray.length > 0) {
+              entry.citations = citationArray;
+            }
+          }
+          
+          if (updateData.imageUrls) {
+            entry.image = updateData.imageUrls;
+            if (updateData.imageCaptions) {
+              entry.imageCaption = updateData.imageCaptions;
+            }
+          }
+          console.log('Built entry from individual fields');
+        }
+        
+        console.log('\nEntry to add/update:');
+        console.log(JSON.stringify(entry, null, 2));
+        
+        // Check if updating or adding
+        const isUpdate = (updateData.updateType === 'update' || updateData.updateType === 'Update Entry') 
+                        && (updateData.originalDate || updateData.originalEntryDate);
+        
+        if (isUpdate) {
+          const originalDate = updateData.originalDate || updateData.originalEntryDate;
+          console.log(`\nUpdating entry with date: ${originalDate}`);
+          
+          // Create regex to find the entry
+          const escapedDate = originalDate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const entryPattern = new RegExp(
+            `\\{[^{}]*"date"\\s*:\\s*"${escapedDate}"[^{}]*\\}`,
+            'g'
+          );
+          
+          const matches = timelineContent.match(entryPattern);
+          
+          if (matches && matches.length > 0) {
+            console.log(`Found ${matches.length} matching entry(ies)`);
+            
+            // Format new entry
+            const newEntryStr = JSON.stringify(entry, null, 2)
+              .split('\n')
+              .map((line, i) => i === 0 ? line : '    ' + line)
+              .join('\n');
+            
+            timelineContent = timelineContent.replace(matches[0], newEntryStr);
+            console.log('Entry updated successfully');
+          } else {
+            console.log('No matching entry found, will add as new');
+            
+            // Add as new entry
+            const arrayEnd = timelineContent.lastIndexOf('];');
+            const lastEntry = timelineContent.lastIndexOf('}', arrayEnd);
+            
+            const newEntryStr = JSON.stringify(entry, null, 2)
+              .split('\n')
+              .map((line, i) => i === 0 ? line : '    ' + line)
+              .join('\n');
+            
+            const insertion = ',\n    ' + newEntryStr;
+            timelineContent = timelineContent.slice(0, lastEntry + 1) + insertion + timelineContent.slice(lastEntry + 1);
+          }
+        } else {
+          console.log('\nAdding new entry');
+          
+          // Add new entry at the end
+          const arrayEnd = timelineContent.lastIndexOf('];');
+          const lastEntry = timelineContent.lastIndexOf('}', arrayEnd);
+          
+          const newEntryStr = JSON.stringify(entry, null, 2)
+            .split('\n')
+            .map((line, i) => i === 0 ? line : '    ' + line)
+            .join('\n');
+          
+          const insertion = ',\n    ' + newEntryStr;
+          timelineContent = timelineContent.slice(0, lastEntry + 1) + insertion + timelineContent.slice(lastEntry + 1);
+          console.log('New entry added successfully');
+        }
+        
+        // Write the updated content
+        fs.writeFileSync('timeline-data.js', timelineContent);
+        console.log('\n✅ timeline-data.js updated successfully');
+        EOF
+        
+        # Run the update script
+        node update-timeline.js "$JSON_FILE"
+        
+    - name: Commit and push changes
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # Check for changes
+        if git diff --name-only | grep -q "timeline-data.js"; then
+          git add timeline-data.js
+          
+          git commit -m "Apply timeline update from PR #${{ github.event.inputs.pr_number }}
+        
+        Manually triggered workflow to process admin panel submission
+        and update timeline-data.js with the changes.
+        
+        Automated by GitHub Actions"
+          
+          git push origin HEAD:${{ steps.get_pr.outputs.branch }}
+          
+          echo "✅ Changes pushed successfully"
+        else
+          echo "⚠️ No changes detected in timeline-data.js"
+        fi
+        
+    - name: Comment on PR
+      uses: actions/github-script@v6
+      with:
+        script: |
+          await github.rest.issues.createComment({
+            issue_number: ${{ github.event.inputs.pr_number }},
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '✅ **Timeline Update Applied** (Manual Trigger)\n\nThe admin panel submission has been processed and timeline-data.js has been updated.\n\nPlease review the changes and merge when ready.'
+          })
