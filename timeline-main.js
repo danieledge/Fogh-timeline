@@ -3766,8 +3766,19 @@ function initializeVisualTimeline() {
             // Find the corresponding data item
             var title = entry.querySelector('.content-title');
             if (title) {
+                // For minor entries, get the actual title text (not including "→ Read more")
+                var titleText;
+                var titleTextSpan = title.querySelector('.title-text');
+                if (titleTextSpan) {
+                    // Minor entry with nested span
+                    titleText = titleTextSpan.textContent;
+                } else {
+                    // Major entry with direct text
+                    titleText = title.textContent;
+                }
+                
                 var dataItem = timelineData.find(function(item) {
-                    return item.title === title.textContent;
+                    return item.title === titleText;
                 });
                 if (dataItem && dataItem.category) {
                     categoryCounts[dataItem.category] = (categoryCounts[dataItem.category] || 0) + 1;

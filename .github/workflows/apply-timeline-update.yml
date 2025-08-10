@@ -208,6 +208,8 @@ jobs:
         
         Automated by GitHub Actions"
           
+          # Set the remote URL with the PAT
+          git remote set-url origin https://x-access-token:${{ secrets.PAT_TIMELINE_BOT }}@github.com/${{ github.repository }}.git
           git push origin HEAD:${{ steps.get_pr.outputs.branch }}
           
           echo "✅ Changes pushed successfully"
