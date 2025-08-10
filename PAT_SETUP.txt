@@ -1,0 +1,34 @@
+IMPORTANT: GitHub Actions Setup Required
+=========================================
+
+To make the admin panel PR submissions work, you need to add a Personal Access Token (PAT) to your repository secrets.
+
+STEP 1: Add PAT to Repository Secrets
+--------------------------------------
+1. Go to: https://github.com/danieledge/Fogh-timeline/settings/secrets/actions
+2. Click "New repository secret"
+3. Name: PAT_TIMELINE_BOT
+4. Value: [Your PAT with repo and workflow scopes]
+5. Click "Add secret"
+
+STEP 2: Enable Workflow Permissions (if needed)
+------------------------------------------------
+1. Go to: https://github.com/danieledge/Fogh-timeline/settings/actions
+2. Scroll to "Workflow permissions"
+3. Select: "Read and write permissions"
+4. Check: "Allow GitHub Actions to create and approve pull requests"
+5. Click "Save"
+
+STEP 3: Test the System
+------------------------
+1. Open /test-admin-entry.html
+2. Click "Submit Test Entry"
+3. Check GitHub for new PR
+4. Watch Actions tab for workflow execution
+
+The workflows are already configured to use secrets.PAT_TIMELINE_BOT
+
+If you need a PAT with workflow scope:
+- Create new token at: https://github.com/settings/tokens/new
+- Select scopes: repo + workflow
+- Use that token in the secret instead
