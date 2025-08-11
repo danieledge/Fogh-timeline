@@ -830,6 +830,9 @@ var timelineData = [
 "importance": "major",
 "category": "Civic",
 "citations": ["88"],
+"image": "images/1973-gipsy-hill-victorian-cottages.jpg",
+"image_caption": "Terraced Victorian cottages 76-78 Gipsy Hill within Conservation area, c. 1973. Credit: <a href='https://boroughphotos.org' target='_blank' style='color: #4a90e2;'>Borough Photos</a> collection",
+"imageCaptionHTML": true,
 },
 
 
