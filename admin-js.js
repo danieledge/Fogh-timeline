@@ -1714,6 +1714,108 @@
                         this.showOutput('Entry Submission', `Entry "${formData.title}" has been submitted for review.`);
                     }, 500);
                 }
+            },
+
+            // Citation Management Functions
+            showAddCitation: function() {
+                // Find the next available citation number
+                const maxNumber = Math.max(...window.timelineCitations.map(c => parseInt(c.number)));
+                const nextNumber = maxNumber + 1;
+                
+                document.getElementById('new-citation-number').value = nextNumber;
+                document.getElementById('citation-modal').style.display = 'flex';
+            },
+
+            closeCitationModal: function() {
+                document.getElementById('citation-modal').style.display = 'none';
+                // Clear form
+                document.getElementById('new-citation-number').value = '';
+                document.getElementById('new-citation-entry').value = '';
+                document.getElementById('new-citation-source').value = '';
+                document.getElementById('new-citation-url').value = '';
+                document.getElementById('new-citation-urls').value = '';
+                document.getElementById('new-citation-notes').value = '';
+            },
+
+            submitNewCitation: function() {
+                const citationData = {
+                    number: document.getElementById('new-citation-number').value,
+                    timeline_entry: document.getElementById('new-citation-entry').value,
+                    source: document.getElementById('new-citation-source').value,
+                    quality: document.getElementById('new-citation-quality').value,
+                    status: document.getElementById('new-citation-status').value,
+                    url: document.getElementById('new-citation-url').value
+                };
+
+                // Add additional URLs if provided
+                const additionalUrls = document.getElementById('new-citation-urls').value
+                    .split('\n')
+                    .filter(url => url.trim());
+                if (additionalUrls.length > 0) {
+                    citationData.additional_urls = additionalUrls;
+                }
+
+                // Add notes if provided
+                const notes = document.getElementById('new-citation-notes').value.trim();
+                if (notes) {
+                    citationData.notes = notes;
+                }
+
+                // Validate required fields
+                if (!citationData.number || !citationData.timeline_entry || !citationData.source) {
+                    alert('Citation number, timeline entry, and source are required');
+                    return;
+                }
+
+                // Format the citation for PR
+                const formattedCitation = this.formatCitationForPR(citationData);
+                
+                // Create PR description
+                const prDescription = `Add new citation #${citationData.number}
+
+**Timeline Entry:** ${citationData.timeline_entry}
+**Source:** ${citationData.source}
+**Quality:** ${citationData.quality}
+**Status:** ${citationData.status}
+**URL:** ${citationData.url || 'N/A'}
+${citationData.notes ? '**Notes:** ' + citationData.notes : ''}
+
+This citation will be added to timeline-data.js`;
+
+                // Show the formatted output for manual PR creation
+                this.showOutput('New Citation PR Content', 
+                    'Copy the following and create a pull request:\n\n' +
+                    '=== PR Description ===\n' + prDescription + '\n\n' +
+                    '=== Citation JSON ===\n' + formattedCitation
+                );
+
+                this.closeCitationModal();
+            },
+
+            formatCitationForPR: function(data) {
+                let json = '  {\n';
+                json += `    "number": "${data.number}",\n`;
+                json += `    "timeline_entry": "${data.timeline_entry}",\n`;
+                json += `    "status": "${data.status}",\n`;
+                json += `    "source": "${data.source}",\n`;
+                json += `    "quality": "${data.quality}"`;
+                
+                if (data.url) {
+                    json += `,\n    "url": "${data.url}"`;
+                }
+                
+                if (data.additional_urls && data.additional_urls.length > 0) {
+                    json += `,\n    "additional_urls": [\n`;
+                    json += data.additional_urls.map(url => `      "${url}"`).join(',\n');
+                    json += '\n    ]';
+                }
+                
+                if (data.notes) {
+                    json += `,\n    "notes": "${data.notes}"`;
+                }
+                
+                json += '\n  }';
+                return json;
             }
         };
 
