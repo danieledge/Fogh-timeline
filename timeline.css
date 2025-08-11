@@ -4063,10 +4063,10 @@ textarea#image-sources {
 
 /* Image Modal Styles */
 .image-modal-content {
-    max-width: 95vw;
-    max-height: 95vh;
+    max-width: 90vw;
+    max-height: 90vh;
     width: auto;
-    padding: 0;
+    padding: 20px;
     background: transparent;
     border-radius: 0;
     overflow: visible;
@@ -4076,6 +4076,7 @@ textarea#image-sources {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    margin: auto;
 }
 
 .image-modal-wrapper {
@@ -4407,8 +4408,39 @@ textarea#image-sources {
     color: var(--text-primary);
 }
 
+/* Image modal close button positioning and visibility */
+.image-modal-content .modal-close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10001;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image-modal-content .modal-close:hover {
+    transform: scale(1.1);
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 .image-modal-content .modal-close:active {
     transform: scale(0.95);
+}
+
+.image-modal-content .modal-close svg {
+    width: 24px;
+    height: 24px;
+    fill: #333;
 }
 
 /* Dark theme adjustments for image modal */
@@ -4418,8 +4450,9 @@ textarea#image-sources {
 }
 
 [data-theme="dark"] .image-modal-content .modal-close {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
 }
 
 [data-theme="dark"] .image-modal-content .modal-close svg {
@@ -4427,8 +4460,9 @@ textarea#image-sources {
 }
 
 [data-theme="dark"] .image-modal-content .modal-close:hover {
-    background: rgba(255, 255, 255, 1);
-    border-color: rgba(255, 255, 255, 1);
+    background: white;
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
 }
 
 /* Responsive modal sizing */
@@ -4436,9 +4470,10 @@ textarea#image-sources {
     /* Mobile phones */
     .image-modal-content {
         max-width: 100vw;
-        max-height: 100vh;
+        max-height: calc(100vh - 20px);
         margin: 0;
-        padding: 0;
+        padding: 10px;
+        padding-top: 60px; /* Space for close button */
     }
     
     .image-modal-wrapper {
@@ -4478,8 +4513,8 @@ textarea#image-sources {
     }
     
     .image-modal-content .modal-close {
-        top: 0.5rem;
-        right: 0.5rem;
+        top: 10px;
+        right: 10px;
         width: 40px;
         height: 40px;
     }
