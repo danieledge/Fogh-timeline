@@ -313,6 +313,8 @@ var timelineData = [
 "importance": "major",
 "category": "Railway",
 "citations": ["67"],
+"image": "images/1853-crystal-palace-railway-route-map.jpg",
+"image_caption": "1850s map showing the proposed railway route from Crystal Palace via Beckenham, with connection to the Brighton main line from London Bridge. Credit: farnborough-kent-railways.org.uk (public domain)",
 },
 
 
