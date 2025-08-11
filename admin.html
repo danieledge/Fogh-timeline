@@ -548,9 +548,14 @@
     </div>
     
     <div class="container">
-        <div class="header">
+        <div class="header" style="position: relative;">
             <h1>📊 Timeline Admin Tools</h1>
             <p class="subtitle">Data extraction and analysis tools for the Gipsy Hill timeline</p>
+            <button onclick="adminTools.logout()" 
+                    style="position: absolute; top: 20px; right: 20px; padding: 8px 16px; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); border: none; border-radius: 5px; color: white; cursor: pointer; font-size: 14px;"
+                    title="Log out of admin panel">
+                🚪 Log Out
+            </button>
         </div>
 
         <div class="error-message" id="error-message"></div>
@@ -564,12 +569,12 @@
 
         <!-- Tab Navigation -->
         <div class="tab-nav">
-            <button class="tab-button active" onclick="adminTools.switchTab('export', event)">📤 Export Data</button>
-            <button class="tab-button" onclick="adminTools.switchTab('editor', event)">✏️ Entry Editor</button>
-            <button class="tab-button" onclick="adminTools.switchTab('llm', event)">🤖 LLM Tools</button>
-            <button class="tab-button" onclick="adminTools.switchTab('analysis', event)">📈 Analysis</button>
-            <button class="tab-button" onclick="adminTools.switchTab('quality', event)">✅ Quality Control</button>
-            <button class="tab-button" onclick="adminTools.switchTab('research', event)">🔍 Research</button>
+            <button class="tab-button active" onclick="adminTools.switchTab('export', event)" title="Export timeline data in various formats">📤 Export Data</button>
+            <button class="tab-button" onclick="adminTools.switchTab('editor', event)" title="Add new entries or edit existing timeline entries">✏️ Entry Editor</button>
+            <button class="tab-button" onclick="adminTools.switchTab('llm', event)" title="AI-powered tools for content generation and verification">🤖 LLM Tools</button>
+            <button class="tab-button" onclick="adminTools.switchTab('analysis', event)" title="Analyze timeline data for insights and patterns">📈 Analysis</button>
+            <button class="tab-button" onclick="adminTools.switchTab('quality', event)" title="Check data quality and find issues">✅ Quality Control</button>
+            <button class="tab-button" onclick="adminTools.switchTab('research', event)" title="Research tools and resources for timeline development">🔍 Research</button>
         </div>
 
         <!-- Export Data Tab -->
@@ -587,17 +592,17 @@
                             <option value="csv">CSV</option>
                         </select>
                     </div>
-                    <button class="btn btn-success" onclick="adminTools.extractTimeline(document.getElementById('export-format').value)">📤 Export Data</button>
-                    <button class="btn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);" onclick="adminTools.generateCompleteSummary()">📊 Summarise Entries</button>
+                    <button class="btn btn-success" onclick="adminTools.extractTimeline(document.getElementById('export-format').value)" title="Export all timeline entries in the selected format">📤 Export Data</button>
+                    <button class="btn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);" onclick="adminTools.generateCompleteSummary()" title="Generate a comprehensive summary of all timeline entries">📊 Summarise Entries</button>
                 </div>
 
                 <div class="tool-card">
                     <h2>📚 Citations & References</h2>
                     <p class="tool-description">Export all citations with their sources, quality ratings, and linked entries.</p>
-                    <button class="btn" onclick="adminTools.extractCitations('full')">Full Citations Report</button>
-                    <button class="btn btn-secondary" onclick="adminTools.extractCitations('unverified')">Unverified Only</button>
-                    <button class="btn btn-success" onclick="adminTools.extractCitations('bibliography')">Bibliography Format</button>
-                    <button class="btn btn-warning" onclick="adminTools.extractCitations('urls')">URLs List</button>
+                    <button class="btn" onclick="adminTools.extractCitations('full')" title="Export all citations with complete details">Full Citations Report</button>
+                    <button class="btn btn-secondary" onclick="adminTools.extractCitations('unverified')" title="Show only citations that haven't been verified">Unverified Only</button>
+                    <button class="btn btn-success" onclick="adminTools.extractCitations('bibliography')" title="Export citations in academic bibliography format">Bibliography Format</button>
+                    <button class="btn btn-warning" onclick="adminTools.extractCitations('urls')" title="Extract all URLs from citations">URLs List</button>
                 </div>
             </div>
         </div>
@@ -607,10 +612,16 @@
             <div class="tools-grid">
                 <div class="tool-card" style="grid-column: span 2;">
                     <h2>📝 Timeline Entry Editor</h2>
-                    <p class="tool-description">Search, edit, and submit changes to timeline entries via GitHub PR</p>
+                    <p class="tool-description">Add new entries or edit existing timeline entries</p>
                     
-                    <!-- Entry Search -->
-                    <div style="margin-bottom: 20px;">
+                    <!-- Mode Selection -->
+                    <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+                        <button class="btn btn-success" onclick="adminTools.setEditorMode('new')" id="new-entry-btn" title="Create a new timeline entry">➕ Add New Entry</button>
+                        <button class="btn" onclick="adminTools.setEditorMode('edit')" id="edit-entry-btn" title="Edit an existing timeline entry">✏️ Edit Existing Entry</button>
+                    </div>
+                    
+                    <!-- Entry Search (shown only in edit mode) -->
+                    <div id="entry-search-section" style="margin-bottom: 20px; display: none;">
                         <label for="entry-search" style="display: block; margin-bottom: 5px;">Search Entries:</label>
                         <input type="text" id="entry-search" placeholder="Type to search by title or date (or leave empty for all)..." 
                                style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #3a3a4e; border-radius: 5px; color: #f0f0f0;"
@@ -626,7 +637,7 @@
                     
                     <!-- Entry Form -->
                     <div id="entry-form" style="display: none;">
-                        <h3 style="color: #f0f0f0; margin-bottom: 15px;">Edit Entry</h3>
+                        <h3 id="entry-form-title" style="color: #f0f0f0; margin-bottom: 15px;">Edit Entry</h3>
                         
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                             <div>
@@ -724,8 +735,11 @@
                         </div>
                         
                         <div style="margin-top: 15px;">
-                            <label style="display: block; margin-bottom: 5px;">Citations (comma-separated numbers):</label>
-                            <input type="text" id="edit-citations" placeholder="e.g., 1, 5, 12" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.1); border: 1px solid #3a3a4e; border-radius: 5px; color: #f0f0f0;">
+                            <label style="display: block; margin-bottom: 5px;">Citations (select multiple):</label>
+                            <select id="edit-citations" multiple size="5" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.1); border: 1px solid #3a3a4e; border-radius: 5px; color: #f0f0f0;">
+                                <!-- Options will be populated dynamically -->
+                            </select>
+                            <small style="color: #888; display: block; margin-top: 5px;">Hold Ctrl/Cmd to select multiple citations</small>
                         </div>
                         
                         <div style="margin-top: 15px;">
@@ -765,16 +779,16 @@
                             </div>
                             
                             <div style="display: flex; gap: 10px;">
-                                <button class="btn btn-success" onclick="adminTools.previewChanges()">Preview Changes</button>
-                                <button class="btn" onclick="adminTools.createPR()">Create Pull Request</button>
-                                <button class="btn btn-secondary" onclick="adminTools.resetForm()">Reset Form</button>
+                                <button class="btn btn-success" onclick="adminTools.previewChanges()" title="Preview the changes before submitting">Preview Changes</button>
+                                <button class="btn" onclick="adminTools.createPR()" title="Submit changes for review via GitHub pull request">Create Pull Request</button>
+                                <button class="btn btn-secondary" onclick="adminTools.resetForm()" title="Clear all form fields">Reset Form</button>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Add New Entry Button -->
                     <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #3a3a4e;">
-                        <button class="btn" style="background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);" onclick="adminTools.newEntry()">
+                        <button class="btn" style="background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);" onclick="adminTools.newEntry()" title="Start creating a new timeline entry">
                             ➕ Create New Entry
                         </button>
                     </div>
@@ -809,16 +823,16 @@
                         <label for="date-range">Date Range:</label>
                         <input type="text" id="date-range" placeholder="e.g., 1850-1900">
                     </div>
-                    <button class="btn" onclick="adminTools.generateVerificationPrompt()">Generate Verification Prompt</button>
-                    <button class="btn btn-secondary" onclick="adminTools.generateDiscoveryPrompt()">Find Missing Events</button>
-                    <button class="btn btn-success" onclick="adminTools.generateSourcePrompt()">Source Verification</button>
+                    <button class="btn" onclick="adminTools.generateVerificationPrompt()" title="Create an AI prompt to verify historical facts">Generate Verification Prompt</button>
+                    <button class="btn btn-secondary" onclick="adminTools.generateDiscoveryPrompt()" title="Generate prompt to discover missing historical events">Find Missing Events</button>
+                    <button class="btn btn-success" onclick="adminTools.generateSourcePrompt()" title="Create prompt to verify sources and citations">Source Verification</button>
                 </div>
 
                 <div class="tool-card">
                     <h2>🖼️ Image Research Prompt</h2>
                     <p class="tool-description">Generate LLM prompts to find historical images for entries.</p>
-                    <button class="btn" onclick="adminTools.generateImageSearchPrompt()">Generate Image Search Query</button>
-                    <button class="btn btn-secondary" onclick="adminTools.analyzeTimeline('images')">List Missing Images</button>
+                    <button class="btn" onclick="adminTools.generateImageSearchPrompt()" title="Create search queries to find historical images">Generate Image Search Query</button>
+                    <button class="btn btn-secondary" onclick="adminTools.analyzeTimeline('images')" title="Show timeline entries that need images">List Missing Images</button>
                 </div>
             </div>
         </div>
@@ -836,27 +850,27 @@
                 <div class="tool-card">
                     <h2>📈 Timeline Analysis</h2>
                     <p class="tool-description">Analyze timeline data for patterns, gaps, and quality issues.</p>
-                    <button class="btn" onclick="adminTools.analyzeTimeline('gaps')">Find Time Gaps</button>
-                    <button class="btn btn-success" onclick="adminTools.analyzeTimeline('quality')">Quality Report</button>
-                    <button class="btn btn-warning" onclick="adminTools.generateCrossReference()">Cross-Reference Check</button>
-                    <button class="btn btn-secondary" onclick="adminTools.analyzeTimeline('categories')">Category Analysis</button>
+                    <button class="btn" onclick="adminTools.analyzeTimeline('gaps')" title="Identify periods with few or no timeline entries">Find Time Gaps</button>
+                    <button class="btn btn-success" onclick="adminTools.analyzeTimeline('quality')" title="Generate comprehensive data quality report">Quality Report</button>
+                    <button class="btn btn-warning" onclick="adminTools.generateCrossReference()" title="Find entries that should reference each other">Cross-Reference Check</button>
+                    <button class="btn btn-secondary" onclick="adminTools.analyzeTimeline('categories')" title="Analyze distribution of entries across categories">Category Analysis</button>
                 </div>
 
                 <div class="tool-card">
                     <h2>🔧 Data Validation</h2>
                     <p class="tool-description">Check data integrity and find issues.</p>
-                    <button class="btn" onclick="adminTools.findDuplicates()">Find Duplicates</button>
-                    <button class="btn btn-secondary" onclick="adminTools.checkDuplicateURLs()">Duplicate URLs</button>
-                    <button class="btn btn-success" onclick="adminTools.validateDates()">Validate Dates</button>
-                    <button class="btn btn-warning" onclick="adminTools.checkLinks()">Check All Links</button>
+                    <button class="btn" onclick="adminTools.findDuplicates()" title="Detect potentially duplicate timeline entries">Find Duplicates</button>
+                    <button class="btn btn-secondary" onclick="adminTools.checkDuplicateURLs()" title="Find citations with duplicate URLs">Duplicate URLs</button>
+                    <button class="btn btn-success" onclick="adminTools.validateDates()" title="Check for invalid or inconsistent dates">Validate Dates</button>
+                    <button class="btn btn-warning" onclick="adminTools.checkLinks()" title="Verify all external links are working">Check All Links</button>
                 </div>
 
                 <div class="tool-card">
                     <h2>📋 Citation Management</h2>
                     <p class="tool-description">Manage and optimize citations.</p>
-                    <button class="btn" onclick="adminTools.orphanedCitationsEnhanced()">Smart Orphan Analysis</button>
-                    <button class="btn btn-secondary" onclick="adminTools.orphanedCitations()">Basic Orphan Check</button>
-                    <button class="btn btn-success" onclick="adminTools.suggestCitationMerges()">Suggest Merges</button>
+                    <button class="btn" onclick="adminTools.orphanedCitationsEnhanced()" title="Advanced analysis of unused citations with suggestions">Smart Orphan Analysis</button>
+                    <button class="btn btn-secondary" onclick="adminTools.orphanedCitations()" title="Find citations not referenced by any entry">Basic Orphan Check</button>
+                    <button class="btn btn-success" onclick="adminTools.suggestCitationMerges()" title="Find similar citations that could be merged">Suggest Merges</button>
                 </div>
             </div>
         </div>
@@ -871,8 +885,8 @@
                         <label for="research-topic">Research Topic:</label>
                         <input type="text" id="research-topic" placeholder="e.g., Victorian railways, Crystal Palace">
                     </div>
-                    <button class="btn" onclick="adminTools.generateResearchPrompt()">Generate Research Query</button>
-                    <button class="btn btn-secondary" onclick="adminTools.generateArchiveSearch()">Archive Search Terms</button>
+                    <button class="btn" onclick="adminTools.generateResearchPrompt()" title="Create focused research queries for historical topics">Generate Research Query</button>
+                    <button class="btn btn-secondary" onclick="adminTools.generateArchiveSearch()" title="Generate search terms for archive research">Archive Search Terms</button>
                 </div>
 
                 <div class="tool-card">
@@ -882,9 +896,9 @@
                         <label for="research-topic-2">Research Topic:</label>
                         <input type="text" id="research-topic-2" placeholder="e.g., Victorian railways, Crystal Palace">
                     </div>
-                    <button class="btn" onclick="adminTools.generateArchiveSearch()">Generate Search Strategy</button>
-                    <button class="btn btn-secondary" onclick="adminTools.generateNewspaperSearch()">Newspaper Search</button>
-                    <button class="btn btn-success" onclick="adminTools.generateMapSearch()">Map & Visual Search</button>
+                    <button class="btn" onclick="adminTools.generateArchiveSearch()" title="Create comprehensive archive search strategy">Generate Search Strategy</button>
+                    <button class="btn btn-secondary" onclick="adminTools.generateNewspaperSearch()" title="Generate search terms for newspaper archives">Newspaper Search</button>
+                    <button class="btn btn-success" onclick="adminTools.generateMapSearch()" title="Create search strategy for maps and visual resources">Map & Visual Search</button>
                 </div>
             </div>
         </div>
@@ -898,8 +912,8 @@
             <div class="output-header">
                 <h3 class="output-title" id="output-title">Output</h3>
                 <div class="output-actions">
-                    <button class="select-btn" onclick="adminTools.selectAll()">🔤 Select All</button>
-                    <button class="copy-btn" onclick="adminTools.copyToClipboard()">📋 Copy</button>
+                    <button class="select-btn" onclick="adminTools.selectAll()" title="Select all output text">🔤 Select All</button>
+                    <button class="copy-btn" onclick="adminTools.copyToClipboard()" title="Copy output to clipboard">📋 Copy</button>
                 </div>
             </div>
             <div class="output-content" id="output-content">
@@ -950,6 +964,18 @@
                         errorDiv.style.display = 'none';
                     }, 3000);
                 }
+            },
+            
+            // Logout function
+            logout: function() {
+                // Clear authentication
+                sessionStorage.removeItem('adminAuthenticated');
+                // Show password overlay
+                document.getElementById('password-overlay').classList.remove('hidden');
+                // Clear any sensitive output
+                document.getElementById('output-content').innerHTML = '';
+                // Reset password input
+                document.getElementById('password-input').value = '';
             },
             
             // Initialize
@@ -2473,6 +2499,48 @@
             // Entry Editor Functions
             currentEntry: null,
             originalEntry: null,
+            editorMode: 'edit', // 'edit' or 'new'
+            
+            setEditorMode: function(mode) {
+                this.editorMode = mode;
+                const searchSection = document.getElementById('entry-search-section');
+                const entryForm = document.getElementById('entry-form');
+                const formTitle = document.getElementById('entry-form-title');
+                const newBtn = document.getElementById('new-entry-btn');
+                const editBtn = document.getElementById('edit-entry-btn');
+                
+                if (mode === 'new') {
+                    // New entry mode
+                    searchSection.style.display = 'none';
+                    entryForm.style.display = 'block';
+                    formTitle.textContent = 'Add New Entry';
+                    newBtn.classList.add('btn-success');
+                    editBtn.classList.remove('btn-success');
+                    this.clearForm();
+                    this.populateCitationsDropdown();
+                } else {
+                    // Edit mode
+                    searchSection.style.display = 'block';
+                    entryForm.style.display = 'none';
+                    formTitle.textContent = 'Edit Entry';
+                    editBtn.classList.add('btn-success');
+                    newBtn.classList.remove('btn-success');
+                    this.searchEntries('');
+                }
+            },
+            
+            populateCitationsDropdown: function() {
+                const select = document.getElementById('edit-citations');
+                if (!select || !window.timelineCitations) return;
+                
+                select.innerHTML = '';
+                window.timelineCitations.forEach(cit => {
+                    const option = document.createElement('option');
+                    option.value = cit.number;
+                    option.textContent = `[${cit.number}] ${cit.source.substring(0, 50)}${cit.source.length > 50 ? '...' : ''}`;
+                    select.appendChild(option);
+                });
+            },
             
             searchEntries: function(searchTerm) {
                 const selector = document.getElementById('entry-selector');
@@ -2541,7 +2609,14 @@
                 document.getElementById('edit-category').value = entry.category || '';
                 document.getElementById('edit-importance').value = entry.importance || 'minor';
                 document.getElementById('edit-icon').value = entry.icon || '';
-                document.getElementById('edit-citations').value = entry.citations ? entry.citations.join(', ') : '';
+                // Set citations in multi-select
+                this.populateCitationsDropdown();
+                const citationsSelect = document.getElementById('edit-citations');
+                if (citationsSelect && entry.citations) {
+                    Array.from(citationsSelect.options).forEach(option => {
+                        option.selected = entry.citations.includes(option.value);
+                    });
+                }
                 document.getElementById('edit-image').value = entry.image || '';
                 document.getElementById('edit-image-caption').value = entry.imageCaption || '';
                 
@@ -2573,7 +2648,13 @@
                 document.getElementById('edit-category').value = '';
                 document.getElementById('edit-importance').value = 'minor';
                 document.getElementById('edit-icon').value = '';
-                document.getElementById('edit-citations').value = '';
+                // Clear citations selection
+                const citationsSelect = document.getElementById('edit-citations');
+                if (citationsSelect) {
+                    Array.from(citationsSelect.options).forEach(option => {
+                        option.selected = false;
+                    });
+                }
                 document.getElementById('edit-image').value = '';
                 document.getElementById('edit-image-caption').value = '';
                 
@@ -2603,10 +2684,10 @@
             },
             
             getFormData: function() {
-                const citations = document.getElementById('edit-citations').value
-                    .split(',')
-                    .map(c => c.trim())
-                    .filter(c => c);
+                // Get selected citations from multi-select
+                const citationsSelect = document.getElementById('edit-citations');
+                const citations = citationsSelect ? 
+                    Array.from(citationsSelect.selectedOptions).map(opt => opt.value) : [];
                 
                 const formData = {};
                 
@@ -2904,7 +2985,13 @@
                 document.getElementById('edit-category').selectedIndex = 0;
                 document.getElementById('edit-importance').selectedIndex = 0;
                 document.getElementById('edit-icon').selectedIndex = 0;
-                document.getElementById('edit-citations').value = '';
+                // Clear citations selection
+                const citationsSelect = document.getElementById('edit-citations');
+                if (citationsSelect) {
+                    Array.from(citationsSelect.options).forEach(option => {
+                        option.selected = false;
+                    });
+                }
                 document.getElementById('edit-image').value = '';
                 document.getElementById('edit-image-caption').value = '';
                 document.getElementById('commit-message').value = '';
