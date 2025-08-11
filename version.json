@@ -1,5 +1,5 @@
 {
-  "version": "2.09.1",
-  "releaseDate": "2025-08-06",
-  "notes": "Added dismissible WIP notice, reset preferences option, and improved cache management"
+  "version": "2.09",
+  "releaseDate": "2025-08-11",
+  "notes": "Major admin panel enhancements, citation management, and UI improvements"
 }

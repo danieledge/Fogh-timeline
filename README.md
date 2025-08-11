@@ -8,11 +8,15 @@ An interactive, community-driven timeline application documenting the rich histo
 
 ## 🚀 Latest Updates
 
-**Version 2.81** (August 2025) - Minor update with important fixes
-- **Fixed Category Filtering** - Minor entries now properly respect category filters
-- **Data Correction** - "Death of the Gypsy Queen" correctly categorized under "Gypsies" instead of "Churches"
-- **Banner Display Fix** - WIP and informational banners now properly reappear when version changes
-- **Version Reset** - Dismissed notices reset on version update to ensure important messages are seen
+**Version 2.09** (August 11, 2025) - Admin panel enhancements and UI improvements
+- **Admin Panel Overhaul** - Complete reorganization with tabbed interface (Export, Editor, Quality Control, Research)
+- **Password Protection** - Secure admin access with session-based authentication
+- **Entry Editor Enhanced** - New/Edit modes with multi-select citation dropdowns
+- **Citation Management** - New modal for adding citations via pull request
+- **Quality Control Tools** - Enhanced cross-reference checking (3+ word matching)
+- **Button Tooltips** - All admin buttons now have explanatory tooltips
+- **Logout Feature** - Added logout button with session clearing
+- **Data Quality Dashboard** - Warning counts for orphaned citations, disabled entries, and data issues
 
 ---
 
@@ -36,7 +40,7 @@ An interactive, community-driven timeline application documenting the rich histo
 - **Accessibility** - Larger touch targets for citations (24x24px minimum)
 - **Visual Polish** - Cleaner citation display, consistent category colors, better badge positioning
 
-[📄 View detailed release notes →](RELEASE_NOTES_v2.08.md) | [📋 All releases →](https://github.com/danieledge/Fogh-timeline/releases) | [📜 Timeline data changes →](TIMELINE_DATA_CHANGES.md)
+[📄 View detailed release notes →](RELEASE_NOTES_v2.09.md) | [📋 All releases →](https://github.com/danieledge/Fogh-timeline/releases) | [📜 Timeline data changes →](TIMELINE_DATA_CHANGES.md)
 
 ---
 
