@@ -8,7 +8,7 @@ An interactive, community-driven timeline application documenting the rich histo
 
 ## 🚀 Latest Updates
 
-**Version 2.09** (August 11, 2025) - Admin panel enhancements and UI improvements
+[**Version 2.09**](RELEASE_NOTES_v2.09.md) (August 11, 2025) - Admin panel enhancements and UI improvements
 - **Admin Panel Overhaul** - Complete reorganization with tabbed interface (Export, Editor, Quality Control, Research)
 - **Password Protection** - Secure admin access with session-based authentication
 - **Entry Editor Enhanced** - New/Edit modes with multi-select citation dropdowns
@@ -40,7 +40,7 @@ An interactive, community-driven timeline application documenting the rich histo
 - **Accessibility** - Larger touch targets for citations (24x24px minimum)
 - **Visual Polish** - Cleaner citation display, consistent category colors, better badge positioning
 
-[📄 View detailed release notes →](RELEASE_NOTES_v2.09.md) | [📋 All releases →](https://github.com/danieledge/Fogh-timeline/releases) | [📜 Timeline data changes →](TIMELINE_DATA_CHANGES.md)
+[📄 View full v2.09 release notes →](RELEASE_NOTES_v2.09.md) | [📋 All releases →](https://github.com/danieledge/Fogh-timeline/releases) | [📜 Timeline data changes →](TIMELINE_DATA_CHANGES.md)
 
 ---
 
