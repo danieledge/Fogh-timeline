@@ -4122,7 +4122,7 @@ textarea#image-sources {
     background: transparent;
 }
 
-/* Zoom Controls - Matching filter button style */
+/* Zoom Controls - Elegant Glass Effect */
 .image-zoom-controls {
     position: fixed;
     bottom: 2rem;
@@ -4132,19 +4132,24 @@ textarea#image-sources {
     display: flex;
     gap: 12px;
     align-items: center;
-    background: var(--bg-secondary);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
     padding: 12px 20px;
     border-radius: 24px;
-    border: 1px solid var(--bg-tertiary);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08),
+                0 2px 8px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 /* Dark theme override for controls */
 [data-theme="dark"] .image-zoom-controls {
-    background: var(--bg-secondary);
-    border: 1px solid var(--bg-tertiary);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    background: rgba(30, 30, 30, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .image-zoom-controls.hidden {
@@ -4157,29 +4162,28 @@ textarea#image-sources {
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    color: #2c3e50;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 [data-theme="dark"] .zoom-btn {
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
+    background: rgba(60, 60, 60, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #e8e8e8;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .zoom-btn:hover {
-    background: var(--accent-primary);
+    background: var(--accent);
     color: white;
-    border-color: var(--accent-primary);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px var(--accent-shadow);
 }
@@ -4193,7 +4197,7 @@ textarea#image-sources {
 }
 
 .zoom-level {
-    color: var(--text-primary);
+    color: #2c3e50;
     font-size: 14px;
     font-weight: 600;
     min-width: 60px;
@@ -4204,7 +4208,7 @@ textarea#image-sources {
 }
 
 [data-theme="dark"] .zoom-level {
-    color: var(--text-primary);
+    color: #e8e8e8;
 }
 
 /* Navigation hint */
@@ -4353,12 +4357,12 @@ textarea#image-sources {
     fill: currentColor;
 }
 
-/* Controls toggle button - matching filter button style */
+/* Controls toggle button - matching filter button and close button style */
 .controls-toggle {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    z-index: 12;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 10001;
     background: var(--bg-secondary);
     width: 44px;
     height: 44px;
@@ -4370,14 +4374,24 @@ textarea#image-sources {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.2s ease;
     cursor: pointer;
-    color: var(--text-primary);
+}
+
+.controls-toggle img {
+    width: 20px;
+    height: 20px;
+    filter: none;
+    opacity: 0.7;
 }
 
 [data-theme="dark"] .controls-toggle {
     background: var(--bg-secondary);
     border: 1px solid var(--bg-tertiary);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    color: var(--text-primary);
+}
+
+[data-theme="dark"] .controls-toggle img {
+    filter: invert(1);
+    opacity: 0.8;
 }
 
 .controls-toggle:hover {
@@ -4386,10 +4400,18 @@ textarea#image-sources {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+.controls-toggle:hover img {
+    opacity: 1;
+}
+
 .controls-toggle.active {
     background: var(--accent-primary);
-    color: white;
     border-color: var(--accent-primary);
+}
+
+.controls-toggle.active img {
+    filter: brightness(0) invert(1);
+    opacity: 1;
 }
 
 /* Dark theme adjustments for modal close */
