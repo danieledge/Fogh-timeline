@@ -70,6 +70,7 @@ This document tracks changes to timeline entries, images, and citations only. Fo
 - **Title updated**: Changed to "Long Meadow & Agricultural Roots" from "Long Meadow and Norwood Central Dairy" (2025-08-11)
 - **Description replaced**: Complete rewrite with detailed historical information about Thomas French, dairy farming operations, the Dibbins family, Melbourne Yard milking sheds, and evolution to Norwood Central Dairy (2025-08-11)
 - **Citation added**: Citation 93 - 1871 Census Records (RG10/694/28/7) documenting Thomas French as dairyman at 8 Norwood Terrace (2025-08-11)
+- **Third image added**: Newspaper advertisement for Thomas French's Dairy, c.1871 (2025-08-11)
 
 #### WWII Blitz (1940-1944)
 - **Second image added**: 1942 air raid shelter photo from Lambeth Archives (2025-08-01)
