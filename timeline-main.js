@@ -1480,6 +1480,7 @@ function initializeTimeline() {
                 var citationCard = document.createElement('div');
                 citationCard.className = 'citation-card';
                 citationCard.id = 'ref-' + citation.number;
+                citationCard.setAttribute('data-citation-number', citation.number);
                 
                 // Create card header (always visible)
                 var cardHeader = document.createElement('div');
@@ -1710,7 +1711,12 @@ function initializeTimeline() {
                 var allCards = citationsGrid.querySelectorAll('.citation-card');
                 
                 allCards.forEach(function(card, index) {
-                    var citation = timelineCitations[index];
+                    var citationNumber = card.getAttribute('data-citation-number');
+                    var citation = timelineCitations.find(function(c) {
+                        return c.number === citationNumber;
+                    });
+                    if (!citation) return;
+                    
                     var searchText = [
                         citation.number,
                         citation.timeline_entry,
@@ -2350,7 +2356,10 @@ function initializeTimeline() {
         
         // Function to show citation in modal - matching main page styling exactly
         function showCitationModal(citationNumber, relatedCitations) {
-            var citation = timelineCitations[citationNumber - 1]; // Citations array is 0-indexed
+            // Find citation by number property, not array index
+            var citation = timelineCitations.find(function(c) {
+                return c.number === citationNumber.toString();
+            });
             if (!citation) return;
             
             var modal = document.getElementById('citation-modal');
