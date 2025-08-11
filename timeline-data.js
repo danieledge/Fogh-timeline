@@ -259,6 +259,8 @@ var timelineData = [
 "importance": "major",
 "category": "Civic",
 "citations": ["59"],
+"image": "images/1806-norwood-common-enclosure-plan.jpg",
+"image_caption": "Plan of Norwood Common, 1806. Map showing the area between Knights Hill in the west and Gypsy Hill in the east, depicting land ownership following the Enclosure Act of 1806. Credit: Lambeth Archives (public domain)",
 },
 
 
