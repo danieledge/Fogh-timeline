@@ -674,6 +674,8 @@ function initializeTimeline() {
                     });
             })(svg, iconPath);
         }
+        header.appendChild(iconDiv);
+
         // Create title
         var title = document.createElement('div');
         title.className = 'content-title';
@@ -693,21 +695,15 @@ function initializeTimeline() {
             title.textContent = item.title;
         }
         
-        // Create a wrapper for icon and title
-        var headerLeft = document.createElement('div');
-        headerLeft.className = 'content-header-left';
-        headerLeft.appendChild(iconDiv);
-        headerLeft.appendChild(title);
-        
-        header.appendChild(headerLeft);
+        header.appendChild(title);
 
-        // Add category badge if category exists, inside the header
+        // Add category badge if category exists
         if (item.category && typeof timelineCategories !== 'undefined' && timelineCategories[item.category]) {
             var categoryBadge = document.createElement('div');
             categoryBadge.className = 'category-badge category-' + item.category;
             categoryBadge.textContent = timelineCategories[item.category].name;
             categoryBadge.title = timelineCategories[item.category].description;
-            header.appendChild(categoryBadge);
+            content.appendChild(categoryBadge);
         }
 
         content.appendChild(header);
