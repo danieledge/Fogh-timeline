@@ -4122,7 +4122,7 @@ textarea#image-sources {
     background: transparent;
 }
 
-/* Zoom Controls - Matching close button style */
+/* Zoom Controls - Matching filter button style */
 .image-zoom-controls {
     position: fixed;
     bottom: 2rem;
@@ -4132,21 +4132,19 @@ textarea#image-sources {
     display: flex;
     gap: 12px;
     align-items: center;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: var(--bg-secondary);
     padding: 12px 20px;
     border-radius: 24px;
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--bg-tertiary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 /* Dark theme override for controls */
 [data-theme="dark"] .image-zoom-controls {
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+    background: var(--bg-secondary);
+    border: 1px solid var(--bg-tertiary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .image-zoom-controls.hidden {
@@ -4159,28 +4157,29 @@ textarea#image-sources {
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: white;
-    border: 2px solid rgba(0, 0, 0, 0.15);
-    color: #333;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="dark"] .zoom-btn {
-    background: white;
-    border: 2px solid rgba(0, 0, 0, 0.15);
-    color: #333;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .zoom-btn:hover {
-    background: var(--accent);
+    background: var(--accent-primary);
     color: white;
+    border-color: var(--accent-primary);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px var(--accent-shadow);
 }
@@ -4194,7 +4193,7 @@ textarea#image-sources {
 }
 
 .zoom-level {
-    color: #333;
+    color: var(--text-primary);
     font-size: 14px;
     font-weight: 600;
     min-width: 60px;
@@ -4205,7 +4204,7 @@ textarea#image-sources {
 }
 
 [data-theme="dark"] .zoom-level {
-    color: #333;
+    color: var(--text-primary);
 }
 
 /* Navigation hint */
@@ -4354,46 +4353,43 @@ textarea#image-sources {
     fill: currentColor;
 }
 
-/* Controls toggle button */
+/* Controls toggle button - matching filter button style */
 .controls-toggle {
     position: absolute;
     top: 1rem;
     left: 1rem;
     z-index: 12;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: var(--bg-secondary);
     width: 44px;
     height: 44px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--bg-tertiary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.2s ease;
     cursor: pointer;
-    color: #333;
+    color: var(--text-primary);
 }
 
 [data-theme="dark"] .controls-toggle {
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-    color: #333;
+    background: var(--bg-secondary);
+    border: 1px solid var(--bg-tertiary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    color: var(--text-primary);
 }
 
 .controls-toggle:hover {
-    background: var(--accent);
-    color: white;
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px var(--accent-shadow);
+    background: var(--bg-tertiary);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .controls-toggle.active {
-    background: var(--accent);
+    background: var(--accent-primary);
     color: white;
+    border-color: var(--accent-primary);
 }
 
 /* Dark theme adjustments for modal close */
@@ -4405,14 +4401,14 @@ textarea#image-sources {
     color: var(--text-primary);
 }
 
-/* Image modal close button positioning and visibility */
+/* Image modal close button - matching filter button style */
 .image-modal-content .modal-close {
     position: fixed;
     top: 20px;
     right: 20px;
     z-index: 10001;
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid rgba(0, 0, 0, 0.2);
+    background: var(--bg-secondary);
+    border: 1px solid var(--bg-tertiary);
     width: 44px;
     height: 44px;
     border-radius: 50%;
@@ -4421,13 +4417,13 @@ textarea#image-sources {
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .image-modal-content .modal-close:hover {
-    transform: scale(1.1);
-    background: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+    background: var(--bg-tertiary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .image-modal-content .modal-close:active {
@@ -4437,7 +4433,7 @@ textarea#image-sources {
 .image-modal-content .modal-close svg {
     width: 24px;
     height: 24px;
-    fill: #333;
+    fill: var(--text-primary);
 }
 
 /* Dark theme adjustments for image modal */
@@ -4447,19 +4443,18 @@ textarea#image-sources {
 }
 
 [data-theme="dark"] .image-modal-content .modal-close {
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+    background: var(--bg-secondary);
+    border: 1px solid var(--bg-tertiary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .image-modal-content .modal-close svg {
-    fill: #1a1a1a;
+    fill: var(--text-primary);
 }
 
 [data-theme="dark"] .image-modal-content .modal-close:hover {
-    background: white;
-    border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+    background: var(--bg-tertiary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Responsive modal sizing */
