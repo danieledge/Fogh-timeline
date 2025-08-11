@@ -566,6 +566,8 @@ var timelineData = [
 "importance": "major",
 "category": "Railway",
 "citations": ["73"],
+"image": "images/1911-crystal-palace-electric-stock.jpg",
+"image_caption": "Overhead AC electric Crystal Palace stock, 1911. Credit: Historic England Archives (public domain)",
 },
 
 
