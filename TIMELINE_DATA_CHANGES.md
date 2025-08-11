@@ -66,8 +66,10 @@ This document tracks changes to timeline entries, images, and citations only. Fo
 #### Railway Electrification (1911)
 - **Image added**: Overhead AC electric Crystal Palace stock from Historic England Archives (2025-08-11)
 
-#### Long Meadow and Norwood Central Dairy (1912)
-- **Title updated**: Previously just "Norwood Central Dairy" (2025-08-03)
+#### Long Meadow & Agricultural Roots (1870s-1890s)
+- **Title updated**: Changed to "Long Meadow & Agricultural Roots" from "Long Meadow and Norwood Central Dairy" (2025-08-11)
+- **Description replaced**: Complete rewrite with detailed historical information about Thomas French, dairy farming operations, the Dibbins family, Melbourne Yard milking sheds, and evolution to Norwood Central Dairy (2025-08-11)
+- **Citation added**: Citation 93 - 1871 Census Records (RG10/694/28/7) documenting Thomas French as dairyman at 8 Norwood Terrace (2025-08-11)
 
 #### WWII Blitz (1940-1944)
 - **Second image added**: 1942 air raid shelter photo from Lambeth Archives (2025-08-01)
@@ -103,6 +105,9 @@ This document tracks changes to timeline entries, images, and citations only. Fo
 
 #### Citation (1990 Railway Accident)
 - **Quality updated**: Changed to "High" with National South East Railway Society source (2025-08-05)
+
+#### Citation 93 (Long Meadow & Agricultural Roots)
+- **Added**: New citation for 1871 Census Records (RG10/694/28/7) documenting Thomas French as dairyman at 8 Norwood Terrace, now 78 Gipsy Hill (2025-08-11)
 
 ---
 
