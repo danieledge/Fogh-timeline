@@ -462,6 +462,9 @@ var timelineData = [
 "image2": "images/norwood-central-dairy-article.png",
 "image2Caption": "Norwood Central Dairy article - image digitally enhanced for clarity<br>Source: Public Domain",
 "image2CaptionHTML": true,
+"image3": "images/1871-thomas-french-dairy-advert.jpg",
+"image3Caption": "Newspaper advertisement for Thomas French's Dairy, c.1871. French supplied fresh milk daily from his dairy at 8 Norwood Terrace (now 78 Gipsy Hill).<br>Source: Local newspaper archives",
+"image3CaptionHTML": true,
 },
 
 
