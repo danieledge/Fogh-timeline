@@ -455,7 +455,7 @@ var timelineData = [
 "icon": "cow",
 "importance": "major",
 "category": "Development",
-"citations": ["15"],
+"citations": ["15", "93"],
 "image": "images/frenchs-field-gipsy-hill-1890.jpg",
 "imageCaption": "French's Field, Gipsy Hill, Upper Norwood c1890<br>Source: <a href='https://boroughphotos.org/lambeth/frenchs-field-gipsy-hill-upper-norwood/' target='_blank' rel='noopener'>Borough Photos</a>",
 "imageCaptionHTML": true,
@@ -2000,6 +2000,15 @@ const timelineCitations = [
     "source": "Borough Photos - Lambeth Archives photograph collection. The Paxton Hotel, West Norwood, built c.1855 and named after Sir Joseph Paxton, architect of Crystal Palace.",
     "quality": "High",
     "url": "https://boroughphotos.org/lambeth/the-paxton-hotel-west-norwood/"
+  },
+
+  {
+    "number": "93",
+    "timeline_entry": "1870s-1890s – Long Meadow and Norwood Central Dairy",
+    "status": "Verified",
+    "source": "1871 Census Records (RG10/694/28/7) - Thomas French, dairyman on own account, living at 8 Norwood Terrace (now 78 Gipsy Hill).",
+    "quality": "High",
+    "url": "https://www.nationalarchives.gov.uk/help-with-your-research/research-guides/census-records/"
   }
 ];
 // Make data globally accessible
