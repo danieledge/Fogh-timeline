@@ -30,6 +30,21 @@
                 
                 this.dataLoaded = true;
                 this.updateStats();
+                
+                // Initialize Entry Editor
+                this.populateCitationsDropdown();
+                this.populateEntrySelector();
+                
+                // Set up Entry Editor event handlers
+                const entrySelect = document.getElementById('entry-select');
+                if (entrySelect) {
+                    entrySelect.addEventListener('change', (e) => {
+                        if (e.target.value) {
+                            this.loadEntry(parseInt(e.target.value));
+                        }
+                    });
+                }
+                
                 return true;
             },
 
@@ -1546,6 +1561,159 @@
                     .split(/\s+/)
                     .filter(word => word.length > 3 && !stopWords.includes(word) && !excludedPlaceNames.includes(word))
                     .filter((word, index, array) => array.indexOf(word) === index);
+            },
+
+            // Entry Editor Functions
+            setEditorMode: function(mode) {
+                const modeButtons = document.querySelectorAll('.editor-mode-btn');
+                modeButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                if (mode === 'new') {
+                    document.getElementById('btn-new-entry').classList.add('active');
+                    document.getElementById('entry-selector').style.display = 'none';
+                    this.clearEntryForm();
+                } else if (mode === 'edit') {
+                    document.getElementById('btn-edit-entry').classList.add('active');
+                    document.getElementById('entry-selector').style.display = 'block';
+                }
+            },
+
+            clearEntryForm: function() {
+                document.getElementById('edit-title').value = '';
+                document.getElementById('edit-date').value = '';
+                document.getElementById('edit-category').value = '';
+                document.getElementById('edit-description').value = '';
+                document.getElementById('edit-timeline-entry').value = '';
+                document.getElementById('edit-major').checked = false;
+                document.getElementById('edit-verified').checked = false;
+                document.getElementById('edit-disabled').checked = false;
+                
+                // Clear multi-select citations
+                const citationsSelect = document.getElementById('edit-citations');
+                if (citationsSelect) {
+                    Array.from(citationsSelect.options).forEach(option => {
+                        option.selected = false;
+                    });
+                }
+            },
+
+            populateCitationsDropdown: function() {
+                const citationsSelect = document.getElementById('edit-citations');
+                if (!citationsSelect || !window.timelineCitations) return;
+                
+                // Clear existing options
+                citationsSelect.innerHTML = '';
+                
+                // Add citations as options
+                window.timelineCitations.forEach(citation => {
+                    const option = document.createElement('option');
+                    option.value = citation.number;
+                    option.textContent = `${citation.number}: ${citation.title}`;
+                    citationsSelect.appendChild(option);
+                });
+            },
+
+            populateEntrySelector: function() {
+                const selector = document.getElementById('entry-select');
+                if (!selector || !window.timelineData) return;
+                
+                selector.innerHTML = '<option value="">Select an entry to edit...</option>';
+                
+                // Sort entries by date
+                const sortedEntries = [...window.timelineData].sort((a, b) => {
+                    return new Date(a.date) - new Date(b.date);
+                });
+                
+                sortedEntries.forEach((entry, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `${entry.date}: ${entry.title}`;
+                    selector.appendChild(option);
+                });
+            },
+
+            loadEntry: function(entryIndex) {
+                if (!window.timelineData || !window.timelineData[entryIndex]) return;
+                
+                const entry = window.timelineData[entryIndex];
+                
+                document.getElementById('edit-title').value = entry.title || '';
+                document.getElementById('edit-date').value = entry.date || '';
+                document.getElementById('edit-category').value = entry.category || '';
+                document.getElementById('edit-description').value = entry.description || '';
+                document.getElementById('edit-timeline-entry').value = entry.timeline_entry || '';
+                document.getElementById('edit-major').checked = entry.major || false;
+                document.getElementById('edit-verified').checked = entry.verified || false;
+                document.getElementById('edit-disabled').checked = entry.disabled || false;
+                
+                // Set selected citations
+                const citationsSelect = document.getElementById('edit-citations');
+                if (citationsSelect && entry.citations) {
+                    const citationNumbers = entry.citations.map(c => c.toString());
+                    Array.from(citationsSelect.options).forEach(option => {
+                        option.selected = citationNumbers.includes(option.value);
+                    });
+                }
+            },
+
+            getFormData: function() {
+                const citationsSelect = document.getElementById('edit-citations');
+                const citations = citationsSelect ? 
+                    Array.from(citationsSelect.selectedOptions).map(opt => parseInt(opt.value)) : [];
+                
+                return {
+                    title: document.getElementById('edit-title').value,
+                    date: document.getElementById('edit-date').value,
+                    category: document.getElementById('edit-category').value,
+                    description: document.getElementById('edit-description').value,
+                    timeline_entry: document.getElementById('edit-timeline-entry').value,
+                    major: document.getElementById('edit-major').checked,
+                    verified: document.getElementById('edit-verified').checked,
+                    disabled: document.getElementById('edit-disabled').checked,
+                    citations: citations
+                };
+            },
+
+            submitEntry: function() {
+                const formData = this.getFormData();
+                const isNewEntry = document.getElementById('btn-new-entry').classList.contains('active');
+                
+                // Validate required fields
+                if (!formData.title || !formData.date) {
+                    alert('Title and Date are required fields');
+                    return;
+                }
+                
+                // Prepare PR data
+                const prData = {
+                    action: isNewEntry ? 'add' : 'edit',
+                    entry: formData
+                };
+                
+                if (!isNewEntry) {
+                    const selector = document.getElementById('entry-select');
+                    if (!selector.value) {
+                        alert('Please select an entry to edit');
+                        return;
+                    }
+                    prData.entryIndex = parseInt(selector.value);
+                }
+                
+                // Show confirmation
+                const message = isNewEntry ? 
+                    `Add new entry: ${formData.title}?` : 
+                    `Update entry: ${formData.title}?`;
+                
+                if (confirm(message)) {
+                    this.showLoading();
+                    console.log('Submitting PR:', prData);
+                    // Here would be the actual PR submission
+                    setTimeout(() => {
+                        this.showOutput('Entry Submission', `Entry "${formData.title}" has been submitted for review.`);
+                    }, 500);
+                }
             }
         };
 
