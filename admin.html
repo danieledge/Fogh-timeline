@@ -871,6 +871,7 @@
                     <button class="btn" onclick="adminTools.orphanedCitationsEnhanced()" title="Advanced analysis of unused citations with suggestions">Smart Orphan Analysis</button>
                     <button class="btn btn-secondary" onclick="adminTools.orphanedCitations()" title="Find citations not referenced by any entry">Basic Orphan Check</button>
                     <button class="btn btn-success" onclick="adminTools.suggestCitationMerges()" title="Find similar citations that could be merged">Suggest Merges</button>
+                    <button class="btn btn-warning" onclick="adminTools.showAddCitation()" title="Add a new citation via pull request">➕ Add New Citation</button>
                 </div>
             </div>
         </div>
@@ -923,6 +924,66 @@
 
         <!-- Copy feedback overlay -->
         <div class="copy-feedback" id="copy-feedback">✓ Copied to Clipboard!</div>
+        
+        <!-- Add Citation Modal -->
+        <div id="citation-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
+            <div style="background: #2a2a3e; padding: 30px; border-radius: 10px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
+                <h2 style="color: #f0f0f0; margin-bottom: 20px;">➕ Add New Citation</h2>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #f0f0f0;">Citation Number:</label>
+                    <input type="number" id="new-citation-number" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.1); border: 1px solid #3a3a4e; border-radius: 5px; color: #f0f0f0;" placeholder="Next available number will be suggested">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #f0f0f0;">Timeline Entry Reference:</label>
+                    <input type="text" id="new-citation-entry" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.1); border: 1px solid #3a3a4e; border-radius: 5px; color: #f0f0f0;" placeholder="e.g., 1856 – Gipsy Hill Station Opens">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #f0f0f0;">Source Description:</label>
+                    <textarea id="new-citation-source" rows="3" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.1); border: 1px solid #3a3a4e; border-radius: 5px; color: #f0f0f0;" placeholder="Describe the source"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #f0f0f0;">Quality:</label>
+                    <select id="new-citation-quality" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.1); border: 1px solid #3a3a4e; border-radius: 5px; color: #f0f0f0;">
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #f0f0f0;">Status:</label>
+                    <select id="new-citation-status" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.1); border: 1px solid #3a3a4e; border-radius: 5px; color: #f0f0f0;">
+                        <option value="Verified">Verified</option>
+                        <option value="Unverified">Unverified</option>
+                        <option value="Needs Review">Needs Review</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #f0f0f0;">Primary URL:</label>
+                    <input type="url" id="new-citation-url" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.1); border: 1px solid #3a3a4e; border-radius: 5px; color: #f0f0f0;" placeholder="https://...">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #f0f0f0;">Additional URLs (one per line):</label>
+                    <textarea id="new-citation-urls" rows="2" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.1); border: 1px solid #3a3a4e; border-radius: 5px; color: #f0f0f0;" placeholder="Optional additional URLs"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #f0f0f0;">Notes:</label>
+                    <textarea id="new-citation-notes" rows="2" style="width: 100%; padding: 8px; background: rgba(255,255,255,0.1); border: 1px solid #3a3a4e; border-radius: 5px; color: #f0f0f0;" placeholder="Optional notes"></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button class="btn btn-secondary" onclick="adminTools.closeCitationModal()">Cancel</button>
+                    <button class="btn btn-success" onclick="adminTools.submitNewCitation()">Create Pull Request</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="timeline-data.js"></script>
