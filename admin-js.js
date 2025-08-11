@@ -78,27 +78,112 @@
             updateStats: function() {
                 if (!this.dataLoaded) return;
                 
-                const stats = {
-                    'Total Entries': window.timelineData.length,
-                    'Total Citations': window.timelineCitations.length,
-                    'Verified': window.timelineCitations.filter(c => c.status === 'Verified').length,
-                    'Categories': Object.keys(window.timelineCategories).length,
-                    'With Images': window.timelineData.filter(e => e.image).length,
-                    'Major Events': window.timelineData.filter(e => e.importance === 'major').length
-                };
-
+                // Calculate main statistics
+                const totalEntries = window.timelineData.length;
+                const majorEvents = window.timelineData.filter(e => e.importance === 'major').length;
+                const minorEvents = window.timelineData.filter(e => e.importance === 'minor').length;
+                
+                // Calculate warnings
+                const orphanedCitations = this.findOrphanedCitationNumbers().length;
+                const entriesWithoutCitations = window.timelineData.filter(e => !e.citations || e.citations.length === 0).length;
+                const unverifiedCitations = window.timelineCitations.filter(c => c.status !== 'Verified').length;
+                
                 const statsGrid = document.getElementById('stats-grid');
                 statsGrid.innerHTML = '';
                 
-                for (const [label, value] of Object.entries(stats)) {
+                // Main statistics
+                const mainStats = [
+                    {
+                        label: 'Total Entries',
+                        value: totalEntries,
+                        detail: `${majorEvents} major, ${minorEvents} minor`,
+                        type: 'primary'
+                    },
+                    {
+                        label: 'Total Citations',
+                        value: window.timelineCitations.length,
+                        type: 'primary'
+                    },
+                    {
+                        label: 'Total Categories',
+                        value: Object.keys(window.timelineCategories).length,
+                        type: 'primary'
+                    }
+                ];
+                
+                // Warning statistics
+                const warnings = [];
+                if (orphanedCitations > 0) {
+                    warnings.push({
+                        label: 'Orphaned Citations',
+                        value: orphanedCitations,
+                        type: 'warning'
+                    });
+                }
+                if (entriesWithoutCitations > 0) {
+                    warnings.push({
+                        label: 'Entries Without Citations',
+                        value: entriesWithoutCitations,
+                        type: 'warning'
+                    });
+                }
+                if (unverifiedCitations > 0) {
+                    warnings.push({
+                        label: 'Unverified Citations',
+                        value: unverifiedCitations,
+                        type: 'warning'
+                    });
+                }
+                
+                // Render main stats
+                mainStats.forEach(stat => {
                     const card = document.createElement('div');
-                    card.className = 'stat-card';
+                    card.className = 'stat-card stat-primary';
                     card.innerHTML = `
-                        <div class="stat-number">${value}</div>
-                        <div class="stat-label">${label}</div>
+                        <div class="stat-number">${stat.value}</div>
+                        <div class="stat-label">${stat.label}</div>
+                        ${stat.detail ? `<div class="stat-detail">${stat.detail}</div>` : ''}
                     `;
                     statsGrid.appendChild(card);
+                });
+                
+                // Render warnings if any
+                if (warnings.length > 0) {
+                    // Add a separator
+                    const separator = document.createElement('div');
+                    separator.className = 'stats-separator';
+                    separator.style.gridColumn = '1 / -1';
+                    separator.innerHTML = '<div style="color: #f39c12; font-weight: bold; margin: 10px 0;">⚠️ Data Quality Warnings</div>';
+                    statsGrid.appendChild(separator);
+                    
+                    warnings.forEach(warning => {
+                        const card = document.createElement('div');
+                        card.className = 'stat-card stat-warning';
+                        card.innerHTML = `
+                            <div class="stat-number" style="color: #f39c12;">${warning.value}</div>
+                            <div class="stat-label">${warning.label}</div>
+                        `;
+                        statsGrid.appendChild(card);
+                    });
                 }
+            },
+            
+            findOrphanedCitationNumbers: function() {
+                const usedCitations = new Set();
+                window.timelineData.forEach(entry => {
+                    if (entry.citations) {
+                        entry.citations.forEach(cit => usedCitations.add(cit));
+                    }
+                });
+                
+                const orphaned = [];
+                window.timelineCitations.forEach(cit => {
+                    if (!usedCitations.has(cit.number.toString())) {
+                        orphaned.push(cit.number);
+                    }
+                });
+                
+                return orphaned;
             },
 
             showOutput: function(title, content) {
@@ -1398,7 +1483,8 @@
                     let output = 'CROSS-REFERENCE CHECK\n';
                     output += '=' .repeat(50) + '\n\n';
                     
-                    output += 'This report identifies timeline entries that should be cross-referenced with each other.\n\n';
+                    output += 'This report identifies timeline entries that should be cross-referenced with each other.\n';
+                    output += 'Requirements: At least 3 matching words (excluding common place names).\n\n';
                     
                     // Find related entries by analyzing descriptions
                     const connections = [];
@@ -1414,20 +1500,25 @@
                             
                             const shared = keywords1.filter(k => keywords2.includes(k));
                             
-                            if (shared.length >= 2) {
+                            // Require at least 3 matching words
+                            if (shared.length >= 3) {
                                 connections.push({
                                     entry1: `${entry1.date}: ${entry1.title}`,
                                     entry2: `${entry2.date}: ${entry2.title}`,
-                                    sharedKeywords: shared
+                                    sharedKeywords: shared,
+                                    matchCount: shared.length
                                 });
                             }
                         }
                     }
                     
-                    output += `Found ${connections.length} potential cross-references:\n\n`;
+                    // Sort by number of matches (most matches first)
+                    connections.sort((a, b) => b.matchCount - a.matchCount);
+                    
+                    output += `Found ${connections.length} potential cross-references (3+ word matches):\n\n`;
                     
                     connections.slice(0, 50).forEach(conn => {
-                        output += `CONNECTION:\n`;
+                        output += `CONNECTION (${conn.matchCount} matches):\n`;
                         output += `  Entry 1: ${conn.entry1}\n`;
                         output += `  Entry 2: ${conn.entry2}\n`;
                         output += `  Shared concepts: ${conn.sharedKeywords.join(', ')}\n\n`;
@@ -1435,6 +1526,8 @@
                     
                     if (connections.length > 50) {
                         output += `... and ${connections.length - 50} more connections\n`;
+                    } else if (connections.length === 0) {
+                        output += 'No connections found with 3+ matching keywords.\n';
                     }
                     
                     this.showOutput('Cross-Reference Check', output);
@@ -1442,13 +1535,16 @@
             },
 
             extractKeywords: function(text) {
-                // Simple keyword extraction
+                // Simple keyword extraction with excluded place names
                 const stopWords = ['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'about', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'under', 'again', 'further', 'then', 'once', 'was', 'were', 'is', 'are', 'been', 'be', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'ought', 'may', 'might', 'must', 'can', 'this', 'that', 'these', 'those', 'it', 'its'];
+                
+                // Common place names to exclude from matching
+                const excludedPlaceNames = ['gipsy', 'gypsy', 'hill', 'norwood', 'crystal', 'palace', 'london', 'south', 'upper', 'lower', 'west'];
                 
                 return text.toLowerCase()
                     .replace(/[^\w\s]/g, ' ')
                     .split(/\s+/)
-                    .filter(word => word.length > 3 && !stopWords.includes(word))
+                    .filter(word => word.length > 3 && !stopWords.includes(word) && !excludedPlaceNames.includes(word))
                     .filter((word, index, array) => array.indexOf(word) === index);
             }
         };
