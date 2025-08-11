@@ -260,7 +260,8 @@ var timelineData = [
 "category": "Civic",
 "citations": ["59"],
 "image": "images/1806-norwood-common-enclosure-plan.jpg",
-"image_caption": "Plan of Norwood Common, 1806. Map showing the area between Knights Hill in the west and Gypsy Hill in the east, depicting land ownership following the Enclosure Act of 1806. Credit: Lambeth Archives (public domain)",
+"imageCaption": "Plan of Norwood Common, 1806<br>Map showing the area between Knights Hill in the west and Gypsy Hill in the east, depicting land ownership following the Enclosure Act of 1806<br>Credit: Lambeth Archives (public domain)",
+"imageCaptionHTML": true,
 },
 
 
@@ -314,7 +315,8 @@ var timelineData = [
 "category": "Railway",
 "citations": ["67"],
 "image": "images/1853-crystal-palace-railway-route-map.jpg",
-"image_caption": "1850s map showing the proposed railway route from Crystal Palace via Beckenham, with connection to the Brighton main line from London Bridge. Credit: farnborough-kent-railways.org.uk (public domain)",
+"imageCaption": "1850s map showing the proposed railway route from Crystal Palace via Beckenham<br>Connection to the Brighton main line from London Bridge<br>Credit: <a href='https://www.farnborough-kent-railways.org.uk' target='_blank' style='color: #4a90e2;'>farnborough-kent-railways.org.uk</a> (public domain)",
+"imageCaptionHTML": true,
 },
 
 
@@ -567,7 +569,8 @@ var timelineData = [
 "category": "Railway",
 "citations": ["73"],
 "image": "images/1911-crystal-palace-electric-stock.jpg",
-"image_caption": "Overhead AC electric Crystal Palace stock, 1911. Credit: Historic England Archives (public domain)",
+"imageCaption": "Overhead AC electric Crystal Palace stock, 1911<br>Credit: Historic England Archives (public domain)",
+"imageCaptionHTML": true,
 },
 
 
@@ -831,7 +834,7 @@ var timelineData = [
 "category": "Civic",
 "citations": ["88"],
 "image": "images/1973-gipsy-hill-victorian-cottages.jpg",
-"image_caption": "Terraced Victorian cottages 76-78 Gipsy Hill within Conservation area, c. 1973. Credit: <a href='https://boroughphotos.org' target='_blank' style='color: #4a90e2;'>Borough Photos</a> collection",
+"imageCaption": "Terraced Victorian cottages 76-78 Gipsy Hill within Conservation area, c. 1973. Credit: <a href='https://boroughphotos.org' target='_blank' style='color: #4a90e2;'>Borough Photos</a> collection",
 "imageCaptionHTML": true,
 },
 
