@@ -450,7 +450,7 @@ var timelineData = [
 
 {
 "date": "1870s-1890s",
-"title": "Long Meadow and Norwood Central Dairy",
+"title": "Long Meadow & Agricultural Roots",
 "description": "Long Meadow, Dairy Farming, and the Norwood Central Dairy at Gipsy Hill. In 1871, census records (RG10/694/28/7) show Thomas French working as a dairyman on his own account while living at 8 Norwood Terrace—now 78 Gipsy Hill. From this base he grazed his cows on the triangular field between Woodland Road and Cawnpore Street, known today as Long Meadow. Each day the animals were walked down to milking sheds at Melbourne Yard, off Westow Street, where the fresh milk supply for the local community was prepared. French was not alone in using the field—the Dibbins family, also dairymen, regularly pastured cattle there, making Long Meadow a shared, working grazing ground for Gipsy Hill's dairy farms. By the early 20th century, it had earned the local name French's Fields, reflecting its central role in the area's dairying scene. The Norwood Central Dairy, operating in the early 20th century and managed by Thomas Daniel Taylor, can be seen as the successor to these earlier local farming operations. Using infrastructure around Central Hill and Westow Street, it continued the supply of milk to the area, preserving the dairy tradition well into the modern era. The earlier history of the meadow is uncertain. Before the 1870s, the name 'Gipsy Hill' rarely appears in records—reports likely placed it within the broader 'Norwood' district. It is probable, however, that the land had long been used for pasture in a rural setting, only later becoming clearly associated with Gipsy Hill as population growth, enclosure, and the arrival of the railways reshaped the landscape. Today, Long Meadow remains a rare surviving fragment of the grazing and dairy-farming lands that once characterised Gipsy Hill.",
 "icon": "cow",
 "importance": "major",
@@ -2004,7 +2004,7 @@ const timelineCitations = [
 
   {
     "number": "93",
-    "timeline_entry": "1870s-1890s – Long Meadow and Norwood Central Dairy",
+    "timeline_entry": "1870s-1890s – Long Meadow & Agricultural Roots",
     "status": "Verified",
     "source": "1871 Census Records (RG10/694/28/7) - Thomas French, dairyman on own account, living at 8 Norwood Terrace (now 78 Gipsy Hill).",
     "quality": "High",
