@@ -1,11 +1,10 @@
 # Timeline Data Changes
 
-## Overview
-This document tracks significant changes made to the Gipsy Hill Timeline data, including new entries, image additions, citation updates, and other modifications.
+This document tracks changes to timeline entries, images, and citations only. For technical and functional changes, see the release notes.
 
 ---
 
-## Changes by Timeline Entry (Last 2 Weeks)
+## Timeline Entry Changes (Last 2 Weeks)
 
 ### New Entries Added
 
@@ -22,11 +21,10 @@ This document tracks significant changes made to the Gipsy Hill Timeline data, i
 ### Images Added to Existing Entries
 
 #### Roman Era - Forest Trackways (AD 43-410)
-- **Category changed**: Updated to "General" category (2025-08-06)
 - **Title updated**: Changed from "Roman Era" to "Roman Era - Forest Trackways" (2025-08-06)
 
 #### Anglo-Saxon Settlement (AD 410-1066)
-- **Category changed**: Updated to "General" category (2025-08-06)
+- No image changes in this period
 
 #### Great North Wood (11th-19th c.)
 - **Image added**: Modern Dulwich Wood view with Battersea Power Station (2025-08-02)
@@ -36,10 +34,9 @@ This document tracks significant changes made to the Gipsy Hill Timeline data, i
 - Converted from WEBP to JPG format
 
 #### Samuel Pepys Visits (1667)
-- **Category changed**: From "Education" to "Gypsies" (2025-08-06)
+- No image changes in this period
 
 #### Death of the Gypsy Queen (1740)
-- **Category fixed**: From "Churches" to "Gypsies" (2025-08-07)
 - **Images updated**: Combined London Annual Register 1796 pages (2025-08-04)
 
 #### Norwood Gypsies Pantomime (1777)
@@ -71,7 +68,6 @@ This document tracks significant changes made to the Gipsy Hill Timeline data, i
 
 #### Long Meadow and Norwood Central Dairy (1912)
 - **Title updated**: Previously just "Norwood Central Dairy" (2025-08-03)
-- **Caption updated**: Fixed image2Caption display issue (2025-08-03)
 
 #### WWII Blitz (1940-1944)
 - **Second image added**: 1942 air raid shelter photo from Lambeth Archives (2025-08-01)
@@ -105,21 +101,12 @@ This document tracks significant changes made to the Gipsy Hill Timeline data, i
 #### Citation 55
 - **Updated**: Removed outdated 2025 reference, added descriptive URL names (2025-08-05)
 
-### Category System Implementation (2025-08-06)
-- Implemented comprehensive category system
-- Categories renamed to single words: Heritage, Gypsies, Transport, Churches, Education, Buildings (was Housing), War, Nature, Community, General
-- Added category badges to all entries
-- Fixed multiple category assignments
-
-### Technical Improvements
-- **Image caption formatting**: Standardized all captions to "Source:" format (2025-08-03)
-- **Date formatting**: Updated to "AD 43-410", "AD 410-1066", "11th-19th c." format (2025-08-03)
-- **Image naming**: Renamed 19 image files to descriptive names (2025-08-03)
-- **Caption properties**: Fixed image2Caption and image2CaptionHTML properties (2025-08-03)
+#### Citation (1990 Railway Accident)
+- **Quality updated**: Changed to "High" with National South East Railway Society source (2025-08-05)
 
 ---
 
-## 2024-08-11 - Historical Images Added
+## August 11, 2025 - Historical Images Added
 
 ### Images Added to Existing Timeline Entries
 
@@ -151,109 +138,7 @@ This document tracks significant changes made to the Gipsy Hill Timeline data, i
 - **Credit**: Borough Photos collection
 - **Commit**: bc0b9c4
 
-### Technical Updates
-- Fixed image caption formatting (changed from `image_caption` to `imageCaption`)
-- Added HTML formatting to captions with proper `<br>` tags
-- Added `imageCaptionHTML: true` flag for all new images
-- **Commit**: 4fdc465
 
 ---
 
-## Admin Panel Enhancements
-
-### Quality Control Improvements
-- **Cross-Reference Check**: Updated to require 3+ word matches, excluding common place names (Gipsy Hill, Norwood, Crystal Palace)
-- **Tool Reorganization**: Moved analysis tools to Quality Control and Research tabs
-- **Data Validation**: Enhanced orphaned citations detection and duplicate checking
-
-### User Interface Updates
-- Added tooltips to all buttons explaining their functionality
-- Reorganized headline statistics with warnings section
-- Renamed "Complete Summary" to "Summarise Entries"
-- Consolidated export options into dropdown menu
-
-### Entry Management
-- Reorganized Entry Editor with clear new/edit modes
-- Implemented multi-select dropdown for citations
-- Added modal form for creating new citations via pull request
-- Added proper form clearing when switching modes
-
-### Security & Access
-- Implemented password protection with session storage
-- Added logout button with session clearing
-- Password: GipsyHill2025 (for authorized users only)
-
----
-
-## Data Quality Standards
-
-### Image Requirements
-- All images must have thumbnails (300x200px recommended)
-- Captions must include source attribution
-- Public domain or properly licensed images only
-- Use camelCase for image properties (`imageCaption`, not `image_caption`)
-- HTML captions require `imageCaptionHTML: true` flag
-
-### Citation Standards
-- Each citation must have:
-  - Unique number
-  - Timeline entry reference
-  - Source description
-  - Quality rating (High/Medium/Low)
-  - Status (Verified/Unverified/Needs Review)
-  - URL (when available)
-
-### Entry Categories
-Current categories in use:
-- Culture
-- Civic
-- Community
-- Development
-- Education
-- Gypsies
-- Heritage
-- Historical
-- Services (formerly Infrastructure)
-- Nature
-- Railway
-- Religious
-- Wartime
-
----
-
-## Maintenance Notes
-
-### Regular Tasks
-- Check for orphaned citations (citations not referenced by any entry)
-- Verify all image links are working
-- Ensure thumbnails exist for all images
-- Validate date formats across entries
-- Check for duplicate entries or citations
-
-### GitHub Actions
-- Automated workflows process admin panel submissions
-- Pull requests are created for timeline updates
-- Workflow uses PAT_TIMELINE_BOT for authentication
-
----
-
-## Contributing
-
-When adding new data to the timeline:
-1. Ensure all required fields are populated
-2. Add appropriate citations with sources
-3. Include images where available (with proper attribution)
-4. Test changes locally before committing
-5. Use descriptive commit messages
-6. Update this document with significant changes
-
----
-
-## Recent Commit History
-
-For the most recent changes, run:
-```bash
-git log --oneline -- timeline-data.js | head -20
-```
-
-Last updated: 2024-08-11
+Last updated: August 11, 2025
