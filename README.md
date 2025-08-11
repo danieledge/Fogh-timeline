@@ -36,7 +36,7 @@ An interactive, community-driven timeline application documenting the rich histo
 - **Accessibility** - Larger touch targets for citations (24x24px minimum)
 - **Visual Polish** - Cleaner citation display, consistent category colors, better badge positioning
 
-[📄 View detailed release notes →](RELEASE_NOTES_v2.08.md) | [📋 All releases →](https://github.com/danieledge/Fogh-timeline/releases)
+[📄 View detailed release notes →](RELEASE_NOTES_v2.08.md) | [📋 All releases →](https://github.com/danieledge/Fogh-timeline/releases) | [📜 Timeline data changes →](TIMELINE_DATA_CHANGES.md)
 
 ---
 
@@ -196,6 +196,12 @@ Visit the live Gipsy Hill timeline at: [https://gipsyhillhistory.com/timeline.ht
 1. Click "Suggest Edit" on any entry
 2. Explain needed changes
 3. Provide supporting sources
+
+### Documentation
+
+- **Functional changes**: Document in release notes or README
+- **Timeline data changes**: Document in [TIMELINE_DATA_CHANGES.md](TIMELINE_DATA_CHANGES.md)
+- Keep application features separate from historical content updates
 
 ### Privacy Notice
 
