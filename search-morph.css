@@ -1,0 +1,964 @@
+/* =================================================================== */
+/* MORPHING SEARCH PILL/BAR                                           */
+/* Smooth transition from pill to full search bar                     */
+/* =================================================================== */
+
+:root {
+    /* Glass effect colors */
+    --glass-bg-light: rgba(255, 255, 255, 0.75);
+    --glass-bg-dark: rgba(30, 30, 30, 0.8);
+    --glass-border-light: rgba(255, 255, 255, 0.5);
+    --glass-border-dark: rgba(255, 255, 255, 0.15);
+    
+    /* Original colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e5e7eb;
+    --bg-hover: #f9fafb;
+    --border-color: rgba(0, 0, 0, 0.08);
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-tertiary: #9ca3af;
+    --accent-primary: #ff6f61;
+}
+
+[data-theme="dark"] {
+    --bg-primary: rgba(30, 30, 30, 0.95);
+    --bg-secondary: rgba(30, 30, 30, 0.95);
+    --bg-tertiary: rgba(255, 255, 255, 0.1);
+    --bg-hover: rgba(40, 40, 40, 0.95);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --text-primary: #f3f4f6;
+    --text-secondary: #9ca3af;
+    --text-tertiary: #6b7280;
+    --accent-primary: #ff8a65;
+}
+
+/* Reduced transparency support */
+@media (prefers-reduced-transparency: reduce) {
+    :root {
+        --glass-bg-light: rgba(255, 255, 255, 0.95);
+        --glass-bg-dark: rgba(30, 30, 30, 0.95);
+    }
+}
+
+/* Search Container - Fixed position with safe areas */
+.search-morph-container {
+    position: fixed;
+    top: calc(20px + env(safe-area-inset-top));
+    left: calc(20px + env(safe-area-inset-left));
+    right: calc(20px + env(safe-area-inset-right));
+    z-index: 1000;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    will-change: transform;
+}
+
+/* Pill State - Glass effect with minimum 44px height */
+.search-morph-container.pill-state {
+    width: auto;
+    right: auto; /* Override right for pill state */
+}
+
+.search-morph-container.pill-state .search-morph-bar {
+    width: auto;
+    min-height: 44px;
+    height: 44px;
+    padding: 0 12px;
+    border-radius: 22px;
+    background: var(--glass-bg-light);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border-light);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    overflow: visible;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Pill with filters - slightly more padding for badge */
+.search-morph-container.pill-state.has-filters .search-morph-bar {
+    padding: 0 14px;
+}
+
+/* No-glass fallback for pill */
+.no-glass .search-morph-container.pill-state .search-morph-bar {
+    background: var(--bg-secondary);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid var(--border-color);
+}
+
+.search-morph-container.pill-state .search-morph-bar:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    transform: scale(1.05);
+    background: var(--bg-hover);
+}
+
+/* Expanded State - Glass effect with 18px radius */
+.search-morph-container.expanded-state {
+    width: calc(100vw - 70px);
+    max-width: calc(100vw - 70px);
+}
+
+.search-morph-container.expanded-state .search-morph-bar {
+    width: 100%;
+    height: auto;
+    min-height: 44px;
+    border-radius: 18px;
+    cursor: default;
+    background: var(--glass-bg-light);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border-light);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* No-glass fallback for expanded */
+.no-glass .search-morph-container.expanded-state .search-morph-bar {
+    background: var(--bg-secondary);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid var(--border-color);
+}
+
+/* No-glass fallbacks for all glass elements */
+.no-glass .search-category-item,
+.no-glass .search-filter-tag,
+.no-glass .search-actions-row .mode-toggle {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.no-glass .search-category-item {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+}
+
+.no-glass .search-filter-tag {
+    background: #6366f1;
+    border-color: #4f46e5;
+}
+
+/* Search Bar Content */
+.search-morph-bar {
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    transform-origin: left center;
+}
+
+/* Search Input Row */
+.search-input-row {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 44px;
+    gap: 12px;
+}
+
+/* Special padding for pill state */
+.pill-state .search-input-row {
+    padding: 0;
+    justify-content: center;
+}
+
+/* Search Text/Label for Pill */
+.search-pill-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px; /* Reduced from 6px */
+    width: auto;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    color: var(--text-secondary);
+    font-size: 13px; /* Reduced from 14px */
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.pill-state .search-pill-content {
+    justify-content: center;
+}
+
+.expanded-state .search-pill-content {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+}
+
+/* Show icon in pill */
+.search-pill-icon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+/* Show text and arrow in pill */
+.search-pill-text {
+    display: block;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+.search-pill-arrow {
+    display: none; /* Hide arrow since we have icon + text + badge */
+}
+
+.search-morph-container.pill-state:hover .search-pill-text {
+    color: var(--text-primary);
+}
+
+/* Expanded Content */
+.search-expanded-content {
+    opacity: 0;
+    transition: opacity 0.3s ease 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.expanded-state .search-expanded-content {
+    opacity: 1;
+}
+
+.pill-state .search-expanded-content {
+    pointer-events: none;
+    position: absolute;
+}
+
+/* Search Icon in Expanded State */
+.search-icon-expanded {
+    width: 20px;
+    height: 20px;
+    color: #6b7280;
+    flex-shrink: 0;
+    opacity: 0.9;
+}
+
+/* Search Input Field */
+.search-input-field {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    color: var(--text-primary);
+    font-family: inherit;
+    padding: 0;
+}
+
+.search-input-field::placeholder {
+    color: var(--text-tertiary);
+    font-size: 14px;
+}
+
+/* Action Buttons */
+.search-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+}
+
+/* Hide action buttons when in pill state */
+.pill-state .search-actions {
+    display: none;
+}
+
+/* Mode Toggle Buttons with focus ring */
+.mode-toggle {
+    padding: 0 10px;
+    background: transparent;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 36px;
+    box-sizing: border-box;
+    line-height: 1;
+    vertical-align: middle;
+    outline: none;
+}
+
+.mode-toggle:focus-visible {
+    box-shadow: 0 0 0 2px var(--accent-primary);
+}
+
+.mode-toggle:hover {
+    background: rgba(99, 102, 241, 0.05);
+    border-color: #6366f1;
+    color: #6366f1;
+}
+
+.mode-toggle.active {
+    background: #6366f1;
+    border-color: #6366f1;
+    color: white;
+}
+
+.mode-toggle svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.mode-toggle span {
+    line-height: 16px;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Collapse Button */
+.collapse-btn {
+    padding: 6px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.collapse-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #1f2937;
+}
+
+.collapse-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Expandable Sections */
+.search-expandable-sections {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-expandable-sections.show {
+    max-height: 600px;
+    overflow-y: auto; /* Allow scroll if content is too tall */
+}
+
+/* Hide sections immediately in pill state to prevent content showing during transition */
+.pill-state .search-expandable-sections {
+    display: none !important;
+}
+
+.search-sections-content {
+    padding: 0 16px 16px;
+}
+
+/* Date Section */
+.search-date-section {
+    margin-top: 8px;
+    padding: 8px 0;
+    background: transparent;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Visual Timeline - No container styling */
+.search-date-section .visual-timeline-container {
+    display: block;
+    margin: 0;  /* No margins */
+    padding: 0 5px; /* Small horizontal padding to prevent edge cutoff */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.search-date-section .visual-timeline {
+    background: transparent;  /* No background */
+    border: none;  /* No border */
+    border-radius: 0;  /* No rounded corners */
+    padding: 0 15px 25px 15px;  /* Reduced top padding, bottom for labels */
+    position: relative;
+    height: 110px;  /* Reduced from 140px */
+    overflow: visible;  /* Allow handles to be visible */
+    box-shadow: none;  /* No shadow */
+    box-sizing: border-box;
+}
+
+[data-theme="dark"] .search-date-section .visual-timeline {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+/* Timeline Periods - hidden/removed */
+.search-date-section .timeline-periods {
+    display: none;  /* Hide century labels */
+}
+
+/* Histogram - adjusted for no container and no century labels */
+.search-date-section .timeline-histogram {
+    position: absolute;
+    top: 10px;     /* Move to top since no century labels */
+    left: 0;       /* Flush to edges */
+    right: 0;      /* Flush to edges */
+    height: 70px;  /* Increased height from 50px */
+    display: flex;
+    align-items: flex-end;
+    gap: 1px;      /* Smaller gap for cleaner look */
+}
+
+/* Year Labels - adjusted for no container */
+.search-date-section .timeline-labels {
+    position: absolute;
+    bottom: 5px;   /* Keep at bottom */
+    left: 0;       /* Flush to edges */
+    right: 0;      /* Flush to edges */
+    height: 25px;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    user-select: none;
+    overflow: visible;  /* Allow labels to extend beyond container */
+}
+
+/* Timeline Period styles - hidden/removed */
+.search-date-section .timeline-period {
+    display: none;  /* Hide century labels */
+}
+
+/* EXACT Histogram Bar styles from filter modal */
+.search-date-section .histogram-bar {
+    flex: 1;
+    background: var(--accent-primary);
+    opacity: 0.6;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    min-height: 5px;
+    position: relative;
+    border-radius: 2px 2px 0 0;
+    display: block;
+}
+
+.search-date-section .histogram-bar:hover {
+    opacity: 0.8;
+}
+
+/* EXACT Timeline Label styles from filter modal */
+.search-date-section .timeline-label {
+    position: absolute;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 0 4px;  /* More padding to prevent overlap */
+    z-index: 5;  /* Ensure labels are above other elements */
+    font-size: 0.6rem;  /* Slightly smaller to fit better */
+    font-weight: 500;
+}
+
+.search-date-section .timeline-label.gap-label {
+    font-weight: normal;
+    opacity: 0.5;
+}
+
+/* Categories Section */
+.search-categories-section {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.search-category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.search-category-item {
+    padding: 6px 12px;
+    background: rgba(241, 245, 249, 0.8);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(226, 232, 240, 0.5);
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #1f2937;
+    min-height: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+}
+
+.search-category-item:hover {
+    background: rgba(226, 232, 240, 0.9);
+    border-color: rgba(203, 213, 225, 0.8);
+}
+
+.search-category-item.selected {
+    background: rgba(99, 102, 241, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: white;
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Results Counter */
+.search-results-counter {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 12px;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    font-size: 12px;
+    color: #6b7280;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.search-results-counter.no-results {
+    color: #ef4444;
+    background: #fee2e2;
+    border-color: #fecaca;
+}
+
+/* Active Filters - Better spacing */
+.search-active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px; /* Space above pills row */
+    padding: 12px 0;
+    border-top: 1px solid #e5e7eb;
+    line-height: 1.2;
+}
+
+.search-filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px; /* Normalized padding */
+    min-height: 36px; /* Consistent tap target */
+    background: rgba(99, 102, 241, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: white;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 18px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.search-filter-tag button {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 10px;
+    padding: 0;
+    transition: background 0.2s;
+}
+
+.search-filter-tag button:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+
+/* Timeline Selection - adjusted for no century labels */
+.search-date-section .timeline-selection {
+    position: absolute;
+    top: 10px;     /* Align with histogram at top */
+    left: -10px;   /* Extend to capture first entry */
+    right: -10px;  /* Extend to capture last entry */
+    height: 70px;  /* Match histogram height */
+    z-index: 10;
+    padding: 0 10px;  /* Compensate for negative margins */
+    box-sizing: content-box;
+}
+
+.search-date-section .selection-range {
+    position: absolute;
+    background: rgba(255, 111, 97, 0.2); /* Orange tint instead of green */
+    border: 2px solid var(--accent-primary);
+    border-radius: 4px;
+    height: 100%;
+    min-width: 20px;
+    cursor: move;
+    box-sizing: border-box;
+    pointer-events: all;
+}
+
+.search-date-section .selection-range.dragging {
+    cursor: grabbing;
+    background: rgba(255, 111, 97, 0.25); /* Orange tint instead of green */
+}
+
+.search-date-section .selection-handle {
+    position: absolute;
+    width: 60px;  /* Wide touch target */
+    height: 100%;
+    cursor: ew-resize;
+    background: transparent;
+    display: flex; /* Changed from none - will be controlled by JS */
+    align-items: center;
+    justify-content: center;
+    z-index: 12;
+    pointer-events: all;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: none;  /* Prevent scrolling on touch */
+    top: 0;
+    will-change: left, right;
+}
+
+.search-date-section .selection-handle::before {
+    content: '';
+    position: absolute;
+    width: 12px;  /* Visible width */
+    height: 100%;
+    background: var(--accent-primary);
+    border-radius: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+.search-date-section .handle-grip {
+    position: absolute;
+    width: 2px;
+    height: 16px;
+    background: white;
+    border-radius: 1px;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.search-date-section .range-label {
+    position: absolute;
+    bottom: -20px;
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.search-date-section .range-label.start {
+    left: 0;
+}
+
+.search-date-section .range-label.end {
+    right: 0;
+}
+
+/* Dark Theme */
+[data-theme="dark"] .search-morph-container.pill-state .search-morph-bar {
+    background: var(--glass-bg-dark);
+    border-color: var(--glass-border-dark);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .search-morph-container.expanded-state .search-morph-bar {
+    background: var(--glass-bg-dark);
+    border-color: var(--glass-border-dark);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .search-input-field {
+    color: #f3f4f6;
+}
+
+[data-theme="dark"] .search-pill-text,
+[data-theme="dark"] .search-pill-icon {
+    color: #9ca3af;
+}
+
+[data-theme="dark"] .search-icon-expanded {
+    color: #b4b8bf;
+    opacity: 1;
+}
+
+[data-theme="dark"] .mode-toggle {
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #b4b8bf;
+}
+
+[data-theme="dark"] .mode-toggle svg {
+    opacity: 0.9;
+}
+
+[data-theme="dark"] .mode-toggle:hover {
+    background: rgba(99, 102, 241, 0.1);
+}
+
+[data-theme="dark"] .search-date-section {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+
+[data-theme="dark"] .search-categories-section {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .search-category-item {
+    background: rgba(255, 255, 255, 0.05);
+    color: #e5e7eb;
+}
+
+[data-theme="dark"] .search-category-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .search-active-filters {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes morphToBar {
+    0% {
+        border-radius: 22px;
+    }
+    100% {
+        border-radius: 16px;
+    }
+}
+
+@keyframes morphToPill {
+    0% {
+        border-radius: 16px;
+    }
+    100% {
+        border-radius: 22px;
+    }
+}
+
+/* First-load micro-interaction */
+@keyframes firstLoadHint {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.search-morph-container.first-load .search-morph-bar {
+    animation: firstLoadHint 0.6s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .search-morph-container.first-load .search-morph-bar {
+        animation: none;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .search-morph-container {
+        left: 10px;
+    }
+    
+    .search-morph-container.pill-state {
+        width: auto;
+    }
+    
+    .search-morph-container.pill-state .search-morph-bar {
+        width: auto;
+        height: 36px;
+        padding: 0 8px; /* Even more compact on mobile */
+    }
+    
+    .search-morph-container.pill-state.has-filters .search-morph-bar {
+        padding: 0 10px;
+    }
+    
+    .search-morph-container.expanded-state {
+        width: calc(100vw - 60px);
+    }
+    
+    .search-category-grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    }
+    
+    .mode-toggle span {
+        display: inline-block;  /* Show labels on mobile too */
+        font-size: 12px;
+    }
+    
+    .mode-toggle {
+        padding: 0 10px;
+        height: 36px;
+        min-width: 95px;
+    }
+    
+    .search-pill-text {
+        font-size: 12px;
+    }
+    
+    /* Mobile histogram sizing - no container */
+    .search-date-section .visual-timeline {
+        height: 110px;  /* Match desktop reduced height */
+        padding: 0 0 25px 0;
+    }
+    
+    .search-date-section .timeline-periods {
+        font-size: 0.65rem;
+    }
+    
+    .search-date-section .timeline-histogram {
+        height: 70px;  /* Match desktop height for consistency */
+        gap: 1px;
+        bottom: 35px;  /* Consistent position */
+    }
+    
+    .search-date-section .timeline-labels {
+        font-size: 0.6rem;
+    }
+}
+/* --- Mockup styling tweaks --- */
+
+/* Badge styling with empty state rules */
+.search-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; height: 20px; padding: 0 7px;
+  margin-left: 8px;
+  background: var(--accent-primary);
+  color: #fff; font-size: 12px; line-height: 1; font-weight: 700;
+  border-radius: 999px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.08);
+  visibility: hidden; /* hidden when 0; JS toggles to visible */
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+/* Badge in expanded state - 85% opacity when visible */
+.expanded-state .search-badge {
+  opacity: 0.85;
+}
+
+/* Hide badge in pill when count is 0 */
+.pill-state .search-badge[data-count="0"] {
+  display: none;
+}
+
+/* Action chip row - opaque for contrast, clean spacing */
+.search-actions-row {
+  padding: 24px 12px !important;
+  border-top: 1px solid var(--border-color);
+  align-items: center;
+  gap: 10px; /* Single consistent gap */
+  display: none;
+  position: sticky;
+  top: 44px;
+  background: var(--bg-secondary); /* Opaque for guaranteed contrast */
+  z-index: 10;
+}
+
+/* Only show in expanded state */
+.expanded-state .search-actions-row {
+  display: flex;
+}
+
+/* Empty state helper hint - removed from DOM */
+.search-empty-hint {
+  display: none;
+}
+.search-actions-row .mode-toggle {
+  border-radius: 10px;
+  background: #f3f4f6;
+  border-color: transparent;
+  height: 32px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  min-width: 120px; /* Same width for both buttons */
+  justify-content: center;
+  white-space: nowrap;
+  flex: 0 0 120px;
+  gap: 8px; /* Icon to label spacing */
+  line-height: 1;
+  transition: all 0.2s ease;
+  margin: 0;
+}
+
+.search-actions-row .mode-toggle.active {
+  background: var(--accent-primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 111, 97, 0.25);
+}
+
+.search-actions-row .mode-toggle svg { 
+  width: 16px; 
+  height: 16px; 
+  flex-shrink: 0;
+}
+
+.search-actions-row .mode-toggle span { 
+  display: inline-block !important;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Results text with proper spacing */
+.search-inline-result {
+  margin-left: auto;
+  margin-right: 12px; /* 12px from results to X button */
+  font-size: 14px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Expanded container roomy edges */
+.expanded-state .search-input-row { padding: 10px 16px; }
+.expanded-state .search-morph-bar { border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+
+/* Close button hover */
+.collapse-btn { margin-left: 4px; }
+.collapse-btn:hover { background: rgba(0,0,0,.06); }
+
+/* Make the pill text+icon centered and keep subtle pulse from your base css. */
+.pill-state .search-pill-content { gap: 5px; /* Compact gap */ }
+
+/* Dark mode niceties */
+[data-theme="dark"] .search-actions-row .mode-toggle { background: rgba(255,255,255,0.06); }
+[data-theme="dark"] .search-inline-result { color: #9aa0a6; }

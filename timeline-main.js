@@ -339,6 +339,11 @@ function initializeTimeline() {
                 if (typeof updateFilterStatus !== 'undefined') {
                     updateFilterStatus();
                 }
+                
+                // Dispatch event for persistent search bar
+                window.dispatchEvent(new CustomEvent('filtersChanged', {
+                    detail: { showMinor: e.target.checked }
+                }))
             });
         }
         
@@ -1088,7 +1093,14 @@ function initializeTimeline() {
         }
         showDebug('All ' + timelineData.length + ' timeline items created!');
         
-        // Initialize timeline search functionality
+        // Initialize persistent search bar (replaces modal search)
+        initializePersistentSearch();
+        
+        // Initialize hint buttons
+        initializeExpandButton();
+        
+        
+        // Initialize timeline search functionality (for backward compatibility)
         showDebug('Initializing timeline search');
         var searchInput = document.querySelector('.timeline-search-input');
         
@@ -3853,6 +3865,14 @@ function initializeVisualTimeline() {
                 applyCategoryFilter();
                 updateFilterStatus();
                 updateFilterIndicator();
+                
+                // Dispatch event for persistent search bar
+                var activeCategories = Array.from(activeCategoryFilters).map(function(key) {
+                    return timelineCategories[key].label || key;
+                });
+                window.dispatchEvent(new CustomEvent('filtersChanged', {
+                    detail: { categories: activeCategories }
+                }));
             });
             
             container.appendChild(pill);
@@ -4511,6 +4531,12 @@ function initializeVisualTimeline() {
         // Check if this is the full range (no filter)
         var isFullRange = (startYear <= minYear && endYear >= maxYear);
         
+        // Dispatch event for persistent search bar
+        var timeRangeText = isFullRange ? null : startYear + ' AD - ' + endYear;
+        window.dispatchEvent(new CustomEvent('filtersChanged', {
+            detail: { timeRange: timeRangeText }
+        }));
+        
         // Update visual feedback
         updateHistogramHighlight(startYear, endYear);
         
@@ -5102,3 +5128,1106 @@ document.head.appendChild(style);
         setTimeout(enhanceOrphanCarousels, 100);
     }
 })();
+
+// =============================================================================
+// PERSISTENT SEARCH BAR IMPLEMENTATION
+// =============================================================================
+
+/**
+ * Initialize hint buttons for search
+ */
+function initializeExpandButton() {
+    var expandBtn = document.getElementById('search-expand-btn');
+    var expandedPanel = document.getElementById('search-expanded-panel');
+    var visualTimelineWrapper = document.getElementById('visual-timeline-wrapper');
+    var dropdownTrigger = document.getElementById('category-dropdown-trigger');
+    var dropdownMenu = document.getElementById('category-dropdown-menu');
+    var dateSelectionPill = document.getElementById('date-selection-pill');
+    
+    if (!expandBtn || !expandedPanel) return;
+    
+    // Initialize category filter button
+    function initializeCategoryButton() {
+        var categoryFilterBtn = document.getElementById('category-filter-btn');
+        if (!categoryFilterBtn) return;
+        
+        categoryFilterBtn.addEventListener('click', function() {
+            var persistentInput = document.getElementById('persistent-search-input');
+            if (persistentInput) {
+                persistentInput.value = '#';
+                persistentInput.focus();
+                // Trigger input event to show category autocomplete
+                persistentInput.dispatchEvent(new Event('input'));
+            }
+        });
+    }
+    
+    // Store reference to update categories later (simplified)
+    window.updateCategoryPills = function() {
+        // No longer needed - categories handled through autocomplete
+    };
+    
+    // Initialize date selection pill
+    function initializeDatePill() {
+        if (!dateSelectionPill) return;
+        
+        dateSelectionPill.addEventListener('click', function() {
+            var isActive = this.classList.contains('active');
+            
+            if (isActive) {
+                // Hide timeline
+                if (visualTimelineWrapper) {
+                    visualTimelineWrapper.style.display = 'none';
+                }
+                this.classList.remove('active');
+            } else {
+                // Show timeline
+                if (visualTimelineWrapper) {
+                    visualTimelineWrapper.style.display = 'block';
+                    if (window.initializeVisualTimelineForSearch) {
+                        window.initializeVisualTimelineForSearch();
+                    }
+                }
+                this.classList.add('active');
+            }
+        });
+        
+        // Update date pill label when date range changes
+        window.updateDatePillLabel = function() {
+            if (!dateSelectionPill || !window.searchState) return;
+            var label = dateSelectionPill.querySelector('.date-label');
+            
+            if (searchState.dateRange.start || searchState.dateRange.end) {
+                var text = '';
+                if (searchState.dateRange.start && searchState.dateRange.end) {
+                    text = searchState.dateRange.start + ' - ' + searchState.dateRange.end;
+                } else if (searchState.dateRange.start) {
+                    text = 'From ' + searchState.dateRange.start;
+                } else if (searchState.dateRange.end) {
+                    text = 'Until ' + searchState.dateRange.end;
+                }
+                label.textContent = text;
+                dateSelectionPill.classList.add('has-selection');
+            } else {
+                label.textContent = 'Select dates...';
+                dateSelectionPill.classList.remove('has-selection');
+            }
+        };
+    }
+    
+    // Initial setup
+    initializeCategoryButton();
+    initializeDatePill();
+    
+    expandBtn.addEventListener('click', function() {
+        var isExpanded = this.classList.contains('expanded');
+        
+        if (isExpanded) {
+            // Collapse
+            this.classList.remove('expanded');
+            expandedPanel.style.display = 'none';
+            if (visualTimelineWrapper) {
+                visualTimelineWrapper.style.display = 'none';
+            }
+            // Reset date pill active state
+            if (dateSelectionPill) {
+                dateSelectionPill.classList.remove('active');
+            }
+        } else {
+            // Expand
+            this.classList.add('expanded');
+            expandedPanel.style.display = 'block';
+            // Don't auto-show visual timeline, let user click date pill
+        }
+    });
+}
+
+/**
+ * Initialize the persistent search bar functionality
+ * Extracts search from modal and makes it always visible
+ */
+function initializePersistentSearch() {
+    // State management
+    // Make searchState global for access from other functions
+    window.searchState = {
+        searchTerms: [], // Array of search terms/phrases
+        categories: [],
+        timeRange: null,
+        dateRange: { start: null, end: null },
+        showMinor: true,
+        debounceTimer: null
+    };
+    var searchState = window.searchState;
+    
+    var persistentInput = document.getElementById('persistent-search-input');
+    var resultsCount = document.getElementById('search-results-count');
+    var visibleCountSpan = document.getElementById('visible-count');
+    var totalCountSpan = document.getElementById('total-count');
+    var filterChipsContainer = document.getElementById('filter-chips');
+    var filterChipsWrapper = filterChipsContainer ? filterChipsContainer.querySelector('.filter-chips-wrapper') : null;
+    var autocompleteContainer = document.getElementById('search-autocomplete');
+    var autocompleteList = document.getElementById('autocomplete-list');
+    
+    // New elements for toggle functionality
+    var searchToggleBtn = document.getElementById('search-toggle-button');
+    var searchContainer = document.getElementById('persistent-search');
+    var searchMinimizeBtn = document.getElementById('search-minimize-btn');
+    var searchInlineClose = document.getElementById('search-inline-close');
+    
+    // Visual timeline elements
+    var visualTimelineWrapper = document.getElementById('visual-timeline-wrapper');
+    
+    // Initialize search toggle
+    if (searchToggleBtn && searchContainer) {
+        searchToggleBtn.addEventListener('click', function() {
+            if (searchContainer.style.display === 'none' || searchContainer.style.display === '') {
+                searchContainer.style.display = 'block';
+                searchToggleBtn.style.display = 'none'; // Hide search button
+                // Hide minimize button initially if no active filters
+                if (searchMinimizeBtn) {
+                    var hasActiveFilters = (searchState && searchState.searchTerms && searchState.searchTerms.length > 0) || 
+                                         (searchState && searchState.categories && searchState.categories.length > 0);
+                    searchMinimizeBtn.style.display = hasActiveFilters ? 'flex' : 'none';
+                }
+                // Show help text if no search terms
+                var helpText = document.getElementById('search-help-text');
+                if (helpText && searchState.searchTerms.length === 0) {
+                    helpText.style.display = 'block';
+                }
+                setTimeout(function() {
+                    if (persistentInput) {
+                        persistentInput.focus();
+                        // Don't show hints - we have permanent buttons now
+                    }
+                }, 100);
+            }
+        });
+    }
+    
+    // Inline close button
+    if (searchInlineClose && searchContainer && searchToggleBtn) {
+        searchInlineClose.addEventListener('click', function() {
+            searchContainer.style.display = 'none';
+            searchToggleBtn.style.display = 'flex'; // Show search button again
+        });
+    }
+    
+    // Minimize button
+    if (searchMinimizeBtn && searchContainer) {
+        searchMinimizeBtn.addEventListener('click', function() {
+            searchContainer.classList.toggle('minimized');
+            this.classList.toggle('rotated');
+        });
+    }
+    
+    
+    if (!persistentInput) {
+        return;
+    }
+    
+    // Autocomplete state
+    var autocompleteState = {
+        isOpen: false,
+        selectedIndex: -1,
+        suggestions: []
+    };
+    
+    // Show autocomplete suggestions
+    function showAutocomplete(suggestions) {
+        if (!autocompleteContainer || !autocompleteList) return;
+        
+        if (suggestions.length === 0) {
+            hideAutocomplete();
+            return;
+        }
+        
+        autocompleteList.innerHTML = '';
+        autocompleteState.suggestions = suggestions;
+        autocompleteState.selectedIndex = -1;
+        
+        suggestions.forEach(function(suggestion, index) {
+            var item = document.createElement('div');
+            item.className = 'autocomplete-item';
+            item.dataset.index = index;
+            
+            if (suggestion.type === 'category') {
+                var category = timelineCategories[suggestion.key];
+                if (category) {
+                    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    var bgColor = isDark ? (category.lightColor || category.color) : category.color;
+                    
+                    item.innerHTML = '<span class="autocomplete-badge" style="background-color: ' + bgColor + '"></span>' +
+                                   '<span class="autocomplete-text">' + (category.name || suggestion.key) + '</span>';
+                }
+            } else if (suggestion.type === 'hint') {
+                item.className += ' autocomplete-hint-item';
+                item.innerHTML = '<span class="autocomplete-text">' + suggestion.text + '</span>';
+            }
+            
+            item.addEventListener('click', function() {
+                selectAutocompleteSuggestion(index);
+            });
+            
+            autocompleteList.appendChild(item);
+        });
+        
+        autocompleteContainer.style.display = 'block';
+        autocompleteState.isOpen = true;
+    }
+    
+    // Hide autocomplete
+    function hideAutocomplete() {
+        if (autocompleteContainer) {
+            autocompleteContainer.style.display = 'none';
+        }
+        autocompleteState.isOpen = false;
+        autocompleteState.selectedIndex = -1;
+    }
+    
+    // Select autocomplete suggestion
+    function selectAutocompleteSuggestion(index) {
+        var suggestion = autocompleteState.suggestions[index];
+        if (!suggestion) return;
+        
+        if (suggestion.type === 'category') {
+            toggleCategory(suggestion.key);
+            persistentInput.value = '';
+        } else if (suggestion.type === 'hint') {
+            if (suggestion.value === 'date:') {
+                // Show visual timeline selector
+                if (visualTimelineWrapper) {
+                    visualTimelineWrapper.style.display = 'block';
+                    persistentInput.value = ''; // Clear input
+                    initializeVisualTimelineForSearch(); // Initialize if not already done
+                }
+            } else {
+                persistentInput.value = suggestion.value;
+                persistentInput.focus();
+                // Move cursor to end
+                persistentInput.setSelectionRange(persistentInput.value.length, persistentInput.value.length);
+            }
+        }
+        
+        hideAutocomplete();
+    }
+    
+    // Update results count
+    function updateResultsCount() {
+        var allItems = document.querySelectorAll('.timeline-item');
+        var visibleItems = document.querySelectorAll('.timeline-item:not(.hidden):not(.time-filtered):not(.search-hidden):not(.category-filtered)');
+        
+        if (visibleCountSpan && totalCountSpan) {
+            visibleCountSpan.textContent = visibleItems.length;
+            totalCountSpan.textContent = allItems.length;
+        }
+        
+        // Show/hide results count
+        if (resultsCount) {
+            var hasActiveFilters = searchState.searchTerms.length > 0 || 
+                                  (searchState.categories.length > 0 && searchState.categories.length < Object.keys(timelineCategories || {}).length) || 
+                                  searchState.timeRange || 
+                                  !searchState.showMinor;
+            resultsCount.style.display = hasActiveFilters ? 'flex' : 'none';
+        }
+    }
+    
+    // Highlight search terms in text
+    function highlightSearchTerms(element, searchTerm) {
+        if (!searchTerm || !element) return;
+        
+        var text = element.textContent || '';
+        var searchWords = searchTerm.toLowerCase().split(/\s+/).filter(word => word.length > 2);
+        
+        if (searchWords.length === 0) return;
+        
+        // Create regex pattern for all search words
+        var pattern = new RegExp('(' + searchWords.map(word => 
+            word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        ).join('|') + ')', 'gi');
+        
+        // Replace matching text with highlighted version
+        var highlightedHTML = text.replace(pattern, '<span class="search-highlight">$1</span>');
+        
+        if (highlightedHTML !== text) {
+            element.innerHTML = highlightedHTML;
+        }
+    }
+    
+    // Remove all highlights
+    function removeAllHighlights() {
+        document.querySelectorAll('.search-highlight').forEach(function(highlight) {
+            var parent = highlight.parentNode;
+            parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+            parent.normalize();
+        });
+    }
+    
+    // Add a search term to the list
+    function addSearchTerm(term) {
+        term = term.trim();
+        if (!term) return;
+        
+        // Check for category shortcuts (# or category:)
+        var isCategorySearch = false;
+        var categoryKey = null;
+        
+        if (term.startsWith('#')) {
+            // Handle #category format
+            var catName = term.slice(1).toLowerCase();
+            categoryKey = findCategoryByName(catName);
+            if (categoryKey) {
+                toggleCategory(categoryKey);
+                persistentInput.value = '';
+                return;
+            }
+        } else if (term.toLowerCase().startsWith('category:')) {
+            // Handle category:name format
+            var catName = term.slice(9).toLowerCase();
+            categoryKey = findCategoryByName(catName);
+            if (categoryKey) {
+                toggleCategory(categoryKey);
+                persistentInput.value = '';
+                return;
+            }
+        }
+        
+        // Check for quoted phrases
+        var isPhrase = false;
+        if ((term.startsWith('"') && term.endsWith('"')) || 
+            (term.startsWith("'") && term.endsWith("'"))) {
+            term = term.slice(1, -1); // Remove quotes
+            isPhrase = true;
+        }
+        
+        // Don't add duplicates
+        var exists = searchState.searchTerms.some(function(t) {
+            return t.term.toLowerCase() === term.toLowerCase();
+        });
+        
+        if (!exists && term.length > 0) {
+            searchState.searchTerms.push({
+                term: term,
+                isPhrase: isPhrase
+            });
+            persistentInput.value = ''; // Clear input
+            performSearch();
+        }
+    }
+    
+    // Find category by partial name match
+    function findCategoryByName(name) {
+        if (!timelineCategories) return null;
+        name = name.toLowerCase();
+        
+        for (var key in timelineCategories) {
+            var cat = timelineCategories[key];
+            if (key.toLowerCase().includes(name) || 
+                (cat.name && cat.name.toLowerCase().includes(name)) ||
+                (cat.label && cat.label.toLowerCase().includes(name))) {
+                return key;
+            }
+        }
+        return null;
+    }
+    
+    // Toggle category filter - make it global for expand button
+    window.toggleCategory = function(categoryKey) {
+        var index = searchState.categories.indexOf(categoryKey);
+        if (index > -1) {
+            searchState.categories.splice(index, 1);
+        } else {
+            searchState.categories.push(categoryKey);
+        }
+        hideAutocomplete(); // Close the category selector
+        performSearch();
+        updateFilterChips();
+        // Update category pills display if function exists
+        if (window.updateCategoryPills) {
+            window.updateCategoryPills();
+        }
+    };
+    var toggleCategory = window.toggleCategory;
+    
+    // Remove a search term
+    function removeSearchTerm(index) {
+        searchState.searchTerms.splice(index, 1);
+        performSearch();
+    }
+    
+    // Perform search with multiple terms
+    function performSearch() {
+        // Remove previous highlights
+        removeAllHighlights();
+        
+        var timelineItems = document.querySelectorAll('.timeline-item');
+        var hasResults = false;
+        
+        timelineItems.forEach(function(item) {
+            // Check date range filter first
+            var dateMatch = true;
+            if (searchState.dateRange.start || searchState.dateRange.end) {
+                var itemYear = parseInt(item.dataset.year || item.querySelector('.timeline-date')?.textContent?.match(/\d{4}/)?.[0]);
+                if (itemYear) {
+                    if (searchState.dateRange.start && itemYear < searchState.dateRange.start) {
+                        dateMatch = false;
+                    }
+                    if (searchState.dateRange.end && itemYear > searchState.dateRange.end) {
+                        dateMatch = false;
+                    }
+                } else {
+                    dateMatch = false; // No year found, exclude from date filtering
+                }
+            }
+            
+            // Check category filter
+            var categoryMatch = true;
+            if (searchState.categories.length > 0) {
+                var itemCategory = item.dataset.category;
+                categoryMatch = itemCategory && searchState.categories.includes(itemCategory);
+            }
+            
+            // Check search terms
+            var searchMatch = true;
+            if (searchState.searchTerms.length > 0) {
+                // Get searchable content
+                var dateElement = item.querySelector('.timeline-date');
+                var title = item.querySelector('.content-title');
+                var description = item.querySelector('.description');
+                var categories = item.querySelectorAll('.category-badge');
+                
+                var searchableText = '';
+                if (dateElement) searchableText += dateElement.textContent + ' ';
+                if (title) searchableText += title.textContent + ' ';
+                if (description) searchableText += description.textContent + ' ';
+                categories.forEach(function(cat) {
+                    searchableText += cat.textContent + ' ';
+                });
+                
+                searchableText = searchableText.toLowerCase();
+                
+                // Check if ALL search terms match (AND logic)
+                searchMatch = searchState.searchTerms.every(function(searchObj) {
+                    var term = searchObj.term.toLowerCase();
+                    
+                    if (searchObj.isPhrase) {
+                        // Exact phrase match
+                        return searchableText.includes(term);
+                    } else {
+                        // All words must be present (but not necessarily together)
+                        var words = term.split(/\s+/).filter(word => word.length > 0);
+                        return words.every(word => searchableText.includes(word));
+                    }
+                });
+            }
+            
+            if (dateMatch && categoryMatch && searchMatch) {
+                item.classList.remove('search-hidden');
+                hasResults = true;
+                
+                // Highlight search terms if any
+                if (searchState.searchTerms.length > 0) {
+                    var dateElement = item.querySelector('.timeline-date');
+                    var title = item.querySelector('.content-title');
+                    var description = item.querySelector('.description');
+                    
+                    searchState.searchTerms.forEach(function(searchObj) {
+                        if (title) highlightSearchTerms(title, searchObj.term);
+                        if (description) highlightSearchTerms(description, searchObj.term);
+                        if (dateElement) highlightSearchTerms(dateElement, searchObj.term);
+                    });
+                }
+            } else {
+                item.classList.add('search-hidden');
+            }
+        });
+        
+        // Update filter chips
+        updateFilterChips();
+        
+        // Update results count
+        updateResultsCount();
+        
+        // Update filter chips display
+        updateFilterChips();
+    }
+    
+    // Update filter chips display
+    function updateFilterChips() {
+        if (!filterChipsWrapper) return;
+        
+        // Clear existing chips
+        filterChipsWrapper.innerHTML = '';
+        
+        var hasChips = false;
+        
+        // Toggle help text visibility and minimize button
+        var helpText = document.getElementById('search-help-text');
+        var hasActiveFilters = searchState.searchTerms.length > 0 || searchState.categories.length > 0;
+        
+        if (searchState.searchTerms.length > 0) {
+            if (searchContainer) searchContainer.classList.add('has-active-search');
+            if (helpText) helpText.style.display = 'none';
+        } else {
+            if (searchContainer) searchContainer.classList.remove('has-active-search');
+            if (helpText) helpText.style.display = 'block';
+        }
+        
+        // Minimize button is always visible - removed conditional display
+        
+        // Add "Clear All" button if there are search terms
+        if (searchState.searchTerms.length > 1) {
+            var clearAllBtn = document.createElement('button');
+            clearAllBtn.className = 'filter-chip clear-all-chip';
+            clearAllBtn.innerHTML = '<span>Clear All Searches</span>';
+            clearAllBtn.onclick = function() {
+                searchState.searchTerms = [];
+                performSearch();
+            };
+            filterChipsWrapper.appendChild(clearAllBtn);
+            hasChips = true;
+        }
+        
+        // Search term chips - one for each term
+        searchState.searchTerms.forEach(function(searchObj, index) {
+            hasChips = true;
+            var displayTerm = searchObj.isPhrase ? '"' + searchObj.term + '"' : searchObj.term;
+            var searchChip = createFilterChip('Search', displayTerm, 'search-chip', function() {
+                removeSearchTerm(index);
+            });
+            filterChipsWrapper.appendChild(searchChip);
+        });
+        
+        // Date range chip
+        if (searchState.dateRange.start || searchState.dateRange.end) {
+            hasChips = true;
+            var dateLabel = '';
+            if (searchState.dateRange.start && searchState.dateRange.end) {
+                dateLabel = searchState.dateRange.start + ' - ' + searchState.dateRange.end;
+            } else if (searchState.dateRange.start) {
+                dateLabel = 'After ' + searchState.dateRange.start;
+            } else {
+                dateLabel = 'Before ' + searchState.dateRange.end;
+            }
+            
+            var dateChip = createFilterChip('Date', dateLabel, 'date-chip', function() {
+                searchState.dateRange.start = null;
+                searchState.dateRange.end = null;
+                if (dateStartInput) dateStartInput.value = '';
+                if (dateEndInput) dateEndInput.value = '';
+                if (window.updateDatePillLabel) window.updateDatePillLabel();
+                performSearch();
+            });
+            filterChipsWrapper.appendChild(dateChip);
+        }
+        
+        // Category chips - show selected categories
+        searchState.categories.forEach(function(categoryKey) {
+            hasChips = true;
+            var category = timelineCategories[categoryKey];
+            var label = category ? (category.name || category.label || categoryKey) : categoryKey;
+            
+            var categoryChip = createFilterChip('', label, 'category-chip category-chip-' + categoryKey, function() {
+                toggleCategory(categoryKey);
+            });
+            
+            // Add category color to chip - match filter modal implementation
+            if (category) {
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                var bgColor = isDark ? (category.lightColor || category.color) : category.color;
+                if (bgColor) {
+                    categoryChip.style.background = bgColor; // Use background not backgroundColor
+                    categoryChip.style.borderColor = bgColor;
+                    categoryChip.style.color = 'white';
+                    // Remove gradient that might override color
+                    categoryChip.style.backgroundImage = 'none';
+                }
+            }
+            
+            filterChipsWrapper.appendChild(categoryChip);
+        });
+        
+        // Time range chip
+        if (searchState.timeRange) {
+            hasChips = true;
+            var timeChip = createFilterChip('Time', searchState.timeRange, 'time-chip', function() {
+                clearTimeRange();
+            });
+            filterChipsWrapper.appendChild(timeChip);
+        }
+        
+        // Minor entries chip
+        if (!searchState.showMinor) {
+            hasChips = true;
+            var minorChip = createFilterChip('Showing', 'Major events only', 'minor-chip', function() {
+                toggleMinorEntries(true);
+            });
+            filterChipsWrapper.appendChild(minorChip);
+        }
+        
+        // Show/hide chips container
+        if (filterChipsContainer) {
+            if (hasChips) {
+                filterChipsContainer.style.display = 'block';
+                // Auto-show search container if it has active filters
+                if (searchContainer && (searchContainer.style.display === 'none' || searchContainer.classList.contains('minimized'))) {
+                    searchContainer.style.display = 'block';
+                    searchContainer.classList.remove('minimized');
+                    if (searchToggleBtn) searchToggleBtn.classList.add('active');
+                    if (searchMinimizeBtn) searchMinimizeBtn.classList.remove('rotated');
+                }
+            } else {
+                filterChipsContainer.style.display = 'none';
+            }
+        }
+    }
+    
+    // Create a filter chip element
+    function createFilterChip(label, value, className, onRemove) {
+        var chip = document.createElement('div');
+        chip.className = 'filter-chip ' + className;
+        
+        // Only add label if it exists
+        if (label) {
+            var chipLabel = document.createElement('span');
+            chipLabel.className = 'filter-chip-label';
+            chipLabel.textContent = label + ':';
+            chip.appendChild(chipLabel);
+        }
+        
+        var chipValue = document.createElement('span');
+        chipValue.className = 'filter-chip-value';
+        chipValue.textContent = value;
+        
+        var removeBtn = document.createElement('button');
+        removeBtn.className = 'filter-chip-remove';
+        removeBtn.setAttribute('aria-label', 'Remove ' + (label || value) + ' filter');
+        removeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>';
+        removeBtn.onclick = onRemove;
+        
+        chip.appendChild(chipValue);
+        chip.appendChild(removeBtn);
+        
+        return chip;
+    }
+    
+    // Category management
+    function removeCategory(category) {
+        var index = searchState.categories.indexOf(category);
+        if (index > -1) {
+            searchState.categories.splice(index, 1);
+            applyAllFilters();
+        }
+    }
+    
+    // Time range management  
+    function clearTimeRange() {
+        searchState.timeRange = null;
+        document.querySelectorAll('.timeline-item.time-filtered').forEach(function(item) {
+            item.classList.remove('time-filtered');
+        });
+        applyAllFilters();
+    }
+    
+    // Minor entries management
+    function toggleMinorEntries(show) {
+        searchState.showMinor = show;
+        applyAllFilters();
+    }
+    
+    // Apply all active filters
+    function applyAllFilters() {
+        performSearch();
+        
+        // Category filtering is now handled in performSearch() - just clean up
+        document.querySelectorAll('.timeline-item.category-filtered').forEach(function(item) {
+            item.classList.remove('category-filtered');
+        });
+        
+        // Apply minor entries filter
+        if (!searchState.showMinor) {
+            document.body.classList.add('hide-minor');
+        } else {
+            document.body.classList.remove('hide-minor');
+        }
+        
+        updateFilterChips();
+        updateResultsCount();
+    }
+    
+    
+    // Event listeners
+    persistentInput.addEventListener('focus', function() {
+        var value = this.value.trim();
+        
+        // Show help text when focused on empty input
+        if (value.length === 0 && searchState.searchTerms.length === 0 && searchState.categories.length === 0) {
+            if (helpText) {
+                helpText.style.display = 'block';
+                // Don't show hints - we have permanent buttons now
+            }
+        }
+    });
+    
+    persistentInput.addEventListener('keydown', function(e) {
+        // Handle autocomplete navigation
+        if (autocompleteState.isOpen) {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                autocompleteState.selectedIndex = Math.min(autocompleteState.selectedIndex + 1, autocompleteState.suggestions.length - 1);
+                updateAutocompleteSelection();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                autocompleteState.selectedIndex = Math.max(autocompleteState.selectedIndex - 1, -1);
+                updateAutocompleteSelection();
+            } else if (e.key === 'Enter' && autocompleteState.selectedIndex >= 0) {
+                e.preventDefault();
+                selectAutocompleteSuggestion(autocompleteState.selectedIndex);
+                return;
+            } else if (e.key === 'Escape') {
+                hideAutocomplete();
+                return;
+            }
+        }
+        
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            var term = this.value.trim();
+            if (term) {
+                addSearchTerm(term);
+            }
+        } else if (e.key === 'Escape') {
+            this.value = '';
+            hideAutocomplete();
+        } else if (e.key === 'Backspace' && this.value === '' && searchState.searchTerms.length > 0) {
+            // Remove last search term if backspace on empty input
+            removeSearchTerm(searchState.searchTerms.length - 1);
+        }
+    });
+    
+    // Update autocomplete selection visual
+    function updateAutocompleteSelection() {
+        var items = autocompleteList.querySelectorAll('.autocomplete-item');
+        items.forEach(function(item, index) {
+            if (index === autocompleteState.selectedIndex) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+    }
+    
+    // Visual timeline functionality - exact copy of original
+    function initializeVisualTimeline() {
+        if (!visualTimelineWrapper) return;
+        
+        // Use the existing global visual timeline initialization
+        // which has all the complex logic for periods, segments, etc.
+        
+        // Temporarily override the selectors to point to our wrapper
+        var originalQuerySelector = document.querySelector;
+        document.querySelector = function(selector) {
+            if (selector === '.timeline-periods' || 
+                selector === '.timeline-histogram' || 
+                selector === '.timeline-labels' ||
+                selector === '.filter-range-text' ||
+                selector === '.clear-time-filter') {
+                return visualTimelineWrapper.querySelector(selector);
+            }
+            return originalQuerySelector.call(document, selector);
+        };
+        
+        // Call the original visual timeline initialization from line 3641
+        if (typeof window.initializeVisualTimeline === 'function') {
+            // Save the original function
+            var originalInitVisualTimeline = window.initializeVisualTimeline;
+            
+            // Call just the histogram building part
+            // Extract and run the histogram building logic
+            var timelineItems = document.querySelectorAll('.timeline-item');
+            if (!timelineItems || timelineItems.length === 0) {
+                document.querySelector = originalQuerySelector;
+                return;
+            }
+            
+            // Run the full initialization that builds the histogram
+            originalInitVisualTimeline();
+        }
+        
+        // Restore original querySelector
+        document.querySelector = originalQuerySelector;
+        
+        // Add click handlers for our search context
+        var histogramBars = visualTimelineWrapper.querySelectorAll('.histogram-bar');
+        histogramBars.forEach(function(bar) {
+            // Remove existing click handlers
+            var newBar = bar.cloneNode(true);
+            bar.parentNode.replaceChild(newBar, bar);
+            
+            // Add our click handler
+            newBar.addEventListener('click', function() {
+                var startYear = parseInt(this.dataset.startYear);
+                var endYear = parseInt(this.dataset.endYear);
+                
+                searchState.dateRange.start = startYear;
+                searchState.dateRange.end = endYear;
+                if (window.updateDatePillLabel) window.updateDatePillLabel();
+                performSearch();
+                updateFilterChips();
+                
+                // Update display
+                var rangeDisplay = visualTimelineWrapper.querySelector('.range-display');
+                if (rangeDisplay) {
+                    rangeDisplay.textContent = startYear + ' - ' + endYear;
+                    visualTimelineWrapper.querySelector('.filter-range-text').style.display = 'block';
+                }
+                
+                // Highlight active bar
+                visualTimelineWrapper.querySelectorAll('.histogram-bar').forEach(function(b) {
+                    b.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // Clear functionality can be handled via filter chips
+        // Removed dedicated clear button as per modal design
+    }
+    
+    // Parse smart date queries
+    function parseSmartDateQuery(input) {
+        var lowerInput = input.toLowerCase();
+        
+        // Check for year patterns: "1850", "1850-1900", "1850 to 1900"
+        var yearRangeMatch = lowerInput.match(/(\d{4})\s*(?:-|to)\s*(\d{4})/);
+        if (yearRangeMatch) {
+            return {
+                type: 'dateRange',
+                start: parseInt(yearRangeMatch[1]),
+                end: parseInt(yearRangeMatch[2])
+            };
+        }
+        
+        // Single year
+        var singleYearMatch = lowerInput.match(/^(\d{4})$/);
+        if (singleYearMatch) {
+            var year = parseInt(singleYearMatch[1]);
+            return {
+                type: 'dateRange',
+                start: year,
+                end: year
+            };
+        }
+        
+        // Century patterns: "19th century", "20th century"
+        var centuryMatch = lowerInput.match(/(\d{1,2})(?:st|nd|rd|th)\s+century/);
+        if (centuryMatch) {
+            var century = parseInt(centuryMatch[1]);
+            return {
+                type: 'dateRange',
+                start: (century - 1) * 100,
+                end: century * 100 - 1
+            };
+        }
+        
+        // Decade patterns: "1960s", "60s"
+        var decadeMatch = lowerInput.match(/(\d{2,4})s/);
+        if (decadeMatch) {
+            var decade = decadeMatch[1];
+            if (decade.length === 2) {
+                decade = '19' + decade; // Assume 1900s for 2-digit
+            }
+            var decadeStart = parseInt(decade);
+            return {
+                type: 'dateRange',
+                start: decadeStart,
+                end: decadeStart + 9
+            };
+        }
+        
+        // Keywords for date range
+        if (lowerInput.includes('date:') || lowerInput.includes('year:')) {
+            // Show date range selector
+            return { type: 'showDateSelector' };
+        }
+        
+        return null;
+    }
+    
+    // Initialize visual timeline functionality for search wrapper
+    window.initializeVisualTimelineForSearch = function initializeVisualTimelineForSearch() {
+        var wrapper = document.getElementById('visual-timeline-wrapper');
+        if (!wrapper) return;
+        
+        // Temporarily override document.querySelector to use the wrapper context
+        var originalQuerySelector = document.querySelector;
+        var originalQuerySelectorAll = document.querySelectorAll;
+        
+        document.querySelector = function(selector) {
+            // First try within the wrapper
+            var result = wrapper.querySelector(selector);
+            if (result) return result;
+            // Fallback to original for things like timeline items
+            return originalQuerySelector.call(document, selector);
+        };
+        
+        document.querySelectorAll = function(selector) {
+            // For timeline items, use the original
+            if (selector === '.timeline-item') {
+                return originalQuerySelectorAll.call(document, selector);
+            }
+            // Otherwise try wrapper first
+            var results = wrapper.querySelectorAll(selector);
+            if (results.length > 0) return results;
+            return originalQuerySelectorAll.call(document, selector);
+        };
+        
+        // Now initialize the visual timeline
+        initializeVisualTimeline();
+        
+        // Restore original functions
+        document.querySelector = originalQuerySelector;
+        document.querySelectorAll = originalQuerySelectorAll;
+    }
+    
+    initializeVisualTimelineForSearch();
+    
+    // Handle input for autocomplete
+    persistentInput.addEventListener('input', function() {
+        var value = this.value.toLowerCase();
+        var hasText = this.value.trim().length > 0;
+        
+        // Check for smart date queries
+        var dateQuery = parseSmartDateQuery(value);
+        if (dateQuery) {
+            if (dateQuery.type === 'dateRange') {
+                // Apply date range directly
+                searchState.dateRange.start = dateQuery.start;
+                searchState.dateRange.end = dateQuery.end;
+                
+                // Update date pill label
+                if (window.updateDatePillLabel) window.updateDatePillLabel();
+                
+                // Update visual timeline if available
+                if (window.setVisualTimelineRange) {
+                    window.setVisualTimelineRange(dateQuery.start, dateQuery.end);
+                }
+                
+                persistentInput.value = ''; // Clear input
+                performSearch();
+                updateFilterChips();
+                hideAutocomplete();
+                return;
+            } else if (dateQuery.type === 'showDateSelector') {
+                // Show visual timeline selector
+                if (visualTimelineWrapper) {
+                    visualTimelineWrapper.style.display = 'block';
+                    persistentInput.value = ''; // Clear input
+                    initializeVisualTimelineForSearch(); // Initialize if not already done
+                }
+                hideAutocomplete();
+                return;
+            }
+        }
+        
+        // Don't show hints - we have permanent buttons now
+        
+        // Check for category triggers
+        if (value.endsWith('category:') || value === '#') {
+            // Show all categories
+            var suggestions = [];
+            
+            if (timelineCategories) {
+                for (var key in timelineCategories) {
+                    suggestions.push({
+                        type: 'category',
+                        key: key,
+                        label: timelineCategories[key].name || key
+                    });
+                }
+            }
+            
+            showAutocomplete(suggestions);
+        } else if (value.startsWith('category:')) {
+            // Filter categories based on input
+            var searchTerm = value.substring(9).trim();
+            var suggestions = [];
+            
+            if (timelineCategories) {
+                for (var key in timelineCategories) {
+                    var category = timelineCategories[key];
+                    var name = (category.name || key).toLowerCase();
+                    if (name.includes(searchTerm) || key.toLowerCase().includes(searchTerm)) {
+                        suggestions.push({
+                            type: 'category',
+                            key: key,
+                            label: category.name || key
+                        });
+                    }
+                }
+            }
+            
+            showAutocomplete(suggestions);
+        } else if (value.startsWith('#')) {
+            // Show all categories when # is typed, filter if more text follows
+            var searchTerm = value.substring(1).trim().toLowerCase();
+            var suggestions = [];
+            
+            if (timelineCategories) {
+                for (var key in timelineCategories) {
+                    var category = timelineCategories[key];
+                    var name = (category.name || key).toLowerCase();
+                    // Show all if just '#', or filter if search term exists
+                    if (!searchTerm || name.includes(searchTerm) || key.toLowerCase().includes(searchTerm)) {
+                        suggestions.push({
+                            type: 'category',
+                            key: key,
+                            label: category.name || key
+                        });
+                    }
+                }
+            }
+            
+            showAutocomplete(suggestions);
+        } else if (value === '') {
+            // Show hints when empty
+            showAutocomplete([
+                { type: 'hint', text: 'Type "category:" to filter by category', value: 'category:' },
+                { type: 'hint', text: 'Type # for quick category access', value: '#' },
+                { type: 'hint', text: 'Use "quotes" for exact phrases', value: '""' }
+            ]);
+        } else {
+            hideAutocomplete();
+        }
+        
+    });
+    
+    // Click outside to close autocomplete
+    document.addEventListener('click', function(e) {
+        if (!persistentInput.contains(e.target) && !autocompleteContainer.contains(e.target)) {
+            hideAutocomplete();
+        }
+    });
+    
+    // Listen for filter changes from the modal
+    window.addEventListener('filtersChanged', function(e) {
+        if (e.detail) {
+            if (e.detail.categories !== undefined) searchState.categories = e.detail.categories;
+            if (e.detail.timeRange !== undefined) searchState.timeRange = e.detail.timeRange;
+            if (e.detail.showMinor !== undefined) searchState.showMinor = e.detail.showMinor;
+            applyAllFilters();
+        }
+    });
+    
+    // Make search function globally accessible
+    window.persistentSearch = {
+        search: performSearch,
+        updateFilters: applyAllFilters,
+        getState: function() { return searchState; }
+    };
+    
+    // Initial setup
+    updateResultsCount();
+    updateFilterChips();
+    
+    console.log('Persistent search bar initialized successfully');
+}
