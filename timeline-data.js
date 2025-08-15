@@ -865,13 +865,17 @@ var timelineData = [
 
 
 {
-"date": "1982",
+"date": "1982 (August)",
 "title": "Christ Church Fire",
-"description": "In 1982, Christ Church on Highland Road was devastated by a catastrophic fire that destroyed most of the Victorian-era structure. Only the church's iconic Victorian tower survived the blaze, becoming a poignant symbol of resilience amid loss. The destruction of this central community landmark deeply affected local residents, marking a major turning point in the neighborhood's spiritual and architectural landscape. The church was rebuilt and reopened in 1987 with a distinctive modern hexagonal worship space designed to meet evolving community needs while preserving the historic tower. This reconstruction reflected a shift from Victorian architectural traditions to contemporary styles and more flexible multi-use church spaces. The surviving tower was later adaptively reused, converted into a private residence known as 'Highland Tower,' underscoring themes of heritage preservation within urban change. The modern Christ Church continues to serve as a spiritual and community anchor in Gipsy Hill, embodying both continuity and renewal after the tragedy. This event also galvanized local community efforts around heritage conservation, rebuilding, and collective identity, reinforcing Christ Church's significance beyond solely religious function.",
+"description": "In August 1982, Christ Church on Highland Road was devastated by a catastrophic fire that destroyed most of the Victorian-era structure. Only the church's iconic Victorian tower and the adjacent Goodliffe Hall survived. Local recollections from that time suggest that, as the fire—driven by a strong wind—threatened to engulf the hall, a small group gathered to pray for its safety. According to then-vicar Cyril Tennant, the wind unexpectedly changed direction, sparing the building; though the door between church and hall was scorched, the hall itself remained intact. This story was said to have been reported in the West Norwood News under the headline \"Parish prays as church burns: Wind change saves hall\". Goodliffe Hall became the congregation's meeting place during the rebuilding period, helping preserve the church's communal life amid upheaval. The loss of the main sanctuary marked a major turning point in the neighborhood's spiritual and architectural landscape. The church was rebuilt and reopened in December 1987 with a distinctive modern hexagonal worship space designed to meet evolving community needs while preserving the historic tower. This reconstruction reflected a shift from Victorian architectural traditions to contemporary styles and more flexible, multi-use church spaces. The surviving tower was later adaptively reused as a private residence known as Highland Tower, underscoring themes of heritage preservation within urban change. Today, the modern Christ Church continues to serve as a spiritual and community anchor in Gipsy Hill, embodying both continuity and renewal after tragedy. The fire also helped galvanize local interest in heritage conservation, rebuilding, and collective identity, reinforcing Christ Church's significance beyond its religious function.",
 "icon": "fire",
 "importance": "major",
 "category": "Religious",
-"citations": ["76"],
+"citations": ["76", "77"],
+"image": "images/christchurch-fire.jpeg",
+"thumbnail": "images/christchurch-fire.jpeg",
+"imageCaption": "Christ Church fire damage, August 1982<br>Credit: <a href='https://www.gipsyhill.org.uk' target='_blank' rel='noopener'>Christ Church Gipsy Hill website</a>",
+"imageCaptionHTML": true,
 },
 
 
@@ -882,7 +886,7 @@ var timelineData = [
 "icon": "train-crash",
 "importance": "major",
 "category": "Railway",
-"citations": ["77"],
+"citations": ["78"],
 },
 
 
@@ -1937,6 +1941,16 @@ const timelineCitations = [
 
   {
     "number": "77",
+    "timeline_entry": "1982 (August) – Christ Church Fire",
+    "status": "Unverified",
+    "source": "West Norwood News article reportedly titled 'Parish prays as church burns: Wind change saves hall' - requires sourcing of actual article to verify details.",
+    "quality": "Low",
+    "url": "",
+    "notes": "Original newspaper copy from West Norwood News has not been located"
+  },
+
+  {
+    "number": "78",
     "timeline_entry": "1990 – Railway Accident",
     "status": "Verified",
     "source": "National South East Railway Society (Archived from original) notes two Class 455 units derailed after hitting fallen tree on 14 Feb 1990.",
