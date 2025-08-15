@@ -8,6 +8,13 @@ An interactive, community-driven timeline application documenting the rich histo
 
 ## 🚀 Latest Updates
 
+[**Version 2.11**](RELEASE_NOTES_v2.11.md) (August 15, 2025) - Advanced morphing search interface
+- **Morphing Search Bar** - Smooth transition from pill to expanded state with glassmorphism effects
+- **Multi-Criteria Filtering** - Search by terms, categories, and date ranges simultaneously
+- **Interactive Histogram** - Visual timeline with draggable date selection
+- **Real-time Results** - Live counter showing filtered entries
+- **Christ Church Fire Entry** - New historical entry with image and citations
+
 [**Version 2.09**](RELEASE_NOTES_v2.09.md) (August 11, 2025) - Admin panel enhancements and UI improvements
 - **Admin Panel Overhaul** - Complete reorganization with tabbed interface (Export, Editor, Quality Control, Research)
 - **Password Protection** - Secure admin access with session-based authentication
@@ -25,7 +32,7 @@ An interactive, community-driven timeline application documenting the rich histo
 ### Key Highlights
 - ✅ **Fixed critical timeline loading issue** - Timeline now renders correctly
 - 🏷️ **Category System** - Filter timeline by categories (Heritage, Transport, Churches, etc.)
-- 🔍 **Advanced Filtering** - Search, date range slider, and category filters for exploration
+- 🔍 **Advanced Search** - Morphing search interface with glassmorphism design, multi-term filtering, interactive histogram
 - 📚 **References System** - Citations with verification status and quality ratings
 - 🖼️ **Image Carousel** - Browse multiple images per entry with smooth navigation
 - 📱 **Mobile Optimized** - Enhanced touch controls and responsive design
