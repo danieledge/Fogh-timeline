@@ -13,7 +13,7 @@ An interactive, community-driven timeline application documenting the rich histo
 - **Multi-Criteria Filtering** - Search by terms, categories, and date ranges simultaneously
 - **Interactive Histogram** - Visual timeline with draggable date selection
 - **Real-time Results** - Live counter showing filtered entries
-- **Christ Church Fire Entry** - New historical entry with image and citations
+- **Glass UI Effects** - Consistent glassmorphism across search, menus, and modals
 
 [**Version 2.09**](RELEASE_NOTES_v2.09.md) (August 11, 2025) - Admin panel enhancements and UI improvements
 - **Admin Panel Overhaul** - Complete reorganization with tabbed interface (Export, Editor, Quality Control, Research)
