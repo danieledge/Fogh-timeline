@@ -1931,7 +1931,7 @@ const timelineCitations = [
     "number": "76",
     "timeline_entry": "1982 – Christ Church Fire",
     "status": "Verified",
-    "source": "Diocesan profile and Lambeth archive images confirm 1982 fire destroyed Victorian church; only tower survived.",
+    "source": "Diocesan profile and Lambeth archive images confirm 1982 fire destroyed Victorian church.",
     "quality": "High",
     "url": "https://southwark.anglican.org/wp-content/uploads/2021/02/GIP01.pdf",
     "additional_urls": [
