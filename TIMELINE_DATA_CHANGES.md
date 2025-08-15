@@ -8,6 +8,13 @@ This document tracks changes to timeline entries, images, and citations only. Fo
 
 ### New Entries Added
 
+#### 1982 (August) - Christ Church Fire (Added: 2025-08-15)
+- Devastating fire destroyed Victorian church structure
+- Only tower and Goodliffe Hall survived
+- Added detailed historical account with local recollections
+- Image: Fire damage photo from Christ Church Gipsy Hill website
+- Citations: Diocesan profile (verified) and West Norwood News article (unverified)
+
 #### 1917 - Gipsy Hill Montessori College Opens (Added: 2025-08-05)
 - Britain's first Montessori training college at 10 Dulwich Wood Avenue
 - Added historical context about Belle Rennie
