@@ -872,16 +872,13 @@ var timelineData = [
 "importance": "major",
 "category": "Religious",
 "citations": ["76", "77"],
+"image": "images/christchurch-fire.jpeg",
+"thumbnail": "images/christchurch-fire.jpeg",
+"imageCaption": "Christ Church fire damage, August 1982<br>Credit: <a href='https://www.gipsyhill.org.uk' target='_blank' rel='noopener'>Christ Church Gipsy Hill website</a>",
+"imageCaptionHTML": true,
 "additionalImages": [
   {
-    "url": "images/christchurch-fire.jpeg",
-    "thumbnail": "images/christchurch-fire.jpeg",
-    "caption": "Christ Church fire damage, August 1982<br>Credit: <a href='https://www.gipsyhill.org.uk' target='_blank' rel='noopener'>Christ Church Gipsy Hill website</a>",
-    "captionHTML": true
-  },
-  {
-    "url": "images/advertiser-1982-christ-church-fire.jpg",
-    "thumbnail": "images/advertiser-1982-christ-church-fire.jpg",
+    "url": "images/advertiser-1982-christ-church-fire-article.jpg",
     "caption": "The Advertiser newspaper report, 20 August 1982<br>\"Charred shell that was a church\" - Eyewitness accounts of the fire",
     "captionHTML": true
   }

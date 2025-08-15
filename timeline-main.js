@@ -790,12 +790,24 @@ function initializeTimeline() {
         }
 
         // Add image(s) if present, or show contribution prompt
-        if (item.image || item.image2 || item.image3) {
+        if (item.image || item.image2 || item.image3 || item.additionalImages) {
             // Collect all images
             var allImages = [];
-            if (item.image) allImages.push({ src: item.image, caption: item.imageCaption, captionHTML: item.imageCaptionHTML });
-            if (item.image2) allImages.push({ src: item.image2, caption: item.image2Caption, captionHTML: item.image2CaptionHTML });
-            if (item.image3) allImages.push({ src: item.image3, caption: item.image3Caption, captionHTML: item.image3CaptionHTML });
+            if (item.image) allImages.push({ src: item.image, thumbnail: item.thumbnail, caption: item.imageCaption, captionHTML: item.imageCaptionHTML });
+            if (item.image2) allImages.push({ src: item.image2, thumbnail: item.thumbnail2, caption: item.image2Caption, captionHTML: item.image2CaptionHTML });
+            if (item.image3) allImages.push({ src: item.image3, thumbnail: item.thumbnail3, caption: item.image3Caption, captionHTML: item.image3CaptionHTML });
+            
+            // Support new additionalImages array format
+            if (item.additionalImages && Array.isArray(item.additionalImages)) {
+                item.additionalImages.forEach(function(img) {
+                    allImages.push({
+                        src: img.url || img.src,
+                        thumbnail: img.thumbnail, // Include thumbnail if specified
+                        caption: img.caption,
+                        captionHTML: img.captionHTML
+                    });
+                });
+            }
             
             // Create container for images
             var imagesWrapper = document.createElement('div');
@@ -814,13 +826,15 @@ function initializeTimeline() {
                 allImages.forEach(function(imageData, index) {
                     var img = document.createElement('img');
                     
-                    // Generate thumbnail path
-                    var thumbSrc = imageData.src;
-                    var lastDot = imageData.src.lastIndexOf('.');
-                    if (lastDot > -1) {
-                        var basePath = imageData.src.substring(0, lastDot);
-                        var ext = imageData.src.substring(lastDot);
-                        thumbSrc = basePath + '-thumb' + ext;
+                    // Use explicit thumbnail if provided, otherwise generate thumbnail path
+                    var thumbSrc = imageData.thumbnail || imageData.src;
+                    if (!imageData.thumbnail) {
+                        var lastDot = imageData.src.lastIndexOf('.');
+                        if (lastDot > -1) {
+                            var basePath = imageData.src.substring(0, lastDot);
+                            var ext = imageData.src.substring(lastDot);
+                            thumbSrc = basePath + '-thumb' + ext;
+                        }
                     }
                     
                     img.src = thumbSrc;
@@ -977,9 +991,7 @@ function initializeTimeline() {
             } else {
                 // Single image - use original layout
                 imagesWrapper.appendChild(createImageWithCaption(
-                    allImages[0].src,
-                    allImages[0].caption,
-                    allImages[0].captionHTML,
+                    allImages[0], // Pass full image object
                     false
                 ));
             }
@@ -987,19 +999,25 @@ function initializeTimeline() {
             content.appendChild(imagesWrapper);
             
             // Helper function to create image element with caption
-            function createImageWithCaption(imageSrc, captionText, captionHTML, index) {
+            function createImageWithCaption(imageData, index) {
                 var imageContainer = document.createElement('div');
                 imageContainer.className = 'content-image';
                 
                 var img = document.createElement('img');
                 
-                // Generate thumbnail path
-                var thumbSrc = imageSrc;
-                var lastDot = imageSrc.lastIndexOf('.');
-                if (lastDot > -1) {
-                    var basePath = imageSrc.substring(0, lastDot);
-                    var ext = imageSrc.substring(lastDot);
-                    thumbSrc = basePath + '-thumb' + ext;
+                var imageSrc = imageData.src;
+                var captionText = imageData.caption;
+                var captionHTML = imageData.captionHTML;
+                
+                // Use explicit thumbnail if provided, otherwise generate thumbnail path
+                var thumbSrc = imageData.thumbnail || imageSrc;
+                if (!imageData.thumbnail) {
+                    var lastDot = imageSrc.lastIndexOf('.');
+                    if (lastDot > -1) {
+                        var basePath = imageSrc.substring(0, lastDot);
+                        var ext = imageSrc.substring(lastDot);
+                        thumbSrc = basePath + '-thumb' + ext;
+                    }
                 }
                 
                 // Use thumbnail for display, full image for modal
