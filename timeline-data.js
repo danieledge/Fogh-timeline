@@ -867,15 +867,25 @@ var timelineData = [
 {
 "date": "1982 (August)",
 "title": "Christ Church Fire",
-"description": "In August 1982, Christ Church on Highland Road was devastated by a catastrophic fire that destroyed most of the Victorian-era structure. Only the church's iconic Victorian tower and the adjacent Goodliffe Hall survived. Local recollections from that time suggest that, as the fire—driven by a strong wind—threatened to engulf the hall, a small group gathered to pray for its safety. According to then-vicar Cyril Tennant, the wind unexpectedly changed direction, sparing the building; though the door between church and hall was scorched, the hall itself remained intact. This story was said to have been reported in the West Norwood News under the headline \"Parish prays as church burns: Wind change saves hall\". Goodliffe Hall became the congregation's meeting place during the rebuilding period, helping preserve the church's communal life amid upheaval. The loss of the main sanctuary marked a major turning point in the neighborhood's spiritual and architectural landscape. The church was rebuilt and reopened in December 1987 with a distinctive modern hexagonal worship space designed to meet evolving community needs while preserving the historic tower. This reconstruction reflected a shift from Victorian architectural traditions to contemporary styles and more flexible, multi-use church spaces. The surviving tower was later adaptively reused as a private residence known as Highland Tower, underscoring themes of heritage preservation within urban change. Today, the modern Christ Church continues to serve as a spiritual and community anchor in Gipsy Hill, embodying both continuity and renewal after tragedy. The fire also helped galvanize local interest in heritage conservation, rebuilding, and collective identity, reinforcing Christ Church's significance beyond its religious function.",
+"description": "In August 1982, Christ Church on Highland Road was devastated by a catastrophic fire that destroyed most of the Victorian-era structure. Only the church's iconic Victorian tower, Goodliffe Hall, and the vestry survived. The Advertiser (20 August 1982) reported eyewitness accounts of the blaze, describing how local resident and church hall warden Geoff Prentice, awakened by the sound of stained glass windows cracking in the heat, rushed to hose down the hall to stop the flames spreading. \"If the wind had changed, the hall would have caught fire as well,\" he recalled, noting that even so, the windows in the hall were steaming from the heat. The fire began shortly after 2 a.m., spreading rapidly through the building and eventually causing the roof to collapse. By the time it was out around 7 a.m., the 115-year-old church was a burnt-out shell, with the organ, pews, and hymn books destroyed. The vestry—where church records and choir robes were kept—escaped damage, which Prentice called \"miraculous.\" The Rev. Cyril Tennant, away at the time, confirmed that services would continue in the hall until the church was rebuilt. Goodliffe Hall became the congregation's meeting place during the five-year rebuilding period, preserving the church's communal life through a time of upheaval. The loss of the main sanctuary marked a major turning point in the neighborhood's spiritual and architectural landscape. The church was rebuilt and reopened in December 1987 with a distinctive modern hexagonal worship space designed to meet evolving community needs while preserving the historic tower. This reconstruction reflected a shift from Victorian architectural traditions to contemporary styles and more flexible, multi-use church spaces. The surviving tower was later adaptively reused as a private residence known as Highland Tower, underscoring themes of heritage preservation within urban change. Today, the modern Christ Church continues to serve as a spiritual and community anchor in Gipsy Hill, embodying both continuity and renewal after tragedy. The fire also helped galvanize local interest in heritage conservation, rebuilding, and collective identity, reinforcing Christ Church's significance beyond its religious function.",
 "icon": "fire",
 "importance": "major",
 "category": "Religious",
 "citations": ["76", "77"],
-"image": "images/christchurch-fire.jpeg",
-"thumbnail": "images/christchurch-fire.jpeg",
-"imageCaption": "Christ Church fire damage, August 1982<br>Credit: <a href='https://www.gipsyhill.org.uk' target='_blank' rel='noopener'>Christ Church Gipsy Hill website</a>",
-"imageCaptionHTML": true,
+"additionalImages": [
+  {
+    "url": "images/christchurch-fire.jpeg",
+    "thumbnail": "images/christchurch-fire.jpeg",
+    "caption": "Christ Church fire damage, August 1982<br>Credit: <a href='https://www.gipsyhill.org.uk' target='_blank' rel='noopener'>Christ Church Gipsy Hill website</a>",
+    "captionHTML": true
+  },
+  {
+    "url": "images/advertiser-1982-christ-church-fire.jpg",
+    "thumbnail": "images/advertiser-1982-christ-church-fire.jpg",
+    "caption": "The Advertiser newspaper report, 20 August 1982<br>\"Charred shell that was a church\" - Eyewitness accounts of the fire",
+    "captionHTML": true
+  }
+],
 },
 
 
@@ -1942,11 +1952,11 @@ const timelineCitations = [
   {
     "number": "77",
     "timeline_entry": "1982 (August) – Christ Church Fire",
-    "status": "Unverified",
-    "source": "West Norwood News article reportedly titled 'Parish prays as church burns: Wind change saves hall' - requires sourcing of actual article to verify details.",
-    "quality": "Low",
+    "status": "Verified",
+    "source": "The Advertiser (20 August 1982) - Eyewitness accounts from church hall warden Geoff Prentice describing efforts to save Goodliffe Hall from spreading flames.",
+    "quality": "High",
     "url": "",
-    "notes": "Original newspaper copy from West Norwood News has not been located"
+    "notes": "Contemporary newspaper report with firsthand accounts of the fire"
   },
 
   {
