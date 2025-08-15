@@ -5691,8 +5691,8 @@ textarea#image-sources {
 .citation-modal-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1.5rem;
+    justify-content: flex-start;
+    padding: 1rem 3.5rem 1rem 1.5rem;
     border-bottom: 1px solid var(--border-color);
     background: var(--bg-primary);
     position: relative;
@@ -5710,7 +5710,7 @@ textarea#image-sources {
     font-weight: 700;
     letter-spacing: -0.02em;
     flex: 0 0 auto;
-    margin-right: auto;
+    margin-right: 1rem;
 }
 
 /* Citation Navigation Controls in header */
@@ -5718,7 +5718,9 @@ textarea#image-sources {
     display: none;
     align-items: center;
     gap: 0.25rem;
-    margin: 0 1rem;
+    margin-left: auto;
+    margin-right: 3rem;
+    position: relative;
 }
 
 .citation-nav-btn {
@@ -5755,10 +5757,19 @@ textarea#image-sources {
     white-space: nowrap;
 }
 
-/* Ensure citation modal close button stays on top */
+/* Ensure citation modal close button stays on top and is round */
 #citation-modal .modal-close {
-    position: static;
-    margin-left: auto;
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    margin-left: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 101;
 }
 
 .citation-modal-body {
